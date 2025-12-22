@@ -15,7 +15,7 @@
 "ui.selection" = { bg = "selection-bg" }
 "ui.selection.primary" = { bg = "selection-bg" }
 
-"ui.cursorline.primary" = { bg = "black" }
+"ui.cursorline.primary" = { bg = "bright-black" }
 "ui.cursorcolumn.primary" = { bg = "black" }
 
 "ui.linenr" = { fg = "bright-black" }
