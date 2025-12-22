@@ -27,8 +27,8 @@ ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$_comment"
 ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$_night"
 
 # Paths and files
-ZSH_HIGHLIGHT_STYLES[path]="fg=$_lantern,underline"
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$_lantern"
+ZSH_HIGHLIGHT_STYLES[path]="fg=$_amber,underline"
+ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$_amber"
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=$_comment"
 
 # Strings and quotes
