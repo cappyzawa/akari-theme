@@ -14,15 +14,15 @@ A Chrome browser theme inspired by Japanese alleys lit by round lanterns.
 ### Color Scheme
 
 - **Frame**: #1C1A17 (warm gray night alley)
-- **Toolbar**: #1C1A17
-- **Active tab text**: #E26A3B (lantern orange) - Main accent color
+- **Toolbar/Active tab background**: #E26A3B (lantern orange) - Main accent color
+- **Active tab text**: #1C1A17 (dark) - High contrast on orange
 - **Inactive tab text**: #7A7A75 (warm gray)
-- **Bookmark text**: #E6DED3 (soft paper white)
+- **Bookmark text**: #1C1A17 (dark)
 - **New tab background**: #1C1A17
 - **Links**: #E26A3B (lantern orange)
-- **Omnibox background**: #12100E (darker)
-- **Omnibox text**: #E26A3B (lantern orange)
-- **Button background**: #3A3530
+- **Omnibox background**: #F08A5D (bright orange)
+- **Omnibox text**: #1C1A17 (dark)
+- **Button background**: #F08A5D (bright orange)
 
 ## Notes
 
