@@ -929,6 +929,11 @@
     },
     "*.modification": {},
     "*.documentation": {},
-    "*.declaration": {}
+    "*.declaration": {},
+    "keyword": "#E26A3B",
+    "string": "#E26A3B",
+    "number": "#D65A3A",
+    "operator": "#E6DED3",
+    "comment": "#7A7A75"
   }
 }
