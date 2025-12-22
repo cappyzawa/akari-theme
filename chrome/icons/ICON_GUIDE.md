@@ -1,58 +1,58 @@
 # Akari Chrome Theme Icons
 
-このディレクトリには以下のアイコンが必要です:
+This directory requires the following icon files:
 
 - `icon-16.png` - 16x16px
 - `icon-48.png` - 48x48px
 - `icon-128.png` - 128x128px
 
-## デザインガイドライン
+## Design Guidelines
 
-### コンセプト
+### Concept
 
-提灯（ランタン）をモチーフにしたシンプルなアイコン
+Simple icon inspired by a Japanese round lantern (chōchin)
 
-### 配色
+### Color Scheme
 
-- 背景: 透明 or #1C1A17 (background)
-- 提灯の光: #E26A3B (lantern)
-- 縁取り/暗部: #3A3530 or #7A7A75
+- Background: Transparent or #1C1A17 (background)
+- Lantern light: #E26A3B (lantern)
+- Border/Shadow: #3A3530 or #7A7A75
 
-### デザイン案
+### Design Ideas
 
 ```
 ┌──────────┐
 │          │
-│    ◯     │  ← 丸い提灯を上から見た図
-│   ╱ ╲    │     中心に光源
+│    ◯     │  ← Top view of round lantern
+│   ╱ ╲    │     Light source at center
 │  ╱   ╲   │     
-│ │  ●  │  │  ● = #E26A3B (光)
-│  ╲   ╱   │  外側 = #3A3530 (影)
+│ │  ●  │  │  ● = #E26A3B (light)
+│  ╲   ╱   │  Outer = #3A3530 (shadow)
 │   ╲ ╱    │
 │    ◯     │
 │          │
 └──────────┘
 ```
 
-または単純な円形でグラデーション:
-- 中心: #F08A5D (bright_yellow)
-- 外側: #E26A3B (lantern)
-- 最外: #3A3530 (selection_bg)
+Or a simple circular gradient:
+- Center: #F08A5D (bright_yellow)
+- Middle: #E26A3B (lantern)
+- Outer: #3A3530 (selection_bg)
 
-## 生成方法
+## Generation Methods
 
-ImageMagick、GIMP、Figma等で生成してください。
+Generate with ImageMagick, GIMP, Figma, etc.
 
-### ImageMagickの例
+### ImageMagick Example
 
 ```bash
-# 128x128の円形グラデーション
+# 128x128 circular gradient
 convert -size 128x128 xc:none \\
   -fill "radial-gradient:circle at center, #F08A5D 0%, #E26A3B 70%, #3A3530 100%)" \\
   -draw "circle 64,64 64,10" \\
   icon-128.png
 
-# 48x48と16x16にリサイズ
+# Resize to 48x48 and 16x16
 convert icon-128.png -resize 48x48 icon-48.png
 convert icon-128.png -resize 16x16 icon-16.png
 ```

@@ -1,30 +1,30 @@
 # Akari Chrome Theme
 
-Chromeブラウザ用のAkariテーマです。
+A Chrome browser theme inspired by Japanese alleys lit by round lanterns.
 
-## インストール方法
+## Installation
 
-### 開発者モードでインストール
+### Install in Developer Mode
 
-1. Chromeで `chrome://extensions/` を開く
-2. 右上の「デベロッパーモード」をONにする
-3. 「パッケージ化されていない拡張機能を読み込む」をクリック
-4. このディレクトリ（`chrome/`）を選択
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select this directory (`chrome/`)
 
-### 配色
+### Color Scheme
 
-- **フレーム**: #1C1A17 (warm gray night alley)
-- **ツールバー**: #1C1A17
-- **タブテキスト**: #E6DED3 (soft paper white)
-- **非アクティブタブテキスト**: #7A7A75 (warm gray)
-- **ブックマークテキスト**: #E6DED3
-- **新規タブ背景**: #1C1A17
-- **リンク**: #6F879A (bright blue)
-- **オムニボックス背景**: #12100E (darker)
-- **ボタン背景**: #3A3530
+- **Frame**: #1C1A17 (warm gray night alley)
+- **Toolbar**: #1C1A17
+- **Tab text**: #E6DED3 (soft paper white)
+- **Inactive tab text**: #7A7A75 (warm gray)
+- **Bookmark text**: #E6DED3
+- **New tab background**: #1C1A17
+- **Links**: #6F879A (bright blue)
+- **Omnibox background**: #12100E (darker)
+- **Button background**: #3A3530
 
-## 注意
+## Notes
 
-Chromeテーマはmanifest v3の制限により、カスタマイズできる要素が限定されています。
-より詳細な色の制御が必要な場合は、Stylus等のCSS拡張機能との併用を推奨します。
+Due to Chrome manifest v3 limitations, customizable elements are limited.
+For more detailed color control, we recommend using CSS extension tools like Stylus.
 
