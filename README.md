@@ -112,6 +112,7 @@ cd vscode && npx @vscode/vsce package && code --install-extension akari-theme-*.
 | Foreground | Paper     | `#E6DED3` |
 | Lantern    | Orange    | `#E26A3B` |
 | Ember      | Red       | `#D65A3A` |
+| Amber      | Yellow    | `#D4A05A` |
 | Life       | Green     | `#7FAF6A` |
 | Night      | Blue      | `#5A6F82` |
 | Muted      | Purple    | `#7C6A8A` |

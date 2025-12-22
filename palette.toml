@@ -3,6 +3,14 @@ version = "0.0.1"
 description = "A terminal color palette inspired by Japanese alleys lit by round lanterns."
 
 #
+# Colors (named palette)
+#
+[colors]
+lantern = "#E26A3B"  # round lantern glow
+ember = "#D65A3A"    # heat / material
+amber = "#D4A05A"    # warm yellow
+
+#
 # Base
 #
 [base]
@@ -13,7 +21,7 @@ foreground = "#E6DED3" # soft paper white
 # UI
 #
 [ui]
-cursor = "#E26A3B"       # lantern glow
+cursor = "colors.lantern"
 cursor_text = "#1C1A17"
 selection_bg = "#3A3530"
 selection_fg = "#F2ECE4"
@@ -25,7 +33,7 @@ selection_fg = "#F2ECE4"
 black = "#12100E"
 red = "#C84C32"
 green = "#7FAF6A"   # brighter life green
-yellow = "#E26A3B"  # lantern (not electric yellow)
+yellow = "#D4A05A"  # amber glow (distinct from lantern)
 blue = "#5A6F82"    # night air
 magenta = "#7C6A8A" # muted, non-neon
 cyan = "#6F8F8A"
@@ -49,12 +57,12 @@ background = "base.background"
 text = "base.foreground"
 
 # Light sources
-string = "#E26A3B"  # round lantern light
-keyword = "#E26A3B"
+string = "colors.lantern"
+keyword = "colors.lantern"
 
 # Heat / material
-number = "#D65A3A"
-constant = "#D65A3A"
+number = "colors.ember"
+constant = "colors.ember"
 
 # Life
 success = "#7FAF6A"
@@ -65,5 +73,5 @@ hint = "#7A7A75"
 info = "#5A6F82"
 
 # Caution
-warning = "#E26A3B"
+warning = "colors.lantern"
 error = "#C84C32"

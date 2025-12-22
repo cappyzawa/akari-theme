@@ -7,6 +7,7 @@ typeset -A ZSH_HIGHLIGHT_STYLES
 # Akari palette
 _lantern='#E26A3B'     # round lantern light
 _ember='#D65A3A'       # heat / material
+_amber='#D4A05A'       # warm yellow
 _life='#7FAF6A'        # brighter life green
 _night='#5A6F82'       # night air
 _muted='#7C6A8A'       # muted purple
@@ -60,4 +61,4 @@ ZSH_HIGHLIGHT_STYLES[default]="fg=$_text"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$_comment"
 
 # Cleanup temporary variables
-unset _lantern _ember _life _night _muted _cyan _text _comment _overlay
+unset _lantern _ember _amber _life _night _muted _cyan _text _comment _overlay
