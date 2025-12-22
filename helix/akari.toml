@@ -22,10 +22,11 @@
 "ui.linenr.selected" = { fg = "lantern" }
 
 "ui.statusline" = { fg = "foreground", bg = "black" }
-"ui.statusline.inactive" = { fg = "bright-black", bg = "black" }
-"ui.statusline.normal" = { fg = "black", bg = "blue" }
-"ui.statusline.insert" = { fg = "black", bg = "green" }
-"ui.statusline.select" = { fg = "black", bg = "magenta" }
+"ui.statusline.inactive" = { fg = "comment", bg = "background" }
+"ui.statusline.normal" = { fg = "black", bg = "green", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "black", bg = "lantern", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "black", bg = "magenta", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "bright-black", bg = "black" }
 
 "ui.popup" = { fg = "foreground", bg = "black" }
 "ui.window" = { fg = "bright-black" }
