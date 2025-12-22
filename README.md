@@ -72,6 +72,14 @@ Double-click `terminal/Akari.terminal` to import the profile, then set it as def
 
 See `zsh/syntax_highlight.zsh` for configuration example.
 
+### fzf
+
+Add to your `.bashrc` or `.zshrc`:
+
+```bash
+source /path/to/akari-theme/fzf/akari.sh
+```
+
 ## Palette
 
 | Role       | Color     | Hex       |
