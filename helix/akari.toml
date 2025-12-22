@@ -1,0 +1,193 @@
+# Akari v0.0.1 — A terminal color palette inspired by Japanese alleys lit by round lanterns.
+
+# UI elements
+"ui.background" = { bg = "background" }
+"ui.text" = "foreground"
+"ui.text.focus" = { fg = "bright-white" }
+"ui.text.inactive" = { fg = "bright-black" }
+
+"ui.cursor" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.primary" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.match" = { fg = "cursor", modifiers = ["bold"] }
+"ui.cursor.insert" = { fg = "cursor-text", bg = "green" }
+"ui.cursor.select" = { fg = "cursor-text", bg = "magenta" }
+
+"ui.selection" = { bg = "selection-bg" }
+"ui.selection.primary" = { bg = "selection-bg" }
+
+"ui.cursorline.primary" = { bg = "black" }
+"ui.cursorcolumn.primary" = { bg = "black" }
+
+"ui.linenr" = { fg = "bright-black" }
+"ui.linenr.selected" = { fg = "lantern" }
+
+"ui.statusline" = { fg = "foreground", bg = "black" }
+"ui.statusline.inactive" = { fg = "bright-black", bg = "black" }
+"ui.statusline.normal" = { fg = "black", bg = "blue" }
+"ui.statusline.insert" = { fg = "black", bg = "green" }
+"ui.statusline.select" = { fg = "black", bg = "magenta" }
+
+"ui.popup" = { fg = "foreground", bg = "black" }
+"ui.window" = { fg = "bright-black" }
+"ui.help" = { fg = "foreground", bg = "black" }
+
+"ui.menu" = { fg = "foreground", bg = "black" }
+"ui.menu.selected" = { fg = "bright-white", bg = "selection-bg" }
+"ui.menu.scroll" = { fg = "bright-black", bg = "black" }
+
+"ui.virtual.ruler" = { bg = "black" }
+"ui.virtual.whitespace" = { fg = "bright-black" }
+"ui.virtual.indent-guide" = { fg = "bright-black" }
+"ui.virtual.inlay-hint" = { fg = "comment" }
+"ui.virtual.inlay-hint.parameter" = { fg = "comment" }
+"ui.virtual.inlay-hint.type" = { fg = "comment" }
+"ui.virtual.wrap" = { fg = "bright-black" }
+"ui.virtual.jump-label" = { fg = "bright-red", modifiers = ["bold"] }
+
+"ui.bufferline" = { fg = "bright-black", bg = "black" }
+"ui.bufferline.active" = { fg = "foreground", bg = "background" }
+"ui.bufferline.background" = { bg = "black" }
+
+"ui.picker.header.column" = { fg = "bright-blue", modifiers = ["bold"] }
+"ui.picker.header.column.active" = { fg = "lantern", modifiers = ["bold"] }
+
+# Diagnostics
+"error" = { fg = "red" }
+"warning" = { fg = "lantern" }
+"info" = { fg = "blue" }
+"hint" = { fg = "comment" }
+
+"diagnostic.error" = { underline = { color = "red", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "lantern", style = "curl" } }
+"diagnostic.info" = { underline = { color = "blue", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "comment", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+# Diff
+"diff.plus" = "green"
+"diff.minus" = "red"
+"diff.delta" = "lantern"
+
+# Markup
+"markup.heading" = { fg = "lantern", modifiers = ["bold"] }
+"markup.heading.1" = { fg = "lantern", modifiers = ["bold"] }
+"markup.heading.2" = { fg = "bright-yellow", modifiers = ["bold"] }
+"markup.heading.3" = { fg = "lantern" }
+"markup.heading.4" = { fg = "bright-yellow" }
+"markup.heading.5" = { fg = "lantern" }
+"markup.heading.6" = { fg = "bright-yellow" }
+"markup.list" = { fg = "cyan" }
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.link.url" = { fg = "bright-blue", modifiers = ["underlined"] }
+"markup.link.text" = { fg = "cyan" }
+"markup.quote" = { fg = "comment", modifiers = ["italic"] }
+"markup.raw" = { fg = "bright-green" }
+"markup.raw.inline" = { fg = "bright-green" }
+"markup.raw.block" = { fg = "bright-green" }
+
+# Syntax highlighting
+"attribute" = { fg = "bright-cyan" }
+"type" = { fg = "bright-cyan" }
+"type.builtin" = { fg = "cyan" }
+"type.enum" = { fg = "bright-cyan" }
+"type.enum.variant" = { fg = "bright-cyan" }
+"type.parameter" = { fg = "cyan", modifiers = ["italic"] }
+
+"constructor" = { fg = "bright-cyan" }
+
+"constant" = { fg = "constant" }
+"constant.builtin" = { fg = "constant" }
+"constant.builtin.boolean" = { fg = "constant" }
+"constant.character" = { fg = "lantern" }
+"constant.character.escape" = { fg = "bright-magenta" }
+"constant.numeric" = { fg = "constant" }
+
+"string" = { fg = "lantern" }
+"string.regexp" = { fg = "bright-green" }
+"string.special" = { fg = "lantern" }
+"string.special.path" = { fg = "lantern" }
+"string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
+"string.special.symbol" = { fg = "bright-magenta" }
+
+"comment" = { fg = "comment", modifiers = ["italic"] }
+"comment.line" = { fg = "comment", modifiers = ["italic"] }
+"comment.block" = { fg = "comment", modifiers = ["italic"] }
+"comment.block.documentation" = { fg = "comment", modifiers = ["italic"] }
+
+"variable" = "foreground"
+"variable.builtin" = { fg = "bright-red" }
+"variable.parameter" = { fg = "foreground", modifiers = ["italic"] }
+"variable.other" = "foreground"
+"variable.other.member" = "foreground"
+
+"label" = { fg = "bright-cyan" }
+
+"punctuation" = "foreground"
+"punctuation.bracket" = "foreground"
+"punctuation.delimiter" = "foreground"
+"punctuation.special" = { fg = "bright-cyan" }
+
+"keyword" = { fg = "lantern" }
+"keyword.control" = { fg = "lantern" }
+"keyword.control.conditional" = { fg = "lantern" }
+"keyword.control.repeat" = { fg = "lantern" }
+"keyword.control.import" = { fg = "lantern" }
+"keyword.control.return" = { fg = "lantern" }
+"keyword.control.exception" = { fg = "lantern" }
+"keyword.operator" = { fg = "lantern" }
+"keyword.directive" = { fg = "bright-magenta" }
+"keyword.function" = { fg = "lantern" }
+"keyword.storage" = { fg = "lantern" }
+"keyword.storage.type" = { fg = "lantern" }
+"keyword.storage.modifier" = { fg = "lantern" }
+
+"operator" = "foreground"
+
+"function" = { fg = "lantern" }
+"function.builtin" = { fg = "bright-yellow" }
+"function.method" = { fg = "lantern" }
+"function.macro" = { fg = "bright-magenta" }
+"function.special" = { fg = "bright-yellow" }
+
+"tag" = { fg = "lantern" }
+"tag.builtin" = { fg = "blue" }
+
+"namespace" = { fg = "bright-cyan" }
+
+"special" = { fg = "bright-yellow" }
+
+"module" = { fg = "bright-cyan" }
+
+# Palette definition (MUST be at the end of the file)
+[palette]
+background = "#1C1A17"
+foreground = "#E6DED3"
+cursor = "#E26A3B"
+cursor-text = "#1C1A17"
+selection-bg = "#3A3530"
+selection-fg = "#F2ECE4"
+
+black = "#12100E"
+red = "#C84C32"
+green = "#7FAF6A"
+yellow = "#E26A3B"
+blue = "#5A6F82"
+magenta = "#7C6A8A"
+cyan = "#6F8F8A"
+white = "#E6DED3"
+
+bright-black = "#3A3530"
+bright-red = "#D65A3A"
+bright-green = "#8FC57A"
+bright-yellow = "#F08A5D"
+bright-blue = "#6F879A"
+bright-magenta = "#9A8FB3"
+bright-cyan = "#8FB8B0"
+bright-white = "#F2ECE4"
+
+lantern = "#E26A3B"
+constant = "#D65A3A"
+comment = "#7A7A75"
