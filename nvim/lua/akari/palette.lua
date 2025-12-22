@@ -21,7 +21,7 @@ M.palette = {
   yellow = "#E26A3B", -- lantern (not electric yellow)
   blue = "#5A6F82", -- night air
   magenta = "#7C6A8A", -- muted, non-neon
-  cyan = "#6F8F8A",
+  cyan = "#7AA59A", -- adjusted for better separation (168°)
   white = "#E6DED3",
 
   -- Bright ANSI colors
@@ -29,7 +29,7 @@ M.palette = {
   bright_red = "#D65A3A",
   bright_green = "#8FC57A",
   bright_yellow = "#F08A5D",
-  bright_blue = "#6F879A",
+  bright_blue = "#7B8FC4", -- true blue for namespaces (228°)
   bright_magenta = "#9A8FB3",
   bright_cyan = "#8FB8B0",
   bright_white = "#F2ECE4",

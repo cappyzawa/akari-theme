@@ -28,7 +28,7 @@ green = "#7FAF6A"   # brighter life green
 yellow = "#E26A3B"  # lantern (not electric yellow)
 blue = "#5A6F82"    # night air
 magenta = "#7C6A8A" # muted, non-neon
-cyan = "#6F8F8A"
+cyan = "#7AA59A"    # adjusted for better separation (168°)
 white = "#E6DED3"
 
 [ansi.bright]
@@ -36,7 +36,7 @@ black = "#3A3530"
 red = "#D65A3A"
 green = "#8FC57A"
 yellow = "#F08A5D"
-blue = "#6F879A"
+blue = "#7B8FC4"    # true blue for namespaces (228°)
 magenta = "#9A8FB3"
 cyan = "#8FB8B0"
 white = "#F2ECE4"
