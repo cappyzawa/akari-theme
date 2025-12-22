@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akari Color Palette Sample</title>
+    <style>
+        body {
+            font-family: 'Monaco', 'Menlo', monospace;
+            background: #1C1A17;
+            color: #E6DED3;
+            padding: 40px;
+            line-height: 1.6;
+        }
+        
+        h1, h2 {
+            color: #E26A3B;
+            border-bottom: 2px solid #3A3530;
+            padding-bottom: 10px;
+        }
+        
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .color-box {
+            border: 1px solid #3A3530;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .color-swatch {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            text-shadow: 0 0 4px rgba(0,0,0,0.8), 0 0 8px rgba(0,0,0,0.4);
+        }
+        
+        .color-info {
+            padding: 12px;
+            background: #12100E;
+        }
+        
+        .color-name {
+            font-weight: bold;
+            color: #F08A5D;
+            margin-bottom: 4px;
+        }
+        
+        .color-hex {
+            color: #7A7A75;
+            font-size: 0.9em;
+        }
+        
+        .code-sample {
+            background: #12100E;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #3A3530;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .code-sample pre {
+            margin: 0;
+        }
+        
+        /* Syntax highlighting */
+        .keyword { color: #E26A3B; }
+        .function { color: #8FC57A; }
+        .string { color: #E26A3B; }
+        .number { color: #D65A3A; }
+        .constant { color: #D65A3A; }
+        .comment { color: #7A7A75; font-style: italic; }
+        .type { color: #8FB8B0; }
+        .property { color: #6F8F8A; }
+        .builtin { color: #F08A5D; }
+        .variable { color: #E6DED3; }
+        .namespace { color: #6F879A; }
+        .typeparam { color: #9A8FB3; font-style: italic; }
+        .decorator { color: #F08A5D; }
+    </style>
+</head>
+<body>
+    <h1>Akari Color Palette - Complete Reference</h1>
+    <p>A terminal color palette inspired by Japanese alleys lit by round lanterns.</p>
+    
+    <h2>Base Colors (2)</h2>
+    <div class="palette-grid">
+        <div class="color-box">
+            <div class="color-swatch" style="background: #1C1A17; color: #E6DED3;">Text</div>
+            <div class="color-info">
+                <div class="color-name">Background</div>
+                <div class="color-hex">#1C1A17</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #E6DED3; color: #1C1A17;">Text</div>
+            <div class="color-info">
+                <div class="color-name">Foreground</div>
+                <div class="color-hex">#E6DED3</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>ANSI Colors (8)</h2>
+    <div class="palette-grid">
+        <div class="color-box">
+            <div class="color-swatch" style="background: #12100E; color: #E6DED3;">Black</div>
+            <div class="color-info">
+                <div class="color-name">Black</div>
+                <div class="color-hex">#12100E</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #C84C32; color: #F2ECE4;">Red</div>
+            <div class="color-info">
+                <div class="color-name">Red (Error)</div>
+                <div class="color-hex">#C84C32</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #7FAF6A; color: #1C1A17;">Green</div>
+            <div class="color-info">
+                <div class="color-name">Green (Life)</div>
+                <div class="color-hex">#7FAF6A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #E26A3B; color: #1C1A17;">Yellow</div>
+            <div class="color-info">
+                <div class="color-name">Yellow (Lantern)</div>
+                <div class="color-hex">#E26A3B</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #5A6F82; color: #F2ECE4;">Blue</div>
+            <div class="color-info">
+                <div class="color-name">Blue (Night)</div>
+                <div class="color-hex">#5A6F82</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #7C6A8A; color: #F2ECE4;">Magenta</div>
+            <div class="color-info">
+                <div class="color-name">Magenta (Muted)</div>
+                <div class="color-hex">#7C6A8A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #6F8F8A; color: #1C1A17;">Cyan</div>
+            <div class="color-info">
+                <div class="color-name">Cyan</div>
+                <div class="color-hex">#6F8F8A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #E6DED3; color: #1C1A17;">White</div>
+            <div class="color-info">
+                <div class="color-name">White</div>
+                <div class="color-hex">#E6DED3</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Bright ANSI Colors (8)</h2>
+    <div class="palette-grid">
+        <div class="color-box">
+            <div class="color-swatch" style="background: #3A3530; color: #E6DED3;">Bright Black</div>
+            <div class="color-info">
+                <div class="color-name">Bright Black (Comment)</div>
+                <div class="color-hex">#3A3530</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #D65A3A; color: #F2ECE4;">Bright Red</div>
+            <div class="color-info">
+                <div class="color-name">Bright Red (Constant)</div>
+                <div class="color-hex">#D65A3A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #8FC57A; color: #1C1A17;">Bright Green</div>
+            <div class="color-info">
+                <div class="color-name">Bright Green (Function)</div>
+                <div class="color-hex">#8FC57A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #F08A5D; color: #1C1A17;">Bright Yellow</div>
+            <div class="color-info">
+                <div class="color-name">Bright Yellow (Builtin)</div>
+                <div class="color-hex">#F08A5D</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #6F879A; color: #F2ECE4;">Bright Blue</div>
+            <div class="color-info">
+                <div class="color-name">Bright Blue (Namespace)</div>
+                <div class="color-hex">#6F879A</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #9A8FB3; color: #F2ECE4;">Bright Magenta</div>
+            <div class="color-info">
+                <div class="color-name">Bright Magenta (Type Param)</div>
+                <div class="color-hex">#9A8FB3</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #8FB8B0; color: #1C1A17;">Bright Cyan</div>
+            <div class="color-info">
+                <div class="color-name">Bright Cyan (Type)</div>
+                <div class="color-hex">#8FB8B0</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #F2ECE4; color: #1C1A17;">Bright White</div>
+            <div class="color-info">
+                <div class="color-name">Bright White</div>
+                <div class="color-hex">#F2ECE4</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>UI Colors</h2>
+    <div class="palette-grid">
+        <div class="color-box">
+            <div class="color-swatch" style="background: #E26A3B; color: #1C1A17;">Cursor</div>
+            <div class="color-info">
+                <div class="color-name">Cursor</div>
+                <div class="color-hex">#E26A3B</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #3A3530; color: #E6DED3;">Selection</div>
+            <div class="color-info">
+                <div class="color-name">Selection</div>
+                <div class="color-hex">#3A3530</div>
+            </div>
+        </div>
+        <div class="color-box">
+            <div class="color-swatch" style="background: #7A7A75; color: #F2ECE4;">Comment</div>
+            <div class="color-info">
+                <div class="color-name">Comment Text</div>
+                <div class="color-hex">#7A7A75</div>
+            </div>
+        </div>
+    </div>
+    
+    <h2>Code Sample - TypeScript</h2>
+    <div class="code-sample">
+<pre><span class="comment">// TypeScript example showing all colors</span>
+
+<span class="keyword">import</span> { <span class="type">UserConfig</span> } <span class="keyword">from</span> <span class="string">'./types'</span>;
+
+<span class="keyword">interface</span> <span class="type">DataService</span>&lt;<span class="typeparam">T</span>&gt; {
+  <span class="keyword">readonly</span> <span class="property">id</span>: <span class="type">number</span>;
+  <span class="property">name</span>: <span class="type">string</span>;
+  <span class="property">data</span>: <span class="typeparam">T</span>;
+}
+
+<span class="keyword">namespace</span> <span class="namespace">Utils</span> {
+  <span class="keyword">export</span> <span class="keyword">const</span> <span class="constant">VERSION</span> = <span class="number">1</span>;
+  <span class="keyword">export</span> <span class="keyword">const</span> <span class="constant">MAX_SIZE</span> = <span class="number">1000</span>;
+}
+
+<span class="keyword">class</span> <span class="type">Service</span>&lt;<span class="typeparam">T</span>&gt; {
+  <span class="keyword">private</span> <span class="keyword">static</span> <span class="property">cache</span> = <span class="keyword">new</span> <span class="type">Map</span>();
+  
+  <span class="decorator">@deprecated</span>
+  <span class="keyword">async</span> <span class="function">fetchData</span>(<span class="variable">endpoint</span>: <span class="type">string</span>): <span class="type">Promise</span>&lt;<span class="typeparam">T</span>&gt; {
+    <span class="keyword">const</span> <span class="variable">url</span> = <span class="string">`https://api.example.com/</span><span class="variable">${endpoint}</span><span class="string">`</span>;
+    <span class="keyword">const</span> <span class="variable">response</span> = <span class="keyword">await</span> <span class="builtin">fetch</span>(<span class="variable">url</span>);
+    <span class="builtin">console</span>.<span class="builtin">log</span>(<span class="string">'Data fetched'</span>);
+    <span class="keyword">return</span> <span class="variable">response</span>.<span class="function">json</span>();
+  }
+}</pre>
+    </div>
+    
+    <h2>Code Sample - Python</h2>
+    <div class="code-sample">
+<pre><span class="comment"># Python example showing all colors</span>
+
+<span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">List</span>, <span class="type">Dict</span>, <span class="type">Optional</span>
+<span class="keyword">import</span> json
+
+<span class="keyword">class</span> <span class="type">DataProcessor</span>:
+    <span class="constant">VERSION</span> = <span class="string">"1.0.0"</span>
+    <span class="constant">MAX_ITEMS</span> = <span class="number">100</span>
+    
+    <span class="keyword">def</span> <span class="function">__init__</span>(<span class="variable">self</span>, <span class="variable">config</span>: <span class="type">Dict</span>):
+        <span class="variable">self</span>.<span class="property">config</span> = <span class="variable">config</span>
+        <span class="variable">self</span>.<span class="property">items</span> = []
+    
+    <span class="keyword">def</span> <span class="function">process</span>(<span class="variable">self</span>, <span class="variable">data</span>: <span class="type">List</span>[<span class="typeparam">str</span>]) -> <span class="type">Optional</span>[<span class="type">Dict</span>]:
+        <span class="comment"># Process data and return result</span>
+        <span class="keyword">for</span> <span class="variable">item</span> <span class="keyword">in</span> <span class="variable">data</span>:
+            <span class="builtin">print</span>(<span class="string">f"Processing: </span><span class="variable">{item}</span><span class="string">"</span>)
+            <span class="variable">self</span>.<span class="property">items</span>.<span class="function">append</span>(<span class="variable">item</span>)
+        
+        <span class="keyword">return</span> {
+            <span class="string">"count"</span>: <span class="builtin">len</span>(<span class="variable">self</span>.<span class="property">items</span>),
+            <span class="string">"status"</span>: <span class="string">"complete"</span>
+        }</pre>
+    </div>
+
+    <h2>Color Comparison - Potential Issues</h2>
+    <div style="background: #12100E; padding: 20px; border-radius: 8px; border: 1px solid #3A3530;">
+        <h3 style="color: #F08A5D; margin-top: 0;">Blue/Cyan Family (4 colors)</h3>
+        <div style="display: flex; gap: 10px; margin: 20px 0;">
+            <div style="flex: 1; padding: 20px; background: #5A6F82; text-align: center; border-radius: 4px;">
+                <div style="font-weight: bold;">Blue</div>
+                <div>#5A6F82</div>
+            </div>
+            <div style="flex: 1; padding: 20px; background: #6F879A; text-align: center; border-radius: 4px;">
+                <div style="font-weight: bold;">Bright Blue</div>
+                <div>#6F879A</div>
+            </div>
+            <div style="flex: 1; padding: 20px; background: #6F8F8A; text-align: center; border-radius: 4px;">
+                <div style="font-weight: bold;">Cyan</div>
+                <div>#6F8F8A</div>
+            </div>
+            <div style="flex: 1; padding: 20px; background: #8FB8B0; text-align: center; border-radius: 4px;">
+                <div style="font-weight: bold;">Bright Cyan</div>
+                <div>#8FB8B0</div>
+            </div>
+        </div>
+        <p style="color: #7A7A75;">These four colors are very close in hue (blue-cyan range). 
+        In code, cyan (#6F8F8A) is used for properties, bright_cyan (#8FB8B0) for types, 
+        bright_blue (#6F879A) for namespaces. The similarity may reduce visual distinction.</p>
+    </div>
+</body>
+</html>
+
