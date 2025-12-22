@@ -80,6 +80,17 @@ Add to your `.bashrc` or `.zshrc`:
 source /path/to/akari-theme/fzf/akari.sh
 ```
 
+### Neovim
+
+```lua
+{
+    "cappyzawa/akari-theme",
+    config = function()
+        vim.cmd.colorscheme("akari")
+    end,
+}
+```
+
 ## Palette
 
 | Role       | Color     | Hex       |
