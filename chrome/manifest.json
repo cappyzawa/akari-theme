@@ -10,7 +10,7 @@
       "frame_incognito": [18, 16, 14],
       "frame_incognito_inactive": [12, 10, 8],
       "toolbar": [28, 26, 23],
-      "tab_text": [230, 222, 211],
+      "tab_text": [226, 106, 59],
       "tab_background_text": [122, 122, 117],
       "tab_background_text_inactive": [122, 122, 117],
       "tab_background_text_incognito": [122, 122, 117],
@@ -18,11 +18,11 @@
       "bookmark_text": [230, 222, 211],
       "ntp_background": [28, 26, 23],
       "ntp_text": [230, 222, 211],
-      "ntp_link": [111, 135, 154],
+      "ntp_link": [226, 106, 59],
       "ntp_header": [18, 16, 14],
       "button_background": [58, 53, 48],
       "omnibox_background": [18, 16, 14],
-      "omnibox_text": [230, 222, 211]
+      "omnibox_text": [226, 106, 59]
     },
     "properties": {
       "ntp_background_alignment": "center"

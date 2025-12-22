@@ -15,12 +15,13 @@ A Chrome browser theme inspired by Japanese alleys lit by round lanterns.
 
 - **Frame**: #1C1A17 (warm gray night alley)
 - **Toolbar**: #1C1A17
-- **Tab text**: #E6DED3 (soft paper white)
+- **Active tab text**: #E26A3B (lantern orange) - Main accent color
 - **Inactive tab text**: #7A7A75 (warm gray)
-- **Bookmark text**: #E6DED3
+- **Bookmark text**: #E6DED3 (soft paper white)
 - **New tab background**: #1C1A17
-- **Links**: #6F879A (bright blue)
+- **Links**: #E26A3B (lantern orange)
 - **Omnibox background**: #12100E (darker)
+- **Omnibox text**: #E26A3B (lantern orange)
 - **Button background**: #3A3530
 
 ## Notes

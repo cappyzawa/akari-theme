@@ -25,7 +25,7 @@ Simple icon inspired by a Japanese round lantern (chōchin)
 │          │
 │    ◯     │  ← Top view of round lantern
 │   ╱ ╲    │     Light source at center
-│  ╱   ╲   │     
+│  ╱   ╲   │
 │ │  ●  │  │  ● = #E26A3B (light)
 │  ╲   ╱   │  Outer = #3A3530 (shadow)
 │   ╲ ╱    │
