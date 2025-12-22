@@ -32,6 +32,17 @@ warm, and readable for long sessions.
 
 ## Supported Tools
 
+- [Ghostty](#ghostty)
+- [Helix](#helix)
+- [Starship](#starship)
+- [tmux](#tmux)
+- [macOS Terminal](#macos-terminal)
+- [zsh-syntax-highlighting](#zsh-syntax-highlighting)
+- [fzf](#fzf)
+- [Neovim](#neovim)
+- [Visual Studio Code](#visual-studio-code)
+- [Chrome](#chrome)
+
 ### Ghostty
 
 Copy `ghostty/akari` to `~/.config/ghostty/themes/akari`, then set in your config:
@@ -103,6 +114,16 @@ Or install from VSIX:
 ```bash
 cd vscode && npx @vscode/vsce package && code --install-extension akari-theme-*.vsix
 ```
+
+### Chrome
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select the `chrome/` directory from this repository
+5. The theme will be applied immediately
+
+Active tabs are highlighted with the signature lantern orange background for clear visual emphasis.
 
 ## Palette
 
