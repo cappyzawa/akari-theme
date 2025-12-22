@@ -117,13 +117,23 @@ cd vscode && npx @vscode/vsce package && code --install-extension akari-theme-*.
 
 ### Chrome
 
+Choose your preferred variant:
+
+**Dark Theme (Night alley):**
+
 1. Open `chrome://extensions/` in Chrome
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked"
-4. Select the `chrome/` directory from this repository
-5. The theme will be applied immediately
+4. Select the `chrome/dark/` directory
 
-Active tabs are highlighted with the signature lantern orange background for clear visual emphasis.
+**Light Theme (Daytime alley):**
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select the `chrome/light/` directory
+
+Both themes feature active tabs highlighted with the signature lantern orange background.
 
 ## Palette
 

@@ -1,0 +1,35 @@
+{
+  "manifest_version": 3,
+  "name": "Akari Light",
+  "version": "0.0.1",
+  "description": "A light browser theme inspired by Japanese alleys lit by round lanterns.",
+  "theme": {
+    "colors": {
+      "frame": [230, 222, 211],
+      "frame_inactive": [242, 236, 228],
+      "frame_incognito": [230, 222, 211],
+      "frame_incognito_inactive": [242, 236, 228],
+      "toolbar": [226, 106, 59],
+      "tab_text": [242, 236, 228],
+      "tab_background_text": [58, 53, 48],
+      "tab_background_text_inactive": [58, 53, 48],
+      "tab_background_text_incognito": [58, 53, 48],
+      "tab_background_text_incognito_inactive": [58, 53, 48],
+      "bookmark_text": [28, 26, 23],
+      "ntp_background": [242, 236, 228],
+      "ntp_text": [28, 26, 23],
+      "ntp_link": [226, 106, 59],
+      "ntp_header": [230, 222, 211],
+      "button_background": [240, 138, 93],
+      "omnibox_background": [255, 255, 255],
+      "omnibox_text": [28, 26, 23]
+    },
+    "properties": {
+      "ntp_background_alignment": "center"
+    },
+    "tints": {
+      "buttons": [-1.0, 0.0, 0.3]
+    }
+  }
+}
+

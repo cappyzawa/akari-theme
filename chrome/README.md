@@ -1,31 +1,43 @@
-# Akari Chrome Theme
+# Akari Chrome Themes
 
-A Chrome browser theme inspired by Japanese alleys lit by round lanterns.
+Chrome browser themes inspired by Japanese alleys lit by round lanterns.
 
-## Installation
+Two variants are available:
 
-### Install in Developer Mode
+## 🌙 Dark Theme
+
+Night alley with warm shadows and lantern light.
+
+**Installation:**
 
 1. Open `chrome://extensions/` in Chrome
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked"
-4. Select this directory (`chrome/`)
+4. Select the `chrome/dark/` directory
 
-### Color Scheme
+**Key colors:** Dark backgrounds (#1C1A17) with orange active tabs (#E26A3B)
 
-- **Frame**: #1C1A17 (warm gray night alley)
-- **Toolbar/Active tab background**: #E26A3B (lantern orange) - Main accent color
-- **Active tab text**: #1C1A17 (dark) - High contrast on orange
-- **Inactive tab text**: #7A7A75 (warm gray)
-- **Bookmark text**: #1C1A17 (dark)
-- **New tab background**: #1C1A17
-- **Links**: #E26A3B (lantern orange)
-- **Omnibox background**: #F08A5D (bright orange)
-- **Omnibox text**: #1C1A17 (dark)
-- **Button background**: #F08A5D (bright orange)
+See [dark/README.md](dark/README.md) for details.
+
+## ☀️ Light Theme
+
+Daytime alley with bright atmosphere and lantern accents.
+
+**Installation:**
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select the `chrome/light/` directory
+
+**Key colors:** Light backgrounds (#F2ECE4) with orange active tabs (#E26A3B)
+
+See [light/README.md](light/README.md) for details.
 
 ## Notes
 
-Due to Chrome manifest v3 limitations, customizable elements are limited.
-For more detailed color control, we recommend using CSS extension tools like Stylus.
+- Both themes feature the signature lantern orange (#E26A3B) for active tab highlighting
+- Due to Chrome manifest v3 limitations, customizable elements are limited
+- For more detailed color control, we recommend using CSS extension tools like Stylus
+- You can only have one theme active at a time
 
