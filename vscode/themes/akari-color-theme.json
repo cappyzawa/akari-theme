@@ -239,6 +239,8 @@
 
     "progressBar.background": "#E26A3B",
 
+    "editorSemanticHighlighting.enabled": true,
+
     "settings.headerForeground": "#E6DED3",
     "settings.modifiedItemIndicator": "#E26A3B",
     "settings.dropdownBackground": "#12100E",
@@ -871,5 +873,53 @@
         "foreground": "#F08A5D"
       }
     }
-  ]
+  ],
+  "semanticHighlighting": true,
+  "semanticTokenColors": {
+    "class": "#8FB8B0",
+    "struct": "#8FB8B0",
+    "interface": "#8FB8B0",
+    "enum": "#8FB8B0",
+    "enumMember": "#D65A3A",
+    "type": "#8FB8B0",
+    "typeParameter": {
+      "foreground": "#6F8F8A",
+      "italic": true
+    },
+    "typeAlias": "#8FB8B0",
+    "function": "#E26A3B",
+    "method": "#E26A3B",
+    "function.defaultLibrary": "#F08A5D",
+    "method.defaultLibrary": "#F08A5D",
+    "macro": "#9A8FB3",
+    "variable": "#E6DED3",
+    "variable.readonly": "#D65A3A",
+    "variable.defaultLibrary": "#D65A3A",
+    "variable.static": {
+      "foreground": "#E6DED3",
+      "italic": true
+    },
+    "parameter": {
+      "foreground": "#E6DED3",
+      "italic": true
+    },
+    "property": "#E6DED3",
+    "property.readonly": "#D65A3A",
+    "namespace": "#8FB8B0",
+    "module": "#8FB8B0",
+    "decorator": "#F08A5D",
+    "event": "#F08A5D",
+    "*.deprecated": {
+      "strikethrough": true
+    },
+    "*.abstract": {
+      "italic": true
+    },
+    "*.async": {
+      "italic": true
+    },
+    "*.modification": {},
+    "*.documentation": {},
+    "*.declaration": {}
+  }
 }
