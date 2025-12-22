@@ -23,7 +23,8 @@ foreground = "#E6DED3" # soft paper white
 [ui]
 cursor = "colors.lantern"
 cursor_text = "#1C1A17"
-selection_bg = "#3A3530"
+cursorline = "#2A1D15"   # background + lantern at ~15%
+selection_bg = "#2D2518" # background + amber at ~30%
 selection_fg = "#F2ECE4"
 
 #

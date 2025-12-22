@@ -15,7 +15,7 @@
 "ui.selection" = { bg = "selection-bg" }
 "ui.selection.primary" = { bg = "selection-bg" }
 
-"ui.cursorline.primary" = { bg = "bright-black" }
+"ui.cursorline.primary" = { bg = "cursorline" }
 "ui.cursorcolumn.primary" = { bg = "black" }
 
 "ui.linenr" = { fg = "bright-black" }
@@ -168,7 +168,7 @@ background = "#1C1A17"
 foreground = "#E6DED3"
 cursor = "#E26A3B"
 cursor-text = "#1C1A17"
-selection-bg = "#3A3530"
+selection-bg = "#2D2518"
 selection-fg = "#F2ECE4"
 
 black = "#12100E"
@@ -193,3 +193,4 @@ lantern = "#E26A3B"
 amber = "#D4A05A"
 constant = "#D65A3A"
 comment = "#7A7A75"
+cursorline = "#2A1D15"
