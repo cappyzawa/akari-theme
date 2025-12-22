@@ -550,11 +550,19 @@
       "name": "Attribute",
       "scope": [
         "entity.other.attribute-name",
-        "meta.attribute",
-        "meta.decorator"
+        "meta.attribute"
       ],
       "settings": {
         "foreground": "#8FB8B0"
+      }
+    },
+    {
+      "name": "Decorator",
+      "scope": [
+        "meta.decorator"
+      ],
+      "settings": {
+        "foreground": "#F08A5D"
       }
     },
     {
@@ -908,6 +916,7 @@
     "namespace": "#8FB8B0",
     "module": "#8FB8B0",
     "decorator": "#F08A5D",
+    "annotation": "#F08A5D",
     "event": "#F08A5D",
     "*.deprecated": {
       "strikethrough": true
