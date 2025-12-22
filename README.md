@@ -64,6 +64,10 @@ Copy `tmux/akari.conf` to `~/.config/tmux/akari.conf`, then add to your `.tmux.c
 source-file ~/.config/tmux/akari.conf
 ```
 
+### macOS Terminal
+
+Double-click `terminal/Akari.terminal` to import the profile, then set it as default in Terminal > Settings > Profiles.
+
 ### zsh-syntax-highlighting
 
 See `zsh/syntax_highlight.zsh` for configuration example.
