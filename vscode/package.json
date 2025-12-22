@@ -1,0 +1,34 @@
+{
+  "name": "akari-theme",
+  "displayName": "Akari",
+  "description": "A terminal color palette inspired by Japanese alleys lit by round lanterns.",
+  "version": "0.0.1",
+  "publisher": "cappyzawa",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "keywords": [
+    "theme",
+    "dark",
+    "japanese",
+    "lantern",
+    "warm"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cappyzawa/akari-theme"
+  },
+  "contributes": {
+    "themes": [
+      {
+        "label": "Akari",
+        "uiTheme": "vs-dark",
+        "path": "./themes/akari-color-theme.json"
+      }
+    ]
+  }
+}
