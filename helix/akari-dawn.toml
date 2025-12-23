@@ -1,4 +1,4 @@
-# Akari v0.0.1 — A terminal color palette inspired by Japanese alleys lit by round lanterns.
+# Akari Dawn v0.1.0 — The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world.
 
 # UI elements
 "ui.background" = { bg = "background" }
@@ -8,34 +8,35 @@
 
 "ui.cursor" = { fg = "cursor-text", bg = "cursor" }
 "ui.cursor.primary" = { fg = "cursor-text", bg = "cursor" }
-"ui.cursor.match" = { fg = "cursor", modifiers = ["bold"] }
+"ui.cursor.match" = { fg = "lantern", bg = "sunken", modifiers = ["bold"] }
 "ui.cursor.insert" = { fg = "cursor-text", bg = "green" }
 "ui.cursor.select" = { fg = "cursor-text", bg = "magenta" }
 
 "ui.selection" = { bg = "selection-bg" }
 "ui.selection.primary" = { bg = "selection-bg" }
 
-"ui.cursorline.primary" = { bg = "black" }
-"ui.cursorcolumn.primary" = { bg = "black" }
+"ui.cursorline.primary" = { bg = "cursorline" }
+"ui.cursorcolumn.primary" = { bg = "surface" }
 
 "ui.linenr" = { fg = "bright-black" }
 "ui.linenr.selected" = { fg = "lantern" }
 
-"ui.statusline" = { fg = "foreground", bg = "black" }
-"ui.statusline.inactive" = { fg = "bright-black", bg = "black" }
-"ui.statusline.normal" = { fg = "black", bg = "blue" }
-"ui.statusline.insert" = { fg = "black", bg = "green" }
-"ui.statusline.select" = { fg = "black", bg = "magenta" }
+"ui.statusline" = { fg = "foreground", bg = "surface" }
+"ui.statusline.inactive" = { fg = "comment", bg = "surface" }
+"ui.statusline.normal" = { fg = "background", bg = "green", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "background", bg = "lantern", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "background", bg = "magenta", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "bright-black", bg = "surface" }
 
-"ui.popup" = { fg = "foreground", bg = "black" }
-"ui.window" = { fg = "bright-black" }
-"ui.help" = { fg = "foreground", bg = "black" }
+"ui.popup" = { fg = "foreground", bg = "raised" }
+"ui.window" = { fg = "border" }
+"ui.help" = { fg = "foreground", bg = "raised" }
 
-"ui.menu" = { fg = "foreground", bg = "black" }
+"ui.menu" = { fg = "foreground", bg = "raised" }
 "ui.menu.selected" = { fg = "bright-white", bg = "selection-bg" }
-"ui.menu.scroll" = { fg = "bright-black", bg = "black" }
+"ui.menu.scroll" = { fg = "bright-black", bg = "raised" }
 
-"ui.virtual.ruler" = { bg = "black" }
+"ui.virtual.ruler" = { bg = "surface" }
 "ui.virtual.whitespace" = { fg = "bright-black" }
 "ui.virtual.indent-guide" = { fg = "bright-black" }
 "ui.virtual.inlay-hint" = { fg = "comment" }
@@ -44,9 +45,9 @@
 "ui.virtual.wrap" = { fg = "bright-black" }
 "ui.virtual.jump-label" = { fg = "bright-red", modifiers = ["bold"] }
 
-"ui.bufferline" = { fg = "bright-black", bg = "black" }
+"ui.bufferline" = { fg = "bright-black", bg = "surface" }
 "ui.bufferline.active" = { fg = "foreground", bg = "background" }
-"ui.bufferline.background" = { bg = "black" }
+"ui.bufferline.background" = { bg = "surface" }
 
 "ui.picker.header.column" = { fg = "bright-blue", modifiers = ["bold"] }
 "ui.picker.header.column.active" = { fg = "lantern", modifiers = ["bold"] }
@@ -67,7 +68,7 @@
 # Diff
 "diff.plus" = "green"
 "diff.minus" = "red"
-"diff.delta" = "lantern"
+"diff.delta" = "amber"
 
 # Markup
 "markup.heading" = { fg = "lantern", modifiers = ["bold"] }
@@ -108,14 +109,14 @@
 "string" = { fg = "lantern" }
 "string.regexp" = { fg = "bright-green" }
 "string.special" = { fg = "lantern" }
-"string.special.path" = { fg = "lantern" }
+"string.special.path" = { fg = "amber" }
 "string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "string.special.symbol" = { fg = "bright-magenta" }
 
 "comment" = { fg = "comment", modifiers = ["italic"] }
 "comment.line" = { fg = "comment", modifiers = ["italic"] }
 "comment.block" = { fg = "comment", modifiers = ["italic"] }
-"comment.block.documentation" = { fg = "comment", modifiers = ["italic"] }
+"comment.block.documentation" = { fg = "comment", modifiers = ["italic", "dim"] }
 
 "variable" = "foreground"
 "variable.builtin" = { fg = "bright-red" }
@@ -163,31 +164,39 @@
 
 # Palette definition (MUST be at the end of the file)
 [palette]
-background = "#1C1A17"
-foreground = "#E6DED3"
-cursor = "#E26A3B"
-cursor-text = "#1C1A17"
-selection-bg = "#3A3530"
-selection-fg = "#F2ECE4"
+background = "#E4DED6"   # base.background — dawn alley surface
+foreground = "#1A1816"   # base.foreground — ink black
 
-black = "#12100E"
-red = "#C84C32"
-green = "#7FAF6A"
-yellow = "#E26A3B"
-blue = "#5A6F82"
-magenta = "#7C6A8A"
-cyan = "#6F8F8A"
-white = "#E6DED3"
+cursor = "#8A4530"       # state.cursor (colors.lantern)
+cursor-text = "#E4DED6"  # state.cursor_text (base.background)
+selection-bg = "#D0C4B8" # state.selection_bg
+selection-fg = "#1A1816" # state.selection_fg
+cursorline = "#DCD4CA"   # layers.sunken
 
-bright-black = "#3A3530"
-bright-red = "#D65A3A"
-bright-green = "#8FC57A"
-bright-yellow = "#F08A5D"
-bright-blue = "#6F879A"
-bright-magenta = "#9A8FB3"
-bright-cyan = "#8FB8B0"
-bright-white = "#F2ECE4"
+surface = "#D4CEC6"      # layers.surface
+raised = "#EDE7DF"       # layers.raised
+border = "#C4BEB6"       # layers.border
 
-lantern = "#E26A3B"
-constant = "#D65A3A"
-comment = "#7A7A75"
+black = "#1A1816"        # ansi.black
+red = "#B04030"          # ansi.red (state.error)
+green = "#3A5830"        # ansi.green (colors.life)
+yellow = "#B07840"       # ansi.yellow (colors.amber)
+blue = "#304050"         # ansi.blue (colors.night)
+magenta = "#806080"      # ansi.magenta (colors.muted)
+cyan = "#305858"         # ansi.cyan
+white = "#F4F0EA"        # ansi.white
+
+bright-black = "#3A3E48"   # ansi.bright.black
+bright-red = "#C04838"     # ansi.bright.red
+bright-green = "#70A868"   # ansi.bright.green
+bright-yellow = "#D09060"  # ansi.bright.yellow
+bright-blue = "#4060A0"    # ansi.bright.blue
+bright-magenta = "#705868" # ansi.bright.magenta
+bright-cyan = "#306868"    # ansi.bright.cyan
+bright-white = "#0A0808"   # ansi.bright.white
+
+lantern = "#8A4530"      # colors.lantern
+amber = "#B07840"        # colors.amber
+constant = "#7A3828"     # colors.ember (semantic.constant)
+comment = "#4A4642"      # semantic.comment
+sunken = "#DCD4CA"       # layers.sunken (for cursor.match)

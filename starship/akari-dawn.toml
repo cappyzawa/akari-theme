@@ -1,0 +1,19 @@
+# Akari Dawn v0.0.1 — Starship palette
+
+[palettes.akari-dawn]
+background = '#E4DED6'   # base.background — dawn alley surface
+foreground = '#1A1816'   # base.foreground — ink black
+current_line = '#C4BEB6' # layers.border
+primary = '#E4DED6'      # base.background
+box = '#C4BEB6'          # layers.border
+blue = '#304050'         # colors.night
+cyan = '#305858'         # ansi.cyan
+green = '#3A5830'        # colors.life
+orange = '#D09060'       # ansi.bright.yellow
+pink = '#705868'         # ansi.bright.magenta
+purple = '#806080'       # colors.muted
+red = '#B04030'          # state.error
+yellow = '#B07840'       # colors.amber
+amber = '#B07840'        # colors.amber
+lantern = '#8A4530'      # colors.lantern
+comment = '#4A4642'      # semantic.comment

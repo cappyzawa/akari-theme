@@ -14,6 +14,7 @@
   "keywords": [
     "theme",
     "dark",
+    "light",
     "japanese",
     "lantern",
     "warm"
@@ -25,9 +26,14 @@
   "contributes": {
     "themes": [
       {
-        "label": "Akari",
+        "label": "Akari Night",
         "uiTheme": "vs-dark",
-        "path": "./themes/akari-color-theme.json"
+        "path": "./themes/akari-night-color-theme.json"
+      },
+      {
+        "label": "Akari Dawn",
+        "uiTheme": "vs",
+        "path": "./themes/akari-dawn-color-theme.json"
       }
     ]
   }

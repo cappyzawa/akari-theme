@@ -10,13 +10,17 @@ M.config = {
   keywordStyle = {},
   transparent = false,
   terminalColors = true,
+  variant = "night", -- "night" or "dawn"
 }
 
 function M.setup(opts)
   M.config = vim.tbl_deep_extend("force", M.config, opts or {})
 end
 
-function M.load()
+function M.load(variant)
+  -- Allow variant to be passed directly or use config
+  local selected_variant = variant or M.config.variant or "night"
+
   if vim.g.colors_name then
     vim.cmd("hi clear")
   end
@@ -28,13 +32,17 @@ function M.load()
     vim.cmd("syntax reset")
   end
 
-  local palette = require("akari.palette")
+  local palette_module = require("akari.palette")
   local highlights = require("akari.highlights")
 
-  local hl = highlights.setup(palette.palette, M.config)
+  -- Select the appropriate palette based on variant
+  local palette = selected_variant == "dawn" and palette_module.dawn or palette_module.night
+  local terminal = palette_module.get_terminal(selected_variant)
+
+  local hl = highlights.setup(palette, M.config)
 
   if M.config.terminalColors then
-    highlights.apply(hl, palette.terminal)
+    highlights.apply(hl, terminal)
   else
     highlights.apply(hl, {})
   end

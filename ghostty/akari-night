@@ -1,0 +1,51 @@
+# Akari Night v0.1.0 — A dark palette inspired by Japanese alleys lit by round lanterns.
+
+# ANSI 0-15
+# 0: ansi.black
+palette = 0=#12100E
+# 1: ansi.red (state.error)
+palette = 1=#C84C32
+# 2: ansi.green (colors.life)
+palette = 2=#7FAF6A
+# 3: ansi.yellow (colors.amber)
+palette = 3=#D4A05A
+# 4: ansi.blue (colors.night)
+palette = 4=#5A6F82
+# 5: ansi.magenta (colors.muted)
+palette = 5=#7C6A8A
+# 6: ansi.cyan
+palette = 6=#6F8F8A
+# 7: ansi.white (base.foreground)
+palette = 7=#E6DED3
+# 8: ansi.bright.black (layers.border)
+palette = 8=#2E3543
+# 9: ansi.bright.red (colors.ember)
+palette = 9=#D65A3A
+# 10: ansi.bright.green
+palette = 10=#8FC57A
+# 11: ansi.bright.yellow
+palette = 11=#F08A5D
+# 12: ansi.bright.blue
+palette = 12=#6F879A
+# 13: ansi.bright.magenta
+palette = 13=#9A8FB3
+# 14: ansi.bright.cyan
+palette = 14=#8FB8B0
+# 15: ansi.bright.white
+palette = 15=#F2ECE4
+
+# Base
+# base.background (navy-charcoal night air)
+background = #171B22
+# base.foreground
+foreground = #E6DED3
+
+# UI
+# state.cursor (colors.lantern)
+cursor-color = #E26A3B
+# state.cursor_text (base.background)
+cursor-text = #171B22
+# state.selection_bg (amber-tinted warmth)
+selection-background = #2D2518
+# state.selection_fg
+selection-foreground = #F2ECE4
