@@ -15,7 +15,7 @@ Night alley with warm shadows and lantern light.
 3. Click "Load unpacked"
 4. Select the `chrome/night/` directory
 
-**Key colors:** Dark backgrounds (`#171B22`) with orange lantern tabs (`#E26A3B`)
+**Key colors:** Dark backgrounds (`#171B22`) with lantern text accent (`#E26A3B`)
 
 See [night/README.md](night/README.md) for details.
 
@@ -30,14 +30,14 @@ The same alley at dawn — lanterns still lit, but yielding to daylight.
 3. Click "Load unpacked"
 4. Select the `chrome/dawn/` directory
 
-**Key colors:** Light backgrounds (`#E4DED6`) with fading lantern tabs (`#8A4530`)
+**Key colors:** Light backgrounds (`#E4DED6`) with lantern text accent (`#8A4530`)
 
 See [dawn/README.md](dawn/README.md) for details.
 
 ## Notes
 
-- Night theme uses the bright lantern (`#E26A3B`) as the primary accent
-- Dawn theme uses the fading lantern (`#8A4530`) as morning light arrives
+- Both themes use lantern colors as text accents on active tabs
+- Toolbar blends with frame for a clean, minimal look
 - Due to Chrome manifest v3 limitations, customizable elements are limited
 - For more detailed color control, consider using CSS extension tools like Stylus
 - You can only have one theme active at a time

@@ -15,14 +15,15 @@ Based on `palette/akari-dawn.toml`:
 
 | Element | Color | Description |
 |---------|-------|-------------|
-| Frame | `#E4DED6` | Dawn alley surface |
-| Toolbar | `#8A4530` | Fading lantern |
+| Frame/Toolbar | `#E4DED6` | Dawn alley surface |
+| Active Tab Text | `#8A4530` | Fading lantern accent |
 | Text | `#1A1816` | Ink black |
 | NTP Background | `#E4DED6` | Warm paper |
 | Link | `#8A4530` | Fading lantern |
 
 ## Notes
 
-- The toolbar uses the fading lantern color (`#8A4530`)
+- Toolbar blends with the frame for a clean look
+- Active tab uses lantern color (`#8A4530`) for text accent
 - Background colors match the dawn palette's warm paper tones
 - Text colors ensure readability with high contrast
