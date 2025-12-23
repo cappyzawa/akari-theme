@@ -36,101 +36,18 @@ warm, and readable for long sessions.
 
 ## Supported Tools
 
-### Ghostty
-
-Copy `ghostty/akari-night` (or `akari-dawn`) to `~/.config/ghostty/themes/`, then set in your config:
-
-```
-theme = akari-night
-```
-
-### Helix
-
-Copy `helix/akari-night.toml` (or `akari-dawn.toml`) to `~/.config/helix/themes/`, then set in your config:
-
-```toml
-theme = "akari-night"
-```
-
-### Starship
-
-Add the contents of `starship/akari-night.toml` (or `akari-dawn.toml`) to your `~/.config/starship.toml`, then set:
-
-```toml
-palette = 'akari-night'
-```
-
-This overrides Starship's standard named colors, so your existing module configurations will automatically use Akari colors without any changes.
-
-### tmux
-
-Copy `tmux/akari-night.conf` (or `akari-dawn.conf`) to `~/.config/tmux/`, then add to your `.tmux.conf`:
-
-```tmux
-source-file ~/.config/tmux/akari-night.conf
-```
-
-### macOS Terminal
-
-Double-click `terminal/Akari-Night.terminal` (or `Akari-Dawn.terminal`) to import the profile, then set it as default in Terminal > Settings > Profiles.
-
-### zsh-syntax-highlighting
-
-Source `zsh/akari.zsh` in your `.zshrc`:
-
-```bash
-# Night (default)
-source /path/to/akari-theme/zsh/akari.zsh
-
-# Or for dawn:
-AKARI_VARIANT=dawn source /path/to/akari-theme/zsh/akari.zsh
-```
-
-### fzf
-
-Add to your `.bashrc` or `.zshrc`:
-
-```bash
-source /path/to/akari-theme/fzf/akari-night.sh
-```
-
-Or for dawn:
-
-```bash
-source /path/to/akari-theme/fzf/akari-dawn.sh
-```
-
-### Neovim
-
-```lua
-{
-    "cappyzawa/akari-theme",
-    config = function()
-        -- Night (default)
-        require("akari").setup({ variant = "night" })
-        vim.cmd.colorscheme("akari")
-
-        -- Or for dawn:
-        -- require("akari").setup({ variant = "dawn" })
-        -- vim.cmd.colorscheme("akari")
-    end,
-}
-```
-
-### Visual Studio Code
-
-Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme):
-
-1. Open **Extensions** sidebar (`Cmd+Shift+X` / `Ctrl+Shift+X`)
-2. Search for `Akari`
-3. Click **Install**
-4. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
-5. Select "Preferences: Color Theme"
-6. Choose "Akari Night" or "Akari Dawn"
-
-### Chrome
-
-See [chrome/README.md](chrome/README.md) for installation instructions.
+| Tool | Category | Installation |
+|------|----------|--------------|
+| [Ghostty](ghostty/README.md) | Terminal Emulator | Copy theme to `~/.config/ghostty/themes/` |
+| [Helix](helix/README.md) | Editor | Copy theme to `~/.config/helix/themes/` |
+| [Neovim](nvim/README.md) | Editor | Install via plugin manager |
+| [Visual Studio Code](vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) |
+| [Starship](starship/README.md) | Prompt | Add palette to `~/.config/starship.toml` |
+| [tmux](tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
+| [macOS Terminal](terminal/README.md) | Terminal Emulator | Double-click to import profile |
+| [zsh-syntax-highlighting](zsh/README.md) | Shell | Source in `.zshrc` |
+| [fzf](fzf/README.md) | Shell | Source in `.bashrc` or `.zshrc` |
+| [Chrome](chrome/README.md) | Browser | Load unpacked extension |
 
 ## Palette
 
