@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Akari Dawn",
+  "version": "0.1.0",
+  "description": "A light browser theme inspired by Japanese alleys at dawn — lanterns still lit, but yielding to daylight.",
+  "theme": {
+    "colors": {
+      "frame": [228, 222, 214],
+      "frame_inactive": [228, 222, 214],
+      "frame_incognito": [228, 222, 214],
+      "frame_incognito_inactive": [228, 222, 214],
+      "toolbar": [138, 69, 48],
+      "tab_text": [228, 222, 214],
+      "tab_background_text": [74, 70, 66],
+      "tab_background_text_inactive": [74, 70, 66],
+      "tab_background_text_incognito": [74, 70, 66],
+      "tab_background_text_incognito_inactive": [74, 70, 66],
+      "bookmark_text": [228, 222, 214],
+      "ntp_background": [228, 222, 214],
+      "ntp_text": [26, 24, 22],
+      "ntp_link": [138, 69, 48],
+      "ntp_header": [212, 206, 198],
+      "button_background": [138, 69, 48],
+      "omnibox_background": [228, 222, 214],
+      "omnibox_text": [26, 24, 22]
+    },
+    "properties": {
+      "ntp_background_alignment": "center"
+    },
+    "tints": {
+      "buttons": [-1.0, 0.0, 0.3]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Akari Night",
+  "version": "0.1.0",
+  "description": "A dark browser theme inspired by Japanese alleys lit by round lanterns at night.",
+  "theme": {
+    "colors": {
+      "frame": [23, 27, 34],
+      "frame_inactive": [23, 27, 34],
+      "frame_incognito": [23, 27, 34],
+      "frame_incognito_inactive": [23, 27, 34],
+      "toolbar": [226, 106, 59],
+      "tab_text": [23, 27, 34],
+      "tab_background_text": [125, 135, 151],
+      "tab_background_text_inactive": [125, 135, 151],
+      "tab_background_text_incognito": [125, 135, 151],
+      "tab_background_text_incognito_inactive": [125, 135, 151],
+      "bookmark_text": [23, 27, 34],
+      "ntp_background": [23, 27, 34],
+      "ntp_text": [230, 222, 211],
+      "ntp_link": [226, 106, 59],
+      "ntp_header": [30, 35, 44],
+      "button_background": [226, 106, 59],
+      "omnibox_background": [23, 27, 34],
+      "omnibox_text": [230, 222, 211]
+    },
+    "properties": {
+      "ntp_background_alignment": "center"
+    },
+    "tints": {
+      "buttons": [-1.0, 0.5, 0.5]
+    }
+  }
+}

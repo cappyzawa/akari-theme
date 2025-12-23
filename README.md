@@ -130,6 +130,10 @@ Or install from VSIX:
 cd vscode && npx @vscode/vsce package && code --install-extension akari-theme-*.vsix
 ```
 
+### Chrome
+
+See [chrome/README.md](chrome/README.md) for installation instructions.
+
 ## Palette
 
 ### Akari Night (Dark)
