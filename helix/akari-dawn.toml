@@ -45,6 +45,11 @@
 "ui.virtual.wrap" = { fg = "bright-black" }
 "ui.virtual.jump-label" = { fg = "bright-red", modifiers = ["bold"] }
 
+"ui.debug.breakpoint" = { fg = "red" }
+"ui.debug.active" = { fg = "lantern", modifiers = ["bold"] }
+
+"ui.highlight" = { bg = "match-bg" }
+
 "ui.bufferline" = { fg = "bright-black", bg = "surface" }
 "ui.bufferline.active" = { fg = "foreground", bg = "background" }
 "ui.bufferline.background" = { bg = "surface" }
@@ -67,23 +72,32 @@
 
 # Diff
 "diff.plus" = "green"
+"diff.plus.gutter" = "green"
 "diff.minus" = "red"
+"diff.minus.gutter" = "red"
 "diff.delta" = "amber"
+"diff.delta.gutter" = "amber"
 
 # Markup
 "markup.heading" = { fg = "lantern", modifiers = ["bold"] }
+"markup.heading.marker" = { fg = "comment" }
 "markup.heading.1" = { fg = "lantern", modifiers = ["bold"] }
-"markup.heading.2" = { fg = "bright-yellow", modifiers = ["bold"] }
-"markup.heading.3" = { fg = "lantern" }
-"markup.heading.4" = { fg = "bright-yellow" }
-"markup.heading.5" = { fg = "lantern" }
-"markup.heading.6" = { fg = "bright-yellow" }
+"markup.heading.2" = { fg = "amber", modifiers = ["bold"] }
+"markup.heading.3" = { fg = "ember", modifiers = ["bold"] }
+"markup.heading.4" = { fg = "amber" }
+"markup.heading.5" = { fg = "comment", modifiers = ["bold"] }
+"markup.heading.6" = { fg = "blue" }
 "markup.list" = { fg = "cyan" }
+"markup.list.numbered" = { fg = "lantern" }
+"markup.list.unnumbered" = { fg = "cyan" }
+"markup.list.checked" = { fg = "green" }
+"markup.list.unchecked" = { fg = "comment" }
 "markup.bold" = { modifiers = ["bold"] }
 "markup.italic" = { modifiers = ["italic"] }
 "markup.strikethrough" = { modifiers = ["crossed_out"] }
 "markup.link.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "markup.link.text" = { fg = "cyan" }
+"markup.link.label" = { fg = "magenta" }
 "markup.quote" = { fg = "comment", modifiers = ["italic"] }
 "markup.raw" = { fg = "bright-green" }
 "markup.raw.inline" = { fg = "bright-green" }
@@ -108,6 +122,7 @@
 
 "string" = { fg = "lantern" }
 "string.regexp" = { fg = "bright-green" }
+"string.regexp.special" = { fg = "bright-magenta" }
 "string.special" = { fg = "lantern" }
 "string.special.path" = { fg = "amber" }
 "string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
@@ -196,7 +211,9 @@ bright-cyan = "#306868"    # ansi.bright.cyan
 bright-white = "#0A0808"   # ansi.bright.white
 
 lantern = "#8A4530"      # colors.lantern
+ember = "#7A3828"        # colors.ember
 amber = "#B07840"        # colors.amber
 constant = "#7A3828"     # colors.ember (semantic.constant)
 comment = "#4A4642"      # semantic.comment
 sunken = "#DCD4CA"       # layers.sunken (for cursor.match)
+match-bg = "#D8C8B8"     # state.match_bg
