@@ -16,13 +16,13 @@ Based on `palette/akari-dawn.toml`:
 | Element | Color | Description |
 |---------|-------|-------------|
 | Frame | `#E4DED6` | Dawn alley surface |
-| Toolbar | `#B07840` | Warm amber accent |
+| Toolbar | `#8A4530` | Fading lantern |
 | Text | `#1A1816` | Ink black |
 | NTP Background | `#E4DED6` | Warm paper |
 | Link | `#8A4530` | Fading lantern |
 
 ## Notes
 
-- The toolbar uses amber (`#B07840`) for a warm morning glow
+- The toolbar uses the fading lantern color (`#8A4530`)
 - Background colors match the dawn palette's warm paper tones
 - Text colors ensure readability with high contrast
