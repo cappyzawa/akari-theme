@@ -16,7 +16,7 @@ Based on `palette/akari-night.toml`:
 | Element | Color | Description |
 |---------|-------|-------------|
 | Frame | `#171B22` | Navy-charcoal night air |
-| Toolbar | `#1E232C` | Subtle elevated surface |
+| Toolbar | `#221E1C` | Warm elevated surface |
 | Active Tab Text | `#E26A3B` | Round lantern glow |
 | Text | `#E6DED3` | Soft paper white |
 | NTP Background | `#171B22` | Night atmosphere |

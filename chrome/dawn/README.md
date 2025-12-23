@@ -16,7 +16,7 @@ Based on `palette/akari-dawn.toml`:
 | Element | Color | Description |
 |---------|-------|-------------|
 | Frame | `#E4DED6` | Dawn alley surface |
-| Toolbar | `#D4CEC6` | Subtle elevated surface |
+| Toolbar | `#DACCC0` | Warm elevated surface |
 | Active Tab Text | `#8A4530` | Fading lantern accent |
 | Text | `#1A1816` | Ink black |
 | NTP Background | `#E4DED6` | Warm paper |
