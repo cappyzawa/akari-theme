@@ -2,7 +2,7 @@
   "name": "akari-theme",
   "displayName": "Akari",
   "description": "A terminal color palette inspired by Japanese alleys lit by round lanterns.",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "cappyzawa",
   "license": "MIT",
   "engines": {
