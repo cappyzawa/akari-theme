@@ -5,30 +5,106 @@
   "description": "A light browser theme inspired by Japanese alleys at dawn — lanterns still lit, but yielding to daylight.",
   "theme": {
     "colors": {
-      "frame": [228, 222, 214],
-      "frame_inactive": [212, 206, 198],
-      "frame_incognito": [220, 212, 202],
-      "frame_incognito_inactive": [212, 206, 198],
-      "toolbar": [212, 206, 198],
-      "tab_text": [138, 69, 48],
-      "tab_background_text": [90, 88, 85],
-      "tab_background_text_inactive": [90, 88, 85],
-      "tab_background_text_incognito": [90, 88, 85],
-      "tab_background_text_incognito_inactive": [90, 88, 85],
-      "bookmark_text": [26, 24, 22],
-      "ntp_background": [228, 222, 214],
-      "ntp_text": [26, 24, 22],
-      "ntp_link": [138, 69, 48],
-      "ntp_header": [212, 206, 198],
-      "button_background": [176, 120, 64],
-      "omnibox_background": [237, 231, 223],
-      "omnibox_text": [26, 24, 22]
+      "frame": [
+        228,
+        222,
+        214
+      ],
+      "frame_inactive": [
+        212,
+        206,
+        198
+      ],
+      "frame_incognito": [
+        220,
+        212,
+        202
+      ],
+      "frame_incognito_inactive": [
+        212,
+        206,
+        198
+      ],
+      "toolbar": [
+        212,
+        206,
+        198
+      ],
+      "tab_text": [
+        138,
+        69,
+        48
+      ],
+      "tab_background_text": [
+        90,
+        88,
+        85
+      ],
+      "tab_background_text_inactive": [
+        90,
+        88,
+        85
+      ],
+      "tab_background_text_incognito": [
+        90,
+        88,
+        85
+      ],
+      "tab_background_text_incognito_inactive": [
+        90,
+        88,
+        85
+      ],
+      "bookmark_text": [
+        26,
+        24,
+        22
+      ],
+      "ntp_background": [
+        228,
+        222,
+        214
+      ],
+      "ntp_text": [
+        26,
+        24,
+        22
+      ],
+      "ntp_link": [
+        138,
+        69,
+        48
+      ],
+      "ntp_header": [
+        212,
+        206,
+        198
+      ],
+      "button_background": [
+        176,
+        120,
+        64
+      ],
+      "omnibox_background": [
+        237,
+        231,
+        223
+      ],
+      "omnibox_text": [
+        26,
+        24,
+        22
+      ]
     },
     "properties": {
       "ntp_background_alignment": "center"
     },
     "tints": {
-      "buttons": [0.04, 0.6, 0.4]
+      "buttons": [
+        0.08,
+        0.75,
+        -0.1
+      ]
     }
   }
 }

@@ -26,5 +26,6 @@ Based on `palette/akari-night.toml`:
 
 - Toolbar is slightly lighter than frame for subtle depth
 - Active tab uses lantern color (`#E26A3B`) for text accent
+- All toolbar buttons are tinted with lantern glow
 - Background colors match the night palette
 - Inactive tabs use muted text (`#7D8797`) for visual hierarchy

@@ -26,5 +26,6 @@ Based on `palette/akari-dawn.toml`:
 
 - Toolbar is slightly darker than frame for subtle depth
 - Active tab uses lantern color (`#8A4530`) for text accent
+- All toolbar buttons are tinted with lantern warmth
 - Background colors match the dawn palette's warm paper tones
 - Text colors ensure readability with high contrast
