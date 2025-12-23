@@ -34,7 +34,7 @@ function M.setup(p, config)
     ["@string.special.url"] = { fg = p.bright_blue, underline = true },
 
     -- Characters
-    ["@character"] = { fg = p.green },
+    ["@character"] = { fg = p.lantern },
     ["@character.special"] = { fg = p.bright_magenta },
 
     -- Booleans

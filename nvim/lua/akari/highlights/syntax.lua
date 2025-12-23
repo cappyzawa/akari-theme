@@ -10,7 +10,7 @@ function M.setup(p, config)
     -- Constants
     Constant = { fg = p.constant },
     String = { fg = p.green },
-    Character = { fg = p.green },
+    Character = { fg = p.lantern },
     Number = { fg = p.constant },
     Boolean = { fg = p.constant, bold = true },
     Float = { fg = p.constant },
