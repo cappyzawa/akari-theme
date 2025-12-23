@@ -60,6 +60,8 @@ Add the contents of `starship/akari-night.toml` (or `akari-dawn.toml`) to your `
 palette = 'akari-night'
 ```
 
+This overrides Starship's standard named colors, so your existing module configurations will automatically use Akari colors without any changes.
+
 ### tmux
 
 Copy `tmux/akari-night.conf` (or `akari-dawn.conf`) to `~/.config/tmux/`, then add to your `.tmux.conf`:

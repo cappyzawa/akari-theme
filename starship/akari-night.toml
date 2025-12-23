@@ -1,19 +1,23 @@
-# Akari Night v0.1.0 — Starship palette
+# Akari Night — Starship palette
+# Named colors only — apply with: palette = 'akari-night'
 
 [palettes.akari-night]
-background = '#171B22'   # base.background (navy-charcoal)
-foreground = '#E6DED3'   # base.foreground
-current_line = '#2E3543' # layers.border
-primary = '#171B22'      # base.background
-box = '#2E3543'          # layers.border
-blue = '#5A6F82'         # colors.night
-cyan = '#6F8F8A'         # ansi.cyan
-green = '#7FAF6A'        # colors.life
-orange = '#F08A5D'       # ansi.bright.yellow
-pink = '#9A8FB3'         # ansi.bright.magenta
-purple = '#7C6A8A'       # colors.muted
-red = '#C84C32'          # state.error
-yellow = '#D4A05A'       # colors.amber
-amber = '#D4A05A'        # colors.amber
-lantern = '#E26A3B'      # colors.lantern
-comment = '#7D8797'      # semantic.comment (distant stone-gray)
+# Standard ANSI colors
+black = '#12100E'         # ansi.black
+red = '#C84C32'           # ansi.red
+green = '#7FAF6A'         # ansi.green
+yellow = '#D4A05A'        # ansi.yellow
+blue = '#5A6F82'          # ansi.blue
+purple = '#7C6A8A'        # ansi.magenta
+cyan = '#6F8F8A'          # ansi.cyan
+white = '#E6DED3'         # ansi.white
+
+# Bright variants
+bright-black = '#2E3543'  # ansi.bright.black
+bright-red = '#D65A3A'    # ansi.bright.red
+bright-green = '#8FC57A'  # ansi.bright.green
+bright-yellow = '#F08A5D' # ansi.bright.yellow
+bright-blue = '#6F879A'   # ansi.bright.blue
+bright-purple = '#9A8FB3' # ansi.bright.magenta
+bright-cyan = '#8FB8B0'   # ansi.bright.cyan
+bright-white = '#F2ECE4'  # ansi.bright.white
