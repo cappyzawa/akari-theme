@@ -1,4 +1,4 @@
-# Akari v0.0.1 — zsh-syntax-highlighting configuration
+# Akari v0.1.0 — zsh-syntax-highlighting configuration
 # A color palette inspired by Japanese alleys lit by round lanterns.
 #
 # Usage:
@@ -33,8 +33,8 @@ else
   _muted='#7C6A8A'     # colors.muted
   _cyan='#6F8F8A'      # ansi.cyan
   _text='#E6DED3'      # base.foreground
-  _comment='#7A7A75'   # semantic.comment
-  _border='#3A3530'    # layers.border
+  _comment='#7D8797'   # semantic.comment (distant stone-gray)
+  _border='#2E3543'    # layers.border
 fi
 
 # Commands

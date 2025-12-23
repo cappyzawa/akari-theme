@@ -1,5 +1,5 @@
 name = "akari-night"
-version = "0.0.1"
+version = "0.1.0"
 description = "A dark palette inspired by Japanese alleys lit by round lanterns at night."
 
 #
@@ -21,7 +21,7 @@ muted = "#7C6A8A"    # quiet purple — distance, not neon
 # The ground truth for readability.
 #
 [base]
-background = "#1C1A17" # warm gray night alley
+background = "#171B22" # navy-charcoal night air
 foreground = "#E6DED3" # soft paper white
 
 #
@@ -32,15 +32,15 @@ foreground = "#E6DED3" # soft paper white
 #
 [layers]
 # layers.base — the ground (same as background)
-base = "#1C1A17"
-# layers.surface — statusline, panels (slightly elevated)
-surface = "#24211D"
-# layers.sunken — cursorline (recessed, lantern-tinted)
-sunken = "#2A1D15"
-# layers.raised — popup, menu (elevated)
-raised = "#2E2A26"
+base = "#171B22"
+# layers.surface — statusline, panels (slightly elevated, blue-tinted)
+surface = "#1E232C"
+# layers.sunken — cursorline (recessed, lantern-tinted for warmth)
+sunken = "#251D1A"
+# layers.raised — popup, menu (elevated, blue-tinted)
+raised = "#242836"
 # layers.border — window borders, separators
-border = "#3A3530"
+border = "#2E3543"
 
 #
 # State (UI states)
@@ -49,22 +49,22 @@ border = "#3A3530"
 # Use these keys in tool themes: state.selection_bg, state.cursor, etc.
 #
 [state]
-# state.selection_bg — selected text background
+# state.selection_bg — selected text background (amber-tinted warmth)
 selection_bg = "#2D2518"
 # state.selection_fg — selected text foreground
 selection_fg = "#F2ECE4"
-# state.match_bg — search match background
-match_bg = "#3D2A1A"
+# state.match_bg — search match background (lantern warmth)
+match_bg = "#332A2A"
 # state.cursor — cursor color (lantern)
 cursor = "#E26A3B"
 # state.cursor_text — text under cursor
-cursor_text = "#1C1A17"
+cursor_text = "#171B22"
 
 # Diagnostics
 # state.info
 info = "#5A6F82"
 # state.hint
-hint = "#7A7A75"
+hint = "#7D8797"
 # state.warning
 warning = "#E26A3B"
 # state.error
@@ -87,8 +87,8 @@ diff_changed = "#D4A05A"
 [semantic]
 # semantic.text
 text = "base.foreground"
-# semantic.comment
-comment = "#7A7A75"
+# semantic.comment — distant stone-gray, night humidity
+comment = "#7D8797"
 
 # Light sources — lantern is singular
 # semantic.string
@@ -139,8 +139,8 @@ cyan = "#6F8F8A"
 white = "base.foreground"
 
 [ansi.bright]
-# ansi.bright.black
-black = "#3A3530"
+# ansi.bright.black — matches border for consistency
+black = "#2E3543"
 # ansi.bright.red
 red = "colors.ember"
 # ansi.bright.green
@@ -163,11 +163,11 @@ white = "#F2ECE4"
 # Generator reads these to produce hex values.
 #
 [formula.layers]
-surface = { base = "base.background", mix = "colors.ember", alpha = 0.08 }
+surface = { base = "base.background", mix = "colors.night", alpha = 0.15 }
 sunken = { base = "base.background", mix = "colors.lantern", alpha = 0.15 }
-raised = { base = "base.background", mix = "base.foreground", alpha = 0.08 }
-border = { base = "base.background", mix = "base.foreground", alpha = 0.15 }
+raised = { base = "base.background", mix = "colors.night", alpha = 0.20 }
+border = { base = "base.background", mix = "colors.night", alpha = 0.30 }
 
 [formula.state]
 selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.30 }
-match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.25 }
+match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.20 }

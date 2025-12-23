@@ -6,27 +6,34 @@ local M = {}
 -- Night palette (dark theme)
 M.night = {
   -- Base
-  background = "#1C1A17", -- warm gray night alley
+  background = "#171B22", -- navy-charcoal night air
   foreground = "#E6DED3", -- soft paper white
+
+  -- Layers (blue-tinted elevation)
+  surface = "#1E232C", -- slightly elevated
+  sunken = "#251D1A", -- cursorline (lantern-tinted warmth)
+  raised = "#242836", -- popup/menu
+  border = "#2E3543", -- separators
 
   -- UI
   cursor = "#E26A3B", -- lantern glow
-  cursor_text = "#1C1A17",
-  selection_bg = "#3A3530",
+  cursor_text = "#171B22",
+  selection_bg = "#2D2518", -- amber-tinted warmth
   selection_fg = "#F2ECE4",
+  match_bg = "#332A2A", -- hint of lantern warmth
 
   -- ANSI colors
   black = "#12100E",
   red = "#C84C32",
   green = "#7FAF6A", -- brighter life green
-  yellow = "#E26A3B", -- lantern (not electric yellow)
+  yellow = "#D4A05A", -- amber (warm but not lantern)
   blue = "#5A6F82", -- night air
   magenta = "#7C6A8A", -- muted, non-neon
   cyan = "#6F8F8A",
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#3A3530",
+  bright_black = "#2E3543", -- matches border for consistency
   bright_red = "#D65A3A",
   bright_green = "#8FC57A",
   bright_yellow = "#F08A5D",
@@ -37,14 +44,15 @@ M.night = {
 
   -- Semantic colors
   lantern = "#E26A3B", -- primary accent (keyword/function/string)
-  constant = "#D65A3A", -- numbers/constants
-  comment = "#7A7A75", -- readable warm gray
+  ember = "#D65A3A", -- numbers/constants
+  amber = "#D4A05A", -- paths/strings
+  comment = "#7D8797", -- distant stone-gray, night humidity
 
   -- Diagnostic
   error = "#C84C32",
   warning = "#E26A3B",
   info = "#5A6F82",
-  hint = "#7A7A75",
+  hint = "#7D8797", -- matches comment
 
   -- Diff
   diff_add = "#7FAF6A",
@@ -61,17 +69,18 @@ M.dawn = {
   background = "#E4DED6", -- dawn alley surface (warm paper)
   foreground = "#1A1816", -- ink black (stone pavement)
 
+  -- Layers
+  surface = "#D4CEC6", -- slightly elevated
+  sunken = "#DCD4CA", -- cursorline (recessed)
+  raised = "#EDE7DF", -- popup/menu
+  border = "#C4BEB6", -- separators
+
   -- UI
   cursor = "#8A4530", -- fading lantern
   cursor_text = "#E4DED6",
   selection_bg = "#D0C4B8",
   selection_fg = "#1A1816",
-
-  -- Layers
-  surface = "#D4CEC6",
-  sunken = "#DCD4CA",
-  raised = "#EDE7DF",
-  border = "#C4BEB6",
+  match_bg = "#D8C8B8", -- hint of lantern warmth
 
   -- ANSI colors
   black = "#1A1816",
@@ -95,7 +104,8 @@ M.dawn = {
 
   -- Semantic colors
   lantern = "#8A4530", -- fading lantern
-  constant = "#7A3828", -- cooling embers
+  ember = "#7A3828", -- cooling embers
+  amber = "#B07840", -- paths/strings
   comment = "#4A4642", -- readable dark gray
 
   -- Diagnostic

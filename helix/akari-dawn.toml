@@ -1,4 +1,4 @@
-# Akari Dawn v0.0.1 — The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world.
+# Akari Dawn v0.1.0 — The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world.
 
 # UI elements
 "ui.background" = { bg = "background" }
@@ -8,7 +8,7 @@
 
 "ui.cursor" = { fg = "cursor-text", bg = "cursor" }
 "ui.cursor.primary" = { fg = "cursor-text", bg = "cursor" }
-"ui.cursor.match" = { fg = "cursor", modifiers = ["bold"] }
+"ui.cursor.match" = { fg = "lantern", bg = "sunken", modifiers = ["bold"] }
 "ui.cursor.insert" = { fg = "cursor-text", bg = "green" }
 "ui.cursor.select" = { fg = "cursor-text", bg = "magenta" }
 
@@ -22,7 +22,7 @@
 "ui.linenr.selected" = { fg = "lantern" }
 
 "ui.statusline" = { fg = "foreground", bg = "surface" }
-"ui.statusline.inactive" = { fg = "comment", bg = "background" }
+"ui.statusline.inactive" = { fg = "comment", bg = "surface" }
 "ui.statusline.normal" = { fg = "background", bg = "green", modifiers = ["bold"] }
 "ui.statusline.insert" = { fg = "background", bg = "lantern", modifiers = ["bold"] }
 "ui.statusline.select" = { fg = "background", bg = "magenta", modifiers = ["bold"] }
@@ -116,7 +116,7 @@
 "comment" = { fg = "comment", modifiers = ["italic"] }
 "comment.line" = { fg = "comment", modifiers = ["italic"] }
 "comment.block" = { fg = "comment", modifiers = ["italic"] }
-"comment.block.documentation" = { fg = "comment", modifiers = ["italic"] }
+"comment.block.documentation" = { fg = "comment", modifiers = ["italic", "dim"] }
 
 "variable" = "foreground"
 "variable.builtin" = { fg = "bright-red" }
@@ -199,3 +199,4 @@ lantern = "#8A4530"      # colors.lantern
 amber = "#B07840"        # colors.amber
 constant = "#7A3828"     # colors.ember (semantic.constant)
 comment = "#4A4642"      # semantic.comment
+sunken = "#DCD4CA"       # layers.sunken (for cursor.match)
