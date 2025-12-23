@@ -98,20 +98,20 @@
 "markup.link.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "markup.link.text" = { fg = "cyan" }
 "markup.link.label" = { fg = "magenta" }
-"markup.quote" = { fg = "comment", modifiers = ["italic"] }
+"markup.quote" = { fg = "comment", modifiers = ["dim"] }
 "markup.raw" = { fg = "bright-green" }
 "markup.raw.inline" = { fg = "bright-green" }
 "markup.raw.block" = { fg = "bright-green" }
 
 # Syntax highlighting
-"attribute" = { fg = "bright-cyan" }
-"type" = { fg = "bright-cyan" }
-"type.builtin" = { fg = "cyan" }
-"type.enum" = { fg = "bright-cyan" }
-"type.enum.variant" = { fg = "bright-cyan" }
-"type.parameter" = { fg = "cyan", modifiers = ["italic"] }
+"attribute" = { fg = "amber" }
+"type" = { fg = "amber" }
+"type.builtin" = { fg = "yellow" }
+"type.enum" = { fg = "amber" }
+"type.enum.variant" = { fg = "amber" }
+"type.parameter" = { fg = "yellow" }
 
-"constructor" = { fg = "bright-cyan" }
+"constructor" = { fg = "amber" }
 
 "constant" = { fg = "constant" }
 "constant.builtin" = { fg = "constant" }
@@ -120,31 +120,31 @@
 "constant.character.escape" = { fg = "bright-magenta" }
 "constant.numeric" = { fg = "constant" }
 
-"string" = { fg = "lantern" }
+"string" = { fg = "green" }
 "string.regexp" = { fg = "bright-green" }
 "string.regexp.special" = { fg = "bright-magenta" }
-"string.special" = { fg = "lantern" }
-"string.special.path" = { fg = "amber" }
+"string.special" = { fg = "green" }
+"string.special.path" = { fg = "bright-green" }
 "string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "string.special.symbol" = { fg = "bright-magenta" }
 
-"comment" = { fg = "comment", modifiers = ["italic"] }
-"comment.line" = { fg = "comment", modifiers = ["italic"] }
-"comment.block" = { fg = "comment", modifiers = ["italic"] }
-"comment.block.documentation" = { fg = "comment", modifiers = ["italic", "dim"] }
+"comment" = { fg = "comment", modifiers = ["dim"] }
+"comment.line" = { fg = "comment", modifiers = ["dim"] }
+"comment.block" = { fg = "comment", modifiers = ["dim"] }
+"comment.block.documentation" = { fg = "comment", modifiers = ["dim"] }
 
 "variable" = "foreground"
 "variable.builtin" = { fg = "bright-red" }
-"variable.parameter" = { fg = "foreground", modifiers = ["italic"] }
+"variable.parameter" = "foreground"
 "variable.other" = "foreground"
 "variable.other.member" = "foreground"
 
-"label" = { fg = "bright-cyan" }
+"label" = { fg = "amber" }
 
 "punctuation" = "foreground"
 "punctuation.bracket" = "foreground"
 "punctuation.delimiter" = "foreground"
-"punctuation.special" = { fg = "bright-cyan" }
+"punctuation.special" = { fg = "amber" }
 
 "keyword" = { fg = "lantern" }
 "keyword.control" = { fg = "lantern" }
@@ -162,20 +162,20 @@
 
 "operator" = "foreground"
 
-"function" = { fg = "lantern" }
-"function.builtin" = { fg = "bright-yellow" }
-"function.method" = { fg = "lantern" }
+"function" = { fg = "magenta" }
+"function.builtin" = { fg = "bright-magenta" }
+"function.method" = { fg = "magenta" }
 "function.macro" = { fg = "bright-magenta" }
-"function.special" = { fg = "bright-yellow" }
+"function.special" = { fg = "bright-magenta" }
 
 "tag" = { fg = "lantern" }
 "tag.builtin" = { fg = "blue" }
 
-"namespace" = { fg = "bright-cyan" }
+"namespace" = { fg = "amber" }
 
 "special" = { fg = "bright-yellow" }
 
-"module" = { fg = "bright-cyan" }
+"module" = { fg = "amber" }
 
 # Palette definition (MUST be at the end of the file)
 [palette]
@@ -213,7 +213,7 @@ bright-white = "#F2ECE4"   # ansi.bright.white
 lantern = "#E26A3B"      # colors.lantern
 ember = "#D65A3A"        # colors.ember
 amber = "#D4A05A"        # colors.amber
-constant = "#D65A3A"     # colors.ember (semantic.constant)
+constant = "#8FB8B0"     # EXPERIMENTAL: bright-cyan for ~150° hue difference
 comment = "#7D8797"      # semantic.comment (distant stone-gray)
 sunken = "#251D1A"       # layers.sunken (for cursor.match)
 match-bg = "#332A2A"     # state.match_bg
