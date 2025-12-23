@@ -37,7 +37,7 @@ See [dawn/README.md](dawn/README.md) for details.
 ## Notes
 
 - Both themes use lantern colors as text accents on active tabs
-- Toolbar blends with frame for a clean, minimal look
+- Toolbar has subtle contrast with frame for visual hierarchy
 - Due to Chrome manifest v3 limitations, customizable elements are limited
 - For more detailed color control, consider using CSS extension tools like Stylus
 - You can only have one theme active at a time

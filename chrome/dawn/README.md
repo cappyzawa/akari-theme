@@ -15,7 +15,8 @@ Based on `palette/akari-dawn.toml`:
 
 | Element | Color | Description |
 |---------|-------|-------------|
-| Frame/Toolbar | `#E4DED6` | Dawn alley surface |
+| Frame | `#E4DED6` | Dawn alley surface |
+| Toolbar | `#D4CEC6` | Subtle elevated surface |
 | Active Tab Text | `#8A4530` | Fading lantern accent |
 | Text | `#1A1816` | Ink black |
 | NTP Background | `#E4DED6` | Warm paper |
@@ -23,7 +24,7 @@ Based on `palette/akari-dawn.toml`:
 
 ## Notes
 
-- Toolbar blends with the frame for a clean look
+- Toolbar is slightly darker than frame for subtle depth
 - Active tab uses lantern color (`#8A4530`) for text accent
 - Background colors match the dawn palette's warm paper tones
 - Text colors ensure readability with high contrast

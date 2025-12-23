@@ -15,7 +15,8 @@ Based on `palette/akari-night.toml`:
 
 | Element | Color | Description |
 |---------|-------|-------------|
-| Frame/Toolbar | `#171B22` | Navy-charcoal night air |
+| Frame | `#171B22` | Navy-charcoal night air |
+| Toolbar | `#1E232C` | Subtle elevated surface |
 | Active Tab Text | `#E26A3B` | Round lantern glow |
 | Text | `#E6DED3` | Soft paper white |
 | NTP Background | `#171B22` | Night atmosphere |
@@ -23,7 +24,7 @@ Based on `palette/akari-night.toml`:
 
 ## Notes
 
-- Toolbar blends with the frame for a clean look
+- Toolbar is slightly lighter than frame for subtle depth
 - Active tab uses lantern color (`#E26A3B`) for text accent
 - Background colors match the night palette
 - Inactive tabs use muted text (`#7D8797`) for visual hierarchy
