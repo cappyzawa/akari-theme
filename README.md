@@ -119,16 +119,14 @@ source /path/to/akari-theme/fzf/akari-dawn.sh
 
 ### Visual Studio Code
 
-1. Copy `vscode/` directory to `~/.vscode/extensions/akari-theme/`
-2. Reload VSCode
-3. Open Command Palette (`Cmd+Shift+P`) and select "Preferences: Color Theme"
-4. Choose "Akari Night" or "Akari Dawn"
+Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme):
 
-Or install from VSIX:
-
-```bash
-cd vscode && npx @vscode/vsce package && code --install-extension akari-theme-*.vsix
-```
+1. Open **Extensions** sidebar (`Cmd+Shift+X` / `Ctrl+Shift+X`)
+2. Search for `Akari`
+3. Click **Install**
+4. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+5. Select "Preferences: Color Theme"
+6. Choose "Akari Night" or "Akari Dawn"
 
 ### Chrome
 
