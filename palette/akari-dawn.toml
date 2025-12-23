@@ -92,21 +92,21 @@ comment = "#4A4642"
 
 # Light sources — lantern fades but still glows
 # semantic.string
-string = "colors.lantern"
+string = "colors.life"
 # semantic.keyword
 keyword = "colors.lantern"
 
-# Heat / material
+# Data values — cool tones, floating in the morning air
 # semantic.number
-number = "colors.ember"
+number = "#406868"
 # semantic.constant
-constant = "colors.ember"
+constant = "#406868"
 
 # Structure
 # semantic.type
-type = "#406868"
+type = "colors.amber"
 # semantic.function
-function = "colors.lantern"
+function = "colors.muted"
 # semantic.variable
 variable = "base.foreground"
 
