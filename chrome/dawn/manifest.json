@@ -9,26 +9,26 @@
       "frame_inactive": [228, 222, 214],
       "frame_incognito": [228, 222, 214],
       "frame_incognito_inactive": [228, 222, 214],
-      "toolbar": [138, 69, 48],
-      "tab_text": [228, 222, 214],
+      "toolbar": [212, 206, 198],
+      "tab_text": [26, 24, 22],
       "tab_background_text": [74, 70, 66],
       "tab_background_text_inactive": [74, 70, 66],
       "tab_background_text_incognito": [74, 70, 66],
       "tab_background_text_incognito_inactive": [74, 70, 66],
-      "bookmark_text": [228, 222, 214],
+      "bookmark_text": [26, 24, 22],
       "ntp_background": [228, 222, 214],
       "ntp_text": [26, 24, 22],
       "ntp_link": [138, 69, 48],
       "ntp_header": [212, 206, 198],
-      "button_background": [138, 69, 48],
-      "omnibox_background": [228, 222, 214],
+      "button_background": [176, 120, 64],
+      "omnibox_background": [237, 231, 223],
       "omnibox_text": [26, 24, 22]
     },
     "properties": {
       "ntp_background_alignment": "center"
     },
     "tints": {
-      "buttons": [-1.0, 0.0, 0.3]
+      "buttons": [0.05, 0.75, -0.1]
     }
   }
 }
