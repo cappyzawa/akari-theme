@@ -17,24 +17,24 @@ function M.setup(p, config)
     ["@constant.macro"] = { fg = p.constant },
 
     -- Modules
-    ["@module"] = { fg = p.bright_cyan },
-    ["@module.builtin"] = { fg = p.bright_cyan },
+    ["@module"] = { fg = p.amber },
+    ["@module.builtin"] = { fg = p.amber },
 
     -- Labels
-    ["@label"] = { fg = p.bright_cyan },
+    ["@label"] = { fg = p.amber },
 
     -- Strings
-    ["@string"] = { fg = p.lantern },
-    ["@string.documentation"] = { fg = p.lantern },
+    ["@string"] = { fg = p.green },
+    ["@string.documentation"] = { fg = p.green },
     ["@string.regexp"] = { fg = p.bright_green },
     ["@string.escape"] = { fg = p.bright_magenta },
-    ["@string.special"] = { fg = p.lantern },
+    ["@string.special"] = { fg = p.green },
     ["@string.special.symbol"] = { fg = p.bright_magenta },
-    ["@string.special.path"] = { fg = p.lantern },
+    ["@string.special.path"] = { fg = p.bright_green },
     ["@string.special.url"] = { fg = p.bright_blue, underline = true },
 
     -- Characters
-    ["@character"] = { fg = p.lantern },
+    ["@character"] = { fg = p.green },
     ["@character.special"] = { fg = p.bright_magenta },
 
     -- Booleans
@@ -45,27 +45,27 @@ function M.setup(p, config)
     ["@number.float"] = { fg = p.constant },
 
     -- Types
-    ["@type"] = { fg = p.bright_cyan },
-    ["@type.builtin"] = { fg = p.cyan },
-    ["@type.definition"] = { fg = p.bright_cyan },
+    ["@type"] = { fg = p.amber },
+    ["@type.builtin"] = { fg = p.yellow },
+    ["@type.definition"] = { fg = p.amber },
 
     -- Attributes
-    ["@attribute"] = { fg = p.bright_cyan },
-    ["@attribute.builtin"] = { fg = p.bright_cyan },
+    ["@attribute"] = { fg = p.amber },
+    ["@attribute.builtin"] = { fg = p.amber },
 
     -- Properties
     ["@property"] = { fg = p.foreground },
 
     -- Functions
-    ["@function"] = vim.tbl_extend("force", { fg = p.lantern }, config.functionStyle),
-    ["@function.builtin"] = { fg = p.bright_yellow },
-    ["@function.call"] = vim.tbl_extend("force", { fg = p.lantern }, config.functionStyle),
+    ["@function"] = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),
+    ["@function.builtin"] = { fg = p.bright_magenta },
+    ["@function.call"] = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),
     ["@function.macro"] = { fg = p.bright_magenta },
-    ["@function.method"] = vim.tbl_extend("force", { fg = p.lantern }, config.functionStyle),
-    ["@function.method.call"] = vim.tbl_extend("force", { fg = p.lantern }, config.functionStyle),
+    ["@function.method"] = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),
+    ["@function.method.call"] = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),
 
     -- Constructors
-    ["@constructor"] = { fg = p.bright_cyan },
+    ["@constructor"] = { fg = p.amber },
 
     -- Operators
     ["@operator"] = { fg = p.foreground },
@@ -91,7 +91,7 @@ function M.setup(p, config)
     -- Punctuation
     ["@punctuation.delimiter"] = { fg = p.foreground },
     ["@punctuation.bracket"] = { fg = p.foreground },
-    ["@punctuation.special"] = { fg = p.bright_cyan },
+    ["@punctuation.special"] = { fg = p.amber },
 
     -- Comments
     ["@comment"] = vim.tbl_extend("force", { fg = p.comment }, config.commentStyle),
@@ -135,11 +135,11 @@ function M.setup(p, config)
     -- Tags (HTML, XML, JSX)
     ["@tag"] = { fg = p.lantern },
     ["@tag.builtin"] = { fg = p.blue },
-    ["@tag.attribute"] = { fg = p.bright_cyan },
+    ["@tag.attribute"] = { fg = p.amber },
     ["@tag.delimiter"] = { fg = p.foreground },
 
     -- Non-standard captures (for specific languages)
-    ["@namespace"] = { fg = p.bright_cyan },
+    ["@namespace"] = { fg = p.amber },
     ["@symbol"] = { fg = p.bright_magenta },
     ["@annotation"] = { fg = p.bright_yellow },
     ["@conceal"] = { fg = p.comment },

@@ -43,9 +43,10 @@ M.night = {
   bright_white = "#F2ECE4",
 
   -- Semantic colors
-  lantern = "#E26A3B", -- primary accent (keyword/function/string)
-  ember = "#D65A3A", -- numbers/constants
-  amber = "#D4A05A", -- paths/strings
+  lantern = "#E26A3B", -- primary accent (keyword)
+  ember = "#D65A3A", -- secondary warmth
+  amber = "#D4A05A", -- type/structure
+  constant = "#8FB8B0", -- numbers/constants (cyan)
   comment = "#7D8797", -- distant stone-gray, night humidity
 
   -- Diagnostic
@@ -103,9 +104,10 @@ M.dawn = {
   bright_white = "#0A0808",
 
   -- Semantic colors
-  lantern = "#8A4530", -- fading lantern
-  ember = "#7A3828", -- cooling embers
-  amber = "#B07840", -- paths/strings
+  lantern = "#8A4530", -- fading lantern (keyword)
+  ember = "#7A3828", -- secondary warmth
+  amber = "#B07840", -- type/structure
+  constant = "#406868", -- numbers/constants (cyan)
   comment = "#4A4642", -- readable dark gray
 
   -- Diagnostic

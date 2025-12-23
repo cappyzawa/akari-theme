@@ -9,21 +9,21 @@ function M.setup(p, config)
 
     -- Constants
     Constant = { fg = p.constant },
-    String = { fg = p.lantern },
-    Character = { fg = p.lantern },
+    String = { fg = p.green },
+    Character = { fg = p.green },
     Number = { fg = p.constant },
     Boolean = { fg = p.constant, bold = true },
     Float = { fg = p.constant },
 
     -- Identifiers
     Identifier = { fg = p.foreground },
-    Function = vim.tbl_extend("force", { fg = p.lantern }, config.functionStyle),
+    Function = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),
 
     -- Statements
     Statement = { fg = p.lantern },
     Conditional = vim.tbl_extend("force", { fg = p.lantern }, config.keywordStyle),
     Repeat = vim.tbl_extend("force", { fg = p.lantern }, config.keywordStyle),
-    Label = { fg = p.bright_cyan },
+    Label = { fg = p.amber },
     Operator = { fg = p.foreground },
     Keyword = vim.tbl_extend("force", { fg = p.lantern }, config.keywordStyle),
     Exception = vim.tbl_extend("force", { fg = p.lantern }, config.keywordStyle),
@@ -36,10 +36,10 @@ function M.setup(p, config)
     PreCondit = { fg = p.bright_magenta },
 
     -- Types
-    Type = { fg = p.bright_cyan },
+    Type = { fg = p.amber },
     StorageClass = { fg = p.lantern },
-    Structure = { fg = p.bright_cyan },
-    Typedef = { fg = p.bright_cyan },
+    Structure = { fg = p.amber },
+    Typedef = { fg = p.amber },
 
     -- Special
     Special = { fg = p.bright_yellow },
