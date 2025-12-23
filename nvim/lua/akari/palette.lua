@@ -3,7 +3,8 @@
 
 local M = {}
 
-M.palette = {
+-- Night palette (dark theme)
+M.night = {
   -- Base
   background = "#1C1A17", -- warm gray night alley
   foreground = "#E6DED3", -- soft paper white
@@ -54,24 +55,91 @@ M.palette = {
   none = "NONE",
 }
 
--- Terminal colors (16 ANSI colors)
-M.terminal = {
-  M.palette.black, -- 0
-  M.palette.red, -- 1
-  M.palette.green, -- 2
-  M.palette.yellow, -- 3
-  M.palette.blue, -- 4
-  M.palette.magenta, -- 5
-  M.palette.cyan, -- 6
-  M.palette.white, -- 7
-  M.palette.bright_black, -- 8
-  M.palette.bright_red, -- 9
-  M.palette.bright_green, -- 10
-  M.palette.bright_yellow, -- 11
-  M.palette.bright_blue, -- 12
-  M.palette.bright_magenta, -- 13
-  M.palette.bright_cyan, -- 14
-  M.palette.bright_white, -- 15
+-- Dawn palette (light theme)
+M.dawn = {
+  -- Base
+  background = "#E4DED6", -- dawn alley surface (warm paper)
+  foreground = "#1A1816", -- ink black (stone pavement)
+
+  -- UI
+  cursor = "#8A4530", -- fading lantern
+  cursor_text = "#E4DED6",
+  selection_bg = "#D0C4B8",
+  selection_fg = "#1A1816",
+
+  -- Layers
+  surface = "#D4CEC6",
+  sunken = "#DCD4CA",
+  raised = "#EDE7DF",
+  border = "#C4BEB6",
+
+  -- ANSI colors
+  black = "#1A1816",
+  red = "#B04030",
+  green = "#3A5830", -- plants catching first light
+  yellow = "#B07840", -- warm yellow in morning light
+  blue = "#304050", -- quiet morning air
+  magenta = "#806080", -- distant, unobtrusive
+  cyan = "#305858",
+  white = "#F4F0EA",
+
+  -- Bright ANSI colors
+  bright_black = "#3A3E48",
+  bright_red = "#C04838",
+  bright_green = "#70A868",
+  bright_yellow = "#D09060",
+  bright_blue = "#4060A0",
+  bright_magenta = "#705868",
+  bright_cyan = "#306868",
+  bright_white = "#0A0808",
+
+  -- Semantic colors
+  lantern = "#8A4530", -- fading lantern
+  constant = "#7A3828", -- cooling embers
+  comment = "#4A4642", -- readable dark gray
+
+  -- Diagnostic
+  error = "#B04030",
+  warning = "#8A4530",
+  info = "#304050",
+  hint = "#5A5855",
+
+  -- Diff
+  diff_add = "#507848",
+  diff_delete = "#B04030",
+  diff_change = "#C08050",
+
+  -- None (for transparent)
+  none = "NONE",
 }
+
+-- Default to night palette for backwards compatibility
+M.palette = M.night
+
+-- Get terminal colors for a specific variant
+function M.get_terminal(variant)
+  local p = variant == "dawn" and M.dawn or M.night
+  return {
+    p.black, -- 0
+    p.red, -- 1
+    p.green, -- 2
+    p.yellow, -- 3
+    p.blue, -- 4
+    p.magenta, -- 5
+    p.cyan, -- 6
+    p.white, -- 7
+    p.bright_black, -- 8
+    p.bright_red, -- 9
+    p.bright_green, -- 10
+    p.bright_yellow, -- 11
+    p.bright_blue, -- 12
+    p.bright_magenta, -- 13
+    p.bright_cyan, -- 14
+    p.bright_white, -- 15
+  }
+end
+
+-- Terminal colors (16 ANSI colors) - default to night
+M.terminal = M.get_terminal("night")
 
 return M

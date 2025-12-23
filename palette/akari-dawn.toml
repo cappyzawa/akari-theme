@@ -1,0 +1,173 @@
+name = "akari-dawn"
+version = "0.0.1"
+description = "The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world."
+
+#
+# Colors (world pigments)
+#
+# Same pigments, different light. The lantern dims as dawn arrives.
+#
+[colors]
+lantern = "#8A4530"  # fading lantern — still warm, but yielding to daylight
+ember = "#7A3828"    # cooling embers
+amber = "#B07840"    # warm yellow in morning light
+life = "#3A5830"     # plants catching first light
+night = "#304050"    # quiet morning air
+muted = "#806080"    # distant, unobtrusive
+
+#
+# Base (reading foundation)
+#
+# Light background, dark text for readability.
+#
+[base]
+background = "#E4DED6" # dawn alley surface — warm paper, not white
+foreground = "#1A1816" # ink black — stone pavement
+
+#
+# Layers (UI surfaces)
+#
+# Surfaces at different elevations.
+# Use these keys in tool themes: layers.base, layers.surface, etc.
+#
+[layers]
+# layers.base — the ground (same as background)
+base = "#E4DED6"
+# layers.surface — statusline, panels (slightly darker for light theme)
+surface = "#D4CEC6"
+# layers.sunken — cursorline (recessed, lantern-tinted)
+sunken = "#DCD4CA"
+# layers.raised — popup, menu (slightly lighter)
+raised = "#EDE7DF"
+# layers.border — window borders, separators
+border = "#C4BEB6"
+
+#
+# State (UI states)
+#
+# Colors for interactive states.
+# Use these keys in tool themes: state.selection_bg, state.cursor, etc.
+#
+[state]
+# state.selection_bg — selected text background
+selection_bg = "#D0C4B8"
+# state.selection_fg — selected text foreground
+selection_fg = "#1A1816"
+# state.match_bg — search match background
+match_bg = "#D8C8B8"
+# state.cursor — cursor color (lantern)
+cursor = "#8A4530"
+# state.cursor_text — text under cursor
+cursor_text = "#E4DED6"
+
+# Diagnostics
+# state.info
+info = "#607080"
+# state.hint
+hint = "#5A5855"
+# state.warning
+warning = "#8A4530"
+# state.error
+error = "#B04030"
+
+# Diff
+# state.diff_added
+diff_added = "#507848"
+# state.diff_removed
+diff_removed = "#B04030"
+# state.diff_changed
+diff_changed = "#C08050"
+
+#
+# Semantic (syntax roles)
+#
+# Maps meaning to color. References only.
+# Use these keys in tool themes: semantic.string, semantic.keyword, etc.
+#
+[semantic]
+# semantic.text
+text = "base.foreground"
+# semantic.comment
+comment = "#4A4642"
+
+# Light sources — lantern fades but still glows
+# semantic.string
+string = "colors.lantern"
+# semantic.keyword
+keyword = "colors.lantern"
+
+# Heat / material
+# semantic.number
+number = "colors.ember"
+# semantic.constant
+constant = "colors.ember"
+
+# Structure
+# semantic.type
+type = "#406868"
+# semantic.function
+function = "colors.lantern"
+# semantic.variable
+variable = "base.foreground"
+
+# Life
+# semantic.success
+success = "colors.life"
+
+#
+# ANSI (terminal compatibility)
+#
+# Maps ANSI colors to world pigments.
+# Use these keys in tool themes: ansi.black, ansi.red, etc.
+#
+[ansi]
+# ansi.black
+black = "#1A1816"
+# ansi.red
+red = "#B04030"
+# ansi.green
+green = "colors.life"
+# ansi.yellow
+yellow = "colors.amber"
+# ansi.blue
+blue = "colors.night"
+# ansi.magenta
+magenta = "colors.muted"
+# ansi.cyan
+cyan = "#305858"
+# ansi.white — slightly brighter than background
+white = "#F4F0EA"
+
+[ansi.bright]
+# ansi.bright.black
+black = "#3A3E48"
+# ansi.bright.red
+red = "#C04838"
+# ansi.bright.green
+green = "#70A868"
+# ansi.bright.yellow
+yellow = "#D09060"
+# ansi.bright.blue
+blue = "#4060A0"
+# ansi.bright.magenta
+magenta = "#705868"
+# ansi.bright.cyan
+cyan = "#306868"
+# ansi.bright.white
+white = "#0A0808"
+
+#
+# Formula (mix recipes)
+#
+# Declarative recipes for computed colors.
+# Generator reads these to produce hex values.
+#
+[formula.layers]
+surface = { base = "base.background", mix = "base.foreground", alpha = 0.08 }
+sunken = { base = "base.background", mix = "colors.lantern", alpha = 0.15 }
+raised = { base = "base.background", mix = "base.foreground", alpha = -0.08 }
+border = { base = "base.background", mix = "base.foreground", alpha = 0.15 }
+
+[formula.state]
+selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.30 }
+match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.25 }

@@ -1,0 +1,19 @@
+# Akari Night v0.0.1 — Starship palette
+
+[palettes.akari-night]
+background = '#1C1A17'   # base.background
+foreground = '#E6DED3'   # base.foreground
+current_line = '#3A3530' # layers.border
+primary = '#1C1A17'      # base.background
+box = '#3A3530'          # layers.border
+blue = '#5A6F82'         # colors.night
+cyan = '#6F8F8A'         # ansi.cyan
+green = '#7FAF6A'        # colors.life
+orange = '#F08A5D'       # ansi.bright.yellow
+pink = '#9A8FB3'         # ansi.bright.magenta
+purple = '#7C6A8A'       # colors.muted
+red = '#C84C32'          # state.error
+yellow = '#D4A05A'       # colors.amber
+amber = '#D4A05A'        # colors.amber
+lantern = '#E26A3B'      # colors.lantern
+comment = '#7A7A75'      # semantic.comment

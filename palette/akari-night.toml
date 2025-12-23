@@ -1,0 +1,173 @@
+name = "akari-night"
+version = "0.0.1"
+description = "A dark palette inspired by Japanese alleys lit by round lanterns at night."
+
+#
+# Colors (world pigments)
+#
+# The core pigments of the scene. Night/Dawn differ here.
+#
+[colors]
+lantern = "#E26A3B"  # round lantern glow — the primary light source
+ember = "#D65A3A"    # heat / material — secondary warmth
+amber = "#D4A05A"    # warm yellow — reflected light
+life = "#7FAF6A"     # plants in the alley
+night = "#5A6F82"    # night air — the blue of twilight sky
+muted = "#7C6A8A"    # quiet purple — distance, not neon
+
+#
+# Base (reading foundation)
+#
+# The ground truth for readability.
+#
+[base]
+background = "#1C1A17" # warm gray night alley
+foreground = "#E6DED3" # soft paper white
+
+#
+# Layers (UI surfaces)
+#
+# Surfaces at different elevations.
+# Use these keys in tool themes: layers.base, layers.surface, etc.
+#
+[layers]
+# layers.base — the ground (same as background)
+base = "#1C1A17"
+# layers.surface — statusline, panels (slightly elevated)
+surface = "#24211D"
+# layers.sunken — cursorline (recessed, lantern-tinted)
+sunken = "#2A1D15"
+# layers.raised — popup, menu (elevated)
+raised = "#2E2A26"
+# layers.border — window borders, separators
+border = "#3A3530"
+
+#
+# State (UI states)
+#
+# Colors for interactive states.
+# Use these keys in tool themes: state.selection_bg, state.cursor, etc.
+#
+[state]
+# state.selection_bg — selected text background
+selection_bg = "#2D2518"
+# state.selection_fg — selected text foreground
+selection_fg = "#F2ECE4"
+# state.match_bg — search match background
+match_bg = "#3D2A1A"
+# state.cursor — cursor color (lantern)
+cursor = "#E26A3B"
+# state.cursor_text — text under cursor
+cursor_text = "#1C1A17"
+
+# Diagnostics
+# state.info
+info = "#5A6F82"
+# state.hint
+hint = "#7A7A75"
+# state.warning
+warning = "#E26A3B"
+# state.error
+error = "#C84C32"
+
+# Diff
+# state.diff_added
+diff_added = "#7FAF6A"
+# state.diff_removed
+diff_removed = "#C84C32"
+# state.diff_changed
+diff_changed = "#D4A05A"
+
+#
+# Semantic (syntax roles)
+#
+# Maps meaning to color. References only.
+# Use these keys in tool themes: semantic.string, semantic.keyword, etc.
+#
+[semantic]
+# semantic.text
+text = "base.foreground"
+# semantic.comment
+comment = "#7A7A75"
+
+# Light sources — lantern is singular
+# semantic.string
+string = "colors.lantern"
+# semantic.keyword
+keyword = "colors.lantern"
+
+# Heat / material
+# semantic.number
+number = "colors.ember"
+# semantic.constant
+constant = "colors.ember"
+
+# Structure
+# semantic.type
+type = "#8FB8B0"
+# semantic.function
+function = "colors.lantern"
+# semantic.variable
+variable = "base.foreground"
+
+# Life
+# semantic.success
+success = "colors.life"
+
+#
+# ANSI (terminal compatibility)
+#
+# Maps ANSI colors to world pigments.
+# Use these keys in tool themes: ansi.black, ansi.red, etc.
+#
+[ansi]
+# ansi.black
+black = "#12100E"
+# ansi.red
+red = "#C84C32"
+# ansi.green
+green = "colors.life"
+# ansi.yellow
+yellow = "colors.amber"
+# ansi.blue
+blue = "colors.night"
+# ansi.magenta
+magenta = "colors.muted"
+# ansi.cyan
+cyan = "#6F8F8A"
+# ansi.white
+white = "base.foreground"
+
+[ansi.bright]
+# ansi.bright.black
+black = "#3A3530"
+# ansi.bright.red
+red = "colors.ember"
+# ansi.bright.green
+green = "#8FC57A"
+# ansi.bright.yellow
+yellow = "#F08A5D"
+# ansi.bright.blue
+blue = "#6F879A"
+# ansi.bright.magenta
+magenta = "#9A8FB3"
+# ansi.bright.cyan
+cyan = "#8FB8B0"
+# ansi.bright.white
+white = "#F2ECE4"
+
+#
+# Formula (mix recipes)
+#
+# Declarative recipes for computed colors.
+# Generator reads these to produce hex values.
+#
+[formula.layers]
+surface = { base = "base.background", mix = "colors.ember", alpha = 0.08 }
+sunken = { base = "base.background", mix = "colors.lantern", alpha = 0.15 }
+raised = { base = "base.background", mix = "base.foreground", alpha = 0.08 }
+border = { base = "base.background", mix = "base.foreground", alpha = 0.15 }
+
+[formula.state]
+selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.30 }
+match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.25 }
