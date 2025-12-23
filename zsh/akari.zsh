@@ -20,6 +20,7 @@ if [[ "$AKARI_VARIANT" == "dawn" ]]; then
   _night='#304050'     # colors.night
   _muted='#806080'     # colors.muted
   _cyan='#305858'      # ansi.cyan
+  _constant='#406868'  # semantic.constant
   _text='#1A1816'      # base.foreground — ink black
   _comment='#4A4642'   # semantic.comment
   _border='#C4BEB6'    # layers.border
@@ -32,6 +33,7 @@ else
   _night='#5A6F82'     # colors.night
   _muted='#7C6A8A'     # colors.muted
   _cyan='#6F8F8A'      # ansi.cyan
+  _constant='#8FB8B0'  # semantic.constant
   _text='#E6DED3'      # base.foreground
   _comment='#7D8797'   # semantic.comment (distant stone-gray)
   _border='#2E3543'    # layers.border
@@ -41,7 +43,7 @@ fi
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"          # colors.lantern
 ZSH_HIGHLIGHT_STYLES[builtin]="fg=$_lantern,bold"          # colors.lantern
 ZSH_HIGHLIGHT_STYLES[alias]="fg=$_lantern"                 # colors.lantern
-ZSH_HIGHLIGHT_STYLES[function]="fg=$_lantern"              # colors.lantern
+ZSH_HIGHLIGHT_STYLES[function]="fg=$_muted"                # colors.muted
 
 # Errors and unknown
 ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$_comment"         # semantic.comment
@@ -53,9 +55,9 @@ ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$_amber"      # colors.amber
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=$_comment"              # semantic.comment
 
 # Strings and quotes
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$_lantern"  # colors.lantern
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$_lantern"  # colors.lantern
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=$_lantern"  # colors.lantern
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$_life"     # colors.life
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$_life"     # colors.life
+ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]="fg=$_life"     # colors.life
 
 # Variables and substitutions
 ZSH_HIGHLIGHT_STYLES[assign]="fg=$_text"                             # base.foreground
@@ -82,4 +84,4 @@ ZSH_HIGHLIGHT_STYLES[default]="fg=$_text"                  # base.foreground
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$_comment"             # semantic.comment
 
 # Cleanup temporary variables
-unset _lantern _ember _amber _life _night _muted _cyan _text _comment _border
+unset _lantern _ember _amber _life _night _muted _cyan _constant _text _comment _border
