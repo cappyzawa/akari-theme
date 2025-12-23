@@ -7,7 +7,7 @@ A dark browser theme inspired by Japanese alleys lit by round lanterns at night.
 1. Open `chrome://extensions/` in Chrome
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked"
-4. Select this directory (`chrome/dark/`)
+4. Select this directory (`chrome/night/`)
 
 ## Color Palette
 
