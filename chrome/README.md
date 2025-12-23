@@ -4,7 +4,7 @@ Chrome browser themes inspired by Japanese alleys lit by round lanterns.
 
 Two variants are available:
 
-## 🌙 Dark Theme
+## 🌙 Night Theme
 
 Night alley with warm shadows and lantern light.
 
@@ -15,13 +15,13 @@ Night alley with warm shadows and lantern light.
 3. Click "Load unpacked"
 4. Select the `chrome/dark/` directory
 
-**Key colors:** Dark backgrounds (#1C1A17) with orange active tabs (#E26A3B)
+**Key colors:** Dark backgrounds (`#171B22`) with orange active tabs (`#E26A3B`)
 
 See [dark/README.md](dark/README.md) for details.
 
-## ☀️ Light Theme
+## ☀️ Dawn Theme
 
-Daytime alley with bright atmosphere and lantern accents.
+The same alley at dawn — lanterns still lit, but yielding to daylight.
 
 **Installation:**
 
@@ -30,14 +30,14 @@ Daytime alley with bright atmosphere and lantern accents.
 3. Click "Load unpacked"
 4. Select the `chrome/light/` directory
 
-**Key colors:** Light backgrounds (#F2ECE4) with orange active tabs (#E26A3B)
+**Key colors:** Light backgrounds (`#E4DED6`) with muted lantern tabs (`#8A4530`)
 
 See [light/README.md](light/README.md) for details.
 
 ## Notes
 
-- Both themes feature the signature lantern orange (#E26A3B) for active tab highlighting
+- Night theme uses the bright lantern (`#E26A3B`) as the primary accent
+- Dawn theme uses the fading lantern (`#8A4530`) to reflect morning light
 - Due to Chrome manifest v3 limitations, customizable elements are limited
-- For more detailed color control, we recommend using CSS extension tools like Stylus
+- For more detailed color control, consider using CSS extension tools like Stylus
 - You can only have one theme active at a time
-
