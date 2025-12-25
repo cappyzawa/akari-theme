@@ -6,6 +6,9 @@ changelog:
   - title: "👻 Ghostty"
     labels:
     - ghostty
+  - title: "🧱 Alacritty"
+    labels:
+    - alacritty
   - title: "📜 Neovim"
     labels:
     - nvim
