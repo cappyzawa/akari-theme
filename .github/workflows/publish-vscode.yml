@@ -25,3 +25,10 @@ jobs:
         pat: ${{ secrets.VSCE_PAT }}
         registryUrl: https://marketplace.visualstudio.com
         packagePath: ./dist/vscode
+
+    - name: Publish to Open VSX
+      uses: HaaLeo/publish-vscode-extension@v2
+      with:
+        pat: ${{ secrets.OVSX_PAT }}
+        registryUrl: https://open-vsx.org
+        packagePath: ./dist/vscode

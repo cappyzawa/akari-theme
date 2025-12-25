@@ -34,6 +34,16 @@ it is about warm light, quiet streets, and the presence of life.
 5. Select **Preferences: Color Theme**
 6. Choose **Akari Night** or **Akari Dawn**
 
+### From Open VSX (for Cursor, VSCodium, etc.)
+
+1. Open **Extensions** sidebar
+2. Search for `Akari`
+3. Click **Install**
+4. Select **Preferences: Color Theme**
+5. Choose **Akari Night** or **Akari Dawn**
+
+Or install directly from [Open VSX](https://open-vsx.org/extension/cappyzawa/akari-theme).
+
 ### From this repository
 
 Clone and symlink to your VS Code extensions directory:
