@@ -38,16 +38,16 @@ warm, and readable for long sessions.
 
 | Tool | Category | Installation |
 |------|----------|--------------|
-| [Ghostty](ghostty/README.md) | Terminal Emulator | Copy theme to `~/.config/ghostty/themes/` |
-| [Helix](helix/README.md) | Editor | Copy theme to `~/.config/helix/themes/` |
-| [Neovim](nvim/README.md) | Editor | Install via plugin manager |
-| [Visual Studio Code](vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) |
-| [Starship](starship/README.md) | Prompt | Add palette to `~/.config/starship.toml` |
-| [tmux](tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
-| [macOS Terminal](terminal/README.md) | Terminal Emulator | Double-click to import profile |
-| [zsh-syntax-highlighting](zsh/README.md) | Shell | Source in `.zshrc` |
-| [fzf](fzf/README.md) | Shell | Source in `.bashrc` or `.zshrc` |
-| [Chrome](chrome/README.md) | Browser | Load unpacked extension |
+| [Ghostty](dist/ghostty/README.md) | Terminal Emulator | Copy theme to `~/.config/ghostty/themes/` |
+| [Helix](dist/helix/README.md) | Editor | Copy theme to `~/.config/helix/themes/` |
+| [Neovim](dist/nvim/README.md) | Editor | Install via plugin manager |
+| [Visual Studio Code](dist/vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) |
+| [Starship](dist/starship/README.md) | Prompt | Add palette to `~/.config/starship.toml` |
+| [tmux](dist/tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
+| [macOS Terminal](dist/terminal/README.md) | Terminal Emulator | Double-click to import profile |
+| [zsh-syntax-highlighting](dist/zsh/README.md) | Shell | Source in `.zshrc` |
+| [fzf](dist/fzf/README.md) | Shell | Source in `.bashrc` or `.zshrc` |
+| [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |
 
 ## Palette
 
