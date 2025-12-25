@@ -24,8 +24,7 @@ pub struct Generator {
 impl Generator {
     pub fn new(templates_dir: impl AsRef<Path>) -> Result<Self, Error> {
         let pattern = templates_dir.as_ref().join("**/*.tera");
-        let mut tera =
-            Tera::new(pattern.to_str().unwrap()).map_err(Error::TemplateInit)?;
+        let mut tera = Tera::new(pattern.to_str().unwrap()).map_err(Error::TemplateInit)?;
         tera.register_filter("hex_to_rgb", hex_to_rgb);
         Ok(Self { tera })
     }

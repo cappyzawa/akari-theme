@@ -9,7 +9,7 @@ mod tmux;
 mod vscode;
 mod zsh;
 
-use crate::{Artifact, Error, Generator, Palette, Variant, VARIANTS};
+use crate::{Artifact, Error, Generator, Palette, VARIANTS, Variant};
 use std::path::PathBuf;
 
 /// A tool that can generate theme files
@@ -17,11 +17,8 @@ pub trait ThemeGenerator {
     fn name(&self) -> &'static str;
 
     /// Generate artifacts (content + relative paths) for this tool
-    fn artifacts(
-        &self,
-        palettes: &Palettes,
-        generator: &Generator,
-    ) -> Result<Vec<Artifact>, Error>;
+    fn artifacts(&self, palettes: &Palettes, generator: &Generator)
+    -> Result<Vec<Artifact>, Error>;
 }
 
 /// Palettes for both variants

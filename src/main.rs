@@ -1,4 +1,4 @@
-use akari_gen::{find_project_root, tools, Generator};
+use akari_gen::{Generator, find_project_root, tools};
 use clap::{Parser, Subcommand, ValueEnum};
 use std::fs;
 use std::process::ExitCode;

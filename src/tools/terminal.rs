@@ -1,5 +1,5 @@
 use super::{Palettes, ThemeGenerator};
-use crate::{terminal as terminal_gen, Artifact, Error, Generator, VARIANTS};
+use crate::{Artifact, Error, Generator, VARIANTS, terminal as terminal_gen};
 
 pub struct Terminal;
 

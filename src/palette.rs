@@ -168,10 +168,7 @@ mod tests {
     #[test]
     fn resolve_ref_base_section() {
         let palette = test_palette();
-        assert_eq!(
-            palette.resolve_ref("base.background").unwrap(),
-            "#171B22"
-        );
+        assert_eq!(palette.resolve_ref("base.background").unwrap(), "#171B22");
     }
 
     #[test]
