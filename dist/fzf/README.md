@@ -26,7 +26,17 @@ source /path/to/akari-fzf/akari-dawn.sh
 ### zinit
 
 ```zsh
-zinit light cappyzawa/akari-fzf
+zinit light-mode for \
+  pick"akari-night.sh" \
+  cappyzawa/akari-fzf
+```
+
+Or for dawn:
+
+```zsh
+zinit light-mode for \
+  pick"akari-dawn.sh" \
+  cappyzawa/akari-fzf
 ```
 
 ### sheldon

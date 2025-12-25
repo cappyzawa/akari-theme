@@ -30,13 +30,17 @@ source /path/to/akari-zsh/akari-dawn.zsh
 ### zinit
 
 ```zsh
-zinit snippet https://github.com/cappyzawa/akari-zsh/raw/main/akari-night.zsh
+zinit light-mode for \
+  pick"akari-night.zsh" \
+  cappyzawa/akari-zsh
 ```
 
 Or for dawn:
 
 ```zsh
-zinit snippet https://github.com/cappyzawa/akari-zsh/raw/main/akari-dawn.zsh
+zinit light-mode for \
+  pick"akari-dawn.zsh" \
+  cappyzawa/akari-zsh
 ```
 
 ### sheldon
