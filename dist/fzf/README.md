@@ -8,6 +8,8 @@ fzf themes inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
+### Manual
+
 Clone the repository and source the theme file in your `.bashrc` or `.zshrc`:
 
 ```bash
@@ -19,6 +21,41 @@ Or for dawn:
 
 ```bash
 source /path/to/akari-fzf/akari-dawn.sh
+```
+
+### zinit
+
+```zsh
+zinit light cappyzawa/akari-fzf
+```
+
+### sheldon
+
+Add to your `~/.config/sheldon/plugins.toml`:
+
+```toml
+[plugins.akari-fzf]
+github = "cappyzawa/akari-fzf"
+```
+
+### oh-my-zsh
+
+Clone as a custom plugin:
+
+```bash
+git clone https://github.com/cappyzawa/akari-fzf ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/akari-fzf
+```
+
+Then add to your `.zshrc`:
+
+```zsh
+plugins=(... akari-fzf)
+```
+
+### antigen
+
+```zsh
+antigen bundle cappyzawa/akari-fzf
 ```
 
 ## Variants

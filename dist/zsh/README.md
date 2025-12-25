@@ -12,6 +12,8 @@ zsh-syntax-highlighting themes inspired by Japanese alleys lit by round lanterns
 
 ## Installation
 
+### Manual
+
 Clone the repository and source the theme file in your `.zshrc`:
 
 ```bash
@@ -22,6 +24,48 @@ source /path/to/akari-zsh/akari.zsh
 
 # Or for dawn:
 AKARI_VARIANT=dawn source /path/to/akari-zsh/akari.zsh
+```
+
+### zinit
+
+```zsh
+zinit light cappyzawa/akari-zsh
+```
+
+For dawn variant:
+
+```zsh
+export AKARI_VARIANT=dawn
+zinit light cappyzawa/akari-zsh
+```
+
+### sheldon
+
+Add to your `~/.config/sheldon/plugins.toml`:
+
+```toml
+[plugins.akari-zsh]
+github = "cappyzawa/akari-zsh"
+```
+
+### oh-my-zsh
+
+Clone as a custom plugin:
+
+```bash
+git clone https://github.com/cappyzawa/akari-zsh ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/akari-zsh
+```
+
+Then add to your `.zshrc`:
+
+```zsh
+plugins=(... akari-zsh)
+```
+
+### antigen
+
+```zsh
+antigen bundle cappyzawa/akari-zsh
 ```
 
 ## Variants

@@ -8,7 +8,7 @@ Neovim colorscheme inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-Using [lazy.nvim](https://github.com/folke/lazy.nvim):
+### lazy.nvim
 
 ```lua
 {
@@ -31,6 +31,32 @@ To pin a specific version:
         vim.cmd.colorscheme("akari")
     end,
 }
+```
+
+### vim-plug
+
+```vim
+Plug 'cappyzawa/akari-nvim'
+```
+
+Then in your config:
+
+```lua
+lua require("akari").setup({ variant = "night" })
+colorscheme akari
+```
+
+### dein.vim
+
+```vim
+call dein#add('cappyzawa/akari-nvim')
+```
+
+Then in your config:
+
+```lua
+lua require("akari").setup({ variant = "night" })
+colorscheme akari
 ```
 
 ## Options
