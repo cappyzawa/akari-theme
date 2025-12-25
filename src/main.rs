@@ -1,5 +1,5 @@
-use akari_gen::{Generator, find_project_root, tools};
-use clap::{Parser, Subcommand, ValueEnum};
+use akari_gen::{ArtifactContent, Generator, Palette, Variant, find_project_root};
+use clap::{Parser, Subcommand};
 use std::fs;
 use std::process::ExitCode;
 
@@ -17,27 +17,12 @@ enum Command {
     Generate {
         /// Target tool (or 'all' to generate for all tools)
         #[arg(long)]
-        tool: CliTool,
+        tool: String,
 
-        /// Output directory (defaults to project root)
+        /// Output directory (defaults to dist/)
         #[arg(long)]
         out_dir: Option<std::path::PathBuf>,
     },
-}
-
-#[derive(Clone, ValueEnum)]
-enum CliTool {
-    Helix,
-    Ghostty,
-    Fzf,
-    Starship,
-    Tmux,
-    Zsh,
-    Nvim,
-    Vscode,
-    Terminal,
-    Chrome,
-    All,
 }
 
 fn main() -> ExitCode {
@@ -56,34 +41,29 @@ fn run() -> Result<(), akari_gen::Error> {
             let root = find_project_root()?;
             let out_root = out_dir.unwrap_or_else(|| root.join("dist"));
 
-            // Load palettes once
-            let palettes = tools::Palettes::load(&root.join("palette"))?;
+            // Load palettes
+            let palette_dir = root.join("palette");
+            let night = Palette::from_path(
+                palette_dir.join(Variant::Night.palette_filename()),
+                Variant::Night,
+            )?;
+            let dawn = Palette::from_path(
+                palette_dir.join(Variant::Dawn.palette_filename()),
+                Variant::Dawn,
+            )?;
+
             let generator = Generator::new(root.join("templates"))?;
 
             // Get tools to generate
-            let generators: Vec<Box<dyn tools::ThemeGenerator>> = match tool {
-                CliTool::All => tools::all(),
-                _ => {
-                    let name = match tool {
-                        CliTool::Helix => "helix",
-                        CliTool::Ghostty => "ghostty",
-                        CliTool::Fzf => "fzf",
-                        CliTool::Starship => "starship",
-                        CliTool::Tmux => "tmux",
-                        CliTool::Zsh => "zsh",
-                        CliTool::Nvim => "nvim",
-                        CliTool::Vscode => "vscode",
-                        CliTool::Terminal => "terminal",
-                        CliTool::Chrome => "chrome",
-                        CliTool::All => unreachable!(),
-                    };
-                    tools::by_name(name).into_iter().collect()
-                }
+            let tools: Vec<String> = if tool == "all" {
+                generator.available_tools()?
+            } else {
+                vec![tool]
             };
 
             // Generate and write artifacts
-            for tool in generators {
-                let artifacts = tool.artifacts(&palettes, &generator)?;
+            for tool_name in &tools {
+                let artifacts = generator.generate_tool(tool_name, &night, &dawn)?;
                 for artifact in artifacts {
                     let output_path = out_root.join(&artifact.rel_path);
 
@@ -92,8 +72,15 @@ fn run() -> Result<(), akari_gen::Error> {
                         fs::create_dir_all(parent)?;
                     }
 
-                    fs::write(&output_path, &artifact.content)?;
-                    println!("Generated: {}", output_path.display());
+                    match &artifact.content {
+                        ArtifactContent::Text(content) => {
+                            fs::write(&output_path, content)?;
+                        }
+                        ArtifactContent::Copy(src) => {
+                            fs::copy(src, &output_path)?;
+                        }
+                    }
+                    println!("  {}", artifact.rel_path.display());
                 }
             }
         }

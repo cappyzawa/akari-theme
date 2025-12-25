@@ -1,8 +1,9 @@
+mod color;
 mod generator;
 mod palette;
 pub mod terminal;
-pub mod tools;
 
+pub use color::Rgb;
 pub use generator::Generator;
 pub use palette::Palette;
 
@@ -10,22 +11,26 @@ use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
-    #[error("failed to read palette file: {0}")]
+    #[error("io error: {0}")]
     Io(#[from] std::io::Error),
-    #[error("failed to parse palette: {0}")]
+    #[error("invalid palette: {0}")]
     ParsePalette(#[from] toml::de::Error),
     #[error("unresolved reference: {0}")]
     UnresolvedRef(String),
-    #[error("failed to initialize template engine: {0}")]
+    #[error("template init failed: {0}")]
     TemplateInit(tera::Error),
-    #[error("failed to render template: {0}")]
+    #[error("template render failed: {0}")]
     TemplateRender(tera::Error),
     #[error("invalid hex color: {0}")]
     InvalidHex(String),
-    #[error("failed to write plist: {0}")]
-    Plist(#[from] plist::Error),
-    #[error("could not find project root (directory containing palette/ and Cargo.toml)")]
+    #[error("non-UTF-8 path: {0}")]
+    InvalidPath(PathBuf),
+    #[error("project root not found (expected palette/ and Cargo.toml)")]
     ProjectRootNotFound,
+    #[error("plist error: {0}")]
+    Plist(#[from] plist::Error),
+    #[error("plist output was not valid UTF-8")]
+    PlistUtf8,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -35,21 +40,21 @@ pub enum Variant {
 }
 
 impl Variant {
-    pub fn name(self) -> &'static str {
+    pub const fn name(self) -> &'static str {
         match self {
             Self::Night => "night",
             Self::Dawn => "dawn",
         }
     }
 
-    pub fn title(self) -> &'static str {
+    pub const fn title(self) -> &'static str {
         match self {
             Self::Night => "Night",
             Self::Dawn => "Dawn",
         }
     }
 
-    pub fn palette_filename(self) -> &'static str {
+    pub const fn palette_filename(self) -> &'static str {
         match self {
             Self::Night => "akari-night.toml",
             Self::Dawn => "akari-dawn.toml",
@@ -59,20 +64,36 @@ impl Variant {
 
 pub const VARIANTS: [Variant; 2] = [Variant::Night, Variant::Dawn];
 
-/// A generated theme file
+/// Content of an artifact
+#[derive(Debug, Clone)]
+pub enum ArtifactContent {
+    /// Text content to be written
+    Text(String),
+    /// Source path to be copied
+    Copy(PathBuf),
+}
+
+/// A generated or copied file
 #[derive(Debug, Clone)]
 pub struct Artifact {
     /// Relative path from output root (e.g., "helix/akari-night.toml")
     pub rel_path: PathBuf,
-    /// Generated content
-    pub content: String,
+    /// Content or source path
+    pub content: ArtifactContent,
 }
 
 impl Artifact {
-    pub fn new(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
+    pub fn text(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
         Self {
             rel_path: rel_path.into(),
-            content: content.into(),
+            content: ArtifactContent::Text(content.into()),
+        }
+    }
+
+    pub fn copy(rel_path: impl Into<PathBuf>, src: impl Into<PathBuf>) -> Self {
+        Self {
+            rel_path: rel_path.into(),
+            content: ArtifactContent::Copy(src.into()),
         }
     }
 }
