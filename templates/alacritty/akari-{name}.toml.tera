@@ -1,0 +1,33 @@
+# Akari {{ variant | title }} — {{ description }}
+
+[colors.primary]
+background = "{{ base.background }}"
+foreground = "{{ base.foreground }}"
+
+[colors.cursor]
+text = "{{ state.cursor_text }}"
+cursor = "{{ state.cursor }}"
+
+[colors.selection]
+text = "{{ state.selection_fg }}"
+background = "{{ state.selection_bg }}"
+
+[colors.normal]
+black   = "{{ ansi.black }}"
+red     = "{{ ansi.red }}"
+green   = "{{ ansi.green }}"
+yellow  = "{{ ansi.yellow }}"
+blue    = "{{ ansi.blue }}"
+magenta = "{{ ansi.magenta }}"
+cyan    = "{{ ansi.cyan }}"
+white   = "{{ ansi.white }}"
+
+[colors.bright]
+black   = "{{ ansi_bright.black }}"
+red     = "{{ ansi_bright.red }}"
+green   = "{{ ansi_bright.green }}"
+yellow  = "{{ ansi_bright.yellow }}"
+blue    = "{{ ansi_bright.blue }}"
+magenta = "{{ ansi_bright.magenta }}"
+cyan    = "{{ ansi_bright.cyan }}"
+white   = "{{ ansi_bright.white }}"

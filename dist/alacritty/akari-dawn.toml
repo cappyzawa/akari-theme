@@ -1,0 +1,33 @@
+# Akari Dawn — A light palette inspired by Japanese alleys lit by round lanterns.
+
+[colors.primary]
+background = "#E4DED6"
+foreground = "#1A1816"
+
+[colors.cursor]
+text = "#E4DED6"
+cursor = "#8A4530"
+
+[colors.selection]
+text = "#1A1816"
+background = "#D0C4B8"
+
+[colors.normal]
+black   = "#1A1816"
+red     = "#B04030"
+green   = "#3A5830"
+yellow  = "#B07840"
+blue    = "#304050"
+magenta = "#806080"
+cyan    = "#305858"
+white   = "#F4F0EA"
+
+[colors.bright]
+black   = "#3A3E48"
+red     = "#C04838"
+green   = "#70A868"
+yellow  = "#D09060"
+blue    = "#4060A0"
+magenta = "#705868"
+cyan    = "#306868"
+white   = "#0A0808"
