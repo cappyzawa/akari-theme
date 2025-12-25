@@ -6,34 +6,34 @@ local M = {}
 -- Night palette (dark theme)
 M.night = {
   -- Base
-  background = "#171B22", -- navy-charcoal night air
-  foreground = "#E6DED3", -- soft paper white
+  background = "#171B22",
+  foreground = "#E6DED3",
 
   -- Layers (blue-tinted elevation)
-  surface = "#1E232C", -- slightly elevated
-  sunken = "#2E211D", -- cursorline (lantern-tinted 20%)
-  raised = "#242836", -- popup/menu
-  border = "#2E3543", -- separators
+  surface = "#1E232C",
+  sunken = "#2E211D",
+  raised = "#242836",
+  border = "#2E3543",
 
   -- UI
-  cursor = "#E26A3B", -- lantern glow
+  cursor = "#E26A3B",
   cursor_text = "#171B22",
-  selection_bg = "#2D2518", -- amber-tinted warmth
+  selection_bg = "#2D2518",
   selection_fg = "#F2ECE4",
-  match_bg = "#332A2A", -- hint of lantern warmth
+  match_bg = "#332A2A",
 
   -- ANSI colors
   black = "#12100E",
   red = "#C84C32",
-  green = "#7FAF6A", -- brighter life green
-  yellow = "#D4A05A", -- amber (warm but not lantern)
-  blue = "#5A6F82", -- night air
-  magenta = "#7C6A8A", -- muted, non-neon
+  green = "#7FAF6A",
+  yellow = "#D4A05A",
+  blue = "#5A6F82",
+  magenta = "#7C6A8A",
   cyan = "#6F8F8A",
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#2E3543", -- matches border for consistency
+  bright_black = "#2E3543",
   bright_red = "#D65A3A",
   bright_green = "#8FC57A",
   bright_yellow = "#F08A5D",
@@ -43,22 +43,22 @@ M.night = {
   bright_white = "#F2ECE4",
 
   -- Semantic colors
-  lantern = "#E26A3B", -- primary accent (keyword)
-  ember = "#D65A3A", -- secondary warmth
-  amber = "#D4A05A", -- type/structure
-  constant = "#8FB8B0", -- numbers/constants (cyan)
-  comment = "#7D8797", -- distant stone-gray, night humidity
+  lantern = "#E26A3B",
+  ember = "#D65A3A",
+  amber = "#D4A05A",
+  constant = "#8FB8B0",
+  comment = "#7D8797",
 
   -- Diagnostic
   error = "#C84C32",
   warning = "#E26A3B",
   info = "#5A6F82",
-  hint = "#7D8797", -- matches comment
+  hint = "#7D8797",
 
   -- Diff
   diff_add = "#7FAF6A",
   diff_delete = "#C84C32",
-  diff_change = "#E26A3B",
+  diff_change = "#D4A05A",
 
   -- None (for transparent)
   none = "NONE",
@@ -67,29 +67,29 @@ M.night = {
 -- Dawn palette (light theme)
 M.dawn = {
   -- Base
-  background = "#E4DED6", -- dawn alley surface (warm paper)
-  foreground = "#1A1816", -- ink black (stone pavement)
+  background = "#E4DED6",
+  foreground = "#1A1816",
 
   -- Layers
-  surface = "#D4CEC6", -- slightly elevated
-  sunken = "#DCD4CA", -- cursorline (recessed)
-  raised = "#EDE7DF", -- popup/menu
-  border = "#C4BEB6", -- separators
+  surface = "#D4CEC6",
+  sunken = "#DCD4CA",
+  raised = "#EDE7DF",
+  border = "#C4BEB6",
 
   -- UI
-  cursor = "#8A4530", -- fading lantern
+  cursor = "#8A4530",
   cursor_text = "#E4DED6",
   selection_bg = "#D0C4B8",
   selection_fg = "#1A1816",
-  match_bg = "#D8C8B8", -- hint of lantern warmth
+  match_bg = "#D8C8B8",
 
   -- ANSI colors
   black = "#1A1816",
   red = "#B04030",
-  green = "#3A5830", -- plants catching first light
-  yellow = "#B07840", -- warm yellow in morning light
-  blue = "#304050", -- quiet morning air
-  magenta = "#806080", -- distant, unobtrusive
+  green = "#3A5830",
+  yellow = "#B07840",
+  blue = "#304050",
+  magenta = "#806080",
   cyan = "#305858",
   white = "#F4F0EA",
 
@@ -104,16 +104,16 @@ M.dawn = {
   bright_white = "#0A0808",
 
   -- Semantic colors
-  lantern = "#8A4530", -- fading lantern (keyword)
-  ember = "#7A3828", -- secondary warmth
-  amber = "#B07840", -- type/structure
-  constant = "#406868", -- numbers/constants (cyan)
-  comment = "#4A4642", -- readable dark gray
+  lantern = "#8A4530",
+  ember = "#7A3828",
+  amber = "#B07840",
+  constant = "#406868",
+  comment = "#4A4642",
 
   -- Diagnostic
   error = "#B04030",
   warning = "#8A4530",
-  info = "#304050",
+  info = "#607080",
   hint = "#5A5855",
 
   -- Diff

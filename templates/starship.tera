@@ -1,0 +1,23 @@
+# Akari {{ variant | title }} — Starship palette
+# Named colors only — apply with: palette = 'akari-{{ variant }}'
+
+[palettes.akari-{{ variant }}]
+# Standard ANSI colors
+black = '{{ ansi.black }}'
+red = '{{ ansi.red }}'
+green = '{{ ansi.green }}'
+yellow = '{{ ansi.yellow }}'
+blue = '{{ ansi.blue }}'
+purple = '{{ ansi.magenta }}'
+cyan = '{{ ansi.cyan }}'
+white = '{{ ansi.white }}'
+
+# Bright variants
+bright-black = '{{ ansi_bright.black }}'
+bright-red = '{{ ansi_bright.red }}'
+bright-green = '{{ ansi_bright.green }}'
+bright-yellow = '{{ ansi_bright.yellow }}'
+bright-blue = '{{ ansi_bright.blue }}'
+bright-purple = '{{ ansi_bright.magenta }}'
+bright-cyan = '{{ ansi_bright.cyan }}'
+bright-white = '{{ ansi_bright.white }}'

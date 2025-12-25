@@ -1,6 +1,5 @@
 name = "akari-night"
-version = "0.1.0"
-description = "A dark palette inspired by Japanese alleys lit by round lanterns at night."
+description = "A dark palette inspired by Japanese alleys lit by round lanterns."
 
 #
 # Colors (world pigments)
@@ -41,6 +40,8 @@ sunken = "#2E211D"
 raised = "#242836"
 # layers.border — window borders, separators
 border = "#2E3543"
+# layers.inset — side panels, status bar (recessed from editor)
+inset = "#12100E"
 
 #
 # State (UI states)

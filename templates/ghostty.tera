@@ -1,0 +1,29 @@
+# Akari {{ variant | title }} — {{ description }}
+
+# ANSI 0-15
+palette = 0={{ ansi.black }}
+palette = 1={{ ansi.red }}
+palette = 2={{ ansi.green }}
+palette = 3={{ ansi.yellow }}
+palette = 4={{ ansi.blue }}
+palette = 5={{ ansi.magenta }}
+palette = 6={{ ansi.cyan }}
+palette = 7={{ ansi.white }}
+palette = 8={{ ansi_bright.black }}
+palette = 9={{ ansi_bright.red }}
+palette = 10={{ ansi_bright.green }}
+palette = 11={{ ansi_bright.yellow }}
+palette = 12={{ ansi_bright.blue }}
+palette = 13={{ ansi_bright.magenta }}
+palette = 14={{ ansi_bright.cyan }}
+palette = 15={{ ansi_bright.white }}
+
+# Base
+background = {{ base.background }}
+foreground = {{ base.foreground }}
+
+# UI
+cursor-color = {{ state.cursor }}
+cursor-text = {{ state.cursor_text }}
+selection-background = {{ state.selection_bg }}
+selection-foreground = {{ state.selection_fg }}

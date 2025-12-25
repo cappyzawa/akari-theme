@@ -3,21 +3,21 @@
 
 [palettes.akari-dawn]
 # Standard ANSI colors
-black = '#1A1816'         # ansi.black
-red = '#B04030'           # ansi.red
-green = '#3A5830'         # ansi.green
-yellow = '#B07840'        # ansi.yellow
-blue = '#304050'          # ansi.blue
-purple = '#806080'        # ansi.magenta
-cyan = '#305858'          # ansi.cyan
-white = '#F4F0EA'         # ansi.white
+black = '#1A1816'
+red = '#B04030'
+green = '#3A5830'
+yellow = '#B07840'
+blue = '#304050'
+purple = '#806080'
+cyan = '#305858'
+white = '#F4F0EA'
 
 # Bright variants
-bright-black = '#3A3E48'  # ansi.bright.black
-bright-red = '#C04838'    # ansi.bright.red
-bright-green = '#70A868'  # ansi.bright.green
-bright-yellow = '#D09060' # ansi.bright.yellow
-bright-blue = '#4060A0'   # ansi.bright.blue
-bright-purple = '#705868' # ansi.bright.magenta
-bright-cyan = '#306868'   # ansi.bright.cyan
-bright-white = '#0A0808'  # ansi.bright.white
+bright-black = '#3A3E48'
+bright-red = '#C04838'
+bright-green = '#70A868'
+bright-yellow = '#D09060'
+bright-blue = '#4060A0'
+bright-purple = '#705868'
+bright-cyan = '#306868'
+bright-white = '#0A0808'

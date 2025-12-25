@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "Akari {{ variant | title }}",
+  "version": "0.1.0",
+  "description": "{{ description }}",
+  "theme": {
+    "colors": {
+      "frame": {{ base.background | hex_to_rgb }},
+      "frame_inactive": {{ base.background | hex_to_rgb }},
+      "frame_incognito": {{ base.background | hex_to_rgb }},
+      "frame_incognito_inactive": {{ base.background | hex_to_rgb }},
+      "toolbar": {{ state.active_bg | hex_to_rgb }},
+      "tab_text": {{ base.foreground | hex_to_rgb }},
+      "tab_background_text": {{ semantic.comment | hex_to_rgb }},
+      "tab_background_text_inactive": {{ semantic.comment | hex_to_rgb }},
+      "tab_background_text_incognito": {{ semantic.comment | hex_to_rgb }},
+      "tab_background_text_incognito_inactive": {{ semantic.comment | hex_to_rgb }},
+      "bookmark_text": {{ base.foreground | hex_to_rgb }},
+      "ntp_background": {{ base.background | hex_to_rgb }},
+      "ntp_text": {{ base.foreground | hex_to_rgb }},
+      "ntp_link": {{ colors.lantern | hex_to_rgb }},
+      "ntp_header": {{ layers.surface | hex_to_rgb }},
+      "button_background": {{ colors.amber | hex_to_rgb }},
+      "omnibox_background": {{ layers.raised | hex_to_rgb }},
+      "omnibox_text": {{ base.foreground | hex_to_rgb }}
+    },
+    "properties": {
+      "ntp_background_alignment": "center"
+    },
+    "tints": {
+      "buttons": [0.05, 0.8, 0.4]
+    }
+  }
+}

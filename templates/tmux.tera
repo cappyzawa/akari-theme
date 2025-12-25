@@ -1,21 +1,21 @@
-# Akari Dawn — tmux theme
-# A light palette inspired by Japanese alleys lit by round lanterns.
+# Akari {{ variant | title }} — tmux theme
+# {{ description }}
 
 # Palette
-%hidden AKARI_BG="#E4DED6"
-%hidden AKARI_FG="#1A1816"
-%hidden AKARI_SURFACE="#D4CEC6"
-%hidden AKARI_BORDER="#C4BEB6"
-%hidden AKARI_SUNKEN="#DCD4CA"
-%hidden AKARI_SELECTION="#D0C4B8"
-%hidden AKARI_ACTIVE="#D0C4B8"
-%hidden AKARI_LANTERN="#8A4530"
-%hidden AKARI_EMBER="#7A3828"
-%hidden AKARI_AMBER="#B07840"
-%hidden AKARI_LIFE="#3A5830"
-%hidden AKARI_NIGHT="#304050"
-%hidden AKARI_MUTED="#806080"
-%hidden AKARI_COMMENT="#4A4642"
+%hidden AKARI_BG="{{ base.background }}"
+%hidden AKARI_FG="{{ base.foreground }}"
+%hidden AKARI_SURFACE="{{ layers.surface }}"
+%hidden AKARI_BORDER="{{ layers.border }}"
+%hidden AKARI_SUNKEN="{{ layers.sunken }}"
+%hidden AKARI_SELECTION="{{ state.selection_bg }}"
+%hidden AKARI_ACTIVE="{{ state.active_bg }}"
+%hidden AKARI_LANTERN="{{ colors.lantern }}"
+%hidden AKARI_EMBER="{{ colors.ember }}"
+%hidden AKARI_AMBER="{{ colors.amber }}"
+%hidden AKARI_LIFE="{{ colors.life }}"
+%hidden AKARI_NIGHT="{{ colors.night }}"
+%hidden AKARI_MUTED="{{ colors.muted }}"
+%hidden AKARI_COMMENT="{{ semantic.comment }}"
 
 # Status bar
 set-option -g status-style "bg=$AKARI_BG,fg=$AKARI_FG"

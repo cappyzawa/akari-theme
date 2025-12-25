@@ -1,4 +1,4 @@
-# Akari Dawn v0.1.0 — The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world.
+# Akari Dawn — A light palette inspired by Japanese alleys lit by round lanterns.
 
 # UI elements
 "ui.background" = { bg = "background" }
@@ -179,41 +179,41 @@
 
 # Palette definition (MUST be at the end of the file)
 [palette]
-background = "#E4DED6"   # base.background — dawn alley surface
-foreground = "#1A1816"   # base.foreground — ink black
+background = "#E4DED6"
+foreground = "#1A1816"
 
-cursor = "#8A4530"       # state.cursor (colors.lantern)
-cursor-text = "#E4DED6"  # state.cursor_text (base.background)
-selection-bg = "#D0C4B8" # state.selection_bg
-selection-fg = "#1A1816" # state.selection_fg
-cursorline = "#DCD4CA"   # layers.sunken
+cursor = "#8A4530"
+cursor-text = "#E4DED6"
+selection-bg = "#D0C4B8"
+selection-fg = "#1A1816"
+cursorline = "#DCD4CA"
 
-surface = "#D4CEC6"      # layers.surface
-raised = "#EDE7DF"       # layers.raised
-border = "#C4BEB6"       # layers.border
+surface = "#D4CEC6"
+raised = "#EDE7DF"
+border = "#C4BEB6"
 
-black = "#1A1816"        # ansi.black
-red = "#B04030"          # ansi.red (state.error)
-green = "#3A5830"        # ansi.green (colors.life)
-yellow = "#B07840"       # ansi.yellow (colors.amber)
-blue = "#304050"         # ansi.blue (colors.night)
-magenta = "#806080"      # ansi.magenta (colors.muted)
-cyan = "#305858"         # ansi.cyan
-white = "#F4F0EA"        # ansi.white
+black = "#1A1816"
+red = "#B04030"
+green = "#3A5830"
+yellow = "#B07840"
+blue = "#304050"
+magenta = "#806080"
+cyan = "#305858"
+white = "#F4F0EA"
 
-bright-black = "#3A3E48"   # ansi.bright.black
-bright-red = "#C04838"     # ansi.bright.red
-bright-green = "#70A868"   # ansi.bright.green
-bright-yellow = "#D09060"  # ansi.bright.yellow
-bright-blue = "#4060A0"    # ansi.bright.blue
-bright-magenta = "#705868" # ansi.bright.magenta
-bright-cyan = "#306868"    # ansi.bright.cyan
-bright-white = "#0A0808"   # ansi.bright.white
+bright-black = "#3A3E48"
+bright-red = "#C04838"
+bright-green = "#70A868"
+bright-yellow = "#D09060"
+bright-blue = "#4060A0"
+bright-magenta = "#705868"
+bright-cyan = "#306868"
+bright-white = "#0A0808"
 
-lantern = "#8A4530"      # colors.lantern
-ember = "#7A3828"        # colors.ember
-amber = "#B07840"        # colors.amber
-constant = "#406868"     # semantic.constant (cool cyan for dawn)
-comment = "#4A4642"      # semantic.comment
-sunken = "#DCD4CA"       # layers.sunken (for cursor.match)
-match-bg = "#D8C8B8"     # state.match_bg
+lantern = "#8A4530"
+ember = "#7A3828"
+amber = "#B07840"
+constant = "#406868"
+comment = "#4A4642"
+sunken = "#DCD4CA"
+match-bg = "#D8C8B8"

@@ -3,21 +3,21 @@
 
 [palettes.akari-night]
 # Standard ANSI colors
-black = '#12100E'         # ansi.black
-red = '#C84C32'           # ansi.red
-green = '#7FAF6A'         # ansi.green
-yellow = '#D4A05A'        # ansi.yellow
-blue = '#5A6F82'          # ansi.blue
-purple = '#7C6A8A'        # ansi.magenta
-cyan = '#6F8F8A'          # ansi.cyan
-white = '#E6DED3'         # ansi.white
+black = '#12100E'
+red = '#C84C32'
+green = '#7FAF6A'
+yellow = '#D4A05A'
+blue = '#5A6F82'
+purple = '#7C6A8A'
+cyan = '#6F8F8A'
+white = '#E6DED3'
 
 # Bright variants
-bright-black = '#2E3543'  # ansi.bright.black
-bright-red = '#D65A3A'    # ansi.bright.red
-bright-green = '#8FC57A'  # ansi.bright.green
-bright-yellow = '#F08A5D' # ansi.bright.yellow
-bright-blue = '#6F879A'   # ansi.bright.blue
-bright-purple = '#9A8FB3' # ansi.bright.magenta
-bright-cyan = '#8FB8B0'   # ansi.bright.cyan
-bright-white = '#F2ECE4'  # ansi.bright.white
+bright-black = '#2E3543'
+bright-red = '#D65A3A'
+bright-green = '#8FC57A'
+bright-yellow = '#F08A5D'
+bright-blue = '#6F879A'
+bright-purple = '#9A8FB3'
+bright-cyan = '#8FB8B0'
+bright-white = '#F2ECE4'

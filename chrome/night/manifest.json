@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Akari Night",
   "version": "0.1.0",
-  "description": "A dark browser theme inspired by Japanese alleys lit by round lanterns at night.",
+  "description": "A dark palette inspired by Japanese alleys lit by round lanterns.",
   "theme": {
     "colors": {
       "frame": [23, 27, 34],

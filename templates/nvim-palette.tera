@@ -1,0 +1,157 @@
+-- Akari color palette
+-- A terminal color palette inspired by Japanese alleys lit by round lanterns.
+
+local M = {}
+
+-- Night palette (dark theme)
+M.night = {
+  -- Base
+  background = "{{ night_base.background }}",
+  foreground = "{{ night_base.foreground }}",
+
+  -- Layers (blue-tinted elevation)
+  surface = "{{ night_layers.surface }}",
+  sunken = "{{ night_layers.sunken }}",
+  raised = "{{ night_layers.raised }}",
+  border = "{{ night_layers.border }}",
+
+  -- UI
+  cursor = "{{ night_state.cursor }}",
+  cursor_text = "{{ night_state.cursor_text }}",
+  selection_bg = "{{ night_state.selection_bg }}",
+  selection_fg = "{{ night_state.selection_fg }}",
+  match_bg = "{{ night_state.match_bg }}",
+
+  -- ANSI colors
+  black = "{{ night_ansi.black }}",
+  red = "{{ night_ansi.red }}",
+  green = "{{ night_ansi.green }}",
+  yellow = "{{ night_ansi.yellow }}",
+  blue = "{{ night_ansi.blue }}",
+  magenta = "{{ night_ansi.magenta }}",
+  cyan = "{{ night_ansi.cyan }}",
+  white = "{{ night_ansi.white }}",
+
+  -- Bright ANSI colors
+  bright_black = "{{ night_ansi_bright.black }}",
+  bright_red = "{{ night_ansi_bright.red }}",
+  bright_green = "{{ night_ansi_bright.green }}",
+  bright_yellow = "{{ night_ansi_bright.yellow }}",
+  bright_blue = "{{ night_ansi_bright.blue }}",
+  bright_magenta = "{{ night_ansi_bright.magenta }}",
+  bright_cyan = "{{ night_ansi_bright.cyan }}",
+  bright_white = "{{ night_ansi_bright.white }}",
+
+  -- Semantic colors
+  lantern = "{{ night_colors.lantern }}",
+  ember = "{{ night_colors.ember }}",
+  amber = "{{ night_colors.amber }}",
+  constant = "{{ night_semantic.constant }}",
+  comment = "{{ night_semantic.comment }}",
+
+  -- Diagnostic
+  error = "{{ night_state.error }}",
+  warning = "{{ night_state.warning }}",
+  info = "{{ night_state.info }}",
+  hint = "{{ night_state.hint }}",
+
+  -- Diff
+  diff_add = "{{ night_state.diff_added }}",
+  diff_delete = "{{ night_state.diff_removed }}",
+  diff_change = "{{ night_state.diff_changed }}",
+
+  -- None (for transparent)
+  none = "NONE",
+}
+
+-- Dawn palette (light theme)
+M.dawn = {
+  -- Base
+  background = "{{ dawn_base.background }}",
+  foreground = "{{ dawn_base.foreground }}",
+
+  -- Layers
+  surface = "{{ dawn_layers.surface }}",
+  sunken = "{{ dawn_layers.sunken }}",
+  raised = "{{ dawn_layers.raised }}",
+  border = "{{ dawn_layers.border }}",
+
+  -- UI
+  cursor = "{{ dawn_state.cursor }}",
+  cursor_text = "{{ dawn_state.cursor_text }}",
+  selection_bg = "{{ dawn_state.selection_bg }}",
+  selection_fg = "{{ dawn_state.selection_fg }}",
+  match_bg = "{{ dawn_state.match_bg }}",
+
+  -- ANSI colors
+  black = "{{ dawn_ansi.black }}",
+  red = "{{ dawn_ansi.red }}",
+  green = "{{ dawn_ansi.green }}",
+  yellow = "{{ dawn_ansi.yellow }}",
+  blue = "{{ dawn_ansi.blue }}",
+  magenta = "{{ dawn_ansi.magenta }}",
+  cyan = "{{ dawn_ansi.cyan }}",
+  white = "{{ dawn_ansi.white }}",
+
+  -- Bright ANSI colors
+  bright_black = "{{ dawn_ansi_bright.black }}",
+  bright_red = "{{ dawn_ansi_bright.red }}",
+  bright_green = "{{ dawn_ansi_bright.green }}",
+  bright_yellow = "{{ dawn_ansi_bright.yellow }}",
+  bright_blue = "{{ dawn_ansi_bright.blue }}",
+  bright_magenta = "{{ dawn_ansi_bright.magenta }}",
+  bright_cyan = "{{ dawn_ansi_bright.cyan }}",
+  bright_white = "{{ dawn_ansi_bright.white }}",
+
+  -- Semantic colors
+  lantern = "{{ dawn_colors.lantern }}",
+  ember = "{{ dawn_colors.ember }}",
+  amber = "{{ dawn_colors.amber }}",
+  constant = "{{ dawn_semantic.constant }}",
+  comment = "{{ dawn_semantic.comment }}",
+
+  -- Diagnostic
+  error = "{{ dawn_state.error }}",
+  warning = "{{ dawn_state.warning }}",
+  info = "{{ dawn_state.info }}",
+  hint = "{{ dawn_state.hint }}",
+
+  -- Diff
+  diff_add = "{{ dawn_state.diff_added }}",
+  diff_delete = "{{ dawn_state.diff_removed }}",
+  diff_change = "{{ dawn_state.diff_changed }}",
+
+  -- None (for transparent)
+  none = "NONE",
+}
+
+-- Default to night palette for backwards compatibility
+M.palette = M.night
+
+-- Get terminal colors for a specific variant
+function M.get_terminal(variant)
+  local p = variant == "dawn" and M.dawn or M.night
+  return {
+    p.black, -- 0
+    p.red, -- 1
+    p.green, -- 2
+    p.yellow, -- 3
+    p.blue, -- 4
+    p.magenta, -- 5
+    p.cyan, -- 6
+    p.white, -- 7
+    p.bright_black, -- 8
+    p.bright_red, -- 9
+    p.bright_green, -- 10
+    p.bright_yellow, -- 11
+    p.bright_blue, -- 12
+    p.bright_magenta, -- 13
+    p.bright_cyan, -- 14
+    p.bright_white, -- 15
+  }
+end
+
+-- Terminal colors (16 ANSI colors) - default to night
+M.terminal = M.get_terminal("night")
+
+return M

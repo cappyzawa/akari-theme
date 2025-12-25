@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Akari Dawn",
   "version": "0.1.0",
-  "description": "A light browser theme inspired by Japanese alleys at dawn — lanterns still lit, but yielding to daylight.",
+  "description": "A light palette inspired by Japanese alleys lit by round lanterns.",
   "theme": {
     "colors": {
       "frame": [228, 222, 214],
@@ -28,7 +28,7 @@
       "ntp_background_alignment": "center"
     },
     "tints": {
-      "buttons": [0.05, 0.75, -0.1]
+      "buttons": [0.05, 0.8, 0.4]
     }
   }
 }

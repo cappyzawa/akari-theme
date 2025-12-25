@@ -1,6 +1,5 @@
 name = "akari-dawn"
-version = "0.1.0"
-description = "The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world."
+description = "A light palette inspired by Japanese alleys lit by round lanterns."
 
 #
 # Colors (world pigments)
@@ -41,6 +40,8 @@ sunken = "#DCD4CA"
 raised = "#EDE7DF"
 # layers.border — window borders, separators
 border = "#C4BEB6"
+# layers.inset — side panels, status bar (recessed from editor)
+inset = "#D0CAC2"
 
 #
 # State (UI states)

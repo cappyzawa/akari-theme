@@ -1,51 +1,29 @@
-# Akari Dawn v0.0.1 — The same Japanese alley at dawn — lanterns still lit, but no longer the center of the world.
+# Akari Dawn — A light palette inspired by Japanese alleys lit by round lanterns.
 
 # ANSI 0-15
-# 0: ansi.black
 palette = 0=#1A1816
-# 1: ansi.red (state.error)
 palette = 1=#B04030
-# 2: ansi.green (colors.life)
 palette = 2=#3A5830
-# 3: ansi.yellow (colors.amber)
 palette = 3=#B07840
-# 4: ansi.blue (colors.night)
 palette = 4=#304050
-# 5: ansi.magenta (colors.muted)
 palette = 5=#806080
-# 6: ansi.cyan
 palette = 6=#305858
-# 7: ansi.white
 palette = 7=#F4F0EA
-# 8: ansi.bright.black
 palette = 8=#3A3E48
-# 9: ansi.bright.red
 palette = 9=#C04838
-# 10: ansi.bright.green
 palette = 10=#70A868
-# 11: ansi.bright.yellow
 palette = 11=#D09060
-# 12: ansi.bright.blue
 palette = 12=#4060A0
-# 13: ansi.bright.magenta
 palette = 13=#705868
-# 14: ansi.bright.cyan
 palette = 14=#306868
-# 15: ansi.bright.white
 palette = 15=#0A0808
 
 # Base
-# base.background
 background = #E4DED6
-# base.foreground
 foreground = #1A1816
 
 # UI
-# state.cursor (colors.lantern)
 cursor-color = #8A4530
-# state.cursor_text (base.background)
 cursor-text = #E4DED6
-# state.selection_bg
 selection-background = #D0C4B8
-# state.selection_fg
 selection-foreground = #1A1816
