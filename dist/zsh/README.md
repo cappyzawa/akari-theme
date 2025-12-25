@@ -75,22 +75,22 @@ Then add to your `.zshrc`:
 plugins=(... akari-zsh)
 ```
 
-And source the theme file after oh-my-zsh is loaded:
+To use dawn variant, set before loading oh-my-zsh:
 
 ```zsh
-source ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/akari-zsh/akari-night.zsh
+export AKARI_VARIANT=dawn
 ```
 
 ### antigen
 
 ```zsh
-antigen bundle cappyzawa/akari-zsh --loc=akari-night.zsh
+antigen bundle cappyzawa/akari-zsh
 ```
 
-Or for dawn:
+To use dawn variant, set before loading:
 
 ```zsh
-antigen bundle cappyzawa/akari-zsh --loc=akari-dawn.zsh
+export AKARI_VARIANT=dawn
 ```
 
 ## Variants

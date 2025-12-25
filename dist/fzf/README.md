@@ -46,6 +46,15 @@ Add to your `~/.config/sheldon/plugins.toml`:
 ```toml
 [plugins.akari-fzf]
 github = "cappyzawa/akari-fzf"
+use = ["akari-night.sh"]
+```
+
+Or for dawn:
+
+```toml
+[plugins.akari-fzf]
+github = "cappyzawa/akari-fzf"
+use = ["akari-dawn.sh"]
 ```
 
 ### oh-my-zsh
@@ -62,10 +71,22 @@ Then add to your `.zshrc`:
 plugins=(... akari-fzf)
 ```
 
+To use dawn variant, set before loading oh-my-zsh:
+
+```zsh
+export AKARI_VARIANT=dawn
+```
+
 ### antigen
 
 ```zsh
 antigen bundle cappyzawa/akari-fzf
+```
+
+To use dawn variant, set before loading:
+
+```zsh
+export AKARI_VARIANT=dawn
 ```
 
 ## Variants
