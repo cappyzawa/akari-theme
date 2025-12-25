@@ -42,7 +42,7 @@ warm, and readable for long sessions.
 | [Alacritty](dist/alacritty/README.md) | Terminal Emulator | Import theme in `alacritty.toml` |
 | [Helix](dist/helix/README.md) | Editor | Copy theme to `~/.config/helix/themes/` |
 | [Neovim](dist/nvim/README.md) | Editor | Install via plugin manager |
-| [Visual Studio Code](dist/vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) |
+| [Visual Studio Code](dist/vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) or [Open VSX](https://open-vsx.org/extension/cappyzawa/akari-theme) |
 | [Starship](dist/starship/README.md) | Prompt | Add palette to `~/.config/starship.toml` |
 | [tmux](dist/tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
 | [macOS Terminal](dist/terminal/README.md) | Terminal Emulator | Double-click to import profile |
