@@ -1,14 +1,18 @@
-# Akari Helix Themes
+# Akari Helix Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
 Helix editor themes inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-Copy the theme file to your Helix themes directory:
+Clone the repository and symlink or copy the theme files:
 
 ```bash
-cp helix/akari-night.toml ~/.config/helix/themes/
-cp helix/akari-dawn.toml ~/.config/helix/themes/
+git clone https://github.com/cappyzawa/akari-helix.git
+cp akari-helix/*.toml ~/.config/helix/themes/
 ```
 
 Then add to your Helix config (`~/.config/helix/config.toml`):
@@ -25,5 +29,5 @@ theme = "akari-dawn"
 
 ## Variants
 
-- **akari-night.toml** - Dark theme with lantern-lit atmosphere
-- **akari-dawn.toml** - Light theme with morning warmth
+- **akari-night** - Dark theme with lantern-lit atmosphere
+- **akari-dawn** - Light theme with morning warmth

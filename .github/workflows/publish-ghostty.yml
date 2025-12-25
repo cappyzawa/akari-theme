@@ -1,0 +1,56 @@
+name: Publish Ghostty Theme
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Generate GitHub App token
+      uses: actions/create-github-app-token@v1
+      id: app-token
+      with:
+        app-id: ${{ secrets.AKARI_APP_ID }}
+        private-key: ${{ secrets.AKARI_APP_PRIVATE_KEY }}
+        repositories: akari-ghostty
+
+    - name: Checkout akari-ghostty
+      uses: actions/checkout@v4
+      with:
+        repository: cappyzawa/akari-ghostty
+        token: ${{ steps.app-token.outputs.token }}
+        path: akari-ghostty
+
+    - name: Sync ghostty directory
+      run: |
+        rsync -av --delete --exclude='.git' ghostty/ akari-ghostty/
+
+    - name: Commit and push
+      working-directory: akari-ghostty
+      run: |
+        git config user.name "akari-theme[bot]"
+        git config user.email "akari-theme[bot]@users.noreply.github.com"
+        git add -A
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "Sync from akari-theme ${{ github.ref_name }}"
+          git push
+        fi
+
+    - name: Create tag and release
+      if: github.event_name == 'release'
+      working-directory: akari-ghostty
+      env:
+        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+      run: |
+        git tag ${{ github.ref_name }}
+        git push origin ${{ github.ref_name }}
+        gh release create ${{ github.ref_name }} \
+          --title "${{ github.ref_name }}" \
+          --notes "Synced from [akari-theme ${{ github.ref_name }}](https://github.com/cappyzawa/akari-theme/releases/tag/${{ github.ref_name }})"
