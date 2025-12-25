@@ -1,13 +1,18 @@
-# Akari Starship Themes
+# Akari Starship Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
 Starship prompt themes inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-Add the contents of the theme file to your Starship config:
+Clone the repository and add the palette to your Starship config:
 
 ```bash
-cat starship/akari-night.toml >> ~/.config/starship.toml
+git clone https://github.com/cappyzawa/akari-starship.git
+cat akari-starship/akari-night.toml >> ~/.config/starship.toml
 ```
 
 Then set the palette in your config:
@@ -19,7 +24,7 @@ palette = 'akari-night'
 Or for dawn:
 
 ```bash
-cat starship/akari-dawn.toml >> ~/.config/starship.toml
+cat akari-starship/akari-dawn.toml >> ~/.config/starship.toml
 ```
 
 ```toml

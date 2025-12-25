@@ -1,4 +1,8 @@
-# Akari zsh-syntax-highlighting Themes
+# Akari zsh-syntax-highlighting Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
 zsh-syntax-highlighting themes inspired by Japanese alleys lit by round lanterns.
 
@@ -8,14 +12,16 @@ zsh-syntax-highlighting themes inspired by Japanese alleys lit by round lanterns
 
 ## Installation
 
-Source the theme file in your `.zshrc`:
+Clone the repository and source the theme file in your `.zshrc`:
 
 ```bash
+git clone https://github.com/cappyzawa/akari-zsh.git
+
 # Night (default)
-source /path/to/akari-theme/zsh/akari.zsh
+source /path/to/akari-zsh/akari.zsh
 
 # Or for dawn:
-AKARI_VARIANT=dawn source /path/to/akari-theme/zsh/akari.zsh
+AKARI_VARIANT=dawn source /path/to/akari-zsh/akari.zsh
 ```
 
 ## Variants
