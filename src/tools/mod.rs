@@ -145,3 +145,98 @@ pub fn by_name(name: &str) -> Option<Box<dyn ThemeGenerator>> {
         _ => None,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn all_returns_expected_count() {
+        let tools = all();
+        assert_eq!(tools.len(), 10);
+    }
+
+    #[test]
+    fn by_name_returns_correct_tool() {
+        let tool = by_name("helix").unwrap();
+        assert_eq!(tool.name(), "helix");
+
+        let tool = by_name("terminal").unwrap();
+        assert_eq!(tool.name(), "terminal");
+    }
+
+    #[test]
+    fn by_name_unknown_returns_none() {
+        assert!(by_name("unknown").is_none());
+        assert!(by_name("").is_none());
+    }
+
+    #[test]
+    fn palettes_get_returns_correct_variant() {
+        // This test requires actual palette files, so we verify the get() logic
+        // by checking that Palettes struct fields are accessible
+        use std::collections::BTreeMap;
+
+        let night = Palette {
+            name: "akari-night".into(),
+            description: "test".into(),
+            colors: BTreeMap::new(),
+            base: BTreeMap::new(),
+            layers: BTreeMap::new(),
+            state: BTreeMap::new(),
+            semantic: BTreeMap::new(),
+            ansi: BTreeMap::new(),
+            ansi_bright: BTreeMap::new(),
+        };
+        let dawn = Palette {
+            name: "akari-dawn".into(),
+            description: "test".into(),
+            colors: BTreeMap::new(),
+            base: BTreeMap::new(),
+            layers: BTreeMap::new(),
+            state: BTreeMap::new(),
+            semantic: BTreeMap::new(),
+            ansi: BTreeMap::new(),
+            ansi_bright: BTreeMap::new(),
+        };
+
+        let palettes = Palettes { night, dawn };
+
+        assert_eq!(palettes.get(Variant::Night).name, "akari-night");
+        assert_eq!(palettes.get(Variant::Dawn).name, "akari-dawn");
+    }
+
+    #[test]
+    fn per_variant_rel_path_substitution() {
+        // Test that {name} substitution works correctly
+        assert_eq!(
+            Helix.rel_path(Variant::Night),
+            PathBuf::from("helix/akari-night.toml")
+        );
+        assert_eq!(
+            Helix.rel_path(Variant::Dawn),
+            PathBuf::from("helix/akari-dawn.toml")
+        );
+    }
+
+    #[test]
+    fn all_tools_have_unique_names() {
+        let tools = all();
+        let names: Vec<_> = tools.iter().map(|t| t.name()).collect();
+        let mut unique_names = names.clone();
+        unique_names.sort();
+        unique_names.dedup();
+        assert_eq!(names.len(), unique_names.len(), "Tool names must be unique");
+    }
+
+    #[test]
+    fn by_name_covers_all_tools() {
+        let all_tools = all();
+        for tool in &all_tools {
+            let name = tool.name();
+            let found = by_name(name);
+            assert!(found.is_some(), "by_name should find tool: {}", name);
+            assert_eq!(found.unwrap().name(), name);
+        }
+    }
+}

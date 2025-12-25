@@ -158,3 +158,72 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
 
     String::from_utf8(buf.into_inner()).map_err(|e| Error::InvalidHex(e.to_string()))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn approx_eq(a: f64, b: f64) -> bool {
+        (a - b).abs() < 0.001
+    }
+
+    #[test]
+    fn hex_to_rgb_with_hash() {
+        let (r, g, b) = hex_to_rgb("#E26A3B").unwrap();
+        assert!(approx_eq(r, 226.0 / 255.0));
+        assert!(approx_eq(g, 106.0 / 255.0));
+        assert!(approx_eq(b, 59.0 / 255.0));
+    }
+
+    #[test]
+    fn hex_to_rgb_without_hash() {
+        let (r, g, b) = hex_to_rgb("E26A3B").unwrap();
+        assert!(approx_eq(r, 226.0 / 255.0));
+        assert!(approx_eq(g, 106.0 / 255.0));
+        assert!(approx_eq(b, 59.0 / 255.0));
+    }
+
+    #[test]
+    fn hex_to_rgb_black() {
+        let (r, g, b) = hex_to_rgb("#000000").unwrap();
+        assert!(approx_eq(r, 0.0));
+        assert!(approx_eq(g, 0.0));
+        assert!(approx_eq(b, 0.0));
+    }
+
+    #[test]
+    fn hex_to_rgb_white() {
+        let (r, g, b) = hex_to_rgb("#FFFFFF").unwrap();
+        assert!(approx_eq(r, 1.0));
+        assert!(approx_eq(g, 1.0));
+        assert!(approx_eq(b, 1.0));
+    }
+
+    #[test]
+    fn hex_to_rgb_lowercase() {
+        let (r, g, b) = hex_to_rgb("#aabbcc").unwrap();
+        assert!(approx_eq(r, 170.0 / 255.0));
+        assert!(approx_eq(g, 187.0 / 255.0));
+        assert!(approx_eq(b, 204.0 / 255.0));
+    }
+
+    #[test]
+    fn hex_to_rgb_invalid_length_short() {
+        assert!(hex_to_rgb("#FFF").is_err());
+    }
+
+    #[test]
+    fn hex_to_rgb_invalid_length_long() {
+        assert!(hex_to_rgb("#FFFFFFFF").is_err());
+    }
+
+    #[test]
+    fn hex_to_rgb_invalid_chars() {
+        assert!(hex_to_rgb("#GGGGGG").is_err());
+    }
+
+    #[test]
+    fn hex_to_rgb_empty() {
+        assert!(hex_to_rgb("").is_err());
+    }
+}
