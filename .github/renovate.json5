@@ -5,6 +5,14 @@
   ],
   "labels": ["dependencies"],
   "automerge": true,
+  "minimumReleaseAge": "7 days",
+  "timezone": "Asia/Tokyo",
+  "schedule": ["after 10am and before 11am every weekday"],
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": "0 days",
+    "labels": ["security"]
+  },
   "packageRules": [
     {
       "matchManagers": ["cargo"],
