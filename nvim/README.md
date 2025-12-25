@@ -1,4 +1,8 @@
-# Akari Neovim Themes
+# Akari Neovim Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
 Neovim colorscheme inspired by Japanese alleys lit by round lanterns.
 
@@ -8,7 +12,7 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 
 ```lua
 {
-    "cappyzawa/akari-theme",
+    "cappyzawa/akari-nvim",
     config = function()
         require("akari").setup({ variant = "night" })
         vim.cmd.colorscheme("akari")
@@ -16,13 +20,14 @@ Using [lazy.nvim](https://github.com/folke/lazy.nvim):
 }
 ```
 
-Or for dawn:
+To pin a specific version:
 
 ```lua
 {
-    "cappyzawa/akari-theme",
+    "cappyzawa/akari-nvim",
+    tag = "v0.9.0",
     config = function()
-        require("akari").setup({ variant = "dawn" })
+        require("akari").setup({ variant = "night" })
         vim.cmd.colorscheme("akari")
     end,
 }
