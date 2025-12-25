@@ -70,6 +70,10 @@ warning = "#8A4530"
 # state.error
 error = "#B04030"
 
+# Active
+# state.active_bg — active window/tab background (amber-tinted for dawn)
+active_bg = "#D0C4B8"
+
 # Diff
 # state.diff_added
 diff_added = "#507848"

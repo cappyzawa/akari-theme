@@ -70,6 +70,10 @@ warning = "#E26A3B"
 # state.error
 error = "#C84C32"
 
+# Active
+# state.active_bg — active window/tab background (night 25% for night)
+active_bg = "#28303A"
+
 # Diff
 # state.diff_added
 diff_added = "#7FAF6A"
