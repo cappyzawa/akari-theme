@@ -1,0 +1,42 @@
+changelog:
+  categories:
+  - title: "🏮 Helix"
+    labels:
+    - helix
+  - title: "👻 Ghostty"
+    labels:
+    - ghostty
+  - title: "✨ Neovim"
+    labels:
+    - nvim
+  - title: "🎨 VS Code"
+    labels:
+    - vscode
+  - title: "⭐ Starship"
+    labels:
+    - starship
+  - title: "🖥️ tmux"
+    labels:
+    - tmux
+  - title: "📟 macOS Terminal"
+    labels:
+    - terminal
+  - title: "🐚 zsh"
+    labels:
+    - zsh
+  - title: "🔍 fzf"
+    labels:
+    - fzf
+  - title: "🌐 Chrome"
+    labels:
+    - chrome
+  - title: "🎨 Palette"
+    labels:
+    - palette
+  - title: "🔧 Core / Generator"
+    labels:
+    - core
+    - generator
+  - title: "📝 Other Changes"
+    labels:
+    - "*"
