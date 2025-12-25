@@ -16,7 +16,12 @@
   "packageRules": [
     {
       "matchManagers": ["cargo"],
-      "groupName": "rust dependencies"
+      "groupName": "rust dependencies",
+      "postUpgradeTasks": {
+        "commands": ["cargo run -- generate --tool all"],
+        "fileFilters": ["**/*"],
+        "executionMode": "branch"
+      }
     },
     {
       "matchManagers": ["github-actions"],
