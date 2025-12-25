@@ -4,6 +4,7 @@
     "config:recommended"
   ],
   "labels": ["dependencies"],
+  "automerge": true,
   "packageRules": [
     {
       "matchManagers": ["cargo"],
