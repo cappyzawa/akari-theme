@@ -40,3 +40,14 @@ jobs:
 
     - name: Check for uncommitted changes
       run: git diff --exit-code
+
+  status-check:
+    needs: [test, generate]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+    - name: Check all jobs passed
+      run: |
+        if [[ "${{ needs.test.result }}" != "success" ]] || [[ "${{ needs.generate.result }}" != "success" ]]; then
+          exit 1
+        fi

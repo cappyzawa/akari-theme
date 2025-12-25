@@ -15,6 +15,10 @@
   },
   "packageRules": [
     {
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
       "matchManagers": ["cargo"],
       "groupName": "rust dependencies",
       "postUpgradeTasks": {
