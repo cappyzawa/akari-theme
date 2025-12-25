@@ -1,17 +1,8 @@
+use crate::Error;
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
-
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error("failed to read palette file: {0}")]
-    Io(#[from] std::io::Error),
-    #[error("failed to parse palette: {0}")]
-    Parse(#[from] toml::de::Error),
-    #[error("unresolved reference: {0}")]
-    UnresolvedRef(String),
-}
 
 #[derive(Debug, Deserialize)]
 struct RawPalette {
@@ -68,33 +59,27 @@ impl Palette {
             ansi_bright: BTreeMap::new(),
         };
 
-        // Resolve semantic references
         for (key, value) in &raw.semantic {
             let resolved = palette.resolve_ref(value)?;
             palette.semantic.insert(key.clone(), resolved);
         }
 
-        // Build ansi map with resolved references
-        palette.ansi.insert("black".into(), raw.ansi.black);
-        palette.ansi.insert("red".into(), raw.ansi.red);
-        palette
-            .ansi
-            .insert("green".into(), palette.resolve_ref(&raw.ansi.green)?);
-        palette
-            .ansi
-            .insert("yellow".into(), palette.resolve_ref(&raw.ansi.yellow)?);
-        palette
-            .ansi
-            .insert("blue".into(), palette.resolve_ref(&raw.ansi.blue)?);
-        palette
-            .ansi
-            .insert("magenta".into(), palette.resolve_ref(&raw.ansi.magenta)?);
-        palette.ansi.insert("cyan".into(), raw.ansi.cyan);
-        palette
-            .ansi
-            .insert("white".into(), palette.resolve_ref(&raw.ansi.white)?);
+        let ansi_fields = [
+            ("black", &raw.ansi.black),
+            ("red", &raw.ansi.red),
+            ("green", &raw.ansi.green),
+            ("yellow", &raw.ansi.yellow),
+            ("blue", &raw.ansi.blue),
+            ("magenta", &raw.ansi.magenta),
+            ("cyan", &raw.ansi.cyan),
+            ("white", &raw.ansi.white),
+        ];
 
-        // Build ansi_bright map with resolved references
+        for (name, value) in ansi_fields {
+            let resolved = palette.resolve_ref(value)?;
+            palette.ansi.insert(name.into(), resolved);
+        }
+
         for (key, value) in &raw.ansi.bright {
             let resolved = palette.resolve_ref(value)?;
             palette.ansi_bright.insert(key.clone(), resolved);
@@ -108,12 +93,10 @@ impl Palette {
             return Ok(value.to_string());
         }
 
-        let parts: Vec<&str> = value.split('.').collect();
-        if parts.len() != 2 {
-            return Err(Error::UnresolvedRef(value.to_string()));
-        }
+        let (section, key) = value
+            .split_once('.')
+            .ok_or_else(|| Error::UnresolvedRef(value.to_string()))?;
 
-        let (section, key) = (parts[0], parts[1]);
         let map = match section {
             "colors" => &self.colors,
             "base" => &self.base,

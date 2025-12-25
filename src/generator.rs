@@ -1,17 +1,8 @@
-use crate::palette::Palette;
+use crate::{Error, Palette};
 use std::collections::HashMap;
 use std::path::Path;
 use tera::{Context, Tera, Value};
 
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-    #[error("failed to initialize template engine: {0}")]
-    Init(#[from] tera::Error),
-    #[error("failed to render template: {0}")]
-    Render(tera::Error),
-}
-
-/// Convert hex color to RGB array string: "#E26A3B" -> "[226, 106, 59]"
 fn hex_to_rgb(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
     let hex = value
         .as_str()
@@ -33,7 +24,8 @@ pub struct Generator {
 impl Generator {
     pub fn new(templates_dir: impl AsRef<Path>) -> Result<Self, Error> {
         let pattern = templates_dir.as_ref().join("**/*.tera");
-        let mut tera = Tera::new(pattern.to_str().unwrap())?;
+        let mut tera =
+            Tera::new(pattern.to_str().unwrap()).map_err(Error::TemplateInit)?;
         tera.register_filter("hex_to_rgb", hex_to_rgb);
         Ok(Self { tera })
     }
@@ -53,7 +45,9 @@ impl Generator {
         context.insert("ansi", &palette.ansi);
         context.insert("ansi_bright", &palette.ansi_bright);
 
-        self.tera.render(template, &context).map_err(Error::Render)
+        self.tera
+            .render(template, &context)
+            .map_err(Error::TemplateRender)
     }
 
     pub fn render_combined(
@@ -64,7 +58,6 @@ impl Generator {
     ) -> Result<String, Error> {
         let mut context = Context::new();
 
-        // Night palette
         context.insert("night_colors", &night.colors);
         context.insert("night_base", &night.base);
         context.insert("night_layers", &night.layers);
@@ -73,7 +66,6 @@ impl Generator {
         context.insert("night_ansi", &night.ansi);
         context.insert("night_ansi_bright", &night.ansi_bright);
 
-        // Dawn palette
         context.insert("dawn_colors", &dawn.colors);
         context.insert("dawn_base", &dawn.base);
         context.insert("dawn_layers", &dawn.layers);
@@ -82,6 +74,8 @@ impl Generator {
         context.insert("dawn_ansi", &dawn.ansi);
         context.insert("dawn_ansi_bright", &dawn.ansi_bright);
 
-        self.tera.render(template, &context).map_err(Error::Render)
+        self.tera
+            .render(template, &context)
+            .map_err(Error::TemplateRender)
     }
 }

@@ -1,6 +1,7 @@
 *.vsix
 
-
 # Added by cargo
-
 /target
+
+# Sample files for syntax highlighting testing
+/samples
