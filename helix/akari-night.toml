@@ -186,7 +186,7 @@ cursor = "#E26A3B"       # state.cursor (colors.lantern)
 cursor-text = "#171B22"  # state.cursor_text (base.background)
 selection-bg = "#2D2518" # state.selection_bg (amber-tinted warmth)
 selection-fg = "#F2ECE4" # state.selection_fg
-cursorline = "#251D1A"   # layers.sunken (lantern-tinted warmth)
+cursorline = "#2E211D"   # layers.sunken (lantern-tinted 20%)
 
 surface = "#1E232C"      # layers.surface (blue-tinted)
 raised = "#242836"       # layers.raised (blue-tinted)
@@ -215,5 +215,5 @@ ember = "#D65A3A"        # colors.ember
 amber = "#D4A05A"        # colors.amber
 constant = "#8FB8B0"     # EXPERIMENTAL: bright-cyan for ~150° hue difference
 comment = "#7D8797"      # semantic.comment (distant stone-gray)
-sunken = "#251D1A"       # layers.sunken (for cursor.match)
+sunken = "#2E211D"       # layers.sunken (for cursor.match)
 match-bg = "#332A2A"     # state.match_bg

@@ -11,7 +11,7 @@ M.night = {
 
   -- Layers (blue-tinted elevation)
   surface = "#1E232C", -- slightly elevated
-  sunken = "#251D1A", -- cursorline (lantern-tinted warmth)
+  sunken = "#2E211D", -- cursorline (lantern-tinted 20%)
   raised = "#242836", -- popup/menu
   border = "#2E3543", -- separators
 

@@ -35,8 +35,8 @@ foreground = "#E6DED3" # soft paper white
 base = "#171B22"
 # layers.surface — statusline, panels (slightly elevated, blue-tinted)
 surface = "#1E232C"
-# layers.sunken — cursorline (recessed, lantern-tinted for warmth)
-sunken = "#251D1A"
+# layers.sunken — cursorline (recessed, lantern-tinted 20% for warmth)
+sunken = "#2E211D"
 # layers.raised — popup, menu (elevated, blue-tinted)
 raised = "#242836"
 # layers.border — window borders, separators

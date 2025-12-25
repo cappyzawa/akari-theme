@@ -36,8 +36,8 @@
     "editor.wordHighlightStrongBackground": "#2E354380",
     "editor.findMatchBackground": "#E26A3B40",
     "editor.findMatchHighlightBackground": "#E26A3B20",
-    "editor.lineHighlightBackground": "#251D1A",
-    "editor.lineHighlightBorder": "#251D1A00",
+    "editor.lineHighlightBackground": "#2E211D",
+    "editor.lineHighlightBorder": "#2E211D00",
     "editorLink.activeForeground": "#6F879A",
 
     "editorGutter.background": "#171B22",
