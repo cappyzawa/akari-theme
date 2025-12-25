@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync tmux directory
       run: |
-        rsync -av --delete --exclude='.git' tmux/ akari-tmux/
+        rsync -av --delete --exclude='.git' dist/tmux/ akari-tmux/
 
     - name: Commit and push
       working-directory: akari-tmux

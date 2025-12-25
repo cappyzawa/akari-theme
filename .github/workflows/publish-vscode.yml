@@ -16,11 +16,11 @@ jobs:
 
     - name: Update version in package.json
       run: npm pkg set version="${GITHUB_REF_NAME#v}"
-      working-directory: ./vscode
+      working-directory: ./dist/vscode
 
     - name: Publish to Visual Studio Marketplace
       uses: HaaLeo/publish-vscode-extension@v2
       with:
         pat: ${{ secrets.VSCE_PAT }}
         registryUrl: https://marketplace.visualstudio.com
-        packagePath: ./vscode
+        packagePath: ./dist/vscode

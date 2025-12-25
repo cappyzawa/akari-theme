@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync chrome directory
       run: |
-        rsync -av --delete --exclude='.git' chrome/ akari-chrome/
+        rsync -av --delete --exclude='.git' dist/chrome/ akari-chrome/
 
     - name: Commit and push
       working-directory: akari-chrome

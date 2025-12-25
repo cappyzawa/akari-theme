@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync fzf directory
       run: |
-        rsync -av --delete --exclude='.git' fzf/ akari-fzf/
+        rsync -av --delete --exclude='.git' dist/fzf/ akari-fzf/
 
     - name: Commit and push
       working-directory: akari-fzf

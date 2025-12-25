@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync starship directory
       run: |
-        rsync -av --delete --exclude='.git' starship/ akari-starship/
+        rsync -av --delete --exclude='.git' dist/starship/ akari-starship/
 
     - name: Commit and push
       working-directory: akari-starship

@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync nvim directory
       run: |
-        rsync -av --delete --exclude='.git' nvim/ akari-nvim/
+        rsync -av --delete --exclude='.git' dist/nvim/ akari-nvim/
 
     - name: Commit and push
       working-directory: akari-nvim

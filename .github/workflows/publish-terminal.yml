@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync terminal directory
       run: |
-        rsync -av --delete --exclude='.git' terminal/ akari-terminal/
+        rsync -av --delete --exclude='.git' dist/terminal/ akari-terminal/
 
     - name: Commit and push
       working-directory: akari-terminal

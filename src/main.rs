@@ -54,7 +54,7 @@ fn run() -> Result<(), akari_gen::Error> {
     match cli.command {
         Command::Generate { tool, out_dir } => {
             let root = find_project_root()?;
-            let out_root = out_dir.unwrap_or_else(|| root.clone());
+            let out_root = out_dir.unwrap_or_else(|| root.join("dist"));
 
             // Load palettes once
             let palettes = tools::Palettes::load(&root.join("palette"))?;

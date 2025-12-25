@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync vscode directory
       run: |
-        rsync -av --delete --exclude='.git' vscode/ akari-vscode/
+        rsync -av --delete --exclude='.git' dist/vscode/ akari-vscode/
 
     - name: Commit and push
       working-directory: akari-vscode

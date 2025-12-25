@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync zsh directory
       run: |
-        rsync -av --delete --exclude='.git' zsh/ akari-zsh/
+        rsync -av --delete --exclude='.git' dist/zsh/ akari-zsh/
 
     - name: Commit and push
       working-directory: akari-zsh

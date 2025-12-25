@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync helix directory
       run: |
-        rsync -av --delete --exclude='.git' helix/ akari-helix/
+        rsync -av --delete --exclude='.git' dist/helix/ akari-helix/
 
     - name: Commit and push
       working-directory: akari-helix

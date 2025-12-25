@@ -28,7 +28,7 @@ jobs:
 
     - name: Sync ghostty directory
       run: |
-        rsync -av --delete --exclude='.git' ghostty/ akari-ghostty/
+        rsync -av --delete --exclude='.git' dist/ghostty/ akari-ghostty/
 
     - name: Commit and push
       working-directory: akari-ghostty
