@@ -1,0 +1,33 @@
+# Akari Night — A dark palette inspired by Japanese alleys lit by round lanterns.
+
+[colors.primary]
+background = "#171B22"
+foreground = "#E6DED3"
+
+[colors.cursor]
+text = "#171B22"
+cursor = "#E26A3B"
+
+[colors.selection]
+text = "#F2ECE4"
+background = "#2D2518"
+
+[colors.normal]
+black   = "#12100E"
+red     = "#C84C32"
+green   = "#7FAF6A"
+yellow  = "#D4A05A"
+blue    = "#5A6F82"
+magenta = "#7C6A8A"
+cyan    = "#6F8F8A"
+white   = "#E6DED3"
+
+[colors.bright]
+black   = "#2E3543"
+red     = "#D65A3A"
+green   = "#8FC57A"
+yellow  = "#F08A5D"
+blue    = "#6F879A"
+magenta = "#9A8FB3"
+cyan    = "#8FB8B0"
+white   = "#F2ECE4"

@@ -39,6 +39,7 @@ warm, and readable for long sessions.
 | Tool | Category | Installation |
 |------|----------|--------------|
 | [Ghostty](dist/ghostty/README.md) | Terminal Emulator | Copy theme to `~/.config/ghostty/themes/` |
+| [Alacritty](dist/alacritty/README.md) | Terminal Emulator | Import theme in `alacritty.toml` |
 | [Helix](dist/helix/README.md) | Editor | Copy theme to `~/.config/helix/themes/` |
 | [Neovim](dist/nvim/README.md) | Editor | Install via plugin manager |
 | [Visual Studio Code](dist/vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) |
