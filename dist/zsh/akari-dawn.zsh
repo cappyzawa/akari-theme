@@ -1,43 +1,21 @@
-# Akari — zsh-syntax-highlighting configuration
+# Akari Dawn — zsh-syntax-highlighting configuration
 # A color palette inspired by Japanese alleys lit by round lanterns.
-#
-# Usage:
-#   AKARI_VARIANT=night source /path/to/akari.zsh  # default
-#   AKARI_VARIANT=dawn source /path/to/akari.zsh
 
 # Declare the associative array
 typeset -A ZSH_HIGHLIGHT_STYLES
 
-# Set variant (default: night)
-: ${AKARI_VARIANT:=night}
-
-if [[ "$AKARI_VARIANT" == "dawn" ]]; then
-  # Dawn palette (light) — dawn alley surface, ink black text
-  _lantern='#8A4530'
-  _ember='#7A3828'
-  _amber='#B07840'
-  _life='#3A5830'
-  _night='#304050'
-  _muted='#806080'
-  _cyan='#305858'
-  _constant='#406868'
-  _text='#1A1816'
-  _comment='#4A4642'
-  _border='#C4BEB6'
-else
-  # Night palette (dark, default)
-  _lantern='#E26A3B'
-  _ember='#D65A3A'
-  _amber='#D4A05A'
-  _life='#7FAF6A'
-  _night='#5A6F82'
-  _muted='#7C6A8A'
-  _cyan='#6F8F8A'
-  _constant='#8FB8B0'
-  _text='#E6DED3'
-  _comment='#7D8797'
-  _border='#2E3543'
-fi
+# Palette
+_lantern='#8A4530'
+_ember='#7A3828'
+_amber='#B07840'
+_life='#3A5830'
+_night='#304050'
+_muted='#806080'
+_cyan='#305858'
+_constant='#406868'
+_text='#1A1816'
+_comment='#4A4642'
+_border='#C4BEB6'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"

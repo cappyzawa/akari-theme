@@ -1,21 +1,21 @@
-# Akari {{ variant | title }} — zsh-syntax-highlighting configuration
+# Akari Night — zsh-syntax-highlighting configuration
 # A color palette inspired by Japanese alleys lit by round lanterns.
 
 # Declare the associative array
 typeset -A ZSH_HIGHLIGHT_STYLES
 
 # Palette
-_lantern='{{ colors.lantern }}'
-_ember='{{ colors.ember }}'
-_amber='{{ colors.amber }}'
-_life='{{ colors.life }}'
-_night='{{ colors.night }}'
-_muted='{{ colors.muted }}'
-_cyan='{{ ansi.cyan }}'
-_constant='{{ semantic.constant }}'
-_text='{{ base.foreground }}'
-_comment='{{ semantic.comment }}'
-_border='{{ layers.border }}'
+_lantern='#E26A3B'
+_ember='#D65A3A'
+_amber='#D4A05A'
+_life='#7FAF6A'
+_night='#5A6F82'
+_muted='#7C6A8A'
+_cyan='#6F8F8A'
+_constant='#8FB8B0'
+_text='#E6DED3'
+_comment='#7D8797'
+_border='#2E3543'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"
