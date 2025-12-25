@@ -1,4 +1,8 @@
-# Akari tmux Themes
+# Akari tmux Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
 tmux themes inspired by Japanese alleys lit by round lanterns.
 
@@ -15,25 +19,18 @@ set -g @akari_variant 'night'  # or 'dawn'
 
 Then press `prefix + I` to install.
 
+To pin a specific version:
+
+```tmux
+set -g @plugin 'cappyzawa/akari-tmux#v0.9.0'
+```
+
 ### Manual
 
-Copy the theme file to your tmux config directory:
-
-```bash
-cp tmux/akari-night.conf ~/.config/tmux/
-cp tmux/akari-dawn.conf ~/.config/tmux/
-```
-
-Then add to your `.tmux.conf`:
+Download the theme file and source it in your `.tmux.conf`:
 
 ```tmux
-source-file ~/.config/tmux/akari-night.conf
-```
-
-Or for dawn:
-
-```tmux
-source-file ~/.config/tmux/akari-dawn.conf
+source-file /path/to/akari-night.conf
 ```
 
 ## Variants
