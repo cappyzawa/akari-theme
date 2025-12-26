@@ -9,17 +9,16 @@ pub struct Rgb {
 
 impl Rgb {
     pub fn parse(hex: &str) -> Result<Self, Error> {
-        let hex = hex.trim_start_matches('#');
+        let hex = hex.strip_prefix('#').unwrap_or(hex);
+        let invalid = || Error::InvalidHex(hex.to_string());
+
         if hex.len() != 6 {
-            return Err(Error::InvalidHex(hex.to_string()));
+            return Err(invalid());
         }
 
-        let r =
-            u8::from_str_radix(&hex[0..2], 16).map_err(|_| Error::InvalidHex(hex.to_string()))?;
-        let g =
-            u8::from_str_radix(&hex[2..4], 16).map_err(|_| Error::InvalidHex(hex.to_string()))?;
-        let b =
-            u8::from_str_radix(&hex[4..6], 16).map_err(|_| Error::InvalidHex(hex.to_string()))?;
+        let r = u8::from_str_radix(&hex[0..2], 16).map_err(|_| invalid())?;
+        let g = u8::from_str_radix(&hex[2..4], 16).map_err(|_| invalid())?;
+        let b = u8::from_str_radix(&hex[4..6], 16).map_err(|_| invalid())?;
 
         Ok(Self { r, g, b })
     }

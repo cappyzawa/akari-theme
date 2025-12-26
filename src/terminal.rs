@@ -3,13 +3,11 @@ use plist::Value;
 use std::collections::BTreeMap;
 use std::io::Cursor;
 
-/// Capitalize the first ASCII character of a string.
 fn capitalize(s: &str) -> String {
-    let mut chars = s.chars();
-    match chars.next() {
-        None => String::new(),
-        Some(c) => c.to_ascii_uppercase().to_string() + chars.as_str(),
-    }
+    let mut c = s.chars();
+    c.next()
+        .map(|first| first.to_ascii_uppercase().to_string() + c.as_str())
+        .unwrap_or_default()
 }
 
 fn encode_nscolor(hex: &str) -> Result<Vec<u8>, Error> {
@@ -74,13 +72,13 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
     let mut dict: BTreeMap<String, Value> = BTreeMap::new();
 
     // ANSI colors
-    for (name, hex) in palette.ansi.iter() {
+    for (name, hex) in &palette.ansi {
         let key = format!("ANSI{}Color", capitalize(name));
         dict.insert(key, color_data(hex)?);
     }
 
     // ANSI bright colors
-    for (name, hex) in palette.ansi_bright.iter() {
+    for (name, hex) in &palette.ansi_bright {
         let key = format!("ANSIBright{}Color", capitalize(name));
         dict.insert(key, color_data(hex)?);
     }
