@@ -43,9 +43,9 @@ M.night = {
   bright_white = "{{ night_ansi_bright.white }}",
 
   -- Semantic colors
-  lantern = "{{ night_colors.lantern }}",
-  ember = "{{ night_colors.ember }}",
-  amber = "{{ night_colors.amber }}",
+  lantern = "{{ night_colors.lantern.mid }}",
+  ember = "{{ night_colors.lantern.ember }}",
+  amber = "{{ night_colors.lantern.far }}",
   constant = "{{ night_semantic.constant }}",
   comment = "{{ night_semantic.comment }}",
   path = "{{ night_semantic.path }}",
@@ -105,9 +105,9 @@ M.dawn = {
   bright_white = "{{ dawn_ansi_bright.white }}",
 
   -- Semantic colors
-  lantern = "{{ dawn_colors.lantern }}",
-  ember = "{{ dawn_colors.ember }}",
-  amber = "{{ dawn_colors.amber }}",
+  lantern = "{{ dawn_colors.lantern.mid }}",
+  ember = "{{ dawn_colors.lantern.ember }}",
+  amber = "{{ dawn_colors.lantern.far }}",
   constant = "{{ dawn_semantic.constant }}",
   comment = "{{ dawn_semantic.comment }}",
   path = "{{ dawn_semantic.path }}",

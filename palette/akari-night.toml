@@ -6,13 +6,17 @@ description = "A dark palette inspired by Japanese alleys lit by round lanterns.
 #
 # The core pigments of the scene. Night/Dawn differ here.
 #
+[colors.lantern]
+ember = "#D65A3A"  # inner heat — flame, fuel, origin of light
+near = "#D25046"   # hibukuro — paper seen up close
+mid = "#E26A3B"    # glow — lantern as perceived light
+far = "#D4A05A"    # warm blur — light at a distance
+
 [colors]
-lantern = "#E26A3B"  # round lantern glow — the primary light source
-ember = "#D65A3A"    # heat / material — secondary warmth
-amber = "#D4A05A"    # warm yellow — reflected light
-life = "#7FAF6A"     # plants in the alley
-night = "#5A6F82"    # night air — the blue of twilight sky
-muted = "#7C6A8A"    # quiet purple — distance, not neon
+life = "#7FAF6A"   # plants in the alley
+night = "#5A6F82"  # night air — the blue of twilight sky
+rain = "#6F8F8A"   # rain puddles — reflections on wet stones
+muted = "#7C6A8A"  # quiet purple — distance, not neon
 
 #
 # Base (reading foundation)
@@ -35,7 +39,7 @@ base = "base.background"
 # layers.surface — statusline, panels (slightly elevated, blue-tinted)
 surface = "mix(base.background, colors.night, 0.15)"
 # layers.sunken — cursorline (recessed, lantern-tinted 15% for warmth)
-sunken = "mix(base.background, colors.lantern, 0.15)"
+sunken = "mix(base.background, colors.lantern.mid, 0.15)"
 # layers.raised — popup, menu (elevated, blue-tinted)
 raised = "mix(base.background, colors.night, 0.20)"
 # layers.border — window borders, separators
@@ -51,25 +55,25 @@ inset = "#12100E"
 #
 [state]
 # state.selection_bg — selected text background (amber-tinted warmth)
-selection_bg = "mix(base.background, colors.amber, 0.15)"
+selection_bg = "mix(base.background, colors.lantern.far, 0.15)"
 # state.selection_fg — selected text foreground
-selection_fg = "ansi_bright.white"
+selection_fg = "ansi.white"
 # state.match_bg — search match background (lantern warmth)
-match_bg = "mix(base.background, colors.lantern, 0.20)"
+match_bg = "mix(base.background, colors.lantern.mid, 0.20)"
 # state.cursor — cursor color (lantern)
-cursor = "colors.lantern"
+cursor = "colors.lantern.mid"
 # state.cursor_text — text under cursor
 cursor_text = "base.background"
 
 # Diagnostics
 # state.info
 info = "colors.night"
-# state.hint
-hint = "#7D8797"
+# state.hint — distant stone-gray, night from the mist
+hint = "lighten(colors.night, 0.20)"
 # state.warning
-warning = "colors.lantern"
-# state.error
-error = "#C84C32"
+warning = "colors.lantern.mid"
+# state.error — ANSI red for danger
+error = "ansi.red"
 
 # Active
 # state.active_bg — active window/tab background (night 25%)
@@ -78,10 +82,10 @@ active_bg = "mix(base.background, colors.night, 0.25)"
 # Diff
 # state.diff_added
 diff_added = "colors.life"
-# state.diff_removed
-diff_removed = "#C84C32"
+# state.diff_removed — ANSI red
+diff_removed = "ansi.red"
 # state.diff_changed
-diff_changed = "colors.amber"
+diff_changed = "colors.lantern.far"
 
 #
 # Semantic (syntax roles)
@@ -92,24 +96,24 @@ diff_changed = "colors.amber"
 [semantic]
 # semantic.text
 text = "base.foreground"
-# semantic.comment — distant stone-gray, night humidity
-comment = "#7D8797"
+# semantic.comment — distant stone-gray, night from the mist
+comment = "lighten(colors.night, 0.20)"
 
 # Light sources — lantern is singular
 # semantic.string
 string = "colors.life"
 # semantic.keyword
-keyword = "colors.lantern"
+keyword = "colors.lantern.mid"
 
-# Data values — cool tones, floating in the night air
+# Data values — cool tones, rain catching light
 # semantic.number
-number = "#8FB8B0"
+number = "lighten(colors.rain, 0.20)"
 # semantic.constant
-constant = "#8FB8B0"
+constant = "lighten(colors.rain, 0.20)"
 
 # Structure
 # semantic.type
-type = "colors.amber"
+type = "colors.lantern.far"
 # semantic.function
 function = "colors.muted"
 # semantic.variable
@@ -121,7 +125,7 @@ success = "colors.life"
 
 # Path
 # semantic.path — file paths (URLs use bright-blue separately)
-path = "ansi_bright.green"
+path = "ansi.green"
 
 #
 # ANSI (terminal compatibility)
@@ -130,38 +134,38 @@ path = "ansi_bright.green"
 # Use these keys in tool themes: ansi.black, ansi.red, etc.
 #
 [ansi]
-# ansi.black
-black = "#12100E"
-# ansi.red
-red = "#C84C32"
+# ansi.black — warm dark, not true black
+black = "darken(base.background, 0.20)"
+# ansi.red — hibukuro (lantern paper)
+red = "colors.lantern.near"
 # ansi.green
 green = "colors.life"
 # ansi.yellow
-yellow = "colors.amber"
+yellow = "colors.lantern.far"
 # ansi.blue
 blue = "colors.night"
 # ansi.magenta
 magenta = "colors.muted"
-# ansi.cyan
-cyan = "#6F8F8A"
+# ansi.cyan — rain puddles
+cyan = "colors.rain"
 # ansi.white
 white = "base.foreground"
 
 [ansi.bright]
-# ansi.bright.black — dimmed comment tone for readability
-black = "#4D5560"
-# ansi.bright.red
-red = "colors.ember"
-# ansi.bright.green
-green = "#8FC57A"
-# ansi.bright.yellow
-yellow = "#F08A5D"
-# ansi.bright.blue
-blue = "#6F879A"
-# ansi.bright.magenta
-magenta = "#9A8FB3"
-# ansi.bright.cyan
-cyan = "#8FB8B0"
-# ansi.bright.white
-white = "#F2ECE4"
+# ansi.bright.black — lighter for readability
+black = "lighten(ansi.black, 0.20)"
+# ansi.bright.red — slightly brighter
+red = "lighten(ansi.red, 0.08)"
+# ansi.bright.green — slightly brighter
+green = "lighten(ansi.green, 0.08)"
+# ansi.bright.yellow — slightly brighter
+yellow = "lighten(ansi.yellow, 0.10)"
+# ansi.bright.blue — slightly brighter
+blue = "lighten(ansi.blue, 0.10)"
+# ansi.bright.magenta — slightly brighter
+magenta = "lighten(ansi.magenta, 0.10)"
+# ansi.bright.cyan — slightly brighter
+cyan = "lighten(ansi.cyan, 0.10)"
+# ansi.bright.white — slightly brighter
+white = "lighten(ansi.white, 0.05)"
 

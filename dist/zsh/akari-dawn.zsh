@@ -12,11 +12,11 @@ _life='#3A5830'
 _night='#304050'
 _muted='#806080'
 _cyan='#305858'
-_constant='#406868'
-_path='#70A868'
+_constant='#4F7171'
+_path='#3A5830'
 _text='#1A1816'
-_comment='#4A4642'
-_border='#C4BEB6'
+_comment='#222D38'
+_border='#C2BDB6'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"

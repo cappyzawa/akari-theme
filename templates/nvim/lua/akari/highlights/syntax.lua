@@ -56,7 +56,7 @@ function M.setup(p, config)
     Ignore = { fg = p.comment },
 
     -- Error
-    Error = { fg = p.error },
+    Error = { fg = p.error, bold = true },
 
     -- Todo
     Todo = { fg = p.background, bg = p.blue, bold = true },

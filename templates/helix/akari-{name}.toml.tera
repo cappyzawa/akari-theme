@@ -58,7 +58,7 @@
 "ui.picker.header.column.active" = { fg = "lantern", modifiers = ["bold"] }
 
 # Diagnostics
-"error" = { fg = "red" }
+"error" = { fg = "red", modifiers = ["bold"] }
 "warning" = { fg = "lantern" }
 "info" = { fg = "blue" }
 "hint" = { fg = "comment" }
@@ -210,9 +210,9 @@ bright-magenta = "{{ ansi_bright.magenta }}"
 bright-cyan = "{{ ansi_bright.cyan }}"
 bright-white = "{{ ansi_bright.white }}"
 
-lantern = "{{ colors.lantern }}"
-ember = "{{ colors.ember }}"
-amber = "{{ colors.amber }}"
+lantern = "{{ colors.lantern.mid }}"
+ember = "{{ colors.lantern.ember }}"
+amber = "{{ colors.lantern.far }}"
 constant = "{{ semantic.constant }}"
 comment = "{{ semantic.comment }}"
 path = "{{ semantic.path }}"
