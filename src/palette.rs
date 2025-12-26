@@ -5,59 +5,18 @@ use std::fs;
 use std::path::Path;
 
 // Raw types for TOML deserialization (before reference resolution)
+// Note: Colors, Base, Layers, State are defined later and used directly here
+// since they don't need reference resolution.
 #[derive(Debug, Deserialize)]
 struct RawPalette {
     name: String,
     description: String,
-    colors: RawColors,
-    base: RawBase,
-    layers: RawLayers,
-    state: RawState,
+    colors: Colors,
+    base: Base,
+    layers: Layers,
+    state: State,
     semantic: RawSemantic,
     ansi: RawAnsi,
-}
-
-#[derive(Debug, Deserialize)]
-struct RawColors {
-    lantern: String,
-    ember: String,
-    amber: String,
-    life: String,
-    night: String,
-    muted: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct RawBase {
-    background: String,
-    foreground: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct RawLayers {
-    base: String,
-    surface: String,
-    sunken: String,
-    raised: String,
-    border: String,
-    inset: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct RawState {
-    selection_bg: String,
-    selection_fg: String,
-    match_bg: String,
-    cursor: String,
-    cursor_text: String,
-    info: String,
-    hint: String,
-    warning: String,
-    error: String,
-    active_bg: String,
-    diff_added: String,
-    diff_removed: String,
-    diff_changed: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -85,6 +44,36 @@ struct RawAnsiBright {
     white: String,
 }
 
+impl RawAnsiBright {
+    fn resolve(&self, resolver: &Resolver) -> Result<Ansi, Error> {
+        Ok(Ansi {
+            black: resolver.resolve(&self.black)?,
+            red: resolver.resolve(&self.red)?,
+            green: resolver.resolve(&self.green)?,
+            yellow: resolver.resolve(&self.yellow)?,
+            blue: resolver.resolve(&self.blue)?,
+            magenta: resolver.resolve(&self.magenta)?,
+            cyan: resolver.resolve(&self.cyan)?,
+            white: resolver.resolve(&self.white)?,
+        })
+    }
+}
+
+impl RawAnsi {
+    fn resolve(&self, resolver: &Resolver) -> Result<Ansi, Error> {
+        Ok(Ansi {
+            black: resolver.resolve(&self.black)?,
+            red: resolver.resolve(&self.red)?,
+            green: resolver.resolve(&self.green)?,
+            yellow: resolver.resolve(&self.yellow)?,
+            blue: resolver.resolve(&self.blue)?,
+            magenta: resolver.resolve(&self.magenta)?,
+            cyan: resolver.resolve(&self.cyan)?,
+            white: resolver.resolve(&self.white)?,
+        })
+    }
+}
+
 #[derive(Debug, Deserialize)]
 struct RawSemantic {
     text: String,
@@ -100,8 +89,26 @@ struct RawSemantic {
     path: String,
 }
 
-// Resolved types (after reference resolution)
-#[derive(Debug, Clone, Serialize)]
+impl RawSemantic {
+    fn resolve(&self, resolver: &Resolver) -> Result<Semantic, Error> {
+        Ok(Semantic {
+            text: resolver.resolve(&self.text)?,
+            comment: resolver.resolve(&self.comment)?,
+            string: resolver.resolve(&self.string)?,
+            keyword: resolver.resolve(&self.keyword)?,
+            number: resolver.resolve(&self.number)?,
+            constant: resolver.resolve(&self.constant)?,
+            r#type: resolver.resolve(&self.r#type)?,
+            function: resolver.resolve(&self.function)?,
+            variable: resolver.resolve(&self.variable)?,
+            success: resolver.resolve(&self.success)?,
+            path: resolver.resolve(&self.path)?,
+        })
+    }
+}
+
+// Resolved types (used for both deserialization and template rendering)
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Colors {
     pub lantern: String,
     pub ember: String,
@@ -111,35 +118,13 @@ pub struct Colors {
     pub muted: String,
 }
 
-impl From<RawColors> for Colors {
-    fn from(raw: RawColors) -> Self {
-        Self {
-            lantern: raw.lantern,
-            ember: raw.ember,
-            amber: raw.amber,
-            life: raw.life,
-            night: raw.night,
-            muted: raw.muted,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Base {
     pub background: String,
     pub foreground: String,
 }
 
-impl From<RawBase> for Base {
-    fn from(raw: RawBase) -> Self {
-        Self {
-            background: raw.background,
-            foreground: raw.foreground,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Layers {
     pub base: String,
     pub surface: String,
@@ -149,20 +134,7 @@ pub struct Layers {
     pub inset: String,
 }
 
-impl From<RawLayers> for Layers {
-    fn from(raw: RawLayers) -> Self {
-        Self {
-            base: raw.base,
-            surface: raw.surface,
-            sunken: raw.sunken,
-            raised: raw.raised,
-            border: raw.border,
-            inset: raw.inset,
-        }
-    }
-}
-
-#[derive(Debug, Clone, Serialize)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct State {
     pub selection_bg: String,
     pub selection_fg: String,
@@ -177,26 +149,6 @@ pub struct State {
     pub diff_added: String,
     pub diff_removed: String,
     pub diff_changed: String,
-}
-
-impl From<RawState> for State {
-    fn from(raw: RawState) -> Self {
-        Self {
-            selection_bg: raw.selection_bg,
-            selection_fg: raw.selection_fg,
-            match_bg: raw.match_bg,
-            cursor: raw.cursor,
-            cursor_text: raw.cursor_text,
-            info: raw.info,
-            hint: raw.hint,
-            warning: raw.warning,
-            error: raw.error,
-            active_bg: raw.active_bg,
-            diff_added: raw.diff_added,
-            diff_removed: raw.diff_removed,
-            diff_changed: raw.diff_changed,
-        }
-    }
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -253,6 +205,26 @@ macro_rules! make_map {
     };
 }
 
+/// Parsed color value: either a literal hex color or a reference to another field.
+enum ParsedColor<'a> {
+    /// A literal hex color (e.g., "#E26A3B")
+    Literal(&'a str),
+    /// A reference to another field (e.g., "colors.lantern")
+    Ref { section: &'a str, key: &'a str },
+}
+
+/// Parse a color string into a ParsedColor.
+fn parse_color(value: &str) -> Result<ParsedColor<'_>, Error> {
+    if value.starts_with('#') {
+        Ok(ParsedColor::Literal(value))
+    } else {
+        let (section, key) = value
+            .split_once('.')
+            .ok_or_else(|| Error::UnresolvedRef(value.to_string()))?;
+        Ok(ParsedColor::Ref { section, key })
+    }
+}
+
 struct Resolver<'a> {
     colors: BTreeMap<&'a str, &'a str>,
     base: BTreeMap<&'a str, &'a str>,
@@ -297,24 +269,45 @@ impl<'a> Resolver<'a> {
         }
     }
 
-    fn resolve(&self, value: &str) -> Result<String, Error> {
-        if value.starts_with('#') {
-            return Ok(value.to_string());
-        }
-        let (section, key) = value
-            .split_once('.')
-            .ok_or_else(|| Error::UnresolvedRef(value.to_string()))?;
+    fn resolve_ref(&self, section: &str, key: &str) -> Result<String, Error> {
         let map = match section {
             "colors" => &self.colors,
             "base" => &self.base,
             "layers" => &self.layers,
             "state" => &self.state,
             "ansi_bright" => &self.ansi_bright,
-            _ => return Err(Error::UnresolvedRef(value.to_string())),
+            _ => {
+                return Err(Error::UnresolvedRef(format!("{}.{}", section, key)));
+            }
         };
         map.get(key)
             .map(|s| (*s).to_string())
-            .ok_or_else(|| Error::UnresolvedRef(value.to_string()))
+            .ok_or_else(|| Error::UnresolvedRef(format!("{}.{}", section, key)))
+    }
+
+    fn resolve(&self, value: &str) -> Result<String, Error> {
+        match parse_color(value)? {
+            ParsedColor::Literal(v) => Ok(v.to_string()),
+            ParsedColor::Ref { section, key } => self.resolve_ref(section, key),
+        }
+    }
+}
+
+impl RawPalette {
+    fn resolve(&self, variant: Variant) -> Result<Palette, Error> {
+        let resolver = Resolver::new(self);
+        Ok(Palette {
+            variant,
+            name: self.name.clone(),
+            description: self.description.clone(),
+            colors: self.colors.clone(),
+            base: self.base.clone(),
+            layers: self.layers.clone(),
+            state: self.state.clone(),
+            semantic: self.semantic.resolve(&resolver)?,
+            ansi: self.ansi.resolve(&resolver)?,
+            ansi_bright: self.ansi.bright.resolve(&resolver)?,
+        })
     }
 }
 
@@ -336,56 +329,7 @@ impl Palette {
     pub fn from_path(path: impl AsRef<Path>, variant: Variant) -> Result<Self, Error> {
         let content = fs::read_to_string(path)?;
         let raw: RawPalette = toml::from_str(&content)?;
-        let resolver = Resolver::new(&raw);
-
-        let semantic = Semantic {
-            text: resolver.resolve(&raw.semantic.text)?,
-            comment: resolver.resolve(&raw.semantic.comment)?,
-            string: resolver.resolve(&raw.semantic.string)?,
-            keyword: resolver.resolve(&raw.semantic.keyword)?,
-            number: resolver.resolve(&raw.semantic.number)?,
-            constant: resolver.resolve(&raw.semantic.constant)?,
-            r#type: resolver.resolve(&raw.semantic.r#type)?,
-            function: resolver.resolve(&raw.semantic.function)?,
-            variable: resolver.resolve(&raw.semantic.variable)?,
-            success: resolver.resolve(&raw.semantic.success)?,
-            path: resolver.resolve(&raw.semantic.path)?,
-        };
-
-        let ansi = Ansi {
-            black: resolver.resolve(&raw.ansi.black)?,
-            red: resolver.resolve(&raw.ansi.red)?,
-            green: resolver.resolve(&raw.ansi.green)?,
-            yellow: resolver.resolve(&raw.ansi.yellow)?,
-            blue: resolver.resolve(&raw.ansi.blue)?,
-            magenta: resolver.resolve(&raw.ansi.magenta)?,
-            cyan: resolver.resolve(&raw.ansi.cyan)?,
-            white: resolver.resolve(&raw.ansi.white)?,
-        };
-
-        let ansi_bright = Ansi {
-            black: resolver.resolve(&raw.ansi.bright.black)?,
-            red: resolver.resolve(&raw.ansi.bright.red)?,
-            green: resolver.resolve(&raw.ansi.bright.green)?,
-            yellow: resolver.resolve(&raw.ansi.bright.yellow)?,
-            blue: resolver.resolve(&raw.ansi.bright.blue)?,
-            magenta: resolver.resolve(&raw.ansi.bright.magenta)?,
-            cyan: resolver.resolve(&raw.ansi.bright.cyan)?,
-            white: resolver.resolve(&raw.ansi.bright.white)?,
-        };
-
-        Ok(Self {
-            variant,
-            name: raw.name,
-            description: raw.description,
-            colors: raw.colors.into(),
-            base: raw.base.into(),
-            layers: raw.layers.into(),
-            state: raw.state.into(),
-            semantic,
-            ansi,
-            ansi_bright,
-        })
+        raw.resolve(variant)
     }
 }
 
