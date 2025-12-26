@@ -226,8 +226,11 @@ pub struct Ansi {
     pub white: String,
 }
 
-impl Ansi {
-    pub fn iter(&self) -> impl Iterator<Item = (&'static str, &str)> {
+impl<'a> IntoIterator for &'a Ansi {
+    type Item = (&'static str, &'a str);
+    type IntoIter = std::array::IntoIter<Self::Item, 8>;
+
+    fn into_iter(self) -> Self::IntoIter {
         [
             ("black", self.black.as_str()),
             ("red", self.red.as_str()),

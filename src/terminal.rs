@@ -74,13 +74,13 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
     let mut dict: BTreeMap<String, Value> = BTreeMap::new();
 
     // ANSI colors
-    for (name, hex) in palette.ansi.iter() {
+    for (name, hex) in &palette.ansi {
         let key = format!("ANSI{}Color", capitalize(name));
         dict.insert(key, color_data(hex)?);
     }
 
     // ANSI bright colors
-    for (name, hex) in palette.ansi_bright.iter() {
+    for (name, hex) in &palette.ansi_bright {
         let key = format!("ANSIBright{}Color", capitalize(name));
         dict.insert(key, color_data(hex)?);
     }
