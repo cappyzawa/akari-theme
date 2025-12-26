@@ -97,6 +97,7 @@ struct RawSemantic {
     function: String,
     variable: String,
     success: String,
+    path: String,
 }
 
 // Resolved types (after reference resolution)
@@ -210,6 +211,7 @@ pub struct Semantic {
     pub function: String,
     pub variable: String,
     pub success: String,
+    pub path: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -245,6 +247,7 @@ struct Resolver<'a> {
     base: BTreeMap<&'a str, &'a str>,
     layers: BTreeMap<&'a str, &'a str>,
     state: BTreeMap<&'a str, &'a str>,
+    ansi_bright: BTreeMap<&'a str, &'a str>,
 }
 
 impl<'a> Resolver<'a> {
@@ -293,6 +296,18 @@ impl<'a> Resolver<'a> {
             ]
             .into_iter()
             .collect(),
+            ansi_bright: [
+                ("black", raw.ansi.bright.black.as_str()),
+                ("red", raw.ansi.bright.red.as_str()),
+                ("green", raw.ansi.bright.green.as_str()),
+                ("yellow", raw.ansi.bright.yellow.as_str()),
+                ("blue", raw.ansi.bright.blue.as_str()),
+                ("magenta", raw.ansi.bright.magenta.as_str()),
+                ("cyan", raw.ansi.bright.cyan.as_str()),
+                ("white", raw.ansi.bright.white.as_str()),
+            ]
+            .into_iter()
+            .collect(),
         }
     }
 
@@ -308,6 +323,7 @@ impl<'a> Resolver<'a> {
             "base" => &self.base,
             "layers" => &self.layers,
             "state" => &self.state,
+            "ansi_bright" => &self.ansi_bright,
             _ => return Err(Error::UnresolvedRef(value.to_string())),
         };
         map.get(key)
@@ -347,6 +363,7 @@ impl Palette {
             function: resolver.resolve(&raw.semantic.function)?,
             variable: resolver.resolve(&raw.semantic.variable)?,
             success: resolver.resolve(&raw.semantic.success)?,
+            path: resolver.resolve(&raw.semantic.path)?,
         };
 
         let ansi = Ansi {
@@ -574,6 +591,7 @@ type = "colors.amber"
 function = "colors.lantern"
 variable = "base.foreground"
 success = "colors.life"
+path = "ansi_bright.green"
 
 [ansi]
 black = "#171B22"

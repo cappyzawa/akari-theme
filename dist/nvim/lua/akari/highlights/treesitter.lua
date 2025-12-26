@@ -30,7 +30,7 @@ function M.setup(p, config)
     ["@string.escape"] = { fg = p.bright_magenta },
     ["@string.special"] = { fg = p.green },
     ["@string.special.symbol"] = { fg = p.bright_magenta },
-    ["@string.special.path"] = { fg = p.bright_green },
+    ["@string.special.path"] = { fg = p.path },
     ["@string.special.url"] = { fg = p.bright_blue, underline = true },
 
     -- Characters

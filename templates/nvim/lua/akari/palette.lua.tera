@@ -48,6 +48,7 @@ M.night = {
   amber = "{{ night_colors.amber }}",
   constant = "{{ night_semantic.constant }}",
   comment = "{{ night_semantic.comment }}",
+  path = "{{ night_semantic.path }}",
 
   -- Diagnostic
   error = "{{ night_state.error }}",
@@ -109,6 +110,7 @@ M.dawn = {
   amber = "{{ dawn_colors.amber }}",
   constant = "{{ dawn_semantic.constant }}",
   comment = "{{ dawn_semantic.comment }}",
+  path = "{{ dawn_semantic.path }}",
 
   -- Diagnostic
   error = "{{ dawn_state.error }}",

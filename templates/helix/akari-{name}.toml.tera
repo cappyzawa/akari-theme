@@ -124,7 +124,7 @@
 "string.regexp" = { fg = "bright-green" }
 "string.regexp.special" = { fg = "bright-magenta" }
 "string.special" = { fg = "green" }
-"string.special.path" = { fg = "bright-green" }
+"string.special.path" = { fg = "path" }
 "string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "string.special.symbol" = { fg = "bright-magenta" }
 
@@ -215,5 +215,6 @@ ember = "{{ colors.ember }}"
 amber = "{{ colors.amber }}"
 constant = "{{ semantic.constant }}"
 comment = "{{ semantic.comment }}"
+path = "{{ semantic.path }}"
 sunken = "{{ layers.sunken }}"
 match-bg = "{{ state.match_bg }}"
