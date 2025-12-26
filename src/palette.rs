@@ -245,6 +245,14 @@ impl<'a> IntoIterator for &'a Ansi {
     }
 }
 
+macro_rules! make_map {
+    ($obj:expr, $($field:ident),+ $(,)?) => {
+        [$(
+            (stringify!($field), $obj.$field.as_str()),
+        )+].into_iter().collect()
+    };
+}
+
 struct Resolver<'a> {
     colors: BTreeMap<&'a str, &'a str>,
     base: BTreeMap<&'a str, &'a str>,
@@ -256,61 +264,36 @@ struct Resolver<'a> {
 impl<'a> Resolver<'a> {
     fn new(raw: &'a RawPalette) -> Self {
         Self {
-            colors: [
-                ("lantern", raw.colors.lantern.as_str()),
-                ("ember", raw.colors.ember.as_str()),
-                ("amber", raw.colors.amber.as_str()),
-                ("life", raw.colors.life.as_str()),
-                ("night", raw.colors.night.as_str()),
-                ("muted", raw.colors.muted.as_str()),
-            ]
-            .into_iter()
-            .collect(),
-            base: [
-                ("background", raw.base.background.as_str()),
-                ("foreground", raw.base.foreground.as_str()),
-            ]
-            .into_iter()
-            .collect(),
-            layers: [
-                ("base", raw.layers.base.as_str()),
-                ("surface", raw.layers.surface.as_str()),
-                ("sunken", raw.layers.sunken.as_str()),
-                ("raised", raw.layers.raised.as_str()),
-                ("border", raw.layers.border.as_str()),
-                ("inset", raw.layers.inset.as_str()),
-            ]
-            .into_iter()
-            .collect(),
-            state: [
-                ("selection_bg", raw.state.selection_bg.as_str()),
-                ("selection_fg", raw.state.selection_fg.as_str()),
-                ("match_bg", raw.state.match_bg.as_str()),
-                ("cursor", raw.state.cursor.as_str()),
-                ("cursor_text", raw.state.cursor_text.as_str()),
-                ("info", raw.state.info.as_str()),
-                ("hint", raw.state.hint.as_str()),
-                ("warning", raw.state.warning.as_str()),
-                ("error", raw.state.error.as_str()),
-                ("active_bg", raw.state.active_bg.as_str()),
-                ("diff_added", raw.state.diff_added.as_str()),
-                ("diff_removed", raw.state.diff_removed.as_str()),
-                ("diff_changed", raw.state.diff_changed.as_str()),
-            ]
-            .into_iter()
-            .collect(),
-            ansi_bright: [
-                ("black", raw.ansi.bright.black.as_str()),
-                ("red", raw.ansi.bright.red.as_str()),
-                ("green", raw.ansi.bright.green.as_str()),
-                ("yellow", raw.ansi.bright.yellow.as_str()),
-                ("blue", raw.ansi.bright.blue.as_str()),
-                ("magenta", raw.ansi.bright.magenta.as_str()),
-                ("cyan", raw.ansi.bright.cyan.as_str()),
-                ("white", raw.ansi.bright.white.as_str()),
-            ]
-            .into_iter()
-            .collect(),
+            colors: make_map!(raw.colors, lantern, ember, amber, life, night, muted),
+            base: make_map!(raw.base, background, foreground),
+            layers: make_map!(raw.layers, base, surface, sunken, raised, border, inset),
+            state: make_map!(
+                raw.state,
+                selection_bg,
+                selection_fg,
+                match_bg,
+                cursor,
+                cursor_text,
+                info,
+                hint,
+                warning,
+                error,
+                active_bg,
+                diff_added,
+                diff_removed,
+                diff_changed,
+            ),
+            ansi_bright: make_map!(
+                raw.ansi.bright,
+                black,
+                red,
+                green,
+                yellow,
+                blue,
+                magenta,
+                cyan,
+                white,
+            ),
         }
     }
 
