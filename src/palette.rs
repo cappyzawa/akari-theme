@@ -412,7 +412,7 @@ mod tests {
     #[test]
     fn base_colors_are_loaded() {
         let palette = Palette::from_path(palette_path(), Variant::Night).unwrap();
-        assert_eq!(palette.base.background, "#171B22");
+        assert_eq!(palette.base.background, "#10141C");
         assert_eq!(palette.base.foreground, "#E6DED3");
     }
 
