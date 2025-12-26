@@ -10,6 +10,10 @@ zsh-syntax-highlighting themes inspired by Japanese alleys lit by round lanterns
 
 - [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
 
+> [!WARNING]
+> This theme must be loaded **after** zsh-syntax-highlighting.
+> The theme works by overriding `ZSH_HIGHLIGHT_STYLES` variables set by zsh-syntax-highlighting.
+
 ## Installation
 
 ### Manual
