@@ -52,30 +52,7 @@ warm, and readable for long sessions.
 
 ## Palette
 
-### Akari Night (Dark)
+Color definitions are the single source of truth in TOML format:
 
-| Role       | Color     | Hex       |
-|------------|-----------|-----------|
-| Background | Navy-Charcoal | `#171B22` |
-| Foreground | Paper     | `#E6DED3` |
-| Lantern    | Orange    | `#E26A3B` |
-| Ember      | Red       | `#D65A3A` |
-| Amber      | Yellow    | `#D4A05A` |
-| Life       | Green     | `#7FAF6A` |
-| Night      | Blue      | `#5A6F82` |
-| Muted      | Purple    | `#7C6A8A` |
-| Comment    | Stone-Gray | `#7D8797` |
-
-### Akari Dawn (Light)
-
-| Role       | Color      | Hex       |
-|------------|------------|-----------|
-| Background | Warm Paper | `#E4DED6` |
-| Foreground | Ink Black  | `#1A1816` |
-| Lantern    | Fading     | `#8A4530` |
-| Ember      | Cooling    | `#7A3828` |
-| Amber      | Morning    | `#B07840` |
-| Life       | Green      | `#3A5830` |
-| Night      | Quiet Air  | `#304050` |
-| Muted      | Purple     | `#806080` |
-| Comment    | Shadow     | `#4A4642` |
+- [Akari Night (Dark)](palette/akari-night.toml)
+- [Akari Dawn (Light)](palette/akari-dawn.toml)
