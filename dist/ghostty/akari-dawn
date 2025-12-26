@@ -2,21 +2,21 @@
 
 # ANSI 0-15
 palette = 0=#1A1816
-palette = 1=#B04030
+palette = 1=#6A2828
 palette = 2=#3A5830
 palette = 3=#B07840
 palette = 4=#304050
 palette = 5=#806080
 palette = 6=#305858
-palette = 7=#F4F0EA
-palette = 8=#3A3E48
-palette = 9=#C04838
-palette = 10=#70A868
-palette = 11=#D09060
-palette = 12=#4060A0
-palette = 13=#705868
-palette = 14=#306868
-palette = 15=#0A0808
+palette = 7=#E4DED6
+palette = 8=#484645
+palette = 9=#622525
+palette = 10=#35512C
+palette = 11=#9E6C3A
+palette = 12=#2B3A48
+palette = 13=#735673
+palette = 14=#2B4F4F
+palette = 15=#CDC8C1
 
 # Base
 background = #E4DED6
@@ -25,5 +25,5 @@ foreground = #1A1816
 # UI
 cursor-color = #8A4530
 cursor-text = #E4DED6
-selection-background = #D0C4B8
+selection-background = #D7C5B1
 selection-foreground = #1A1816

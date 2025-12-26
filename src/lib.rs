@@ -31,6 +31,8 @@ pub enum Error {
     Plist(#[from] plist::Error),
     #[error("plist output was not valid UTF-8")]
     PlistUtf8,
+    #[error("invalid color expression: {0}")]
+    InvalidColorExpr(String),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

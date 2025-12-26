@@ -18,9 +18,9 @@
       "bookmark_text": {{ base.foreground | hex_to_rgb }},
       "ntp_background": {{ base.background | hex_to_rgb }},
       "ntp_text": {{ base.foreground | hex_to_rgb }},
-      "ntp_link": {{ colors.lantern | hex_to_rgb }},
+      "ntp_link": {{ colors.lantern.mid | hex_to_rgb }},
       "ntp_header": {{ layers.surface | hex_to_rgb }},
-      "button_background": {{ colors.amber | hex_to_rgb }},
+      "button_background": {{ colors.lantern.far | hex_to_rgb }},
       "omnibox_background": {{ layers.raised | hex_to_rgb }},
       "omnibox_text": {{ base.foreground | hex_to_rgb }}
     },

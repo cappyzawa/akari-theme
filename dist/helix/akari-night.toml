@@ -58,7 +58,7 @@
 "ui.picker.header.column.active" = { fg = "lantern", modifiers = ["bold"] }
 
 # Diagnostics
-"error" = { fg = "red" }
+"error" = { fg = "red", modifiers = ["bold"] }
 "warning" = { fg = "lantern" }
 "info" = { fg = "blue" }
 "hint" = { fg = "comment" }
@@ -185,15 +185,15 @@ foreground = "#E6DED3"
 cursor = "#E26A3B"
 cursor-text = "#10141C"
 selection-bg = "#2D2925"
-selection-fg = "#F2ECE4"
+selection-fg = "#E6DED3"
 cursorline = "#302121"
 
 surface = "#1B222B"
 raised = "#1F2630"
 border = "#262F3B"
 
-black = "#12100E"
-red = "#C84C32"
+black = "#0D1016"
+red = "#D25046"
 green = "#7FAF6A"
 yellow = "#D4A05A"
 blue = "#5A6F82"
@@ -201,20 +201,20 @@ magenta = "#7C6A8A"
 cyan = "#6F8F8A"
 white = "#E6DED3"
 
-bright-black = "#4D5560"
-bright-red = "#D65A3A"
-bright-green = "#8FC57A"
-bright-yellow = "#F08A5D"
-bright-blue = "#6F879A"
-bright-magenta = "#9A8FB3"
-bright-cyan = "#8FB8B0"
-bright-white = "#F2ECE4"
+bright-black = "#3D4045"
+bright-red = "#D65E55"
+bright-green = "#89B576"
+bright-yellow = "#D8AA6B"
+bright-blue = "#6B7D8F"
+bright-magenta = "#897996"
+bright-cyan = "#7D9A96"
+bright-white = "#E7E0D5"
 
 lantern = "#E26A3B"
 ember = "#D65A3A"
 amber = "#D4A05A"
-constant = "#8FB8B0"
-comment = "#7D8797"
-path = "#8FC57A"
+constant = "#8CA5A1"
+comment = "#7B8C9B"
+path = "#7FAF6A"
 sunken = "#302121"
 match-bg = "#3A2522"

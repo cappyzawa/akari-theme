@@ -2,7 +2,7 @@
   "name": "Akari {{ variant | title }}",
   "type": "{% if variant == "night" %}dark{% else %}light{% endif %}",
   "colors": {
-    "focusBorder": "{{ colors.lantern }}",
+    "focusBorder": "{{ colors.lantern.mid }}",
     "foreground": "{{ base.foreground }}",
     "disabledForeground": "{{ semantic.comment }}",
     "errorForeground": "{{ state.error }}",
@@ -13,8 +13,8 @@
     "activityBar.foreground": "{{ base.foreground }}",
     "activityBar.inactiveForeground": "{{ semantic.comment }}",
     "activityBar.border": "{{ layers.border }}",
-    "activityBar.activeBorder": "{{ colors.lantern }}",
-    "activityBarBadge.background": "{{ colors.lantern }}",
+    "activityBar.activeBorder": "{{ colors.lantern.mid }}",
+    "activityBarBadge.background": "{{ colors.lantern.mid }}",
     "activityBarBadge.foreground": "{{ base.background }}",
 
     "sideBar.background": "{{ layers.inset }}",
@@ -27,26 +27,26 @@
 
     "editor.background": "{{ base.background }}",
     "editor.foreground": "{{ base.foreground }}",
-    "editorCursor.foreground": "{{ colors.lantern }}",
+    "editorCursor.foreground": "{{ colors.lantern.mid }}",
     "editor.selectionBackground": "{{ state.selection_bg }}",
     "editor.selectionForeground": "{{ state.selection_fg }}",
     "editor.inactiveSelectionBackground": "{{ layers.border }}80",
     "editor.selectionHighlightBackground": "{{ layers.border }}80",
     "editor.wordHighlightBackground": "{{ layers.border }}80",
     "editor.wordHighlightStrongBackground": "{{ layers.border }}80",
-    "editor.findMatchBackground": "{{ colors.lantern }}40",
-    "editor.findMatchHighlightBackground": "{{ colors.lantern }}20",
+    "editor.findMatchBackground": "{{ colors.lantern.mid }}40",
+    "editor.findMatchHighlightBackground": "{{ colors.lantern.mid }}20",
     "editor.lineHighlightBackground": "{{ layers.sunken }}",
     "editor.lineHighlightBorder": "{{ layers.sunken }}00",
     "editorLink.activeForeground": "{{ ansi_bright.blue }}",
 
     "editorGutter.background": "{{ base.background }}",
-    "editorGutter.modifiedBackground": "{{ colors.lantern }}",
+    "editorGutter.modifiedBackground": "{{ colors.lantern.mid }}",
     "editorGutter.addedBackground": "{{ colors.life }}",
     "editorGutter.deletedBackground": "{{ state.error }}",
 
     "editorLineNumber.foreground": "{{ layers.border }}",
-    "editorLineNumber.activeForeground": "{{ colors.lantern }}",
+    "editorLineNumber.activeForeground": "{{ colors.lantern.mid }}",
 
     "editorIndentGuide.background1": "{{ layers.border }}",
     "editorIndentGuide.activeBackground1": "{{ semantic.comment }}",
@@ -56,30 +56,30 @@
     "editorWhitespace.foreground": "{{ layers.border }}",
 
     "editorBracketMatch.background": "{{ layers.border }}",
-    "editorBracketMatch.border": "{{ colors.lantern }}",
+    "editorBracketMatch.border": "{{ colors.lantern.mid }}",
 
-    "editorBracketHighlight.foreground1": "{{ colors.lantern }}",
+    "editorBracketHighlight.foreground1": "{{ colors.lantern.mid }}",
     "editorBracketHighlight.foreground2": "{{ colors.night }}",
     "editorBracketHighlight.foreground3": "{{ colors.muted }}",
     "editorBracketHighlight.foreground4": "{{ semantic.constant }}",
     "editorBracketHighlight.foreground5": "{{ colors.life }}",
-    "editorBracketHighlight.foreground6": "{{ colors.amber }}",
+    "editorBracketHighlight.foreground6": "{{ colors.lantern.far }}",
     "editorBracketHighlight.unexpectedBracket.foreground": "{{ state.error }}",
 
-    "editorBracketPairGuide.activeBackground1": "{{ colors.lantern }}",
+    "editorBracketPairGuide.activeBackground1": "{{ colors.lantern.mid }}",
     "editorBracketPairGuide.activeBackground2": "{{ colors.night }}",
     "editorBracketPairGuide.activeBackground3": "{{ colors.muted }}",
     "editorBracketPairGuide.activeBackground4": "{{ semantic.constant }}",
     "editorBracketPairGuide.activeBackground5": "{{ colors.life }}",
-    "editorBracketPairGuide.activeBackground6": "{{ colors.amber }}",
+    "editorBracketPairGuide.activeBackground6": "{{ colors.lantern.far }}",
 
     "editorOverviewRuler.border": "{{ layers.border }}",
     "editorOverviewRuler.errorForeground": "{{ state.error }}",
-    "editorOverviewRuler.warningForeground": "{{ colors.lantern }}",
+    "editorOverviewRuler.warningForeground": "{{ colors.lantern.mid }}",
     "editorOverviewRuler.infoForeground": "{{ colors.night }}",
 
     "editorError.foreground": "{{ state.error }}",
-    "editorWarning.foreground": "{{ colors.lantern }}",
+    "editorWarning.foreground": "{{ colors.lantern.mid }}",
     "editorInfo.foreground": "{{ colors.night }}",
     "editorHint.foreground": "{{ semantic.comment }}",
 
@@ -90,19 +90,19 @@
     "editorSuggestWidget.border": "{{ layers.border }}",
     "editorSuggestWidget.foreground": "{{ base.foreground }}",
     "editorSuggestWidget.selectedBackground": "{{ layers.border }}",
-    "editorSuggestWidget.highlightForeground": "{{ colors.lantern }}",
+    "editorSuggestWidget.highlightForeground": "{{ colors.lantern.mid }}",
 
     "editorHoverWidget.background": "{{ layers.inset }}",
     "editorHoverWidget.border": "{{ layers.border }}",
     "editorHoverWidget.foreground": "{{ base.foreground }}",
 
-    "peekView.border": "{{ colors.lantern }}",
+    "peekView.border": "{{ colors.lantern.mid }}",
     "peekViewEditor.background": "{{ layers.inset }}",
-    "peekViewEditor.matchHighlightBackground": "{{ colors.lantern }}40",
+    "peekViewEditor.matchHighlightBackground": "{{ colors.lantern.mid }}40",
     "peekViewResult.background": "{{ layers.inset }}",
     "peekViewResult.fileForeground": "{{ base.foreground }}",
     "peekViewResult.lineForeground": "{{ semantic.comment }}",
-    "peekViewResult.matchHighlightBackground": "{{ colors.lantern }}40",
+    "peekViewResult.matchHighlightBackground": "{{ colors.lantern.mid }}40",
     "peekViewResult.selectionBackground": "{{ layers.border }}",
     "peekViewTitle.background": "{{ layers.inset }}",
     "peekViewTitleDescription.foreground": "{{ semantic.comment }}",
@@ -124,7 +124,7 @@
 
     "tab.activeBackground": "{{ base.background }}",
     "tab.activeForeground": "{{ base.foreground }}",
-    "tab.activeBorder": "{{ colors.lantern }}",
+    "tab.activeBorder": "{{ colors.lantern.mid }}",
     "tab.inactiveBackground": "{{ layers.inset }}",
     "tab.inactiveForeground": "{{ semantic.comment }}",
     "tab.border": "{{ layers.inset }}",
@@ -141,13 +141,13 @@
     "statusBar.background": "{{ layers.inset }}",
     "statusBar.foreground": "{{ base.foreground }}",
     "statusBar.border": "{{ layers.border }}",
-    "statusBar.debuggingBackground": "{{ colors.lantern }}",
+    "statusBar.debuggingBackground": "{{ colors.lantern.mid }}",
     "statusBar.debuggingForeground": "{{ base.background }}",
     "statusBar.noFolderBackground": "{{ layers.inset }}",
     "statusBar.noFolderForeground": "{{ base.foreground }}",
     "statusBarItem.activeBackground": "{{ layers.border }}",
     "statusBarItem.hoverBackground": "{{ layers.border }}",
-    "statusBarItem.prominentBackground": "{{ colors.lantern }}",
+    "statusBarItem.prominentBackground": "{{ colors.lantern.mid }}",
     "statusBarItem.prominentForeground": "{{ base.background }}",
     "statusBarItem.prominentHoverBackground": "{{ ansi_bright.yellow }}",
     "statusBarItem.remoteBackground": "{{ colors.night }}",
@@ -157,7 +157,7 @@
 
     "panel.background": "{{ base.background }}",
     "panel.border": "{{ layers.border }}",
-    "panelTitle.activeBorder": "{{ colors.lantern }}",
+    "panelTitle.activeBorder": "{{ colors.lantern.mid }}",
     "panelTitle.activeForeground": "{{ base.foreground }}",
     "panelTitle.inactiveForeground": "{{ semantic.comment }}",
 
@@ -169,9 +169,9 @@
     "list.hoverForeground": "{{ base.foreground }}",
     "list.focusBackground": "{{ layers.border }}",
     "list.focusForeground": "{{ state.selection_fg }}",
-    "list.highlightForeground": "{{ colors.lantern }}",
+    "list.highlightForeground": "{{ colors.lantern.mid }}",
     "list.errorForeground": "{{ state.error }}",
-    "list.warningForeground": "{{ colors.lantern }}",
+    "list.warningForeground": "{{ colors.lantern.mid }}",
 
     "quickInput.background": "{{ layers.inset }}",
     "quickInput.foreground": "{{ base.foreground }}",
@@ -189,14 +189,14 @@
     "input.placeholderForeground": "{{ semantic.comment }}",
     "inputOption.activeBackground": "{{ layers.border }}",
     "inputOption.activeForeground": "{{ base.foreground }}",
-    "inputOption.activeBorder": "{{ colors.lantern }}",
+    "inputOption.activeBorder": "{{ colors.lantern.mid }}",
 
     "inputValidation.infoForeground": "{{ base.foreground }}",
     "inputValidation.infoBackground": "{{ colors.night }}40",
     "inputValidation.infoBorder": "{{ colors.night }}",
     "inputValidation.warningForeground": "{{ base.background }}",
-    "inputValidation.warningBackground": "{{ colors.amber }}",
-    "inputValidation.warningBorder": "{{ colors.amber }}",
+    "inputValidation.warningBackground": "{{ colors.lantern.far }}",
+    "inputValidation.warningBorder": "{{ colors.lantern.far }}",
     "inputValidation.errorForeground": "{{ base.foreground }}",
     "inputValidation.errorBackground": "{{ state.error }}80",
     "inputValidation.errorBorder": "{{ state.error }}",
@@ -206,10 +206,10 @@
     "scrollbarSlider.hoverBackground": "{{ layers.border }}",
     "scrollbarSlider.activeBackground": "{{ semantic.comment }}",
 
-    "badge.background": "{{ colors.lantern }}",
+    "badge.background": "{{ colors.lantern.mid }}",
     "badge.foreground": "{{ base.background }}",
 
-    "button.background": "{{ colors.lantern }}",
+    "button.background": "{{ colors.lantern.mid }}",
     "button.foreground": "{{ base.background }}",
     "button.hoverBackground": "{{ ansi_bright.yellow }}",
     "button.secondaryBackground": "{{ layers.border }}",
@@ -217,13 +217,13 @@
     "button.secondaryHoverBackground": "{{ semantic.comment }}",
 
     "gitDecoration.addedResourceForeground": "{{ colors.life }}",
-    "gitDecoration.modifiedResourceForeground": "{{ colors.lantern }}",
+    "gitDecoration.modifiedResourceForeground": "{{ colors.lantern.mid }}",
     "gitDecoration.deletedResourceForeground": "{{ state.error }}",
     "gitDecoration.renamedResourceForeground": "{{ ansi_bright.cyan }}",
     "gitDecoration.untrackedResourceForeground": "{{ ansi_bright.green }}",
     "gitDecoration.ignoredResourceForeground": "{{ semantic.comment }}",
     "gitDecoration.conflictingResourceForeground": "{{ state.error }}",
-    "gitDecoration.stageModifiedResourceForeground": "{{ colors.lantern }}",
+    "gitDecoration.stageModifiedResourceForeground": "{{ colors.lantern.mid }}",
     "gitDecoration.stageDeletedResourceForeground": "{{ state.error }}",
 
     "breadcrumb.background": "{{ base.background }}",
@@ -235,10 +235,10 @@
     "minimap.background": "{{ base.background }}",
     "minimap.selectionHighlight": "{{ layers.border }}",
     "minimap.errorHighlight": "{{ state.error }}",
-    "minimap.warningHighlight": "{{ colors.lantern }}",
-    "minimap.findMatchHighlight": "{{ colors.lantern }}",
+    "minimap.warningHighlight": "{{ colors.lantern.mid }}",
+    "minimap.findMatchHighlight": "{{ colors.lantern.mid }}",
 
-    "minimapGutter.modifiedBackground": "{{ colors.lantern }}",
+    "minimapGutter.modifiedBackground": "{{ colors.lantern.mid }}",
     "minimapGutter.addedBackground": "{{ colors.life }}",
     "minimapGutter.deletedBackground": "{{ state.error }}",
 
@@ -260,7 +260,7 @@
     "terminal.ansiBrightMagenta": "{{ ansi_bright.magenta }}",
     "terminal.ansiBrightCyan": "{{ ansi_bright.cyan }}",
     "terminal.ansiBrightWhite": "{{ ansi_bright.white }}",
-    "terminalCursor.foreground": "{{ colors.lantern }}",
+    "terminalCursor.foreground": "{{ colors.lantern.mid }}",
 
     "notifications.background": "{{ layers.inset }}",
     "notifications.foreground": "{{ base.foreground }}",
@@ -268,16 +268,16 @@
     "notificationCenterHeader.background": "{{ layers.inset }}",
     "notificationCenterHeader.foreground": "{{ base.foreground }}",
 
-    "extensionButton.prominentBackground": "{{ colors.lantern }}",
+    "extensionButton.prominentBackground": "{{ colors.lantern.mid }}",
     "extensionButton.prominentForeground": "{{ base.background }}",
     "extensionButton.prominentHoverBackground": "{{ ansi_bright.yellow }}",
 
-    "progressBar.background": "{{ colors.lantern }}",
+    "progressBar.background": "{{ colors.lantern.mid }}",
 
     "editorSemanticHighlighting.enabled": true,
 
     "settings.headerForeground": "{{ base.foreground }}",
-    "settings.modifiedItemIndicator": "{{ colors.lantern }}",
+    "settings.modifiedItemIndicator": "{{ colors.lantern.mid }}",
     "settings.dropdownBackground": "{{ layers.inset }}",
     "settings.dropdownForeground": "{{ base.foreground }}",
     "settings.dropdownBorder": "{{ layers.border }}",
@@ -299,7 +299,7 @@
     "debugIcon.breakpointForeground": "{{ state.error }}",
     "debugIcon.breakpointDisabledForeground": "{{ semantic.comment }}",
     "debugIcon.startForeground": "{{ colors.life }}",
-    "debugIcon.pauseForeground": "{{ colors.lantern }}",
+    "debugIcon.pauseForeground": "{{ colors.lantern.mid }}",
     "debugIcon.stopForeground": "{{ state.error }}",
     "debugIcon.stepOverForeground": "{{ colors.night }}",
     "debugIcon.stepIntoForeground": "{{ colors.night }}",
@@ -309,13 +309,13 @@
     "notebook.editorBackground": "{{ base.background }}",
     "notebook.cellEditorBackground": "{{ layers.inset }}",
     "notebook.cellBorderColor": "{{ layers.border }}",
-    "notebook.focusedCellBorder": "{{ colors.lantern }}",
+    "notebook.focusedCellBorder": "{{ colors.lantern.mid }}",
     "notebook.cellStatusBarItemHoverBackground": "{{ layers.border }}",
 
     "charts.red": "{{ state.error }}",
     "charts.blue": "{{ colors.night }}",
-    "charts.yellow": "{{ colors.amber }}",
-    "charts.orange": "{{ colors.lantern }}",
+    "charts.yellow": "{{ colors.lantern.far }}",
+    "charts.orange": "{{ colors.lantern.mid }}",
     "charts.green": "{{ colors.life }}",
     "charts.purple": "{{ colors.muted }}",
     "charts.foreground": "{{ base.foreground }}",
@@ -378,7 +378,7 @@
       "name": "Regexp - Group Punctuation",
       "scope": "punctuation.definition.group.regexp",
       "settings": {
-        "foreground": "{{ colors.ember }}"
+        "foreground": "{{ colors.lantern.ember }}"
       }
     },
     {
@@ -395,7 +395,7 @@
         "punctuation.definition.character-class.regexp"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -438,7 +438,7 @@
         "constant.character"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -461,7 +461,7 @@
         "keyword.other"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -474,7 +474,7 @@
         "keyword.operator.comparison"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -485,7 +485,7 @@
         "storage.modifier"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -533,7 +533,7 @@
         "support.class"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -543,7 +543,7 @@
         "support.type.primitive"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -552,7 +552,7 @@
         "entity.name.type.parameter"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}",
+        "foreground": "{{ colors.lantern.far }}",
         "fontStyle": "italic"
       }
     },
@@ -576,7 +576,7 @@
         "variable.language.super"
       ],
       "settings": {
-        "foreground": "{{ colors.ember }}",
+        "foreground": "{{ colors.lantern.ember }}",
         "fontStyle": "italic"
       }
     },
@@ -611,7 +611,7 @@
         "entity.name.package"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -621,7 +621,7 @@
         "meta.function-call.constructor"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -630,7 +630,7 @@
         "entity.name.label"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -640,7 +640,7 @@
         "meta.attribute"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -686,7 +686,7 @@
         "punctuation.section.embedded"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -709,7 +709,7 @@
         "punctuation.definition.tag"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -728,7 +728,7 @@
         "entity.other.attribute-name.xml"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -739,7 +739,7 @@
         "entity.name.section"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}",
+        "foreground": "{{ colors.lantern.mid }}",
         "fontStyle": "bold"
       }
     },
@@ -747,7 +747,7 @@
       "name": "Markup Heading Level 1",
       "scope": "markup.heading.1",
       "settings": {
-        "foreground": "{{ colors.lantern }}",
+        "foreground": "{{ colors.lantern.mid }}",
         "fontStyle": "bold"
       }
     },
@@ -763,7 +763,7 @@
       "name": "Markup Heading Level 3",
       "scope": "markup.heading.3",
       "settings": {
-        "foreground": "{{ colors.ember }}",
+        "foreground": "{{ colors.lantern.ember }}",
         "fontStyle": "bold"
       }
     },
@@ -771,7 +771,7 @@
       "name": "Markup Heading Level 4",
       "scope": "markup.heading.4",
       "settings": {
-        "foreground": "{{ colors.amber }}",
+        "foreground": "{{ colors.lantern.far }}",
         "fontStyle": "bold"
       }
     },
@@ -893,7 +893,7 @@
       "name": "Diff Changed",
       "scope": "markup.changed",
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -914,21 +914,21 @@
       "name": "JSON Key - Level 0",
       "scope": "source.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
       "name": "JSON Key - Level 1",
       "scope": "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
       "name": "JSON Key - Level 2",
       "scope": "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -942,7 +942,7 @@
       "name": "YAML Key",
       "scope": "entity.name.tag.yaml",
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -952,7 +952,7 @@
         "support.type.property-name.toml"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -962,7 +962,7 @@
         "entity.other.attribute-name.table.toml"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -990,7 +990,7 @@
         "entity.other.attribute-name.id.css"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern }}"
+        "foreground": "{{ colors.lantern.mid }}"
       }
     },
     {
@@ -1018,14 +1018,14 @@
       "name": "CSS Property Value",
       "scope": "support.constant.property-value.css",
       "settings": {
-        "foreground": "{{ colors.ember }}"
+        "foreground": "{{ colors.lantern.ember }}"
       }
     },
     {
       "name": "CSS Unit",
       "scope": "keyword.other.unit.css",
       "settings": {
-        "foreground": "{{ colors.ember }}"
+        "foreground": "{{ colors.lantern.ember }}"
       }
     },
     {
@@ -1053,7 +1053,7 @@
         "punctuation.section.embedded"
       ],
       "settings": {
-        "foreground": "{{ colors.amber }}"
+        "foreground": "{{ colors.lantern.far }}"
       }
     },
     {
@@ -1070,17 +1070,17 @@
   ],
   "semanticHighlighting": true,
   "semanticTokenColors": {
-    "class": "{{ colors.amber }}",
-    "struct": "{{ colors.amber }}",
-    "interface": "{{ colors.amber }}",
-    "enum": "{{ colors.amber }}",
+    "class": "{{ colors.lantern.far }}",
+    "struct": "{{ colors.lantern.far }}",
+    "interface": "{{ colors.lantern.far }}",
+    "enum": "{{ colors.lantern.far }}",
     "enumMember": "{{ semantic.constant }}",
-    "type": "{{ colors.amber }}",
+    "type": "{{ colors.lantern.far }}",
     "typeParameter": {
-      "foreground": "{{ colors.amber }}",
+      "foreground": "{{ colors.lantern.far }}",
       "italic": true
     },
-    "typeAlias": "{{ colors.amber }}",
+    "typeAlias": "{{ colors.lantern.far }}",
     "function": "{{ colors.muted }}",
     "method": "{{ colors.muted }}",
     "function.defaultLibrary": "{{ ansi_bright.magenta }}",
@@ -1089,7 +1089,7 @@
     "variable": "{{ base.foreground }}",
     "variable.readonly": "{{ semantic.constant }}",
     "variable.defaultLibrary": {
-      "foreground": "{{ colors.ember }}",
+      "foreground": "{{ colors.lantern.ember }}",
       "italic": true
     },
     "variable.static": {
@@ -1102,8 +1102,8 @@
     },
     "property": "{{ base.foreground }}",
     "property.readonly": "{{ semantic.constant }}",
-    "namespace": "{{ colors.amber }}",
-    "module": "{{ colors.amber }}",
+    "namespace": "{{ colors.lantern.far }}",
+    "module": "{{ colors.lantern.far }}",
     "decorator": "{{ ansi_bright.yellow }}",
     "annotation": "{{ ansi_bright.yellow }}",
     "event": "{{ ansi_bright.yellow }}",
@@ -1119,7 +1119,7 @@
     "*.modification": {},
     "*.documentation": {},
     "*.declaration": {},
-    "keyword": "{{ colors.lantern }}",
+    "keyword": "{{ colors.lantern.mid }}",
     "string": "{{ colors.life }}",
     "number": "{{ semantic.constant }}",
     "operator": "{{ base.foreground }}",

@@ -19,12 +19,12 @@ M.night = {
   cursor = "#E26A3B",
   cursor_text = "#10141C",
   selection_bg = "#2D2925",
-  selection_fg = "#F2ECE4",
+  selection_fg = "#E6DED3",
   match_bg = "#3A2522",
 
   -- ANSI colors
-  black = "#12100E",
-  red = "#C84C32",
+  black = "#0D1016",
+  red = "#D25046",
   green = "#7FAF6A",
   yellow = "#D4A05A",
   blue = "#5A6F82",
@@ -33,32 +33,32 @@ M.night = {
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#4D5560",
-  bright_red = "#D65A3A",
-  bright_green = "#8FC57A",
-  bright_yellow = "#F08A5D",
-  bright_blue = "#6F879A",
-  bright_magenta = "#9A8FB3",
-  bright_cyan = "#8FB8B0",
-  bright_white = "#F2ECE4",
+  bright_black = "#3D4045",
+  bright_red = "#D65E55",
+  bright_green = "#89B576",
+  bright_yellow = "#D8AA6B",
+  bright_blue = "#6B7D8F",
+  bright_magenta = "#897996",
+  bright_cyan = "#7D9A96",
+  bright_white = "#E7E0D5",
 
   -- Semantic colors
   lantern = "#E26A3B",
   ember = "#D65A3A",
   amber = "#D4A05A",
-  constant = "#8FB8B0",
-  comment = "#7D8797",
-  path = "#8FC57A",
+  constant = "#8CA5A1",
+  comment = "#7B8C9B",
+  path = "#7FAF6A",
 
   -- Diagnostic
-  error = "#C84C32",
+  error = "#D25046",
   warning = "#E26A3B",
   info = "#5A6F82",
-  hint = "#7D8797",
+  hint = "#7B8C9B",
 
   -- Diff
   diff_add = "#7FAF6A",
-  diff_delete = "#C84C32",
+  diff_delete = "#D25046",
   diff_change = "#D4A05A",
 
   -- None (for transparent)
@@ -72,56 +72,56 @@ M.dawn = {
   foreground = "#1A1816",
 
   -- Layers
-  surface = "#D4CEC6",
-  sunken = "#DCD4CA",
-  raised = "#EDE7DF",
-  border = "#C4BEB6",
+  surface = "#D2CCC5",
+  sunken = "#DDD2C9",
+  raised = "#E6E1D9",
+  border = "#C2BDB6",
 
   -- UI
   cursor = "#8A4530",
   cursor_text = "#E4DED6",
-  selection_bg = "#D0C4B8",
+  selection_bg = "#D7C5B1",
   selection_fg = "#1A1816",
-  match_bg = "#D8C8B8",
+  match_bg = "#D2BFB5",
 
   -- ANSI colors
   black = "#1A1816",
-  red = "#B04030",
+  red = "#6A2828",
   green = "#3A5830",
   yellow = "#B07840",
   blue = "#304050",
   magenta = "#806080",
   cyan = "#305858",
-  white = "#F4F0EA",
+  white = "#E4DED6",
 
   -- Bright ANSI colors
-  bright_black = "#3A3E48",
-  bright_red = "#C04838",
-  bright_green = "#70A868",
-  bright_yellow = "#D09060",
-  bright_blue = "#4060A0",
-  bright_magenta = "#705868",
-  bright_cyan = "#306868",
-  bright_white = "#0A0808",
+  bright_black = "#484645",
+  bright_red = "#622525",
+  bright_green = "#35512C",
+  bright_yellow = "#9E6C3A",
+  bright_blue = "#2B3A48",
+  bright_magenta = "#735673",
+  bright_cyan = "#2B4F4F",
+  bright_white = "#CDC8C1",
 
   -- Semantic colors
   lantern = "#8A4530",
   ember = "#7A3828",
   amber = "#B07840",
-  constant = "#406868",
-  comment = "#4A4642",
-  path = "#70A868",
+  constant = "#4F7171",
+  comment = "#222D38",
+  path = "#3A5830",
 
   -- Diagnostic
-  error = "#B04030",
+  error = "#6A2828",
   warning = "#8A4530",
-  info = "#607080",
-  hint = "#5A5855",
+  info = "#304050",
+  hint = "#100E0D",
 
   -- Diff
-  diff_add = "#507848",
-  diff_delete = "#B04030",
-  diff_change = "#C08050",
+  diff_add = "#314B29",
+  diff_delete = "#6A2828",
+  diff_change = "#9E6C3A",
 
   -- None (for transparent)
   none = "NONE",

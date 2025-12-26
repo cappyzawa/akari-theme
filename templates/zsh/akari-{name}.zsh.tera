@@ -5,9 +5,9 @@
 typeset -A ZSH_HIGHLIGHT_STYLES
 
 # Palette
-_lantern='{{ colors.lantern }}'
-_ember='{{ colors.ember }}'
-_amber='{{ colors.amber }}'
+_lantern='{{ colors.lantern.mid }}'
+_ember='{{ colors.lantern.ember }}'
+_amber='{{ colors.lantern.far }}'
 _life='{{ colors.life }}'
 _night='{{ colors.night }}'
 _muted='{{ colors.muted }}'

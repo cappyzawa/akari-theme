@@ -73,7 +73,7 @@ function M.setup(p, config)
     MsgArea = { fg = p.foreground },
     MoreMsg = { fg = p.green },
     WarningMsg = { fg = p.warning },
-    ErrorMsg = { fg = p.error },
+    ErrorMsg = { fg = p.error, bold = true },
 
     -- Folds
     Folded = { fg = p.comment, bg = p.black },
@@ -112,7 +112,7 @@ function M.setup(p, config)
     WildMenu = { fg = p.bright_white, bg = p.selection_bg },
 
     -- Diagnostics
-    DiagnosticError = { fg = p.error },
+    DiagnosticError = { fg = p.error, bold = true },
     DiagnosticWarn = { fg = p.warning },
     DiagnosticInfo = { fg = p.info },
     DiagnosticHint = { fg = p.hint },
