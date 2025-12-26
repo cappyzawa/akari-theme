@@ -13,6 +13,7 @@ _night='{{ colors.night }}'
 _muted='{{ colors.muted }}'
 _cyan='{{ ansi.cyan }}'
 _constant='{{ semantic.constant }}'
+_path='{{ semantic.path }}'
 _text='{{ base.foreground }}'
 _comment='{{ semantic.comment }}'
 _border='{{ layers.border }}'
@@ -28,8 +29,8 @@ ZSH_HIGHLIGHT_STYLES[unknown-token]="fg=$_comment"
 ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$_night"
 
 # Paths and files
-ZSH_HIGHLIGHT_STYLES[path]="fg=$_amber,underline"
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$_amber"
+ZSH_HIGHLIGHT_STYLES[path]="fg=$_path,underline"
+ZSH_HIGHLIGHT_STYLES[path_pathseparator]="fg=$_path"
 ZSH_HIGHLIGHT_STYLES[globbing]="fg=$_comment"
 
 # Strings and quotes
@@ -62,4 +63,4 @@ ZSH_HIGHLIGHT_STYLES[default]="fg=$_text"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=$_comment"
 
 # Cleanup temporary variables
-unset _lantern _ember _amber _life _night _muted _cyan _constant _text _comment _border
+unset _lantern _ember _amber _life _night _muted _cyan _constant _path _text _comment _border

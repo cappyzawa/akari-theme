@@ -124,7 +124,7 @@
 "string.regexp" = { fg = "bright-green" }
 "string.regexp.special" = { fg = "bright-magenta" }
 "string.special" = { fg = "green" }
-"string.special.path" = { fg = "bright-green" }
+"string.special.path" = { fg = "path" }
 "string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
 "string.special.symbol" = { fg = "bright-magenta" }
 
@@ -215,5 +215,6 @@ ember = "#7A3828"
 amber = "#B07840"
 constant = "#406868"
 comment = "#4A4642"
+path = "#70A868"
 sunken = "#DCD4CA"
 match-bg = "#D8C8B8"

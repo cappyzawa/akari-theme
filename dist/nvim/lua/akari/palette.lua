@@ -48,6 +48,7 @@ M.night = {
   amber = "#D4A05A",
   constant = "#8FB8B0",
   comment = "#7D8797",
+  path = "#8FC57A",
 
   -- Diagnostic
   error = "#C84C32",
@@ -109,6 +110,7 @@ M.dawn = {
   amber = "#B07840",
   constant = "#406868",
   comment = "#4A4642",
+  path = "#70A868",
 
   -- Diagnostic
   error = "#B04030",

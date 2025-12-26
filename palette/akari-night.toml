@@ -119,6 +119,10 @@ variable = "base.foreground"
 # semantic.success
 success = "colors.life"
 
+# Path
+# semantic.path — file paths (URLs use bright-blue separately)
+path = "ansi_bright.green"
+
 #
 # ANSI (terminal compatibility)
 #
