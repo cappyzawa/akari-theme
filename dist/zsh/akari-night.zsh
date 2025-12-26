@@ -15,7 +15,7 @@ _cyan='#6F8F8A'
 _constant='#8FB8B0'
 _text='#E6DED3'
 _comment='#7D8797'
-_border='#2E3543'
+_border='#262F3B'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"

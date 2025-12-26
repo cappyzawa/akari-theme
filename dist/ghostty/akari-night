@@ -9,7 +9,7 @@ palette = 4=#5A6F82
 palette = 5=#7C6A8A
 palette = 6=#6F8F8A
 palette = 7=#E6DED3
-palette = 8=#2E3543
+palette = 8=#4D5560
 palette = 9=#D65A3A
 palette = 10=#8FC57A
 palette = 11=#F08A5D
@@ -19,11 +19,11 @@ palette = 14=#8FB8B0
 palette = 15=#F2ECE4
 
 # Base
-background = #171B22
+background = #10141C
 foreground = #E6DED3
 
 # UI
 cursor-color = #E26A3B
-cursor-text = #171B22
-selection-background = #2D2518
+cursor-text = #10141C
+selection-background = #2D2925
 selection-foreground = #F2ECE4

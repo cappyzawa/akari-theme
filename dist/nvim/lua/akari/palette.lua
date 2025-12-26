@@ -6,21 +6,21 @@ local M = {}
 -- Night palette (dark theme)
 M.night = {
   -- Base
-  background = "#171B22",
+  background = "#10141C",
   foreground = "#E6DED3",
 
   -- Layers (blue-tinted elevation)
-  surface = "#1E232C",
-  sunken = "#2E211D",
-  raised = "#242836",
-  border = "#2E3543",
+  surface = "#1B222B",
+  sunken = "#302121",
+  raised = "#1F2630",
+  border = "#262F3B",
 
   -- UI
   cursor = "#E26A3B",
-  cursor_text = "#171B22",
-  selection_bg = "#2D2518",
+  cursor_text = "#10141C",
+  selection_bg = "#2D2925",
   selection_fg = "#F2ECE4",
-  match_bg = "#332A2A",
+  match_bg = "#3A2522",
 
   -- ANSI colors
   black = "#12100E",
@@ -33,7 +33,7 @@ M.night = {
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#2E3543",
+  bright_black = "#4D5560",
   bright_red = "#D65A3A",
   bright_green = "#8FC57A",
   bright_yellow = "#F08A5D",

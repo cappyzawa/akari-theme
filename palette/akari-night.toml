@@ -20,7 +20,7 @@ muted = "#7C6A8A"    # quiet purple — distance, not neon
 # The ground truth for readability.
 #
 [base]
-background = "#171B22" # navy-charcoal night air
+background = "#10141C" # dark navy — the night sky above the alley
 foreground = "#E6DED3" # soft paper white
 
 #
@@ -31,15 +31,15 @@ foreground = "#E6DED3" # soft paper white
 #
 [layers]
 # layers.base — the ground (same as background)
-base = "#171B22"
+base = "#10141C"
 # layers.surface — statusline, panels (slightly elevated, blue-tinted)
-surface = "#1E232C"
-# layers.sunken — cursorline (recessed, lantern-tinted 20% for warmth)
-sunken = "#2E211D"
+surface = "#1B222B"
+# layers.sunken — cursorline (recessed, lantern-tinted 15% for warmth)
+sunken = "#302121"
 # layers.raised — popup, menu (elevated, blue-tinted)
-raised = "#242836"
+raised = "#1F2630"
 # layers.border — window borders, separators
-border = "#2E3543"
+border = "#262F3B"
 # layers.inset — side panels, status bar (recessed from editor)
 inset = "#12100E"
 
@@ -51,15 +51,15 @@ inset = "#12100E"
 #
 [state]
 # state.selection_bg — selected text background (amber-tinted warmth)
-selection_bg = "#2D2518"
+selection_bg = "#2D2925"
 # state.selection_fg — selected text foreground
 selection_fg = "#F2ECE4"
 # state.match_bg — search match background (lantern warmth)
-match_bg = "#332A2A"
+match_bg = "#3A2522"
 # state.cursor — cursor color (lantern)
 cursor = "#E26A3B"
 # state.cursor_text — text under cursor
-cursor_text = "#171B22"
+cursor_text = "#10141C"
 
 # Diagnostics
 # state.info
@@ -72,8 +72,8 @@ warning = "#E26A3B"
 error = "#C84C32"
 
 # Active
-# state.active_bg — active window/tab background (night 25% for night)
-active_bg = "#28303A"
+# state.active_bg — active window/tab background (night 25%)
+active_bg = "#232B36"
 
 # Diff
 # state.diff_added
@@ -144,8 +144,8 @@ cyan = "#6F8F8A"
 white = "base.foreground"
 
 [ansi.bright]
-# ansi.bright.black — matches border for consistency
-black = "#2E3543"
+# ansi.bright.black — dimmed comment tone for readability
+black = "#4D5560"
 # ansi.bright.red
 red = "colors.ember"
 # ansi.bright.green
@@ -174,5 +174,5 @@ raised = { base = "base.background", mix = "colors.night", alpha = 0.20 }
 border = { base = "base.background", mix = "colors.night", alpha = 0.30 }
 
 [formula.state]
-selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.30 }
+selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.15 }
 match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.20 }
