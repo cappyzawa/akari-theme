@@ -31,7 +31,7 @@ foreground = "#1A1816" # ink black — stone pavement
 #
 [layers]
 # layers.base — the ground (same as background)
-base = "#E4DED6"
+base = "base.background"
 # layers.surface — statusline, panels (slightly darker for light theme)
 surface = "#D4CEC6"
 # layers.sunken — cursorline (recessed, lantern-tinted)
@@ -53,13 +53,13 @@ inset = "#D0CAC2"
 # state.selection_bg — selected text background
 selection_bg = "#D0C4B8"
 # state.selection_fg — selected text foreground
-selection_fg = "#1A1816"
+selection_fg = "base.foreground"
 # state.match_bg — search match background
 match_bg = "#D8C8B8"
 # state.cursor — cursor color (lantern)
-cursor = "#8A4530"
+cursor = "colors.lantern"
 # state.cursor_text — text under cursor
-cursor_text = "#E4DED6"
+cursor_text = "base.background"
 
 # Diagnostics
 # state.info
@@ -67,7 +67,7 @@ info = "#607080"
 # state.hint
 hint = "#5A5855"
 # state.warning
-warning = "#8A4530"
+warning = "colors.lantern"
 # state.error
 error = "#B04030"
 
@@ -164,19 +164,3 @@ magenta = "#705868"
 cyan = "#306868"
 # ansi.bright.white
 white = "#0A0808"
-
-#
-# Formula (mix recipes)
-#
-# Declarative recipes for computed colors.
-# Generator reads these to produce hex values.
-#
-[formula.layers]
-surface = { base = "base.background", mix = "base.foreground", alpha = 0.08 }
-sunken = { base = "base.background", mix = "colors.lantern", alpha = 0.15 }
-raised = { base = "base.background", mix = "base.foreground", alpha = -0.08 }
-border = { base = "base.background", mix = "base.foreground", alpha = 0.15 }
-
-[formula.state]
-selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.30 }
-match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.25 }

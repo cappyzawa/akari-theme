@@ -31,15 +31,15 @@ foreground = "#E6DED3" # soft paper white
 #
 [layers]
 # layers.base — the ground (same as background)
-base = "#10141C"
+base = "base.background"
 # layers.surface — statusline, panels (slightly elevated, blue-tinted)
-surface = "#1B222B"
+surface = "mix(base.background, colors.night, 0.15)"
 # layers.sunken — cursorline (recessed, lantern-tinted 15% for warmth)
-sunken = "#302121"
+sunken = "mix(base.background, colors.lantern, 0.15)"
 # layers.raised — popup, menu (elevated, blue-tinted)
-raised = "#1F2630"
+raised = "mix(base.background, colors.night, 0.20)"
 # layers.border — window borders, separators
-border = "#262F3B"
+border = "mix(base.background, colors.night, 0.30)"
 # layers.inset — side panels, status bar (recessed from editor)
 inset = "#12100E"
 
@@ -51,37 +51,37 @@ inset = "#12100E"
 #
 [state]
 # state.selection_bg — selected text background (amber-tinted warmth)
-selection_bg = "#2D2925"
+selection_bg = "mix(base.background, colors.amber, 0.15)"
 # state.selection_fg — selected text foreground
-selection_fg = "#F2ECE4"
+selection_fg = "ansi_bright.white"
 # state.match_bg — search match background (lantern warmth)
-match_bg = "#3A2522"
+match_bg = "mix(base.background, colors.lantern, 0.20)"
 # state.cursor — cursor color (lantern)
-cursor = "#E26A3B"
+cursor = "colors.lantern"
 # state.cursor_text — text under cursor
-cursor_text = "#10141C"
+cursor_text = "base.background"
 
 # Diagnostics
 # state.info
-info = "#5A6F82"
+info = "colors.night"
 # state.hint
 hint = "#7D8797"
 # state.warning
-warning = "#E26A3B"
+warning = "colors.lantern"
 # state.error
 error = "#C84C32"
 
 # Active
 # state.active_bg — active window/tab background (night 25%)
-active_bg = "#232B36"
+active_bg = "mix(base.background, colors.night, 0.25)"
 
 # Diff
 # state.diff_added
-diff_added = "#7FAF6A"
+diff_added = "colors.life"
 # state.diff_removed
 diff_removed = "#C84C32"
 # state.diff_changed
-diff_changed = "#D4A05A"
+diff_changed = "colors.amber"
 
 #
 # Semantic (syntax roles)
@@ -165,18 +165,3 @@ cyan = "#8FB8B0"
 # ansi.bright.white
 white = "#F2ECE4"
 
-#
-# Formula (mix recipes)
-#
-# Declarative recipes for computed colors.
-# Generator reads these to produce hex values.
-#
-[formula.layers]
-surface = { base = "base.background", mix = "colors.night", alpha = 0.15 }
-sunken = { base = "base.background", mix = "colors.lantern", alpha = 0.15 }
-raised = { base = "base.background", mix = "colors.night", alpha = 0.20 }
-border = { base = "base.background", mix = "colors.night", alpha = 0.30 }
-
-[formula.state]
-selection_bg = { base = "base.background", mix = "colors.amber", alpha = 0.15 }
-match_bg = { base = "base.background", mix = "colors.lantern", alpha = 0.20 }
