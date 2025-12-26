@@ -172,11 +172,14 @@ impl Generator {
 
     /// List available tools (directories in templates/)
     pub fn available_tools(&self) -> std::io::Result<Vec<String>> {
-        let entries = std::fs::read_dir(&self.templates_dir)?;
-        Ok(entries
-            .filter_map(|e| e.ok())
-            .filter(|e| e.file_type().map(|t| t.is_dir()).unwrap_or(false))
-            .filter_map(|e| e.file_name().into_string().ok())
+        Ok(std::fs::read_dir(&self.templates_dir)?
+            .filter_map(|e| {
+                let e = e.ok()?;
+                e.file_type()
+                    .ok()?
+                    .is_dir()
+                    .then(|| e.file_name().into_string().ok())?
+            })
             .collect())
     }
 
@@ -231,10 +234,8 @@ impl Generator {
 }
 
 fn strip_tera_extension(path: &Path) -> PathBuf {
-    let s = path.to_string_lossy();
-    if let Some(stripped) = s.strip_suffix(".tera") {
-        PathBuf::from(stripped)
-    } else {
-        path.to_path_buf()
-    }
+    path.to_string_lossy()
+        .strip_suffix(".tera")
+        .map(PathBuf::from)
+        .unwrap_or_else(|| path.to_path_buf())
 }
