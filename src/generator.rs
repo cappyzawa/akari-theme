@@ -25,7 +25,10 @@ impl Generator {
         let pattern_str = pattern
             .to_str()
             .ok_or_else(|| Error::InvalidPath(pattern.clone()))?;
-        let mut tera = Tera::new(pattern_str).map_err(Error::TemplateInit)?;
+        let mut tera = Tera::new(pattern_str).map_err(|e| Error::Template {
+            context: "init failed",
+            source: e,
+        })?;
         tera.register_filter("hex_to_rgb", hex_to_rgb_filter);
         Ok(Self {
             tera,
@@ -200,7 +203,10 @@ impl Generator {
 
         self.tera
             .render(template, &context)
-            .map_err(Error::TemplateRender)
+            .map_err(|e| Error::Template {
+                context: "render failed",
+                source: e,
+            })
     }
 
     fn render_combined(
@@ -229,7 +235,10 @@ impl Generator {
 
         self.tera
             .render(template, &context)
-            .map_err(Error::TemplateRender)
+            .map_err(|e| Error::Template {
+                context: "render failed",
+                source: e,
+            })
     }
 }
 
