@@ -17,10 +17,12 @@ pub enum Error {
     ParsePalette(#[from] toml::de::Error),
     #[error("unresolved reference: {0}")]
     UnresolvedRef(String),
-    #[error("template init failed: {0}")]
-    TemplateInit(tera::Error),
-    #[error("template render failed: {0}")]
-    TemplateRender(tera::Error),
+    #[error("template {context}: {source}")]
+    Template {
+        context: &'static str,
+        #[source]
+        source: tera::Error,
+    },
     #[error("invalid hex color: {0}")]
     InvalidHex(String),
     #[error("non-UTF-8 path: {0}")]
@@ -42,6 +44,7 @@ pub enum Variant {
 }
 
 impl Variant {
+    #[must_use]
     pub const fn name(self) -> &'static str {
         match self {
             Self::Night => "night",
@@ -49,6 +52,7 @@ impl Variant {
         }
     }
 
+    #[must_use]
     pub const fn title(self) -> &'static str {
         match self {
             Self::Night => "Night",
@@ -56,6 +60,7 @@ impl Variant {
         }
     }
 
+    #[must_use]
     pub const fn palette_filename(self) -> &'static str {
         match self {
             Self::Night => "akari-night.toml",

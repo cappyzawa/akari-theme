@@ -15,44 +15,46 @@ fn encode_nscolor(hex: &str) -> Result<Vec<u8>, Error> {
     let (r, g, b) = rgb.as_floats();
     let nsrgb = format!("{r} {g} {b}");
 
-    let mut objects: Vec<Value> = Vec::new();
+    let color_obj = BTreeMap::from([
+        ("$class".to_string(), Value::Uid(plist::Uid::new(2))),
+        ("NSColorSpace".to_string(), Value::Integer(1.into())),
+        ("NSRGB".to_string(), Value::Data(nsrgb.into_bytes())),
+    ]);
 
-    objects.push(Value::String("$null".to_string()));
-
-    let mut color_obj: BTreeMap<String, Value> = BTreeMap::new();
-    color_obj.insert("$class".to_string(), Value::Uid(plist::Uid::new(2)));
-    color_obj.insert("NSColorSpace".to_string(), Value::Integer(1.into()));
-    color_obj.insert("NSRGB".to_string(), Value::Data(nsrgb.into_bytes()));
-    objects.push(Value::Dictionary(color_obj.into_iter().collect()));
-
-    let mut class_def: BTreeMap<String, Value> = BTreeMap::new();
-    class_def.insert(
-        "$classes".to_string(),
-        Value::Array(vec![
+    let class_def = BTreeMap::from([
+        (
+            "$classes".to_string(),
+            Value::Array(vec![
+                Value::String("NSColor".to_string()),
+                Value::String("NSObject".to_string()),
+            ]),
+        ),
+        (
+            "$classname".to_string(),
             Value::String("NSColor".to_string()),
-            Value::String("NSObject".to_string()),
-        ]),
-    );
-    class_def.insert(
-        "$classname".to_string(),
-        Value::String("NSColor".to_string()),
-    );
-    objects.push(Value::Dictionary(class_def.into_iter().collect()));
+        ),
+    ]);
 
-    let mut root: BTreeMap<String, Value> = BTreeMap::new();
-    root.insert(
-        "$archiver".to_string(),
-        Value::String("NSKeyedArchiver".to_string()),
-    );
-    root.insert("$objects".to_string(), Value::Array(objects));
+    let objects = vec![
+        Value::String("$null".to_string()),
+        Value::Dictionary(color_obj.into_iter().collect()),
+        Value::Dictionary(class_def.into_iter().collect()),
+    ];
 
-    let mut top: BTreeMap<String, Value> = BTreeMap::new();
-    top.insert("root".to_string(), Value::Uid(plist::Uid::new(1)));
-    root.insert(
-        "$top".to_string(),
-        Value::Dictionary(top.into_iter().collect()),
-    );
-    root.insert("$version".to_string(), Value::Integer(100000.into()));
+    let top = BTreeMap::from([("root".to_string(), Value::Uid(plist::Uid::new(1)))]);
+
+    let root = BTreeMap::from([
+        (
+            "$archiver".to_string(),
+            Value::String("NSKeyedArchiver".to_string()),
+        ),
+        ("$objects".to_string(), Value::Array(objects)),
+        (
+            "$top".to_string(),
+            Value::Dictionary(top.into_iter().collect()),
+        ),
+        ("$version".to_string(), Value::Integer(100000.into())),
+    ]);
 
     let plist_value = Value::Dictionary(root.into_iter().collect());
 

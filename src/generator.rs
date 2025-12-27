@@ -25,7 +25,10 @@ impl Generator {
         let pattern_str = pattern
             .to_str()
             .ok_or_else(|| Error::InvalidPath(pattern.clone()))?;
-        let mut tera = Tera::new(pattern_str).map_err(Error::TemplateInit)?;
+        let mut tera = Tera::new(pattern_str).map_err(|e| Error::Template {
+            context: "init failed",
+            source: e,
+        })?;
         tera.register_filter("hex_to_rgb", hex_to_rgb_filter);
         Ok(Self {
             tera,
@@ -172,15 +175,16 @@ impl Generator {
 
     /// List available tools (directories in templates/)
     pub fn available_tools(&self) -> std::io::Result<Vec<String>> {
-        Ok(std::fs::read_dir(&self.templates_dir)?
-            .filter_map(|e| {
-                let e = e.ok()?;
-                e.file_type()
-                    .ok()?
-                    .is_dir()
-                    .then(|| e.file_name().into_string().ok())?
-            })
-            .collect())
+        let mut tools = Vec::new();
+        for entry in std::fs::read_dir(&self.templates_dir)? {
+            let entry = entry?;
+            if entry.file_type()?.is_dir()
+                && let Ok(name) = entry.file_name().into_string()
+            {
+                tools.push(name);
+            }
+        }
+        Ok(tools)
     }
 
     fn render(&self, template: &str, palette: &Palette) -> Result<String, Error> {
@@ -200,7 +204,10 @@ impl Generator {
 
         self.tera
             .render(template, &context)
-            .map_err(Error::TemplateRender)
+            .map_err(|e| Error::Template {
+                context: "render failed",
+                source: e,
+            })
     }
 
     fn render_combined(
@@ -229,7 +236,10 @@ impl Generator {
 
         self.tera
             .render(template, &context)
-            .map_err(Error::TemplateRender)
+            .map_err(|e| Error::Template {
+                context: "render failed",
+                source: e,
+            })
     }
 }
 
