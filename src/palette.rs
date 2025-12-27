@@ -311,7 +311,8 @@ impl Section {
 ///   - `"darken(base.background, 0.2)"` — decrease lightness proportionally
 ///   - `"brighten(ansi.red, 0.1)"` — adjust lightness by absolute amount
 ///   - `"mix(base.background, colors.night, 0.15)"` — blend two colors
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize)]
+#[serde(try_from = "String")]
 enum ColorExpr {
     /// A literal hex color (e.g., "#E26A3B")
     Literal(String),
@@ -327,13 +328,11 @@ enum ColorExpr {
     Mix(Box<ColorExpr>, Box<ColorExpr>, f64),
 }
 
-impl<'de> Deserialize<'de> for ColorExpr {
-    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
-    where
-        D: serde::Deserializer<'de>,
-    {
-        let s = String::deserialize(deserializer)?;
-        parse_color_expr(&s).map_err(|e| serde::de::Error::custom(e.to_string()))
+impl TryFrom<String> for ColorExpr {
+    type Error = Error;
+
+    fn try_from(s: String) -> Result<Self, Self::Error> {
+        parse_color_expr(&s)
     }
 }
 
