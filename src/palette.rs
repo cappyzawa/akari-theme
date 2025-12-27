@@ -261,7 +261,11 @@ impl<'a> IntoIterator for &'a Ansi {
     }
 }
 
-/// Reference section for color expressions.
+/// Sections that can be referenced in color expressions.
+///
+/// Only `colors`, `base`, `ansi`, and `ansi.bright` are valid reference targets.
+/// Other sections like `layers`, `state`, and `semantic` are consumers of colors,
+/// not sources, and cannot be referenced.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Section {
     Colors,
@@ -271,12 +275,18 @@ enum Section {
 }
 
 impl Section {
+    /// Referenceable sections in color expressions.
+    const ALLOWED: &[&str] = &["colors", "base", "ansi", "ansi.bright"];
+
     fn parse(s: &str) -> Result<Self, Error> {
         match s {
             "colors" => Ok(Self::Colors),
             "base" => Ok(Self::Base),
             "ansi" => Ok(Self::Ansi),
-            _ => Err(Error::InvalidColorExpr(format!("unknown section: {s}"))),
+            _ => Err(Error::InvalidColorExpr(format!(
+                "'{s}' cannot be referenced (allowed: {})",
+                Self::ALLOWED.join(", ")
+            ))),
         }
     }
 
@@ -920,5 +930,18 @@ white = "base.foreground"
             }
             _ => panic!("expected Mix"),
         }
+    }
+
+    #[test]
+    fn parse_color_expr_rejects_non_referenceable_sections() {
+        // layers, state, semantic exist in palette but cannot be referenced
+        let err = parse_color_expr("layers.base").unwrap_err();
+        assert!(matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced")));
+
+        let err = parse_color_expr("state.cursor").unwrap_err();
+        assert!(matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced")));
+
+        let err = parse_color_expr("semantic.keyword").unwrap_err();
+        assert!(matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced")));
     }
 }
