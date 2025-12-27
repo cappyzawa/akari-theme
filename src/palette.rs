@@ -270,20 +270,16 @@ enum Section {
     AnsiBright,
 }
 
-impl std::str::FromStr for Section {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+impl Section {
+    fn parse(s: &str) -> Result<Self, Error> {
         match s {
             "colors" => Ok(Self::Colors),
             "base" => Ok(Self::Base),
             "ansi" => Ok(Self::Ansi),
-            _ => Err(()),
+            _ => Err(Error::InvalidColorExpr(format!("unknown section: {s}"))),
         }
     }
-}
 
-impl Section {
     const fn as_str(&self) -> &'static str {
         match self {
             Self::Colors => "colors",
@@ -375,9 +371,7 @@ fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
     let (section_str, key) = s
         .split_once('.')
         .ok_or_else(|| Error::InvalidColorExpr(s.to_string()))?;
-    let section: Section = section_str
-        .parse()
-        .map_err(|()| Error::InvalidColorExpr(format!("unknown section: {section_str}")))?;
+    let section = Section::parse(section_str)?;
     Ok(ColorExpr::Ref {
         section,
         key: key.to_string(),
@@ -451,10 +445,14 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
 struct Resolver<'a> {
     colors: BTreeMap<&'a str, &'a str>,
     base: BTreeMap<&'a str, &'a str>,
-    /// Resolved hex values for ansi (needed for state.error, etc.)
-    ansi: BTreeMap<&'static str, String>,
-    /// Resolved hex values for ansi.bright
-    ansi_bright: BTreeMap<&'static str, String>,
+    /// Resolved hex values for ansi (for reference lookup)
+    ansi_map: BTreeMap<&'static str, String>,
+    /// Resolved hex values for ansi.bright (for reference lookup)
+    ansi_bright_map: BTreeMap<&'static str, String>,
+    /// Resolved ansi colors (to avoid re-resolving)
+    resolved_ansi: Ansi,
+    /// Resolved ansi.bright colors (to avoid re-resolving)
+    resolved_ansi_bright: Ansi,
 }
 
 impl<'a> Resolver<'a> {
@@ -479,30 +477,31 @@ impl<'a> Resolver<'a> {
         .into_iter()
         .collect();
 
-        // Build a temporary resolver to resolve ansi references
-        let temp = TempResolver {
-            colors: &colors,
-            base: &base,
-        };
-
         // Resolve ansi first (it only depends on colors/base)
-        let ansi = raw.ansi.base.resolve(&temp)?.to_map();
-
-        // Build resolver with ansi for ansi.bright resolution
-        let ansi_resolver = AnsiResolver {
+        let partial = PartialResolver {
             colors: &colors,
             base: &base,
-            ansi: &ansi,
+            ansi: None,
         };
+        let resolved_ansi = raw.ansi.base.resolve(&partial)?;
+        let ansi_map = resolved_ansi.to_map();
 
         // Resolve ansi.bright (depends on ansi)
-        let ansi_bright = raw.ansi.bright.resolve(&ansi_resolver)?.to_map();
+        let partial_with_ansi = PartialResolver {
+            colors: &colors,
+            base: &base,
+            ansi: Some(&ansi_map),
+        };
+        let resolved_ansi_bright = raw.ansi.bright.resolve(&partial_with_ansi)?;
+        let ansi_bright_map = resolved_ansi_bright.to_map();
 
         Ok(Self {
             colors,
             base,
-            ansi,
-            ansi_bright,
+            ansi_map,
+            ansi_bright_map,
+            resolved_ansi,
+            resolved_ansi_bright,
         })
     }
 }
@@ -524,12 +523,12 @@ impl ResolveRef for Resolver<'_> {
                 .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
-                .ansi
+                .ansi_map
                 .get(key)
                 .cloned()
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::AnsiBright => self
-                .ansi_bright
+                .ansi_bright_map
                 .get(key)
                 .cloned()
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
@@ -537,35 +536,15 @@ impl ResolveRef for Resolver<'_> {
     }
 }
 
-/// Temporary resolver for bootstrapping (only colors and base)
-struct TempResolver<'a> {
+/// Resolver for bootstrapping ansi/ansi.bright resolution.
+/// Only colors, base, and optionally ansi are available.
+struct PartialResolver<'a> {
     colors: &'a BTreeMap<&'a str, &'a str>,
     base: &'a BTreeMap<&'a str, &'a str>,
+    ansi: Option<&'a BTreeMap<&'static str, String>>,
 }
 
-impl ResolveRef for TempResolver<'_> {
-    fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
-        let ref_str = || format!("{}.{key}", section.as_str());
-        let map = match section {
-            Section::Colors => self.colors,
-            Section::Base => self.base,
-            Section::Ansi | Section::AnsiBright => return Err(Error::UnresolvedRef(ref_str())),
-        };
-        map.get(key)
-            .copied()
-            .map(str::to_string)
-            .ok_or_else(|| Error::UnresolvedRef(ref_str()))
-    }
-}
-
-/// Resolver for ansi.bright (has access to ansi in addition to colors/base)
-struct AnsiResolver<'a> {
-    colors: &'a BTreeMap<&'a str, &'a str>,
-    base: &'a BTreeMap<&'a str, &'a str>,
-    ansi: &'a BTreeMap<&'static str, String>,
-}
-
-impl ResolveRef for AnsiResolver<'_> {
+impl ResolveRef for PartialResolver<'_> {
     fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
         let ref_str = || format!("{}.{key}", section.as_str());
         match section {
@@ -583,8 +562,7 @@ impl ResolveRef for AnsiResolver<'_> {
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi
-                .get(key)
-                .cloned()
+                .and_then(|m| m.get(key).cloned())
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::AnsiBright => Err(Error::UnresolvedRef(ref_str())),
         }
@@ -603,8 +581,8 @@ impl RawPalette {
             layers: self.layers.resolve(&resolver)?,
             state: self.state.resolve(&resolver)?,
             semantic: self.semantic.resolve(&resolver)?,
-            ansi: self.ansi.base.resolve(&resolver)?,
-            ansi_bright: self.ansi.bright.resolve(&resolver)?,
+            ansi: resolver.resolved_ansi,
+            ansi_bright: resolver.resolved_ansi_bright,
         })
     }
 }
