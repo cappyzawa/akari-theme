@@ -12,10 +12,10 @@ _life='#7FAF6A'
 _night='#5A6F82'
 _muted='#7C6A8A'
 _cyan='#6F8F8A'
-_constant='#8CA5A1'
+_constant='#8CA6A1'
 _path='#7FAF6A'
 _text='#E6DED3'
-_comment='#7B8C9B'
+_comment='#7E93A6'
 _border='#262F3B'
 
 # Commands

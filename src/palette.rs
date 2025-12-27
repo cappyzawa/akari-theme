@@ -278,16 +278,20 @@ enum Section {
     Ansi,
 }
 
-impl Section {
-    fn from_str(s: &str) -> Option<Self> {
+impl std::str::FromStr for Section {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "colors" => Some(Self::Colors),
-            "base" => Some(Self::Base),
-            "ansi" => Some(Self::Ansi),
-            _ => None,
+            "colors" => Ok(Self::Colors),
+            "base" => Ok(Self::Base),
+            "ansi" => Ok(Self::Ansi),
+            _ => Err(()),
         }
     }
+}
 
+impl Section {
     fn as_str(&self) -> &'static str {
         match self {
             Self::Colors => "colors",
@@ -303,8 +307,9 @@ impl Section {
 /// - Literal hex colors: `"#E26A3B"`
 /// - References: `"colors.lantern"`
 /// - Functions:
-///   - `"lighten(colors.lantern, 0.1)"` — blend toward white
-///   - `"darken(base.background, 0.2)"` — blend toward black
+///   - `"lighten(colors.lantern, 0.1)"` — increase lightness proportionally
+///   - `"darken(base.background, 0.2)"` — decrease lightness proportionally
+///   - `"brighten(ansi.red, 0.1)"` — adjust lightness by absolute amount
 ///   - `"mix(base.background, colors.night, 0.15)"` — blend two colors
 #[derive(Debug, Clone)]
 enum ColorExpr {
@@ -316,6 +321,8 @@ enum ColorExpr {
     Lighten(Box<ColorExpr>, f64),
     /// Darken a color by a factor (0.0 = unchanged, 1.0 = black)
     Darken(Box<ColorExpr>, f64),
+    /// Brighten a color by absolute amount (positive = brighter, negative = dimmer)
+    Brighten(Box<ColorExpr>, f64),
     /// Mix two colors (0.0 = first color, 1.0 = second color)
     Mix(Box<ColorExpr>, Box<ColorExpr>, f64),
 }
@@ -330,6 +337,13 @@ impl<'de> Deserialize<'de> for ColorExpr {
     }
 }
 
+/// Strip function call syntax: "fn_name(args)" -> Some("args")
+fn strip_fn_call<'a>(s: &'a str, name: &str) -> Option<&'a str> {
+    s.strip_prefix(name)
+        .and_then(|r| r.strip_prefix('('))
+        .and_then(|r| r.strip_suffix(')'))
+}
+
 /// Parse a color expression string into a ColorExpr.
 fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
     let s = s.trim();
@@ -339,17 +353,21 @@ fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
         return Ok(ColorExpr::Literal(s.to_string()));
     }
 
-    // Function call: lighten(...), darken(...), mix(...)
-    if let Some(rest) = s.strip_prefix("lighten(").and_then(|r| r.strip_suffix(')')) {
-        let (inner, factor) = parse_unary_fn_args(rest)?;
+    // Function call: lighten(...), darken(...), brighten(...), mix(...)
+    if let Some(args) = strip_fn_call(s, "lighten") {
+        let (inner, factor) = parse_unary_fn_args(args)?;
         return Ok(ColorExpr::Lighten(Box::new(inner), factor));
     }
-    if let Some(rest) = s.strip_prefix("darken(").and_then(|r| r.strip_suffix(')')) {
-        let (inner, factor) = parse_unary_fn_args(rest)?;
+    if let Some(args) = strip_fn_call(s, "darken") {
+        let (inner, factor) = parse_unary_fn_args(args)?;
         return Ok(ColorExpr::Darken(Box::new(inner), factor));
     }
-    if let Some(rest) = s.strip_prefix("mix(").and_then(|r| r.strip_suffix(')')) {
-        let (color1, color2, factor) = parse_mix_args(rest)?;
+    if let Some(args) = strip_fn_call(s, "brighten") {
+        let (inner, amount) = parse_unary_fn_args(args)?;
+        return Ok(ColorExpr::Brighten(Box::new(inner), amount));
+    }
+    if let Some(args) = strip_fn_call(s, "mix") {
+        let (color1, color2, factor) = parse_mix_args(args)?;
         return Ok(ColorExpr::Mix(Box::new(color1), Box::new(color2), factor));
     }
 
@@ -357,8 +375,9 @@ fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
     let (section_str, key) = s
         .split_once('.')
         .ok_or_else(|| Error::InvalidColorExpr(s.to_string()))?;
-    let section = Section::from_str(section_str)
-        .ok_or_else(|| Error::InvalidColorExpr(format!("unknown section: {section_str}")))?;
+    let section: Section = section_str
+        .parse()
+        .map_err(|()| Error::InvalidColorExpr(format!("unknown section: {section_str}")))?;
     Ok(ColorExpr::Ref {
         section,
         key: key.to_string(),
@@ -416,6 +435,10 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
         ColorExpr::Darken(inner, factor) => {
             let hex = resolve_expr(resolver, inner)?;
             Ok(Rgb::parse(&hex)?.darken(*factor).to_hex())
+        }
+        ColorExpr::Brighten(inner, amount) => {
+            let hex = resolve_expr(resolver, inner)?;
+            Ok(Rgb::parse(&hex)?.brighten(*amount).to_hex())
         }
         ColorExpr::Mix(color1, color2, factor) => {
             let rgb1 = Rgb::parse(&resolve_expr(resolver, color1)?)?;

@@ -9,14 +9,14 @@ palette = 4=#304050
 palette = 5=#806080
 palette = 6=#305858
 palette = 7=#E4DED6
-palette = 8=#484645
-palette = 9=#622525
-palette = 10=#35512C
-palette = 11=#9E6C3A
-palette = 12=#2B3A48
-palette = 13=#735673
-palette = 14=#2B4F4F
-palette = 15=#CDC8C1
+palette = 8=#514B45
+palette = 9=#3E1717
+palette = 10=#20301A
+palette = 11=#78522C
+palette = 12=#131A20
+palette = 13=#543F54
+palette = 14=#152727
+palette = 15=#D0C5B7
 
 # Base
 background = #E4DED6

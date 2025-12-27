@@ -19,9 +19,9 @@
       "ntp_background": [228, 222, 214],
       "ntp_text": [26, 24, 22],
       "ntp_link": [138, 69, 48],
-      "ntp_header": [210, 204, 197],
+      "ntp_header": [207, 196, 182],
       "button_background": [176, 120, 64],
-      "omnibox_background": [230, 225, 217],
+      "omnibox_background": [217, 209, 198],
       "omnibox_text": [26, 24, 22]
     },
     "properties": {
