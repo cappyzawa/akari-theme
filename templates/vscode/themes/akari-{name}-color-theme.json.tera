@@ -38,7 +38,7 @@
     "editor.findMatchHighlightBackground": "{{ colors.lantern.mid }}20",
     "editor.lineHighlightBackground": "{{ layers.sunken }}",
     "editor.lineHighlightBorder": "{{ layers.sunken }}00",
-    "editorLink.activeForeground": "{{ ansi_bright.blue }}",
+    "editorLink.activeForeground": "{{ semantic.link }}",
 
     "editorGutter.background": "{{ base.background }}",
     "editorGutter.modifiedBackground": "{{ colors.lantern.mid }}",
@@ -362,7 +362,7 @@
         "string.escape"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.magenta }}"
+        "foreground": "{{ semantic.escape }}"
       }
     },
     {
@@ -371,7 +371,7 @@
         "string.regexp"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.green }}"
+        "foreground": "{{ semantic.regexp }}"
       }
     },
     {
@@ -516,7 +516,7 @@
         "support.function.macro"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.magenta }}"
+        "foreground": "{{ semantic.macro }}"
       }
     },
     {
@@ -825,7 +825,7 @@
         "string.other.link"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.blue }}",
+        "foreground": "{{ semantic.link }}",
         "fontStyle": "underline"
       }
     },
@@ -1011,7 +1011,7 @@
         "keyword.control.at-rule.extend"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.magenta }}"
+        "foreground": "{{ semantic.macro }}"
       }
     },
     {
@@ -1085,7 +1085,7 @@
     "method": "{{ colors.muted }}",
     "function.defaultLibrary": "{{ ansi_bright.magenta }}",
     "method.defaultLibrary": "{{ ansi_bright.magenta }}",
-    "macro": "{{ ansi_bright.magenta }}",
+    "macro": "{{ semantic.macro }}",
     "variable": "{{ base.foreground }}",
     "variable.readonly": "{{ semantic.constant }}",
     "variable.defaultLibrary": {

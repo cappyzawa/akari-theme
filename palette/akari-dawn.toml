@@ -127,6 +127,16 @@ success = "colors.life"
 # semantic.path — file paths (URLs use bright-blue separately)
 path = "ansi.green"
 
+# Special syntax
+# semantic.macro — metaprogramming, preprocessor
+macro = "ansi.bright.magenta"
+# semantic.escape — escape sequences (\n, \t, etc.)
+escape = "ansi.bright.magenta"
+# semantic.regexp — regular expression literals
+regexp = "ansi.bright.green"
+# semantic.link — URLs, hyperlinks
+link = "ansi.bright.blue"
+
 #
 # ANSI (terminal compatibility)
 #

@@ -49,6 +49,10 @@ M.night = {
   constant = "#8CA6A1",
   comment = "#7E93A6",
   path = "#7FAF6A",
+  macro = "#A294AD",
+  escape = "#A294AD",
+  regexp = "#A1C492",
+  link = "#8195A8",
 
   -- Diagnostic
   error = "#D25046",
@@ -111,6 +115,10 @@ M.dawn = {
   constant = "#447C7C",
   comment = "#222D38",
   path = "#3A5830",
+  macro = "#543F54",
+  escape = "#543F54",
+  regexp = "#20301A",
+  link = "#131A20",
 
   -- Diagnostic
   error = "#6A2828",

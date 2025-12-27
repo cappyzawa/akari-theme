@@ -95,7 +95,7 @@
 "markup.bold" = { modifiers = ["bold"] }
 "markup.italic" = { modifiers = ["italic"] }
 "markup.strikethrough" = { modifiers = ["crossed_out"] }
-"markup.link.url" = { fg = "bright-blue", modifiers = ["underlined"] }
+"markup.link.url" = { fg = "link", modifiers = ["underlined"] }
 "markup.link.text" = { fg = "cyan" }
 "markup.link.label" = { fg = "magenta" }
 "markup.quote" = { fg = "comment", modifiers = ["dim"] }
@@ -117,15 +117,15 @@
 "constant.builtin" = { fg = "constant" }
 "constant.builtin.boolean" = { fg = "constant" }
 "constant.character" = { fg = "lantern" }
-"constant.character.escape" = { fg = "bright-magenta" }
+"constant.character.escape" = { fg = "escape" }
 "constant.numeric" = { fg = "constant" }
 
 "string" = { fg = "green" }
-"string.regexp" = { fg = "bright-green" }
+"string.regexp" = { fg = "regexp" }
 "string.regexp.special" = { fg = "bright-magenta" }
 "string.special" = { fg = "green" }
 "string.special.path" = { fg = "path" }
-"string.special.url" = { fg = "bright-blue", modifiers = ["underlined"] }
+"string.special.url" = { fg = "link", modifiers = ["underlined"] }
 "string.special.symbol" = { fg = "bright-magenta" }
 
 "comment" = { fg = "comment", modifiers = ["dim"] }
@@ -154,7 +154,7 @@
 "keyword.control.return" = { fg = "lantern" }
 "keyword.control.exception" = { fg = "lantern" }
 "keyword.operator" = { fg = "lantern" }
-"keyword.directive" = { fg = "bright-magenta" }
+"keyword.directive" = { fg = "macro" }
 "keyword.function" = { fg = "lantern" }
 "keyword.storage" = { fg = "lantern" }
 "keyword.storage.type" = { fg = "lantern" }
@@ -165,7 +165,7 @@
 "function" = { fg = "magenta" }
 "function.builtin" = { fg = "bright-magenta" }
 "function.method" = { fg = "magenta" }
-"function.macro" = { fg = "bright-magenta" }
+"function.macro" = { fg = "macro" }
 "function.special" = { fg = "bright-magenta" }
 
 "tag" = { fg = "lantern" }
@@ -216,5 +216,9 @@ amber = "{{ colors.lantern.far }}"
 constant = "{{ semantic.constant }}"
 comment = "{{ semantic.comment }}"
 path = "{{ semantic.path }}"
+macro = "{{ semantic.macro }}"
+escape = "{{ semantic.escape }}"
+regexp = "{{ semantic.regexp }}"
+link = "{{ semantic.link }}"
 sunken = "{{ layers.sunken }}"
 match-bg = "{{ state.match_bg }}"

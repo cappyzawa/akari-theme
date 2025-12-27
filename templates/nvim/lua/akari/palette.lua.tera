@@ -49,6 +49,10 @@ M.night = {
   constant = "{{ night_semantic.constant }}",
   comment = "{{ night_semantic.comment }}",
   path = "{{ night_semantic.path }}",
+  macro = "{{ night_semantic.macro }}",
+  escape = "{{ night_semantic.escape }}",
+  regexp = "{{ night_semantic.regexp }}",
+  link = "{{ night_semantic.link }}",
 
   -- Diagnostic
   error = "{{ night_state.error }}",
@@ -111,6 +115,10 @@ M.dawn = {
   constant = "{{ dawn_semantic.constant }}",
   comment = "{{ dawn_semantic.comment }}",
   path = "{{ dawn_semantic.path }}",
+  macro = "{{ dawn_semantic.macro }}",
+  escape = "{{ dawn_semantic.escape }}",
+  regexp = "{{ dawn_semantic.regexp }}",
+  link = "{{ dawn_semantic.link }}",
 
   -- Diagnostic
   error = "{{ dawn_state.error }}",
