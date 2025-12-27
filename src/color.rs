@@ -15,12 +15,12 @@ impl Rgb {
             return Err(Error::InvalidHex(hex.to_string()));
         }
 
-        let err = || Error::InvalidHex(hex.to_string());
-        let r = u8::from_str_radix(&hex[0..2], 16).map_err(|_| err())?;
-        let g = u8::from_str_radix(&hex[2..4], 16).map_err(|_| err())?;
-        let b = u8::from_str_radix(&hex[4..6], 16).map_err(|_| err())?;
+        let parse = |range: std::ops::Range<usize>| u8::from_str_radix(&hex[range], 16);
 
-        Ok(Self { r, g, b })
+        match (parse(0..2), parse(2..4), parse(4..6)) {
+            (Ok(r), Ok(g), Ok(b)) => Ok(Self { r, g, b }),
+            _ => Err(Error::InvalidHex(hex.to_string())),
+        }
     }
 
     #[must_use]
