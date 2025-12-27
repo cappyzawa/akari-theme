@@ -13,11 +13,11 @@ cyan = '#305858'
 white = '#E4DED6'
 
 # Bright variants
-bright-black = '#484645'
+bright-black = '#4C4640'
 bright-red = '#622525'
 bright-green = '#35512C'
 bright-yellow = '#9E6C3A'
 bright-blue = '#2B3A48'
 bright-purple = '#735673'
 bright-cyan = '#2B4F4F'
-bright-white = '#CDC8C1'
+bright-white = '#D2C9BB'

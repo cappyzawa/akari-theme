@@ -37,11 +37,11 @@ foreground = "#1A1816" # ink black — stone pavement
 # layers.base — the ground (same as background)
 base = "base.background"
 # layers.surface — statusline, panels (slightly darker for light theme)
-surface = "darken(base.background, 0.08)"
+surface = "darken(base.background, 0.12)"
 # layers.sunken — cursorline (recessed, lantern-tinted for warmth)
 sunken = "mix(base.background, colors.lantern.mid, 0.08)"
-# layers.raised — popup, menu (slightly lighter)
-raised = "lighten(base.background, 0.08)"
+# layers.raised — popup, menu (slightly darker for visibility)
+raised = "darken(base.background, 0.06)"
 # layers.border — window borders, separators
 border = "darken(base.background, 0.15)"
 # layers.inset — side panels, status bar (recessed from editor)

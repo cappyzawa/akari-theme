@@ -33,12 +33,12 @@ M.night = {
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#3D4045",
+  bright_black = "#303B52",
   bright_red = "#D65E55",
   bright_green = "#89B576",
-  bright_yellow = "#D8AA6B",
-  bright_blue = "#6B7D8F",
-  bright_magenta = "#897996",
+  bright_yellow = "#D8AA6A",
+  bright_blue = "#667E93",
+  bright_magenta = "#897897",
   bright_cyan = "#7D9A96",
   bright_white = "#E7E0D5",
 
@@ -46,15 +46,15 @@ M.night = {
   lantern = "#E26A3B",
   ember = "#D65A3A",
   amber = "#D4A05A",
-  constant = "#8CA5A1",
-  comment = "#7B8C9B",
+  constant = "#8CA6A1",
+  comment = "#7E93A6",
   path = "#7FAF6A",
 
   -- Diagnostic
   error = "#D25046",
   warning = "#E26A3B",
   info = "#5A6F82",
-  hint = "#7B8C9B",
+  hint = "#7E93A6",
 
   -- Diff
   diff_add = "#7FAF6A",
@@ -72,10 +72,10 @@ M.dawn = {
   foreground = "#1A1816",
 
   -- Layers
-  surface = "#D2CCC5",
+  surface = "#CFC4B6",
   sunken = "#DDD2C9",
-  raised = "#E6E1D9",
-  border = "#C2BDB6",
+  raised = "#D9D1C6",
+  border = "#CABEAE",
 
   -- UI
   cursor = "#8A4530",
@@ -95,20 +95,20 @@ M.dawn = {
   white = "#E4DED6",
 
   -- Bright ANSI colors
-  bright_black = "#484645",
+  bright_black = "#4C4640",
   bright_red = "#622525",
   bright_green = "#35512C",
   bright_yellow = "#9E6C3A",
   bright_blue = "#2B3A48",
   bright_magenta = "#735673",
   bright_cyan = "#2B4F4F",
-  bright_white = "#CDC8C1",
+  bright_white = "#D2C9BB",
 
   -- Semantic colors
   lantern = "#8A4530",
   ember = "#7A3828",
   amber = "#B07840",
-  constant = "#4F7171",
+  constant = "#447C7C",
   comment = "#222D38",
   path = "#3A5830",
 

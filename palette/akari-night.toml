@@ -69,7 +69,7 @@ cursor_text = "base.background"
 # state.info
 info = "colors.night"
 # state.hint — distant stone-gray, night from the mist
-hint = "lighten(colors.night, 0.20)"
+hint = "lighten(colors.night, 0.25)"
 # state.warning
 warning = "colors.lantern.mid"
 # state.error — ANSI red for danger
@@ -97,7 +97,7 @@ diff_changed = "colors.lantern.far"
 # semantic.text
 text = "base.foreground"
 # semantic.comment — distant stone-gray, night from the mist
-comment = "lighten(colors.night, 0.20)"
+comment = "lighten(colors.night, 0.25)"
 
 # Light sources — lantern is singular
 # semantic.string

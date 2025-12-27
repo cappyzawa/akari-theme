@@ -40,28 +40,26 @@ impl Rgb {
         format!("#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
     }
 
-    /// Lighten the color by blending toward white.
+    /// Lighten the color by increasing lightness in HSL space.
     ///
     /// `factor` of 0.0 returns the original color, 1.0 returns white.
+    /// The lightness is increased proportionally to the remaining headroom.
     pub fn lighten(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
-        Self {
-            r: self.blend_channel(self.r, 255, factor),
-            g: self.blend_channel(self.g, 255, factor),
-            b: self.blend_channel(self.b, 255, factor),
-        }
+        let (h, s, l) = self.to_hsl();
+        let new_l = l + (1.0 - l) * factor;
+        Self::from_hsl(h, s, new_l)
     }
 
-    /// Darken the color by blending toward black.
+    /// Darken the color by decreasing lightness in HSL space.
     ///
     /// `factor` of 0.0 returns the original color, 1.0 returns black.
+    /// The lightness is decreased proportionally to the current lightness.
     pub fn darken(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
-        Self {
-            r: self.blend_channel(self.r, 0, factor),
-            g: self.blend_channel(self.g, 0, factor),
-            b: self.blend_channel(self.b, 0, factor),
-        }
+        let (h, s, l) = self.to_hsl();
+        let new_l = l * (1.0 - factor);
+        Self::from_hsl(h, s, new_l)
     }
 
     /// Mix two colors together.
@@ -70,13 +68,98 @@ impl Rgb {
     pub fn mix(self, other: Self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         Self {
-            r: self.blend_channel(self.r, other.r, factor),
-            g: self.blend_channel(self.g, other.g, factor),
-            b: self.blend_channel(self.b, other.b, factor),
+            r: Self::blend_channel(self.r, other.r, factor),
+            g: Self::blend_channel(self.g, other.g, factor),
+            b: Self::blend_channel(self.b, other.b, factor),
         }
     }
 
-    fn blend_channel(self, from: u8, to: u8, factor: f64) -> u8 {
+    /// Convert RGB to HSL.
+    ///
+    /// Returns (hue, saturation, lightness) where:
+    /// - hue: 0.0 to 360.0
+    /// - saturation: 0.0 to 1.0
+    /// - lightness: 0.0 to 1.0
+    fn to_hsl(self) -> (f64, f64, f64) {
+        let (r, g, b) = self.as_floats();
+
+        let max = r.max(g).max(b);
+        let min = r.min(g).min(b);
+        let l = (max + min) / 2.0;
+
+        if (max - min).abs() < f64::EPSILON {
+            return (0.0, 0.0, l);
+        }
+
+        let d = max - min;
+        let s = if l > 0.5 {
+            d / (2.0 - max - min)
+        } else {
+            d / (max + min)
+        };
+
+        let h = if (max - r).abs() < f64::EPSILON {
+            let mut h = (g - b) / d;
+            if g < b {
+                h += 6.0;
+            }
+            h
+        } else if (max - g).abs() < f64::EPSILON {
+            (b - r) / d + 2.0
+        } else {
+            (r - g) / d + 4.0
+        };
+
+        (h * 60.0, s, l)
+    }
+
+    /// Convert HSL to RGB.
+    fn from_hsl(h: f64, s: f64, l: f64) -> Self {
+        if s.abs() < f64::EPSILON {
+            let v = (l * 255.0).round() as u8;
+            return Self { r: v, g: v, b: v };
+        }
+
+        let q = if l < 0.5 {
+            l * (1.0 + s)
+        } else {
+            l + s - l * s
+        };
+        let p = 2.0 * l - q;
+        let h = h / 360.0;
+
+        let r = Self::hue_to_rgb(p, q, h + 1.0 / 3.0);
+        let g = Self::hue_to_rgb(p, q, h);
+        let b = Self::hue_to_rgb(p, q, h - 1.0 / 3.0);
+
+        Self {
+            r: (r * 255.0).round() as u8,
+            g: (g * 255.0).round() as u8,
+            b: (b * 255.0).round() as u8,
+        }
+    }
+
+    fn hue_to_rgb(p: f64, q: f64, t: f64) -> f64 {
+        let t = if t < 0.0 {
+            t + 1.0
+        } else if t > 1.0 {
+            t - 1.0
+        } else {
+            t
+        };
+
+        if t < 1.0 / 6.0 {
+            p + (q - p) * 6.0 * t
+        } else if t < 1.0 / 2.0 {
+            q
+        } else if t < 2.0 / 3.0 {
+            p + (q - p) * (2.0 / 3.0 - t) * 6.0
+        } else {
+            p
+        }
+    }
+
+    fn blend_channel(from: u8, to: u8, factor: f64) -> u8 {
         let from = from as f64;
         let to = to as f64;
         (from + (to - from) * factor).round() as u8
