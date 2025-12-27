@@ -261,14 +261,6 @@ impl<'a> IntoIterator for &'a Ansi {
     }
 }
 
-macro_rules! make_map {
-    ($obj:expr, $($field:ident),+ $(,)?) => {
-        [$(
-            (stringify!($field), $obj.$field.as_str()),
-        )+].into_iter().collect()
-    };
-}
-
 /// Reference section for color expressions.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Section {
@@ -480,7 +472,12 @@ impl<'a> Resolver<'a> {
         ]
         .into_iter()
         .collect();
-        let base: BTreeMap<&str, &str> = make_map!(raw.base, background, foreground);
+        let base: BTreeMap<&str, &str> = [
+            ("background", raw.base.background.as_str()),
+            ("foreground", raw.base.foreground.as_str()),
+        ]
+        .into_iter()
+        .collect();
 
         // Build a temporary resolver to resolve ansi references
         let temp = TempResolver {
@@ -517,12 +514,14 @@ impl ResolveRef for Resolver<'_> {
             Section::Colors => self
                 .colors
                 .get(key)
-                .copied().map(str::to_string)
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .copied().map(str::to_string)
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi
@@ -553,7 +552,8 @@ impl ResolveRef for TempResolver<'_> {
             Section::Ansi | Section::AnsiBright => return Err(Error::UnresolvedRef(ref_str())),
         };
         map.get(key)
-            .copied().map(str::to_string)
+            .copied()
+            .map(str::to_string)
             .ok_or_else(|| Error::UnresolvedRef(ref_str()))
     }
 }
@@ -572,12 +572,14 @@ impl ResolveRef for AnsiResolver<'_> {
             Section::Colors => self
                 .colors
                 .get(key)
-                .copied().map(str::to_string)
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .copied().map(str::to_string)
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi

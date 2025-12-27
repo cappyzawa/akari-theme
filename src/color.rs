@@ -15,7 +15,7 @@ impl FromStr for Rgb {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let hex = s.strip_prefix('#').unwrap_or(s);
 
-        if hex.len() != 6 {
+        if !hex.is_ascii() || hex.len() != 6 {
             return Err(Error::InvalidHex(hex.to_string()));
         }
 
@@ -35,7 +35,6 @@ impl fmt::Display for Rgb {
 }
 
 impl Rgb {
-
     #[must_use]
     pub const fn as_floats(self) -> (f64, f64, f64) {
         (
@@ -253,6 +252,11 @@ mod tests {
     #[test]
     fn parse_empty() {
         assert!("".parse::<Rgb>().is_err());
+    }
+
+    #[test]
+    fn parse_non_ascii() {
+        assert!("#ＡＢＣＤＥＦ".parse::<Rgb>().is_err());
     }
 
     #[test]
