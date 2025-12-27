@@ -292,7 +292,7 @@ impl std::str::FromStr for Section {
 }
 
 impl Section {
-    fn as_str(&self) -> &'static str {
+    const fn as_str(&self) -> &'static str {
         match self {
             Self::Colors => "colors",
             Self::Base => "base",
