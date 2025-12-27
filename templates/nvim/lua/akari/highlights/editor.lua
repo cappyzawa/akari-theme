@@ -60,7 +60,7 @@ function M.setup(p, config)
 
     -- Popup menu
     Pmenu = { fg = p.foreground, bg = p.black },
-    PmenuSel = { fg = p.bright_white, bg = p.selection_bg },
+    PmenuSel = { fg = p.selection_fg, bg = p.selection_bg },
     PmenuSbar = { bg = p.black },
     PmenuThumb = { bg = p.bright_black },
     PmenuKind = { fg = p.lantern, bg = p.black },
@@ -109,7 +109,7 @@ function M.setup(p, config)
     SpecialKey = { fg = p.bright_black },
     Title = { fg = p.lantern, bold = true },
     Whitespace = { fg = p.bright_black },
-    WildMenu = { fg = p.bright_white, bg = p.selection_bg },
+    WildMenu = { fg = p.selection_fg, bg = p.selection_bg },
 
     -- Diagnostics
     DiagnosticError = { fg = p.error, bold = true },
