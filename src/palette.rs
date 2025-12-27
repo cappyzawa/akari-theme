@@ -438,20 +438,20 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
         ColorExpr::Ref { section, key } => resolver.resolve_ref(*section, key),
         ColorExpr::Lighten(inner, factor) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.lighten(*factor).to_hex())
+            Ok(hex.parse::<Rgb>()?.lighten(*factor).to_string())
         }
         ColorExpr::Darken(inner, factor) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.darken(*factor).to_hex())
+            Ok(hex.parse::<Rgb>()?.darken(*factor).to_string())
         }
         ColorExpr::Brighten(inner, amount) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.brighten(*amount).to_hex())
+            Ok(hex.parse::<Rgb>()?.brighten(*amount).to_string())
         }
         ColorExpr::Mix(color1, color2, factor) => {
-            let rgb1 = Rgb::parse(&resolve_expr(resolver, color1)?)?;
-            let rgb2 = Rgb::parse(&resolve_expr(resolver, color2)?)?;
-            Ok(rgb1.mix(rgb2, *factor).to_hex())
+            let rgb1: Rgb = resolve_expr(resolver, color1)?.parse()?;
+            let rgb2: Rgb = resolve_expr(resolver, color2)?.parse()?;
+            Ok(rgb1.mix(rgb2, *factor).to_string())
         }
     }
 }
@@ -517,12 +517,12 @@ impl ResolveRef for Resolver<'_> {
             Section::Colors => self
                 .colors
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied().map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied().map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi
@@ -553,7 +553,7 @@ impl ResolveRef for TempResolver<'_> {
             Section::Ansi | Section::AnsiBright => return Err(Error::UnresolvedRef(ref_str())),
         };
         map.get(key)
-            .map(|s| (*s).to_string())
+            .copied().map(str::to_string)
             .ok_or_else(|| Error::UnresolvedRef(ref_str()))
     }
 }
@@ -572,12 +572,12 @@ impl ResolveRef for AnsiResolver<'_> {
             Section::Colors => self
                 .colors
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied().map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied().map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi

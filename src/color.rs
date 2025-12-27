@@ -1,4 +1,6 @@
 use crate::Error;
+use std::fmt;
+use std::str::FromStr;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Rgb {
@@ -7,9 +9,11 @@ pub struct Rgb {
     pub b: u8,
 }
 
-impl Rgb {
-    pub fn parse(hex: &str) -> Result<Self, Error> {
-        let hex = hex.strip_prefix('#').unwrap_or(hex);
+impl FromStr for Rgb {
+    type Err = Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let hex = s.strip_prefix('#').unwrap_or(s);
 
         if hex.len() != 6 {
             return Err(Error::InvalidHex(hex.to_string()));
@@ -22,6 +26,15 @@ impl Rgb {
             _ => Err(Error::InvalidHex(hex.to_string())),
         }
     }
+}
+
+impl fmt::Display for Rgb {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
+    }
+}
+
+impl Rgb {
 
     #[must_use]
     pub const fn as_floats(self) -> (f64, f64, f64) {
@@ -35,12 +48,6 @@ impl Rgb {
     #[must_use]
     pub fn to_array_string(self) -> String {
         format!("[{}, {}, {}]", self.r, self.g, self.b)
-    }
-
-    /// Convert to hex string with leading `#`.
-    #[must_use]
-    pub fn to_hex(self) -> String {
-        format!("#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
     }
 
     /// Lighten the color by increasing lightness in HSL space.
@@ -187,7 +194,7 @@ mod tests {
 
     #[test]
     fn parse_with_hash() {
-        let rgb = Rgb::parse("#E26A3B").unwrap();
+        let rgb: Rgb = "#E26A3B".parse().unwrap();
         assert_eq!(rgb.r, 226);
         assert_eq!(rgb.g, 106);
         assert_eq!(rgb.b, 59);
@@ -195,7 +202,7 @@ mod tests {
 
     #[test]
     fn parse_without_hash() {
-        let rgb = Rgb::parse("E26A3B").unwrap();
+        let rgb: Rgb = "E26A3B".parse().unwrap();
         assert_eq!(rgb.r, 226);
         assert_eq!(rgb.g, 106);
         assert_eq!(rgb.b, 59);
@@ -203,13 +210,13 @@ mod tests {
 
     #[test]
     fn parse_black() {
-        let rgb = Rgb::parse("#000000").unwrap();
+        let rgb: Rgb = "#000000".parse().unwrap();
         assert_eq!(rgb, Rgb { r: 0, g: 0, b: 0 });
     }
 
     #[test]
     fn parse_white() {
-        let rgb = Rgb::parse("#FFFFFF").unwrap();
+        let rgb: Rgb = "#FFFFFF".parse().unwrap();
         assert_eq!(
             rgb,
             Rgb {
@@ -222,7 +229,7 @@ mod tests {
 
     #[test]
     fn parse_lowercase() {
-        let rgb = Rgb::parse("#aabbcc").unwrap();
+        let rgb: Rgb = "#aabbcc".parse().unwrap();
         assert_eq!(rgb.r, 170);
         assert_eq!(rgb.g, 187);
         assert_eq!(rgb.b, 204);
@@ -230,22 +237,22 @@ mod tests {
 
     #[test]
     fn parse_invalid_length_short() {
-        assert!(Rgb::parse("#FFF").is_err());
+        assert!("#FFF".parse::<Rgb>().is_err());
     }
 
     #[test]
     fn parse_invalid_length_long() {
-        assert!(Rgb::parse("#FFFFFFFF").is_err());
+        assert!("#FFFFFFFF".parse::<Rgb>().is_err());
     }
 
     #[test]
     fn parse_invalid_chars() {
-        assert!(Rgb::parse("#GGGGGG").is_err());
+        assert!("#GGGGGG".parse::<Rgb>().is_err());
     }
 
     #[test]
     fn parse_empty() {
-        assert!(Rgb::parse("").is_err());
+        assert!("".parse::<Rgb>().is_err());
     }
 
     #[test]
@@ -281,19 +288,19 @@ mod tests {
     }
 
     #[test]
-    fn to_hex_uppercase() {
+    fn display_uppercase() {
         let rgb = Rgb {
             r: 226,
             g: 106,
             b: 59,
         };
-        assert_eq!(rgb.to_hex(), "#E26A3B");
+        assert_eq!(rgb.to_string(), "#E26A3B");
     }
 
     #[test]
-    fn to_hex_with_leading_zeros() {
+    fn display_with_leading_zeros() {
         let rgb = Rgb { r: 1, g: 2, b: 3 };
-        assert_eq!(rgb.to_hex(), "#010203");
+        assert_eq!(rgb.to_string(), "#010203");
     }
 
     #[test]

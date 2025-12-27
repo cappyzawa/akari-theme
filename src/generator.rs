@@ -9,7 +9,7 @@ fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Res
     let hex = value
         .as_str()
         .ok_or_else(|| tera::Error::msg("hex_to_rgb requires a string"))?;
-    let rgb = Rgb::parse(hex).map_err(|e| tera::Error::msg(e.to_string()))?;
+    let rgb: Rgb = hex.parse().map_err(|e: crate::Error| tera::Error::msg(e.to_string()))?;
     Ok(Value::String(rgb.to_array_string()))
 }
 
