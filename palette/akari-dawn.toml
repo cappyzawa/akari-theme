@@ -153,18 +153,18 @@ white = "base.background"
 
 [ansi.bright]
 # ansi.bright.black — lighter (muted for comments)
-black = "lighten(ansi.black, 0.20)"
-# ansi.bright.red — slightly darker
-red = "darken(ansi.red, 0.08)"
-# ansi.bright.green — slightly darker
-green = "darken(ansi.green, 0.08)"
-# ansi.bright.yellow — slightly darker
-yellow = "darken(ansi.yellow, 0.10)"
-# ansi.bright.blue — slightly darker
-blue = "darken(ansi.blue, 0.10)"
-# ansi.bright.magenta — slightly darker
-magenta = "darken(ansi.magenta, 0.10)"
-# ansi.bright.cyan — slightly darker
-cyan = "darken(ansi.cyan, 0.10)"
+black = "brighten(ansi.black, 0.20)"
+# ansi.bright.red — darker with preserved saturation
+red = "brighten(ansi.red, -0.12)"
+# ansi.bright.green — darker with preserved saturation
+green = "brighten(ansi.green, -0.12)"
+# ansi.bright.yellow — darker with preserved saturation
+yellow = "brighten(ansi.yellow, -0.15)"
+# ansi.bright.blue — darker with preserved saturation
+blue = "brighten(ansi.blue, -0.15)"
+# ansi.bright.magenta — darker with preserved saturation
+magenta = "brighten(ansi.magenta, -0.15)"
+# ansi.bright.cyan — darker with preserved saturation
+cyan = "brighten(ansi.cyan, -0.15)"
 # ansi.bright.white — slightly darker
-white = "darken(ansi.white, 0.10)"
+white = "brighten(ansi.white, -0.10)"

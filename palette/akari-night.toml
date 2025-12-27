@@ -152,20 +152,20 @@ cyan = "colors.rain"
 white = "base.foreground"
 
 [ansi.bright]
-# ansi.bright.black — lighter for readability
-black = "lighten(ansi.black, 0.20)"
-# ansi.bright.red — slightly brighter
-red = "lighten(ansi.red, 0.08)"
-# ansi.bright.green — slightly brighter
-green = "lighten(ansi.green, 0.08)"
-# ansi.bright.yellow — slightly brighter
-yellow = "lighten(ansi.yellow, 0.10)"
-# ansi.bright.blue — slightly brighter
-blue = "lighten(ansi.blue, 0.10)"
-# ansi.bright.magenta — slightly brighter
-magenta = "lighten(ansi.magenta, 0.10)"
-# ansi.bright.cyan — slightly brighter
-cyan = "lighten(ansi.cyan, 0.10)"
+# ansi.bright.black — lighter for readability (line numbers, etc.)
+black = "brighten(ansi.black, 0.30)"
+# ansi.bright.red — brighter with preserved saturation
+red = "brighten(ansi.red, 0.12)"
+# ansi.bright.green — brighter with preserved saturation
+green = "brighten(ansi.green, 0.12)"
+# ansi.bright.yellow — brighter with preserved saturation
+yellow = "brighten(ansi.yellow, 0.15)"
+# ansi.bright.blue — brighter with preserved saturation
+blue = "brighten(ansi.blue, 0.15)"
+# ansi.bright.magenta — brighter with preserved saturation
+magenta = "brighten(ansi.magenta, 0.15)"
+# ansi.bright.cyan — brighter with preserved saturation
+cyan = "brighten(ansi.cyan, 0.15)"
 # ansi.bright.white — slightly brighter
-white = "lighten(ansi.white, 0.05)"
+white = "brighten(ansi.white, 0.05)"
 

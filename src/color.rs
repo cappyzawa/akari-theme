@@ -10,15 +10,15 @@ pub struct Rgb {
 impl Rgb {
     pub fn parse(hex: &str) -> Result<Self, Error> {
         let hex = hex.strip_prefix('#').unwrap_or(hex);
-        let invalid = || Error::InvalidHex(hex.to_string());
 
         if hex.len() != 6 {
-            return Err(invalid());
+            return Err(Error::InvalidHex(hex.to_string()));
         }
 
-        let r = u8::from_str_radix(&hex[0..2], 16).map_err(|_| invalid())?;
-        let g = u8::from_str_radix(&hex[2..4], 16).map_err(|_| invalid())?;
-        let b = u8::from_str_radix(&hex[4..6], 16).map_err(|_| invalid())?;
+        let err = || Error::InvalidHex(hex.to_string());
+        let r = u8::from_str_radix(&hex[0..2], 16).map_err(|_| err())?;
+        let g = u8::from_str_radix(&hex[2..4], 16).map_err(|_| err())?;
+        let b = u8::from_str_radix(&hex[4..6], 16).map_err(|_| err())?;
 
         Ok(Self { r, g, b })
     }
@@ -59,6 +59,16 @@ impl Rgb {
         let factor = factor.clamp(0.0, 1.0);
         let (h, s, l) = self.to_hsl();
         let new_l = l * (1.0 - factor);
+        Self::from_hsl(h, s, new_l)
+    }
+
+    /// Adjust lightness by an absolute amount in HSL space.
+    ///
+    /// Positive values brighten, negative values dim.
+    /// The amount is added directly to lightness (0.0 to 1.0 scale).
+    pub fn brighten(self, amount: f64) -> Self {
+        let (h, s, l) = self.to_hsl();
+        let new_l = (l + amount).clamp(0.0, 1.0);
         Self::from_hsl(h, s, new_l)
     }
 
@@ -140,13 +150,7 @@ impl Rgb {
     }
 
     fn hue_to_rgb(p: f64, q: f64, t: f64) -> f64 {
-        let t = if t < 0.0 {
-            t + 1.0
-        } else if t > 1.0 {
-            t - 1.0
-        } else {
-            t
-        };
+        let t = t.rem_euclid(1.0);
 
         if t < 1.0 / 6.0 {
             p + (q - p) * 6.0 * t
@@ -395,6 +399,73 @@ mod tests {
         };
         // Factor < 0.0 should be clamped to 0.0
         assert_eq!(rgb.darken(-0.5), rgb);
+    }
+
+    #[test]
+    fn brighten_zero_unchanged() {
+        let rgb = Rgb {
+            r: 100,
+            g: 100,
+            b: 100,
+        };
+        assert_eq!(rgb.brighten(0.0), rgb);
+    }
+
+    #[test]
+    fn brighten_positive_increases_lightness() {
+        let rgb = Rgb {
+            r: 100,
+            g: 100,
+            b: 100,
+        };
+        let brightened = rgb.brighten(0.2);
+        // Lightness increases, so RGB values should increase
+        assert!(brightened.r > rgb.r);
+        assert!(brightened.g > rgb.g);
+        assert!(brightened.b > rgb.b);
+    }
+
+    #[test]
+    fn brighten_negative_decreases_lightness() {
+        let rgb = Rgb {
+            r: 100,
+            g: 100,
+            b: 100,
+        };
+        let dimmed = rgb.brighten(-0.2);
+        // Lightness decreases, so RGB values should decrease
+        assert!(dimmed.r < rgb.r);
+        assert!(dimmed.g < rgb.g);
+        assert!(dimmed.b < rgb.b);
+    }
+
+    #[test]
+    fn brighten_clamps_to_white() {
+        let rgb = Rgb {
+            r: 200,
+            g: 200,
+            b: 200,
+        };
+        let result = rgb.brighten(1.0);
+        assert_eq!(
+            result,
+            Rgb {
+                r: 255,
+                g: 255,
+                b: 255
+            }
+        );
+    }
+
+    #[test]
+    fn brighten_clamps_to_black() {
+        let rgb = Rgb {
+            r: 50,
+            g: 50,
+            b: 50,
+        };
+        let result = rgb.brighten(-1.0);
+        assert_eq!(result, Rgb { r: 0, g: 0, b: 0 });
     }
 
     #[test]

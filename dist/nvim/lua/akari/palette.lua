@@ -33,14 +33,14 @@ M.night = {
   white = "#E6DED3",
 
   -- Bright ANSI colors
-  bright_black = "#303B52",
-  bright_red = "#D65E55",
-  bright_green = "#89B576",
-  bright_yellow = "#D8AA6A",
-  bright_blue = "#667E93",
-  bright_magenta = "#897897",
-  bright_cyan = "#7D9A96",
-  bright_white = "#E7E0D5",
+  bright_black = "#465676",
+  bright_red = "#DE7F77",
+  bright_green = "#A1C492",
+  bright_yellow = "#E4C397",
+  bright_blue = "#8195A8",
+  bright_magenta = "#A294AD",
+  bright_cyan = "#9AB1AD",
+  bright_white = "#EFEAE3",
 
   -- Semantic colors
   lantern = "#E26A3B",
@@ -95,14 +95,14 @@ M.dawn = {
   white = "#E4DED6",
 
   -- Bright ANSI colors
-  bright_black = "#4C4640",
-  bright_red = "#622525",
-  bright_green = "#35512C",
-  bright_yellow = "#9E6C3A",
-  bright_blue = "#2B3A48",
-  bright_magenta = "#735673",
-  bright_cyan = "#2B4F4F",
-  bright_white = "#D2C9BB",
+  bright_black = "#514B45",
+  bright_red = "#3E1717",
+  bright_green = "#20301A",
+  bright_yellow = "#78522C",
+  bright_blue = "#131A20",
+  bright_magenta = "#543F54",
+  bright_cyan = "#152727",
+  bright_white = "#D0C5B7",
 
   -- Semantic colors
   lantern = "#8A4530",
