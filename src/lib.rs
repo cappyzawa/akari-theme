@@ -42,6 +42,7 @@ pub enum Variant {
 }
 
 impl Variant {
+    #[must_use]
     pub const fn name(self) -> &'static str {
         match self {
             Self::Night => "night",
@@ -49,6 +50,7 @@ impl Variant {
         }
     }
 
+    #[must_use]
     pub const fn title(self) -> &'static str {
         match self {
             Self::Night => "Night",
@@ -56,6 +58,7 @@ impl Variant {
         }
     }
 
+    #[must_use]
     pub const fn palette_filename(self) -> &'static str {
         match self {
             Self::Night => "akari-night.toml",

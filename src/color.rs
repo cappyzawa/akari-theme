@@ -23,6 +23,7 @@ impl Rgb {
         Ok(Self { r, g, b })
     }
 
+    #[must_use]
     pub const fn as_floats(self) -> (f64, f64, f64) {
         (
             self.r as f64 / 255.0,
@@ -31,11 +32,13 @@ impl Rgb {
         )
     }
 
+    #[must_use]
     pub fn to_array_string(self) -> String {
         format!("[{}, {}, {}]", self.r, self.g, self.b)
     }
 
     /// Convert to hex string with leading `#`.
+    #[must_use]
     pub fn to_hex(self) -> String {
         format!("#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
     }
@@ -44,6 +47,7 @@ impl Rgb {
     ///
     /// `factor` of 0.0 returns the original color, 1.0 returns white.
     /// The lightness is increased proportionally to the remaining headroom.
+    #[must_use]
     pub fn lighten(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         let (h, s, l) = self.to_hsl();
@@ -55,6 +59,7 @@ impl Rgb {
     ///
     /// `factor` of 0.0 returns the original color, 1.0 returns black.
     /// The lightness is decreased proportionally to the current lightness.
+    #[must_use]
     pub fn darken(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         let (h, s, l) = self.to_hsl();
@@ -66,6 +71,7 @@ impl Rgb {
     ///
     /// Positive values brighten, negative values dim.
     /// The amount is added directly to lightness (0.0 to 1.0 scale).
+    #[must_use]
     pub fn brighten(self, amount: f64) -> Self {
         let (h, s, l) = self.to_hsl();
         let new_l = (l + amount).clamp(0.0, 1.0);
@@ -75,6 +81,7 @@ impl Rgb {
     /// Mix two colors together.
     ///
     /// `factor` of 0.0 returns self, 1.0 returns other.
+    #[must_use]
     pub fn mix(self, other: Self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         Self {
