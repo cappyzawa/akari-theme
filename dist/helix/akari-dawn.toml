@@ -3,7 +3,7 @@
 # UI elements
 "ui.background" = { bg = "background" }
 "ui.text" = "foreground"
-"ui.text.focus" = { fg = "bright-white" }
+"ui.text.focus" = { fg = "selection-fg", bg = "selection-bg" }
 "ui.text.inactive" = { fg = "bright-black" }
 
 "ui.cursor" = { fg = "cursor-text", bg = "cursor" }
@@ -33,7 +33,7 @@
 "ui.help" = { fg = "foreground", bg = "raised" }
 
 "ui.menu" = { fg = "foreground", bg = "raised" }
-"ui.menu.selected" = { fg = "bright-white", bg = "selection-bg" }
+"ui.menu.selected" = { fg = "selection-fg", bg = "selection-bg" }
 "ui.menu.scroll" = { fg = "bright-black", bg = "raised" }
 
 "ui.virtual.ruler" = { bg = "surface" }
