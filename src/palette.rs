@@ -261,43 +261,40 @@ impl<'a> IntoIterator for &'a Ansi {
     }
 }
 
-macro_rules! make_map {
-    ($obj:expr, $($field:ident),+ $(,)?) => {
-        [$(
-            (stringify!($field), $obj.$field.as_str()),
-        )+].into_iter().collect()
-    };
-}
-
-/// Reference section for color expressions.
+/// Sections that can be referenced in color expressions.
+///
+/// Only `colors`, `base`, and `ansi` are valid reference targets.
+/// `ansi.bright.*` is accessed via `Section::Ansi` with key `"bright.*"`.
+/// Other sections like `layers`, `state`, and `semantic` are consumers of colors,
+/// not sources, and cannot be referenced.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum Section {
     Colors,
     Base,
     Ansi,
-    AnsiBright,
 }
 
-impl std::str::FromStr for Section {
-    type Err = ();
+impl Section {
+    /// Referenceable sections in color expressions.
+    const ALLOWED: &[&str] = &["colors", "base", "ansi"];
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn parse(s: &str) -> Result<Self, Error> {
         match s {
             "colors" => Ok(Self::Colors),
             "base" => Ok(Self::Base),
             "ansi" => Ok(Self::Ansi),
-            _ => Err(()),
+            _ => Err(Error::InvalidColorExpr(format!(
+                "'{s}' cannot be referenced (allowed: {})",
+                Self::ALLOWED.join(", ")
+            ))),
         }
     }
-}
 
-impl Section {
     const fn as_str(&self) -> &'static str {
         match self {
             Self::Colors => "colors",
             Self::Base => "base",
             Self::Ansi => "ansi",
-            Self::AnsiBright => "ansi.bright",
         }
     }
 }
@@ -371,21 +368,11 @@ fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
         return Ok(ColorExpr::Mix(Box::new(color1), Box::new(color2), factor));
     }
 
-    // Reference: section.key or section.subsection.key (for ansi.bright.*)
-    // Handle ansi.bright.* specially
-    if let Some(rest) = s.strip_prefix("ansi.bright.") {
-        return Ok(ColorExpr::Ref {
-            section: Section::AnsiBright,
-            key: rest.to_string(),
-        });
-    }
-
+    // Reference: section.key (e.g., "colors.lantern.mid", "ansi.bright.red")
     let (section_str, key) = s
         .split_once('.')
         .ok_or_else(|| Error::InvalidColorExpr(s.to_string()))?;
-    let section: Section = section_str
-        .parse()
-        .map_err(|()| Error::InvalidColorExpr(format!("unknown section: {section_str}")))?;
+    let section = Section::parse(section_str)?;
     Ok(ColorExpr::Ref {
         section,
         key: key.to_string(),
@@ -438,20 +425,20 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
         ColorExpr::Ref { section, key } => resolver.resolve_ref(*section, key),
         ColorExpr::Lighten(inner, factor) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.lighten(*factor).to_hex())
+            Ok(hex.parse::<Rgb>()?.lighten(*factor).to_string())
         }
         ColorExpr::Darken(inner, factor) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.darken(*factor).to_hex())
+            Ok(hex.parse::<Rgb>()?.darken(*factor).to_string())
         }
         ColorExpr::Brighten(inner, amount) => {
             let hex = resolve_expr(resolver, inner)?;
-            Ok(Rgb::parse(&hex)?.brighten(*amount).to_hex())
+            Ok(hex.parse::<Rgb>()?.brighten(*amount).to_string())
         }
         ColorExpr::Mix(color1, color2, factor) => {
-            let rgb1 = Rgb::parse(&resolve_expr(resolver, color1)?)?;
-            let rgb2 = Rgb::parse(&resolve_expr(resolver, color2)?)?;
-            Ok(rgb1.mix(rgb2, *factor).to_hex())
+            let rgb1: Rgb = resolve_expr(resolver, color1)?.parse()?;
+            let rgb2: Rgb = resolve_expr(resolver, color2)?.parse()?;
+            Ok(rgb1.mix(rgb2, *factor).to_string())
         }
     }
 }
@@ -459,10 +446,12 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
 struct Resolver<'a> {
     colors: BTreeMap<&'a str, &'a str>,
     base: BTreeMap<&'a str, &'a str>,
-    /// Resolved hex values for ansi (needed for state.error, etc.)
-    ansi: BTreeMap<&'static str, String>,
-    /// Resolved hex values for ansi.bright
-    ansi_bright: BTreeMap<&'static str, String>,
+    /// Resolved hex values for ansi (includes both ansi.* and ansi.bright.*)
+    ansi_map: BTreeMap<String, String>,
+    /// Resolved ansi colors (to avoid re-resolving)
+    resolved_ansi: Ansi,
+    /// Resolved ansi.bright colors (to avoid re-resolving)
+    resolved_ansi_bright: Ansi,
 }
 
 impl<'a> Resolver<'a> {
@@ -480,32 +469,47 @@ impl<'a> Resolver<'a> {
         ]
         .into_iter()
         .collect();
-        let base: BTreeMap<&str, &str> = make_map!(raw.base, background, foreground);
-
-        // Build a temporary resolver to resolve ansi references
-        let temp = TempResolver {
-            colors: &colors,
-            base: &base,
-        };
+        let base: BTreeMap<&str, &str> = [
+            ("background", raw.base.background.as_str()),
+            ("foreground", raw.base.foreground.as_str()),
+        ]
+        .into_iter()
+        .collect();
 
         // Resolve ansi first (it only depends on colors/base)
-        let ansi = raw.ansi.base.resolve(&temp)?.to_map();
-
-        // Build resolver with ansi for ansi.bright resolution
-        let ansi_resolver = AnsiResolver {
+        let partial = PartialResolver {
             colors: &colors,
             base: &base,
-            ansi: &ansi,
+            ansi: None,
         };
+        let resolved_ansi = raw.ansi.base.resolve(&partial)?;
+
+        // Build ansi_map with keys like "red", "green", etc.
+        let mut ansi_map: BTreeMap<String, String> = resolved_ansi
+            .to_map()
+            .into_iter()
+            .map(|(k, v)| (k.to_string(), v))
+            .collect();
 
         // Resolve ansi.bright (depends on ansi)
-        let ansi_bright = raw.ansi.bright.resolve(&ansi_resolver)?.to_map();
+        let partial_with_ansi = PartialResolver {
+            colors: &colors,
+            base: &base,
+            ansi: Some(&ansi_map),
+        };
+        let resolved_ansi_bright = raw.ansi.bright.resolve(&partial_with_ansi)?;
+
+        // Add ansi.bright.* to ansi_map with keys like "bright.red", "bright.green", etc.
+        for (k, v) in resolved_ansi_bright.to_map() {
+            ansi_map.insert(format!("bright.{k}"), v);
+        }
 
         Ok(Self {
             colors,
             base,
-            ansi,
-            ansi_bright,
+            ansi_map,
+            resolved_ansi,
+            resolved_ansi_bright,
         })
     }
 }
@@ -517,20 +521,17 @@ impl ResolveRef for Resolver<'_> {
             Section::Colors => self
                 .colors
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
-                .ansi
-                .get(key)
-                .cloned()
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::AnsiBright => self
-                .ansi_bright
+                .ansi_map
                 .get(key)
                 .cloned()
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
@@ -538,53 +539,34 @@ impl ResolveRef for Resolver<'_> {
     }
 }
 
-/// Temporary resolver for bootstrapping (only colors and base)
-struct TempResolver<'a> {
+/// Resolver for bootstrapping ansi/ansi.bright resolution.
+/// Only colors, base, and optionally ansi are available.
+struct PartialResolver<'a> {
     colors: &'a BTreeMap<&'a str, &'a str>,
     base: &'a BTreeMap<&'a str, &'a str>,
+    ansi: Option<&'a BTreeMap<String, String>>,
 }
 
-impl ResolveRef for TempResolver<'_> {
-    fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
-        let ref_str = || format!("{}.{key}", section.as_str());
-        let map = match section {
-            Section::Colors => self.colors,
-            Section::Base => self.base,
-            Section::Ansi | Section::AnsiBright => return Err(Error::UnresolvedRef(ref_str())),
-        };
-        map.get(key)
-            .map(|s| (*s).to_string())
-            .ok_or_else(|| Error::UnresolvedRef(ref_str()))
-    }
-}
-
-/// Resolver for ansi.bright (has access to ansi in addition to colors/base)
-struct AnsiResolver<'a> {
-    colors: &'a BTreeMap<&'a str, &'a str>,
-    base: &'a BTreeMap<&'a str, &'a str>,
-    ansi: &'a BTreeMap<&'static str, String>,
-}
-
-impl ResolveRef for AnsiResolver<'_> {
+impl ResolveRef for PartialResolver<'_> {
     fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
         let ref_str = || format!("{}.{key}", section.as_str());
         match section {
             Section::Colors => self
                 .colors
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Base => self
                 .base
                 .get(key)
-                .map(|s| (*s).to_string())
+                .copied()
+                .map(str::to_string)
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
             Section::Ansi => self
                 .ansi
-                .get(key)
-                .cloned()
+                .and_then(|m| m.get(key).cloned())
                 .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::AnsiBright => Err(Error::UnresolvedRef(ref_str())),
         }
     }
 }
@@ -601,8 +583,8 @@ impl RawPalette {
             layers: self.layers.resolve(&resolver)?,
             state: self.state.resolve(&resolver)?,
             semantic: self.semantic.resolve(&resolver)?,
-            ansi: self.ansi.base.resolve(&resolver)?,
-            ansi_bright: self.ansi.bright.resolve(&resolver)?,
+            ansi: resolver.resolved_ansi,
+            ansi_bright: resolver.resolved_ansi_bright,
         })
     }
 }
@@ -940,5 +922,33 @@ white = "base.foreground"
             }
             _ => panic!("expected Mix"),
         }
+    }
+
+    #[test]
+    fn parse_color_expr_rejects_non_referenceable_sections() {
+        // layers, state, semantic exist in palette but cannot be referenced
+        let err = parse_color_expr("layers.base").unwrap_err();
+        assert!(
+            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
+        );
+
+        let err = parse_color_expr("state.cursor").unwrap_err();
+        assert!(
+            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
+        );
+
+        let err = parse_color_expr("semantic.keyword").unwrap_err();
+        assert!(
+            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
+        );
+    }
+
+    #[test]
+    fn parse_color_expr_ansi_bright() {
+        // ansi.bright.* is parsed as Section::Ansi with key "bright.*"
+        let expr = parse_color_expr("ansi.bright.red").unwrap();
+        assert!(
+            matches!(expr, ColorExpr::Ref { section, key } if section == Section::Ansi && key == "bright.red")
+        );
     }
 }

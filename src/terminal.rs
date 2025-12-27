@@ -11,7 +11,7 @@ fn capitalize(s: &str) -> String {
 }
 
 fn encode_nscolor(hex: &str) -> Result<Vec<u8>, Error> {
-    let rgb = Rgb::parse(hex)?;
+    let rgb: Rgb = hex.parse()?;
     let (r, g, b) = rgb.as_floats();
     let nsrgb = format!("{r} {g} {b}");
 
