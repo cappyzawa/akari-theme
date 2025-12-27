@@ -175,15 +175,16 @@ impl Generator {
 
     /// List available tools (directories in templates/)
     pub fn available_tools(&self) -> std::io::Result<Vec<String>> {
-        Ok(std::fs::read_dir(&self.templates_dir)?
-            .filter_map(|e| {
-                let e = e.ok()?;
-                e.file_type()
-                    .ok()?
-                    .is_dir()
-                    .then(|| e.file_name().into_string().ok())?
-            })
-            .collect())
+        let mut tools = Vec::new();
+        for entry in std::fs::read_dir(&self.templates_dir)? {
+            let entry = entry?;
+            if entry.file_type()?.is_dir()
+                && let Ok(name) = entry.file_name().into_string()
+            {
+                tools.push(name);
+            }
+        }
+        Ok(tools)
     }
 
     fn render(&self, template: &str, palette: &Palette) -> Result<String, Error> {
