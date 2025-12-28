@@ -66,7 +66,7 @@ ln -s $(pwd)/akari-vscode ~/.vscode/extensions/akari-theme
 | Amber      | `#D4A05A` |
 | Life       | `#7FAF6A` |
 | Night      | `#5A6F82` |
-| Muted      | `#7C6A8A` |
+| Muted      | `#8E7BA0` |
 
 ### Akari Dawn (Light)
 
