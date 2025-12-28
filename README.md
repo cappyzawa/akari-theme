@@ -49,6 +49,7 @@ warm, and readable for long sessions.
 | [zsh-syntax-highlighting](dist/zsh/README.md) | Shell | Source in `.zshrc` |
 | [fzf](dist/fzf/README.md) | Shell | Source in `.bashrc` or `.zshrc` |
 | [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |
+| [Slack](dist/slack/README.md) | App | Import theme string in Preferences |
 
 ## Palette
 

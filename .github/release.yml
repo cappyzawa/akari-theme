@@ -33,6 +33,9 @@ changelog:
   - title: "🧭 Chrome"
     labels:
     - chrome
+  - title: "💬 Slack"
+    labels:
+    - slack
   - title: "🏮 Palette"
     labels:
     - palette
