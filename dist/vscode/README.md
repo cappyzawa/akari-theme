@@ -55,31 +55,10 @@ ln -s $(pwd)/akari-vscode ~/.vscode/extensions/akari-theme
 
 ## Palette
 
-### Akari Night (Dark)
+Color definitions are the single source of truth in TOML format:
 
-| Role       | Hex       |
-|------------|-----------|
-| Background | `#171B22` |
-| Foreground | `#E6DED3` |
-| Lantern    | `#E26A3B` |
-| Ember      | `#D65A3A` |
-| Amber      | `#D4A05A` |
-| Life       | `#7FAF6A` |
-| Night      | `#5A6F82` |
-| Muted      | `#7C6A8A` |
-
-### Akari Dawn (Light)
-
-| Role       | Hex       |
-|------------|-----------|
-| Background | `#E4DED6` |
-| Foreground | `#1A1816` |
-| Lantern    | `#8A4530` |
-| Ember      | `#7A3828` |
-| Amber      | `#B07840` |
-| Life       | `#3A5830` |
-| Night      | `#304050` |
-| Muted      | `#806080` |
+- [Akari Night (Dark)](https://github.com/cappyzawa/akari-theme/blob/main/palette/akari-night.toml)
+- [Akari Dawn (Light)](https://github.com/cappyzawa/akari-theme/blob/main/palette/akari-dawn.toml)
 
 ## License
 
