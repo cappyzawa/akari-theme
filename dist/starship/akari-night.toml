@@ -21,3 +21,11 @@ bright-blue = '#8195A8'
 bright-purple = '#B4A7C0'
 bright-cyan = '#9AB1AD'
 bright-white = '#EFEAE3'
+
+# Akari theme colors (use in your modules: fg:lantern, bg:night, etc.)
+lantern = '#E26A3B'
+ember = '#D65A3A'
+life = '#7FAF6A'
+night = '#5A6F82'
+rain = '#6F8F8A'
+muted = '#8E7BA0'

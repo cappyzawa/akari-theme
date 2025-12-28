@@ -21,3 +21,11 @@ bright-blue = '{{ ansi_bright.blue }}'
 bright-purple = '{{ ansi_bright.magenta }}'
 bright-cyan = '{{ ansi_bright.cyan }}'
 bright-white = '{{ ansi_bright.white }}'
+
+# Akari theme colors (use in your modules: fg:lantern, bg:night, etc.)
+lantern = '{{ colors.lantern.mid }}'
+ember = '{{ colors.lantern.ember }}'
+life = '{{ colors.life }}'
+night = '{{ colors.night }}'
+rain = '{{ colors.rain }}'
+muted = '{{ colors.muted }}'
