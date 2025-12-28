@@ -55,6 +55,8 @@ struct RawState {
     diff_added: ColorExpr,
     diff_removed: ColorExpr,
     diff_changed: ColorExpr,
+    diff_moved: ColorExpr,
+    conflict: ColorExpr,
 }
 
 impl RawState {
@@ -73,6 +75,8 @@ impl RawState {
             diff_added: resolve_expr(resolver, &self.diff_added)?,
             diff_removed: resolve_expr(resolver, &self.diff_removed)?,
             diff_changed: resolve_expr(resolver, &self.diff_changed)?,
+            diff_moved: resolve_expr(resolver, &self.diff_moved)?,
+            conflict: resolve_expr(resolver, &self.conflict)?,
         })
     }
 }
@@ -129,6 +133,7 @@ struct RawSemantic {
     escape: ColorExpr,
     regexp: ColorExpr,
     link: ColorExpr,
+    directory: ColorExpr,
 }
 
 impl RawSemantic {
@@ -149,6 +154,7 @@ impl RawSemantic {
             escape: resolve_expr(resolver, &self.escape)?,
             regexp: resolve_expr(resolver, &self.regexp)?,
             link: resolve_expr(resolver, &self.link)?,
+            directory: resolve_expr(resolver, &self.directory)?,
         })
     }
 }
@@ -202,6 +208,8 @@ pub struct State {
     pub diff_added: String,
     pub diff_removed: String,
     pub diff_changed: String,
+    pub diff_moved: String,
+    pub conflict: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -221,6 +229,7 @@ pub struct Semantic {
     pub escape: String,
     pub regexp: String,
     pub link: String,
+    pub directory: String,
 }
 
 #[derive(Debug, Clone, Serialize)]
@@ -797,6 +806,8 @@ active_bg = "#2A3540"
 diff_added = "#7FAF6A"
 diff_removed = "#D65A3A"
 diff_changed = "#D4A05A"
+diff_moved = "#5A6F82"
+conflict = "#D65A3A"
 
 [semantic]
 text = "base.foreground"
@@ -814,6 +825,7 @@ macro = "ansi.bright.magenta"
 escape = "ansi.bright.magenta"
 regexp = "ansi.bright.green"
 link = "ansi.bright.blue"
+directory = "ansi.cyan"
 
 [ansi]
 black = "#171B22"

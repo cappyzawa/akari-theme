@@ -86,6 +86,10 @@ diff_added = "colors.life"
 diff_removed = "ansi.red"
 # state.diff_changed
 diff_changed = "colors.lantern.far"
+# state.diff_moved — moved code in diff
+diff_moved = "colors.night"
+# state.conflict — merge conflict marker
+conflict = "ansi.red"
 
 #
 # Semantic (syntax roles)
@@ -136,6 +140,8 @@ escape = "ansi.bright.magenta"
 regexp = "ansi.bright.green"
 # semantic.link — URLs, hyperlinks
 link = "ansi.bright.blue"
+# semantic.directory — directory paths in file picker
+directory = "ansi.cyan"
 
 #
 # ANSI (terminal compatibility)

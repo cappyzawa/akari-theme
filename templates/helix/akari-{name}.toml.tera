@@ -5,19 +5,29 @@
 "ui.text" = "foreground"
 "ui.text.focus" = { fg = "selection-fg", bg = "selection-bg" }
 "ui.text.inactive" = { fg = "bright-black" }
+"ui.text.info" = { fg = "info" }
+"ui.text.directory" = { fg = "directory" }
 
 "ui.cursor" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.normal" = { fg = "cursor-text", bg = "cursor" }
 "ui.cursor.primary" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.primary.normal" = { fg = "cursor-text", bg = "cursor" }
 "ui.cursor.match" = { fg = "lantern", bg = "sunken", modifiers = ["bold"] }
 "ui.cursor.insert" = { fg = "cursor-text", bg = "green" }
+"ui.cursor.primary.insert" = { fg = "cursor-text", bg = "green" }
 "ui.cursor.select" = { fg = "cursor-text", bg = "magenta" }
+"ui.cursor.primary.select" = { fg = "cursor-text", bg = "magenta" }
 
 "ui.selection" = { bg = "selection-bg" }
 "ui.selection.primary" = { bg = "selection-bg" }
 
 "ui.cursorline.primary" = { bg = "cursorline" }
+"ui.cursorline.secondary" = { bg = "surface" }
 "ui.cursorcolumn.primary" = { bg = "surface" }
+"ui.cursorcolumn.secondary" = { bg = "surface" }
 
+"ui.gutter" = { bg = "background" }
+"ui.gutter.selected" = { bg = "cursorline" }
 "ui.linenr" = { fg = "bright-black" }
 "ui.linenr.selected" = { fg = "lantern" }
 
@@ -29,7 +39,9 @@
 "ui.statusline.separator" = { fg = "bright-black", bg = "surface" }
 
 "ui.popup" = { fg = "foreground", bg = "raised" }
+"ui.popup.info" = { fg = "foreground", bg = "raised" }
 "ui.window" = { fg = "border" }
+"ui.background.separator" = { bg = "surface" }
 "ui.help" = { fg = "foreground", bg = "raised" }
 
 "ui.menu" = { fg = "foreground", bg = "raised" }
@@ -49,11 +61,13 @@
 "ui.debug.active" = { fg = "lantern", modifiers = ["bold"] }
 
 "ui.highlight" = { bg = "match-bg" }
+"ui.highlight.frameline" = { bg = "surface" }
 
 "ui.bufferline" = { fg = "bright-black", bg = "surface" }
 "ui.bufferline.active" = { fg = "foreground", bg = "background" }
 "ui.bufferline.background" = { bg = "surface" }
 
+"ui.picker.header" = { fg = "bright-blue", modifiers = ["bold"] }
 "ui.picker.header.column" = { fg = "bright-blue", modifiers = ["bold"] }
 "ui.picker.header.column.active" = { fg = "lantern", modifiers = ["bold"] }
 
@@ -70,6 +84,8 @@
 "diagnostic.unnecessary" = { modifiers = ["dim"] }
 "diagnostic.deprecated" = { modifiers = ["crossed_out"] }
 
+"tabstop" = { underline = { color = "lantern", style = "dashed" } }
+
 # Diff
 "diff.plus" = "green"
 "diff.plus.gutter" = "green"
@@ -77,6 +93,8 @@
 "diff.minus.gutter" = "red"
 "diff.delta" = "amber"
 "diff.delta.gutter" = "amber"
+"diff.delta.moved" = "diff-moved"
+"diff.delta.conflict" = { fg = "conflict", modifiers = ["bold"] }
 
 # Markup
 "markup.heading" = { fg = "lantern", modifiers = ["bold"] }
@@ -102,6 +120,12 @@
 "markup.raw" = { fg = "bright-green" }
 "markup.raw.inline" = { fg = "bright-green" }
 "markup.raw.block" = { fg = "bright-green" }
+"markup.normal.completion" = "foreground"
+"markup.normal.hover" = "foreground"
+"markup.heading.completion" = { fg = "lantern", modifiers = ["bold"] }
+"markup.heading.hover" = { fg = "lantern", modifiers = ["bold"] }
+"markup.raw.inline.completion" = { fg = "bright-green" }
+"markup.raw.inline.hover" = { fg = "bright-green" }
 
 # Syntax highlighting
 "attribute" = { fg = "amber" }
@@ -119,6 +143,8 @@
 "constant.character" = { fg = "lantern" }
 "constant.character.escape" = { fg = "escape" }
 "constant.numeric" = { fg = "constant" }
+"constant.numeric.integer" = { fg = "constant" }
+"constant.numeric.float" = { fg = "constant" }
 
 "string" = { fg = "green" }
 "string.regexp" = { fg = "regexp" }
@@ -130,14 +156,17 @@
 
 "comment" = { fg = "comment", modifiers = ["dim"] }
 "comment.line" = { fg = "comment", modifiers = ["dim"] }
+"comment.line.documentation" = { fg = "comment", modifiers = ["dim"] }
 "comment.block" = { fg = "comment", modifiers = ["dim"] }
 "comment.block.documentation" = { fg = "comment", modifiers = ["dim"] }
+"comment.unused" = { fg = "comment", modifiers = ["dim"] }
 
 "variable" = "foreground"
 "variable.builtin" = { fg = "bright-red" }
 "variable.parameter" = "foreground"
 "variable.other" = "foreground"
 "variable.other.member" = "foreground"
+"variable.other.member.private" = "foreground"
 
 "label" = { fg = "amber" }
 
@@ -165,6 +194,7 @@
 "function" = { fg = "magenta" }
 "function.builtin" = { fg = "bright-magenta" }
 "function.method" = { fg = "magenta" }
+"function.method.private" = { fg = "magenta" }
 "function.macro" = { fg = "macro" }
 "function.special" = { fg = "bright-magenta" }
 
@@ -220,5 +250,9 @@ macro = "{{ semantic.macro }}"
 escape = "{{ semantic.escape }}"
 regexp = "{{ semantic.regexp }}"
 link = "{{ semantic.link }}"
+directory = "{{ semantic.directory }}"
 sunken = "{{ layers.sunken }}"
 match-bg = "{{ state.match_bg }}"
+info = "{{ state.info }}"
+diff-moved = "{{ state.diff_moved }}"
+conflict = "{{ state.conflict }}"

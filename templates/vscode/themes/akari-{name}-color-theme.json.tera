@@ -75,12 +75,12 @@
 
     "editorOverviewRuler.border": "{{ layers.border }}",
     "editorOverviewRuler.errorForeground": "{{ state.error }}",
-    "editorOverviewRuler.warningForeground": "{{ colors.lantern.mid }}",
-    "editorOverviewRuler.infoForeground": "{{ colors.night }}",
+    "editorOverviewRuler.warningForeground": "{{ state.warning }}",
+    "editorOverviewRuler.infoForeground": "{{ state.info }}",
 
     "editorError.foreground": "{{ state.error }}",
-    "editorWarning.foreground": "{{ colors.lantern.mid }}",
-    "editorInfo.foreground": "{{ colors.night }}",
+    "editorWarning.foreground": "{{ state.warning }}",
+    "editorInfo.foreground": "{{ state.info }}",
     "editorHint.foreground": "{{ semantic.comment }}",
 
     "editorWidget.background": "{{ layers.inset }}",
@@ -171,7 +171,7 @@
     "list.focusForeground": "{{ state.selection_fg }}",
     "list.highlightForeground": "{{ colors.lantern.mid }}",
     "list.errorForeground": "{{ state.error }}",
-    "list.warningForeground": "{{ colors.lantern.mid }}",
+    "list.warningForeground": "{{ state.warning }}",
 
     "quickInput.background": "{{ layers.inset }}",
     "quickInput.foreground": "{{ base.foreground }}",
@@ -192,8 +192,8 @@
     "inputOption.activeBorder": "{{ colors.lantern.mid }}",
 
     "inputValidation.infoForeground": "{{ base.foreground }}",
-    "inputValidation.infoBackground": "{{ colors.night }}40",
-    "inputValidation.infoBorder": "{{ colors.night }}",
+    "inputValidation.infoBackground": "{{ state.info }}40",
+    "inputValidation.infoBorder": "{{ state.info }}",
     "inputValidation.warningForeground": "{{ base.background }}",
     "inputValidation.warningBackground": "{{ colors.lantern.far }}",
     "inputValidation.warningBorder": "{{ colors.lantern.far }}",
@@ -235,7 +235,7 @@
     "minimap.background": "{{ base.background }}",
     "minimap.selectionHighlight": "{{ layers.border }}",
     "minimap.errorHighlight": "{{ state.error }}",
-    "minimap.warningHighlight": "{{ colors.lantern.mid }}",
+    "minimap.warningHighlight": "{{ state.warning }}",
     "minimap.findMatchHighlight": "{{ colors.lantern.mid }}",
 
     "minimapGutter.modifiedBackground": "{{ colors.lantern.mid }}",
