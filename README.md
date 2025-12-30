@@ -47,7 +47,8 @@ warm, and readable for long sessions.
 | [tmux](dist/tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
 | [macOS Terminal](dist/terminal/README.md) | Terminal Emulator | Double-click to import profile |
 | [zsh-syntax-highlighting](dist/zsh/README.md) | Shell | Source in `.zshrc` |
-| [fzf](dist/fzf/README.md) | Shell | Source in `.bashrc` or `.zshrc` |
+| [fzf](dist/fzf/README.md) | CLI | Source in `.bashrc` or `.zshrc` |
+| [bat](dist/bat/README.md) | CLI | Copy theme to `$(bat --config-dir)/themes/` |
 | [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |
 | [Slack](dist/slack/README.md) | App | Import theme string in Preferences |
 
