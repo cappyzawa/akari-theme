@@ -1,48 +1,51 @@
 changelog:
   categories:
-  - title: "🪶 Helix"
+  - title: Helix
     labels:
     - helix
-  - title: "👻 Ghostty"
+  - title: Ghostty
     labels:
     - ghostty
-  - title: "🧱 Alacritty"
+  - title: Alacritty
     labels:
     - alacritty
-  - title: "📜 Neovim"
+  - title: Neovim
     labels:
     - nvim
-  - title: "🧩 VS Code"
+  - title: VS Code
     labels:
     - vscode
-  - title: "🌙 Starship"
+  - title: Starship
     labels:
     - starship
-  - title: "🧵 tmux"
+  - title: tmux
     labels:
     - tmux
-  - title: "🪟 macOS Terminal"
+  - title: macOS Terminal
     labels:
     - terminal
-  - title: "🖋️ zsh"
+  - title: zsh
     labels:
     - zsh
-  - title: "🪔 fzf"
+  - title: fzf
     labels:
     - fzf
-  - title: "🧭 Chrome"
+  - title: bat
+    labels:
+    - bat
+  - title: Chrome
     labels:
     - chrome
-  - title: "💬 Slack"
+  - title: Slack
     labels:
     - slack
-  - title: "🏮 Palette"
+  - title: 🎨 Palette
     labels:
     - palette
-  - title: "⚙️ Core / Generator"
+  - title: 🏮 Core / Generator
     labels:
     - core
     - generator
-  - title: "📦 Other Changes"
+  - title: Other Changes
     labels:
     - "*"
