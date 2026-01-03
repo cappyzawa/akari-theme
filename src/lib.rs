@@ -46,7 +46,7 @@ pub enum Error {
     InvalidColorExpr(String),
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
 pub enum Variant {
     Night,
     Dawn,

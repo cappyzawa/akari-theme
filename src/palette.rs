@@ -598,7 +598,7 @@ impl RawPalette {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct Palette {
     pub variant: Variant,
     pub name: String,
