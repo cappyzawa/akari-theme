@@ -1,7 +1,20 @@
 [package]
-name = "akari-gen"
+name = "akari-theme"
 version = "1.8.0"
 edition = "2024"
+license = "MIT"
+repository = "https://github.com/cappyzawa/akari-theme"
+description = "A terminal color theme inspired by Japanese alleys and lanterns"
+keywords = ["terminal", "theme", "color", "palette"]
+categories = ["command-line-interface"]
+
+[lib]
+name = "akari_theme"
+path = "src/lib.rs"
+
+[[bin]]
+name = "akari-gen"
+path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.53", features = ["derive"] }

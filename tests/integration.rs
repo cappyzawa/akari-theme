@@ -1,4 +1,4 @@
-use akari_gen::{Generator, Palette, Variant, find_project_root};
+use akari_theme::{Generator, Palette, Variant, find_project_root};
 use std::path::PathBuf;
 
 fn palette_dir() -> PathBuf {
@@ -54,6 +54,30 @@ mod palette {
             assert!(palette.ansi.white.starts_with('#'));
             assert!(palette.ansi_bright.black.starts_with('#'));
         }
+    }
+
+    #[test]
+    fn embedded_night_matches_file() {
+        let path = palette_dir().join("akari-night.toml");
+        let from_file = Palette::from_path(&path, Variant::Night).unwrap();
+        let embedded = Palette::night();
+
+        assert_eq!(embedded.variant, from_file.variant);
+        assert_eq!(embedded.name, from_file.name);
+        assert_eq!(embedded.base.background, from_file.base.background);
+        assert_eq!(embedded.base.foreground, from_file.base.foreground);
+    }
+
+    #[test]
+    fn embedded_dawn_matches_file() {
+        let path = palette_dir().join("akari-dawn.toml");
+        let from_file = Palette::from_path(&path, Variant::Dawn).unwrap();
+        let embedded = Palette::dawn();
+
+        assert_eq!(embedded.variant, from_file.variant);
+        assert_eq!(embedded.name, from_file.name);
+        assert_eq!(embedded.base.background, from_file.base.background);
+        assert_eq!(embedded.base.foreground, from_file.base.foreground);
     }
 }
 
@@ -115,7 +139,7 @@ mod terminal {
     fn generate_night() {
         let path = palette_dir().join("akari-night.toml");
         let palette = Palette::from_path(&path, Variant::Night).unwrap();
-        let content = akari_gen::terminal::generate(&palette).unwrap();
+        let content = akari_theme::terminal::generate(&palette).unwrap();
 
         assert!(content.contains("<?xml"));
         assert!(content.contains("plist"));
@@ -128,7 +152,7 @@ mod terminal {
     fn generate_dawn() {
         let path = palette_dir().join("akari-dawn.toml");
         let palette = Palette::from_path(&path, Variant::Dawn).unwrap();
-        let content = akari_gen::terminal::generate(&palette).unwrap();
+        let content = akari_theme::terminal::generate(&palette).unwrap();
 
         assert!(content.contains("Akari-Dawn"));
     }
