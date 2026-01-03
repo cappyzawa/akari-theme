@@ -18,13 +18,13 @@ jobs:
         components: clippy, rustfmt
 
     - name: Run clippy
-      run: cargo clippy -- -D warnings
+      run: cargo clippy --features generator -- -D warnings
 
     - name: Check formatting
       run: cargo fmt -- --check
 
     - name: Run tests
-      run: cargo test
+      run: cargo test --features generator
 
   generate:
     needs: test
@@ -36,7 +36,7 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
 
     - name: Generate theme files
-      run: cargo run -- generate --tool all
+      run: cargo run --features generator -- generate --tool all
 
     - name: Check for uncommitted changes
       run: git diff --exit-code
