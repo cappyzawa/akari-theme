@@ -1,4 +1,4 @@
-use akari_gen::{ArtifactContent, Generator, Palette, Variant, find_project_root};
+use akari_theme::{ArtifactContent, Generator, Palette, Variant, find_project_root};
 use clap::{Parser, Subcommand};
 use std::fs;
 use std::process::ExitCode;
@@ -33,7 +33,7 @@ fn main() -> ExitCode {
     ExitCode::SUCCESS
 }
 
-fn run() -> Result<(), akari_gen::Error> {
+fn run() -> Result<(), akari_theme::Error> {
     let cli = Cli::parse();
 
     match cli.command {

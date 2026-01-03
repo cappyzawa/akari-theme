@@ -613,9 +613,43 @@ pub struct Palette {
 }
 
 impl Palette {
+    /// Embedded Night palette TOML content.
+    const NIGHT_TOML: &'static str = include_str!("../palette/akari-night.toml");
+
+    /// Embedded Dawn palette TOML content.
+    const DAWN_TOML: &'static str = include_str!("../palette/akari-dawn.toml");
+
+    /// Returns the embedded Night palette.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the embedded palette is invalid (should never happen in normal use).
+    #[must_use]
+    pub fn night() -> Self {
+        Self::from_str(Self::NIGHT_TOML, Variant::Night)
+            .expect("embedded Night palette should be valid")
+    }
+
+    /// Returns the embedded Dawn palette.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the embedded palette is invalid (should never happen in normal use).
+    #[must_use]
+    pub fn dawn() -> Self {
+        Self::from_str(Self::DAWN_TOML, Variant::Dawn)
+            .expect("embedded Dawn palette should be valid")
+    }
+
+    /// Load palette from a file path.
     pub fn from_path(path: impl AsRef<Path>, variant: Variant) -> Result<Self, Error> {
         let content = fs::read_to_string(path)?;
-        let raw: RawPalette = toml::from_str(&content)?;
+        Self::from_str(&content, variant)
+    }
+
+    /// Parse palette from TOML string content.
+    pub fn from_str(content: &str, variant: Variant) -> Result<Self, Error> {
+        let raw: RawPalette = toml::from_str(content)?;
         raw.resolve(variant)
     }
 }

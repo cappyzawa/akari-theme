@@ -44,6 +44,31 @@ impl Rgb {
         )
     }
 
+    /// Returns [r, g, b] as f32 values in 0.0-1.0 range.
+    ///
+    /// Useful for GPU APIs like wgpu that expect f32 colors.
+    #[must_use]
+    pub const fn to_array(self) -> [f32; 3] {
+        [
+            self.r as f32 / 255.0,
+            self.g as f32 / 255.0,
+            self.b as f32 / 255.0,
+        ]
+    }
+
+    /// Returns [r, g, b, a] as f32 values with alpha = 1.0.
+    ///
+    /// Useful for GPU APIs like wgpu that expect f32 RGBA colors.
+    #[must_use]
+    pub const fn to_array_with_alpha(self) -> [f32; 4] {
+        [
+            self.r as f32 / 255.0,
+            self.g as f32 / 255.0,
+            self.b as f32 / 255.0,
+            1.0,
+        ]
+    }
+
     #[must_use]
     pub fn to_array_string(self) -> String {
         format!("[{}, {}, {}]", self.r, self.g, self.b)
@@ -537,5 +562,55 @@ mod tests {
                 b: 150
             }
         );
+    }
+
+    fn approx_eq_f32(a: f32, b: f32) -> bool {
+        (a - b).abs() < 0.001
+    }
+
+    #[test]
+    fn to_array_black() {
+        let rgb = Rgb { r: 0, g: 0, b: 0 };
+        let arr = rgb.to_array();
+        assert!(approx_eq_f32(arr[0], 0.0));
+        assert!(approx_eq_f32(arr[1], 0.0));
+        assert!(approx_eq_f32(arr[2], 0.0));
+    }
+
+    #[test]
+    fn to_array_white() {
+        let rgb = Rgb {
+            r: 255,
+            g: 255,
+            b: 255,
+        };
+        let arr = rgb.to_array();
+        assert!(approx_eq_f32(arr[0], 1.0));
+        assert!(approx_eq_f32(arr[1], 1.0));
+        assert!(approx_eq_f32(arr[2], 1.0));
+    }
+
+    #[test]
+    fn to_array_with_alpha_black() {
+        let rgb = Rgb { r: 0, g: 0, b: 0 };
+        let arr = rgb.to_array_with_alpha();
+        assert!(approx_eq_f32(arr[0], 0.0));
+        assert!(approx_eq_f32(arr[1], 0.0));
+        assert!(approx_eq_f32(arr[2], 0.0));
+        assert!(approx_eq_f32(arr[3], 1.0));
+    }
+
+    #[test]
+    fn to_array_with_alpha_white() {
+        let rgb = Rgb {
+            r: 255,
+            g: 255,
+            b: 255,
+        };
+        let arr = rgb.to_array_with_alpha();
+        assert!(approx_eq_f32(arr[0], 1.0));
+        assert!(approx_eq_f32(arr[1], 1.0));
+        assert!(approx_eq_f32(arr[2], 1.0));
+        assert!(approx_eq_f32(arr[3], 1.0));
     }
 }
