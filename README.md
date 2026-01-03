@@ -56,3 +56,23 @@ Color definitions are the single source of truth in TOML format:
 
 - [Akari Night (Dark)](palette/akari-night.toml)
 - [Akari Dawn (Light)](palette/akari-dawn.toml)
+
+## Crate Usage
+
+Use akari-theme as a library to access palette colors in your Rust projects:
+
+```toml
+# Palette only (minimal dependencies: serde, toml, thiserror)
+akari-theme = "1.9"
+
+# With generator functionality
+akari-theme = { version = "1.9", features = ["generator"] }
+```
+
+```rust
+use akari_theme::{Palette, Rgb};
+
+let night = Palette::night();
+let bg: Rgb = night.base.background.parse().unwrap();
+let color = bg.to_array();  // [f32; 3] for wgpu
+```

@@ -19,7 +19,7 @@ required-features = ["generator"]
 
 [features]
 default = []
-generator = ["dep:tera", "dep:walkdir", "dep:plist"]
+generator = ["dep:tera", "dep:walkdir", "dep:plist", "dep:clap"]
 
 [dependencies]
 serde = { version = "1.0.228", features = ["derive"] }
@@ -31,8 +31,8 @@ plist = { version = "1", optional = true }
 tera = { version = "1.20.1", optional = true }
 walkdir = { version = "2", optional = true }
 
-# CLI dependencies
-clap = { version = "4.5.53", features = ["derive"] }
+# CLI dependencies (optional, for generator binary)
+clap = { version = "4.5.53", features = ["derive"], optional = true }
 
 [dev-dependencies]
 tempfile = "3"

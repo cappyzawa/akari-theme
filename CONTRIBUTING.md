@@ -2,6 +2,10 @@
 
 Thank you for your interest in contributing to akari-theme!
 
+## Requirements
+
+- Rust 1.85+ (edition 2024)
+
 ## Development Setup
 
 ```bash

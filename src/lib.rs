@@ -46,7 +46,7 @@ pub enum Error {
     InvalidColorExpr(String),
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
 pub enum Variant {
     Night,
     Dawn,
@@ -102,6 +102,7 @@ pub struct Artifact {
 
 #[cfg(feature = "generator")]
 impl Artifact {
+    #[must_use]
     pub fn text(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
         Self {
             rel_path: rel_path.into(),
@@ -109,6 +110,7 @@ impl Artifact {
         }
     }
 
+    #[must_use]
     pub fn copy(rel_path: impl Into<PathBuf>, src: impl Into<PathBuf>) -> Self {
         Self {
             rel_path: rel_path.into(),
