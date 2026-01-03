@@ -1,12 +1,16 @@
 mod color;
+#[cfg(feature = "generator")]
 mod generator;
 mod palette;
+#[cfg(feature = "generator")]
 pub mod terminal;
 
 pub use color::Rgb;
+#[cfg(feature = "generator")]
 pub use generator::Generator;
 pub use palette::Palette;
 
+#[cfg(feature = "generator")]
 use std::path::PathBuf;
 
 #[derive(Debug, thiserror::Error)]
@@ -17,6 +21,7 @@ pub enum Error {
     ParsePalette(#[from] toml::de::Error),
     #[error("unresolved reference: {0}")]
     UnresolvedRef(String),
+    #[cfg(feature = "generator")]
     #[error("template {context}: {source}")]
     Template {
         context: &'static str,
@@ -25,12 +30,16 @@ pub enum Error {
     },
     #[error("invalid hex color: {0}")]
     InvalidHex(String),
+    #[cfg(feature = "generator")]
     #[error("non-UTF-8 path: {0}")]
     InvalidPath(PathBuf),
+    #[cfg(feature = "generator")]
     #[error("project root not found (expected palette/ and Cargo.toml)")]
     ProjectRootNotFound,
+    #[cfg(feature = "generator")]
     #[error("plist error: {0}")]
     Plist(#[from] plist::Error),
+    #[cfg(feature = "generator")]
     #[error("plist output was not valid UTF-8")]
     PlistUtf8,
     #[error("invalid color expression: {0}")]
@@ -71,6 +80,7 @@ impl Variant {
 
 pub const VARIANTS: [Variant; 2] = [Variant::Night, Variant::Dawn];
 
+#[cfg(feature = "generator")]
 /// Content of an artifact
 #[derive(Debug, Clone)]
 pub enum ArtifactContent {
@@ -80,6 +90,7 @@ pub enum ArtifactContent {
     Copy(PathBuf),
 }
 
+#[cfg(feature = "generator")]
 /// A generated or copied file
 #[derive(Debug, Clone)]
 pub struct Artifact {
@@ -89,6 +100,7 @@ pub struct Artifact {
     pub content: ArtifactContent,
 }
 
+#[cfg(feature = "generator")]
 impl Artifact {
     pub fn text(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
         Self {
@@ -105,6 +117,7 @@ impl Artifact {
     }
 }
 
+#[cfg(feature = "generator")]
 pub fn find_project_root() -> Result<PathBuf, Error> {
     let mut current = std::env::current_dir()?;
 
