@@ -1,0 +1,146 @@
+// Akari Dawn theme for Zellij
+// A light palette inspired by Japanese alleys lit by round lanterns.
+// Add this file to your `CONFIG_DIR/themes` directory as described here:
+// https://zellij.dev/documentation/themes#getting-zellij-to-pick-up-the-theme
+
+themes {
+    akari-dawn {
+        // Ribbon: tabs and mode indicator in status bar
+        ribbon_unselected {
+            base 34 45 56
+            background 207 196 182
+            emphasis_0 81 75 69
+            emphasis_1 176 120 64
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+        ribbon_selected {
+            base 228 222 214
+            background 138 69 48
+            emphasis_0 26 24 22
+            emphasis_1 176 120 64
+            emphasis_2 58 88 48
+            emphasis_3 128 96 128
+        }
+
+        // Text: general text content
+        text_unselected {
+            base 26 24 22
+            background 228 222 214
+            emphasis_0 138 69 48
+            emphasis_1 58 88 48
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+        text_selected {
+            base 26 24 22
+            background 215 197 177
+            emphasis_0 138 69 48
+            emphasis_1 58 88 48
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+
+        // Table: session manager, plugin tables
+        table_title {
+            base 138 69 48
+            background 207 196 182
+            emphasis_0 26 24 22
+            emphasis_1 176 120 64
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+        table_cell_unselected {
+            base 26 24 22
+            background 228 222 214
+            emphasis_0 34 45 56
+            emphasis_1 176 120 64
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+        table_cell_selected {
+            base 26 24 22
+            background 215 197 177
+            emphasis_0 138 69 48
+            emphasis_1 58 88 48
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+
+        // List: file picker, command palette
+        list_unselected {
+            base 26 24 22
+            background 228 222 214
+            emphasis_0 34 45 56
+            emphasis_1 176 120 64
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+        list_selected {
+            base 26 24 22
+            background 215 197 177
+            emphasis_0 138 69 48
+            emphasis_1 58 88 48
+            emphasis_2 48 64 80
+            emphasis_3 128 96 128
+        }
+
+        // Frame: pane borders
+        frame_unselected {
+            base 202 190 174
+            background 228 222 214
+            emphasis_0 34 45 56
+            emphasis_1 48 64 80
+            emphasis_2 48 64 80
+            emphasis_3 48 64 80
+        }
+        frame_selected {
+            base 138 69 48
+            background 228 222 214
+            emphasis_0 26 24 22
+            emphasis_1 176 120 64
+            emphasis_2 58 88 48
+            emphasis_3 128 96 128
+        }
+        frame_highlight {
+            base 120 82 44
+            background 228 222 214
+            emphasis_0 138 69 48
+            emphasis_1 176 120 64
+            emphasis_2 58 88 48
+            emphasis_3 128 96 128
+        }
+
+        // Exit code indicators
+        exit_code_success {
+            base 58 88 48
+            background 228 222 214
+            emphasis_0 32 48 26
+            emphasis_1 26 24 22
+            emphasis_2 26 24 22
+            emphasis_3 26 24 22
+        }
+        exit_code_error {
+            base 106 40 40
+            background 228 222 214
+            emphasis_0 62 23 23
+            emphasis_1 26 24 22
+            emphasis_2 26 24 22
+            emphasis_3 26 24 22
+        }
+
+        // Multiplayer user colors (optional, for collaborative sessions)
+        multiplayer_user_colors {
+            player_1 138 69 48
+            player_2 58 88 48
+            player_3 48 64 80
+            player_4 128 96 128
+            player_5 176 120 64
+            player_6 48 88 88
+            player_7 84 63 84
+            player_8 19 26 32
+            player_9 32 48 26
+            player_10 120 82 44
+        }
+    }
+}

@@ -74,6 +74,14 @@ impl Rgb {
         format!("[{}, {}, {}]", self.r, self.g, self.b)
     }
 
+    /// Returns RGB as space-separated string "r g b".
+    ///
+    /// Useful for Zellij theme format.
+    #[must_use]
+    pub fn to_space_separated(self) -> String {
+        format!("{} {} {}", self.r, self.g, self.b)
+    }
+
     /// Lighten the color by increasing lightness in HSL space.
     ///
     /// `factor` of 0.0 returns the original color, 1.0 returns white.

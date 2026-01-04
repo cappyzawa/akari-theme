@@ -43,6 +43,7 @@ warm, and readable for long sessions.
 | [Visual Studio Code](dist/vscode/README.md) | Editor | Install from [Marketplace](https://marketplace.visualstudio.com/items?itemName=cappyzawa.akari-theme) or [Open VSX](https://open-vsx.org/extension/cappyzawa/akari-theme) |
 | [Starship](dist/starship/README.md) | Prompt | Add palette to `~/.config/starship.toml` |
 | [tmux](dist/tmux/README.md) | Terminal Multiplexer | Source config in `.tmux.conf` |
+| [Zellij](dist/zellij/README.md) | Terminal Multiplexer | Copy theme to `~/.config/zellij/themes/` |
 | [macOS Terminal](dist/terminal/README.md) | Terminal Emulator | Double-click to import profile |
 | [zsh-syntax-highlighting](dist/zsh/README.md) | Shell | Source in `.zshrc` |
 | [fzf](dist/fzf/README.md) | CLI | Source in `.bashrc` or `.zshrc` |
