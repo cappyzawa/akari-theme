@@ -21,6 +21,9 @@ changelog:
   - title: tmux
     labels:
     - tmux
+  - title: Zellij
+    labels:
+    - zellij
   - title: macOS Terminal
     labels:
     - terminal

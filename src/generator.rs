@@ -15,6 +15,16 @@ fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Res
     Ok(Value::String(rgb.to_array_string()))
 }
 
+fn hex_to_rgb_space_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
+    let hex = value
+        .as_str()
+        .ok_or_else(|| tera::Error::msg("hex_to_rgb_space requires a string"))?;
+    let rgb: Rgb = hex
+        .parse()
+        .map_err(|e: crate::Error| tera::Error::msg(e.to_string()))?;
+    Ok(Value::String(rgb.to_space_separated()))
+}
+
 pub struct Generator {
     tera: Tera,
     templates_dir: PathBuf,
@@ -32,6 +42,7 @@ impl Generator {
             source: e,
         })?;
         tera.register_filter("hex_to_rgb", hex_to_rgb_filter);
+        tera.register_filter("hex_to_rgb_space", hex_to_rgb_space_filter);
         Ok(Self {
             tera,
             templates_dir,

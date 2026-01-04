@@ -1,0 +1,146 @@
+// Akari {{ variant | title }} theme for Zellij
+// {{ description }}
+// Add this file to your `CONFIG_DIR/themes` directory as described here:
+// https://zellij.dev/documentation/themes#getting-zellij-to-pick-up-the-theme
+
+themes {
+    akari-{{ variant }} {
+        // Ribbon: tabs and mode indicator in status bar
+        ribbon_unselected {
+            base {{ semantic.comment | hex_to_rgb_space }}
+            background {{ layers.surface | hex_to_rgb_space }}
+            emphasis_0 {{ ansi_bright.black | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        ribbon_selected {
+            base {{ base.background | hex_to_rgb_space }}
+            background {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.life | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+
+        // Text: general text content
+        text_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_1 {{ colors.life | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        text_selected {
+            base {{ state.selection_fg | hex_to_rgb_space }}
+            background {{ state.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_1 {{ colors.life | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+
+        // Table: session manager, plugin tables
+        table_title {
+            base {{ colors.lantern.mid | hex_to_rgb_space }}
+            background {{ layers.surface | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        table_cell_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ semantic.comment | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        table_cell_selected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ state.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_1 {{ colors.life | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+
+        // List: file picker, command palette
+        list_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ semantic.comment | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        list_selected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ state.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_1 {{ colors.life | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+
+        // Frame: pane borders
+        frame_unselected {
+            base {{ layers.border | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ semantic.comment | hex_to_rgb_space }}
+            emphasis_1 {{ colors.night | hex_to_rgb_space }}
+            emphasis_2 {{ colors.night | hex_to_rgb_space }}
+            emphasis_3 {{ colors.night | hex_to_rgb_space }}
+        }
+        frame_selected {
+            base {{ colors.lantern.mid | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.life | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+        frame_highlight {
+            base {{ ansi_bright.yellow | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ colors.lantern.mid | hex_to_rgb_space }}
+            emphasis_1 {{ colors.lantern.far | hex_to_rgb_space }}
+            emphasis_2 {{ colors.life | hex_to_rgb_space }}
+            emphasis_3 {{ colors.muted | hex_to_rgb_space }}
+        }
+
+        // Exit code indicators
+        exit_code_success {
+            base {{ colors.life | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ ansi_bright.green | hex_to_rgb_space }}
+            emphasis_1 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_2 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_3 {{ base.foreground | hex_to_rgb_space }}
+        }
+        exit_code_error {
+            base {{ ansi.red | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ ansi_bright.red | hex_to_rgb_space }}
+            emphasis_1 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_2 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_3 {{ base.foreground | hex_to_rgb_space }}
+        }
+
+        // Multiplayer user colors (optional, for collaborative sessions)
+        multiplayer_user_colors {
+            player_1 {{ colors.lantern.mid | hex_to_rgb_space }}
+            player_2 {{ colors.life | hex_to_rgb_space }}
+            player_3 {{ colors.night | hex_to_rgb_space }}
+            player_4 {{ colors.muted | hex_to_rgb_space }}
+            player_5 {{ colors.lantern.far | hex_to_rgb_space }}
+            player_6 {{ ansi.cyan | hex_to_rgb_space }}
+            player_7 {{ ansi_bright.magenta | hex_to_rgb_space }}
+            player_8 {{ ansi_bright.blue | hex_to_rgb_space }}
+            player_9 {{ ansi_bright.green | hex_to_rgb_space }}
+            player_10 {{ ansi_bright.yellow | hex_to_rgb_space }}
+        }
+    }
+}

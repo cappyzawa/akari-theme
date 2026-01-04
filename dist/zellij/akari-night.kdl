@@ -1,0 +1,146 @@
+// Akari Night theme for Zellij
+// A dark palette inspired by Japanese alleys lit by round lanterns.
+// Add this file to your `CONFIG_DIR/themes` directory as described here:
+// https://zellij.dev/documentation/themes#getting-zellij-to-pick-up-the-theme
+
+themes {
+    akari-night {
+        // Ribbon: tabs and mode indicator in status bar
+        ribbon_unselected {
+            base 126 147 166
+            background 27 34 43
+            emphasis_0 70 86 118
+            emphasis_1 212 160 90
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+        ribbon_selected {
+            base 16 20 28
+            background 226 106 59
+            emphasis_0 230 222 211
+            emphasis_1 212 160 90
+            emphasis_2 127 175 106
+            emphasis_3 142 123 160
+        }
+
+        // Text: general text content
+        text_unselected {
+            base 230 222 211
+            background 16 20 28
+            emphasis_0 226 106 59
+            emphasis_1 127 175 106
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+        text_selected {
+            base 230 222 211
+            background 45 41 37
+            emphasis_0 226 106 59
+            emphasis_1 127 175 106
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+
+        // Table: session manager, plugin tables
+        table_title {
+            base 226 106 59
+            background 27 34 43
+            emphasis_0 230 222 211
+            emphasis_1 212 160 90
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+        table_cell_unselected {
+            base 230 222 211
+            background 16 20 28
+            emphasis_0 126 147 166
+            emphasis_1 212 160 90
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+        table_cell_selected {
+            base 230 222 211
+            background 45 41 37
+            emphasis_0 226 106 59
+            emphasis_1 127 175 106
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+
+        // List: file picker, command palette
+        list_unselected {
+            base 230 222 211
+            background 16 20 28
+            emphasis_0 126 147 166
+            emphasis_1 212 160 90
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+        list_selected {
+            base 230 222 211
+            background 45 41 37
+            emphasis_0 226 106 59
+            emphasis_1 127 175 106
+            emphasis_2 90 111 130
+            emphasis_3 142 123 160
+        }
+
+        // Frame: pane borders
+        frame_unselected {
+            base 38 47 59
+            background 16 20 28
+            emphasis_0 126 147 166
+            emphasis_1 90 111 130
+            emphasis_2 90 111 130
+            emphasis_3 90 111 130
+        }
+        frame_selected {
+            base 226 106 59
+            background 16 20 28
+            emphasis_0 230 222 211
+            emphasis_1 212 160 90
+            emphasis_2 127 175 106
+            emphasis_3 142 123 160
+        }
+        frame_highlight {
+            base 228 195 151
+            background 16 20 28
+            emphasis_0 226 106 59
+            emphasis_1 212 160 90
+            emphasis_2 127 175 106
+            emphasis_3 142 123 160
+        }
+
+        // Exit code indicators
+        exit_code_success {
+            base 127 175 106
+            background 16 20 28
+            emphasis_0 161 196 146
+            emphasis_1 230 222 211
+            emphasis_2 230 222 211
+            emphasis_3 230 222 211
+        }
+        exit_code_error {
+            base 210 80 70
+            background 16 20 28
+            emphasis_0 222 127 119
+            emphasis_1 230 222 211
+            emphasis_2 230 222 211
+            emphasis_3 230 222 211
+        }
+
+        // Multiplayer user colors (optional, for collaborative sessions)
+        multiplayer_user_colors {
+            player_1 226 106 59
+            player_2 127 175 106
+            player_3 90 111 130
+            player_4 142 123 160
+            player_5 212 160 90
+            player_6 111 143 138
+            player_7 180 167 192
+            player_8 129 149 168
+            player_9 161 196 146
+            player_10 228 195 151
+        }
+    }
+}
