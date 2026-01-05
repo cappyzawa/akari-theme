@@ -24,6 +24,9 @@ changelog:
   - title: Zellij
     labels:
     - zellij
+  - title: Lazygit
+    labels:
+    - lazygit
   - title: macOS Terminal
     labels:
     - terminal
