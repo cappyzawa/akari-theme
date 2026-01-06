@@ -38,13 +38,3 @@ gui:
   theme:
     # ... paste the theme settings from akari-night.yml or akari-dawn.yml
 ```
-
-## Screenshots
-
-### Akari Night
-
-A dark theme inspired by Japanese alleys lit by round lanterns.
-
-### Akari Dawn
-
-A light theme with warm tones for daytime use.
