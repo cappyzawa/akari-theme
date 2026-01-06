@@ -27,6 +27,9 @@ changelog:
   - title: Lazygit
     labels:
     - lazygit
+  - title: gh-dash
+    labels:
+    - gh-dash
   - title: macOS Terminal
     labels:
     - terminal

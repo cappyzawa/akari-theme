@@ -1,0 +1,28 @@
+# Akari Dawn theme for gh-dash
+# A light palette inspired by Japanese alleys lit by round lanterns.
+#
+# Copy the 'theme:' section below into your ~/.config/gh-dash/config.yml
+
+theme:
+  colors:
+    text:
+      primary: "#1A1816"
+      secondary: "#514B45"
+      inverted: "#E4DED6"
+      faint: "#222D38"
+      warning: "#8A4530"
+      success: "#3A5830"
+      error: "#6A2828"
+    background:
+      selected: "#D7C5B1"
+    border:
+      primary: "#CABEAE"
+      secondary: "#CFC4B6"
+      faint: "#CFC4B6"
+    icon:
+      newContributor: "#3A5830"
+      contributor: "#304050"
+      collaborator: "#B07840"
+      member: "#B07840"
+      owner: "#8A4530"
+      unknownRole: "#806080"

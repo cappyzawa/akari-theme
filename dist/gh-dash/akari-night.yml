@@ -1,0 +1,28 @@
+# Akari Night theme for gh-dash
+# A dark palette inspired by Japanese alleys lit by round lanterns.
+#
+# Copy the 'theme:' section below into your ~/.config/gh-dash/config.yml
+
+theme:
+  colors:
+    text:
+      primary: "#E6DED3"
+      secondary: "#465676"
+      inverted: "#10141C"
+      faint: "#7E93A6"
+      warning: "#E26A3B"
+      success: "#7FAF6A"
+      error: "#D25046"
+    background:
+      selected: "#2D2925"
+    border:
+      primary: "#262F3B"
+      secondary: "#1B222B"
+      faint: "#1B222B"
+    icon:
+      newContributor: "#7FAF6A"
+      contributor: "#5A6F82"
+      collaborator: "#D4A05A"
+      member: "#D4A05A"
+      owner: "#E26A3B"
+      unknownRole: "#8E7BA0"
