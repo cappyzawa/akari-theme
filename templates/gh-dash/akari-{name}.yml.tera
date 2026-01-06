@@ -1,0 +1,28 @@
+# Akari {{ variant | title }} theme for gh-dash
+# {{ description }}
+#
+# Copy the 'theme:' section below into your ~/.config/gh-dash/config.yml
+
+theme:
+  colors:
+    text:
+      primary: "{{ base.foreground }}"
+      secondary: "{{ ansi_bright.black }}"
+      inverted: "{{ base.background }}"
+      faint: "{{ semantic.comment }}"
+      warning: "{{ colors.lantern.mid }}"
+      success: "{{ colors.life }}"
+      error: "{{ ansi.red }}"
+    background:
+      selected: "{{ state.selection_bg }}"
+    border:
+      primary: "{{ layers.border }}"
+      secondary: "{{ layers.surface }}"
+      faint: "{{ layers.surface }}"
+    icon:
+      newContributor: "{{ colors.life }}"
+      contributor: "{{ colors.night }}"
+      collaborator: "{{ colors.lantern.far }}"
+      member: "{{ colors.lantern.far }}"
+      owner: "{{ colors.lantern.mid }}"
+      unknownRole: "{{ colors.muted }}"
