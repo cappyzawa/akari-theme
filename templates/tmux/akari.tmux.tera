@@ -13,20 +13,20 @@ get_tmux_option() {
 
 # Color palette per variant (bash 3.2 compatible, no associative arrays)
 # Base
-NIGHT_BG="#10141C"
-NIGHT_FG="#E6DED3"
+NIGHT_BG="{{ night_base.background }}"
+NIGHT_FG="{{ night_base.foreground }}"
 # Layers
-NIGHT_SURFACE="#1B222B"
+NIGHT_SURFACE="{{ night_layers.surface }}"
 # Semantic
-NIGHT_KEYWORD="#E26A3B"
+NIGHT_KEYWORD="{{ night_semantic.keyword }}"
 
 # Base
-DAWN_BG="#E4DED6"
-DAWN_FG="#1A1816"
+DAWN_BG="{{ dawn_base.background }}"
+DAWN_FG="{{ dawn_base.foreground }}"
 # Layers
-DAWN_SURFACE="#CFC4B6"
+DAWN_SURFACE="{{ dawn_layers.surface }}"
 # Semantic
-DAWN_KEYWORD="#8A4530"
+DAWN_KEYWORD="{{ dawn_semantic.keyword }}"
 
 # Default icons (nerdfont)
 DEFAULT_ICON_NORMAL="󰛩"
