@@ -8,14 +8,14 @@ themes {
         // Ribbon: tabs and mode indicator in status bar
         ribbon_unselected {
             base 126 147 166
-            background 37 39 39
-            emphasis_0 106 101 87
+            background 45 46 46
+            emphasis_0 113 106 95
             emphasis_1 212 160 90
             emphasis_2 90 111 130
             emphasis_3 142 123 160
         }
         ribbon_selected {
-            base 28 26 23
+            base 37 35 31
             background 226 106 59
             emphasis_0 230 222 211
             emphasis_1 212 160 90
@@ -26,7 +26,7 @@ themes {
         // Text: general text content
         text_unselected {
             base 230 222 211
-            background 28 26 23
+            background 37 35 31
             emphasis_0 226 106 59
             emphasis_1 127 175 106
             emphasis_2 90 111 130
@@ -34,7 +34,7 @@ themes {
         }
         text_selected {
             base 230 222 211
-            background 56 46 33
+            background 63 54 40
             emphasis_0 226 106 59
             emphasis_1 127 175 106
             emphasis_2 90 111 130
@@ -44,7 +44,7 @@ themes {
         // Table: session manager, plugin tables
         table_title {
             base 226 106 59
-            background 37 39 39
+            background 45 46 46
             emphasis_0 230 222 211
             emphasis_1 212 160 90
             emphasis_2 90 111 130
@@ -52,7 +52,7 @@ themes {
         }
         table_cell_unselected {
             base 230 222 211
-            background 28 26 23
+            background 37 35 31
             emphasis_0 126 147 166
             emphasis_1 212 160 90
             emphasis_2 90 111 130
@@ -60,7 +60,7 @@ themes {
         }
         table_cell_selected {
             base 230 222 211
-            background 56 46 33
+            background 63 54 40
             emphasis_0 226 106 59
             emphasis_1 127 175 106
             emphasis_2 90 111 130
@@ -70,7 +70,7 @@ themes {
         // List: file picker, command palette
         list_unselected {
             base 230 222 211
-            background 28 26 23
+            background 37 35 31
             emphasis_0 126 147 166
             emphasis_1 212 160 90
             emphasis_2 90 111 130
@@ -78,7 +78,7 @@ themes {
         }
         list_selected {
             base 230 222 211
-            background 56 46 33
+            background 63 54 40
             emphasis_0 226 106 59
             emphasis_1 127 175 106
             emphasis_2 90 111 130
@@ -87,8 +87,8 @@ themes {
 
         // Frame: pane borders
         frame_unselected {
-            base 47 52 55
-            background 28 26 23
+            base 53 58 61
+            background 37 35 31
             emphasis_0 126 147 166
             emphasis_1 90 111 130
             emphasis_2 90 111 130
@@ -96,7 +96,7 @@ themes {
         }
         frame_selected {
             base 226 106 59
-            background 28 26 23
+            background 37 35 31
             emphasis_0 230 222 211
             emphasis_1 212 160 90
             emphasis_2 127 175 106
@@ -104,7 +104,7 @@ themes {
         }
         frame_highlight {
             base 228 195 151
-            background 28 26 23
+            background 37 35 31
             emphasis_0 226 106 59
             emphasis_1 212 160 90
             emphasis_2 127 175 106
@@ -114,7 +114,7 @@ themes {
         // Exit code indicators
         exit_code_success {
             base 127 175 106
-            background 28 26 23
+            background 37 35 31
             emphasis_0 161 196 146
             emphasis_1 230 222 211
             emphasis_2 230 222 211
@@ -122,7 +122,7 @@ themes {
         }
         exit_code_error {
             base 210 80 70
-            background 28 26 23
+            background 37 35 31
             emphasis_0 222 127 119
             emphasis_1 230 222 211
             emphasis_2 230 222 211

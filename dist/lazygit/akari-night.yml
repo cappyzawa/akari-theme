@@ -10,20 +10,20 @@ gui:
       - "#E26A3B"
       - bold
     inactiveBorderColor:
-      - "#2F3437"
+      - "#353A3D"
     searchingActiveBorderColor:
       - "#D4A05A"
       - bold
     optionsTextColor:
       - "#5A6F82"
     selectedLineBgColor:
-      - "#382E21"
+      - "#3F3628"
     inactiveViewSelectedLineBgColor:
-      - "#3A261C"
+      - "#412E23"
     cherryPickedCommitFgColor:
       - "#E26A3B"
     cherryPickedCommitBgColor:
-      - "#252727"
+      - "#2D2E2E"
     markedBaseCommitFgColor:
       - "#5A6F82"
     markedBaseCommitBgColor:
