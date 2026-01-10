@@ -13,10 +13,10 @@ get_tmux_option() {
 
 # Color palette per variant (bash 3.2 compatible, no associative arrays)
 # Base
-NIGHT_BG="#10141C"
+NIGHT_BG="#1C1A17"
 NIGHT_FG="#E6DED3"
 # Layers
-NIGHT_SURFACE="#1B222B"
+NIGHT_SURFACE="#252727"
 # Semantic
 NIGHT_KEYWORD="#E26A3B"
 

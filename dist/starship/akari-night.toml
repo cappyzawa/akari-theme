@@ -3,7 +3,7 @@
 
 [palettes.akari-night]
 # Standard ANSI colors
-black = '#0D1016'
+black = '#161512'
 red = '#D25046'
 green = '#7FAF6A'
 yellow = '#D4A05A'
@@ -13,7 +13,7 @@ cyan = '#6F8F8A'
 white = '#E6DED3'
 
 # Bright variants
-bright-black = '#465676'
+bright-black = '#6A6557'
 bright-red = '#DE7F77'
 bright-green = '#A1C492'
 bright-yellow = '#E4C397'

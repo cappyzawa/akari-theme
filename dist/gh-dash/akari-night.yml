@@ -7,18 +7,18 @@ theme:
   colors:
     text:
       primary: "#E6DED3"
-      secondary: "#465676"
-      inverted: "#10141C"
+      secondary: "#6A6557"
+      inverted: "#1C1A17"
       faint: "#7E93A6"
       warning: "#E26A3B"
       success: "#7FAF6A"
       error: "#D25046"
     background:
-      selected: "#2D2925"
+      selected: "#382E21"
     border:
-      primary: "#262F3B"
-      secondary: "#1B222B"
-      faint: "#1B222B"
+      primary: "#2F3437"
+      secondary: "#252727"
+      faint: "#252727"
     icon:
       newContributor: "#7FAF6A"
       contributor: "#5A6F82"
