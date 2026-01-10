@@ -24,7 +24,7 @@ muted = "#8E7BA0"  # quiet purple — distance, not neon
 # The ground truth for readability.
 #
 [base]
-background = "#1C1A17" # warm dark — lantern-lit alley walls
+background = "#25231F" # warm dark — lantern-lit alley walls
 foreground = "#E6DED3" # soft paper white
 
 #
