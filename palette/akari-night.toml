@@ -24,7 +24,7 @@ muted = "#8E7BA0"  # quiet purple — distance, not neon
 # The ground truth for readability.
 #
 [base]
-background = "#10141C" # dark navy — the night sky above the alley
+background = "#1C1A17" # warm dark — lantern-lit alley walls
 foreground = "#E6DED3" # soft paper white
 
 #
@@ -45,7 +45,7 @@ raised = "mix(base.background, colors.night, 0.20)"
 # layers.border — window borders, separators
 border = "mix(base.background, colors.night, 0.30)"
 # layers.inset — side panels, status bar (recessed from editor)
-inset = "#12100E"
+inset = "darken(base.background, 0.35)"
 
 #
 # State (UI states)
