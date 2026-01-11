@@ -13,7 +13,7 @@ dependencies = [
 
 [[package]]
 name = "akari-theme"
-version = "1.14.1"
+version = "1.15.0"
 dependencies = [
  "clap",
  "plist",
