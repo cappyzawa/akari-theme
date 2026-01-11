@@ -1,0 +1,18 @@
+# Akari {{ variant | title }} — fzf colors for Nix
+# Generated from palette/akari-{{ variant }}.toml
+{
+  fg = "{{ base.foreground }}";
+  bg = "{{ base.background }}";
+  hl = "{{ colors.lantern.mid }}";
+  "fg+" = "{{ state.selection_fg }}";
+  "bg+" = "{{ state.selection_bg }}";
+  "hl+" = "{{ colors.lantern.mid }}";
+  border = "{{ layers.border }}";
+  header = "{{ semantic.comment }}";
+  gutter = "{{ base.background }}";
+  spinner = "{{ colors.lantern.mid }}";
+  info = "{{ colors.night }}";
+  pointer = "{{ colors.lantern.mid }}";
+  marker = "{{ colors.life }}";
+  prompt = "{{ colors.lantern.mid }}";
+}
