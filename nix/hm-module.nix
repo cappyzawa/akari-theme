@@ -11,7 +11,7 @@ let
   sources = self.outPath + "/dist";
 in
 {
-  imports = map (f: f { inherit akariLib sources; }) [
+  imports = map (path: (import path) { inherit akariLib sources; }) [
     ./targets/alacritty.nix
     ./targets/bat.nix
     ./targets/fzf.nix
