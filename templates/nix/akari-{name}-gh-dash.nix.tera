@@ -1,0 +1,21 @@
+# Akari {{ variant | title }} — gh-dash colors for Nix
+# Generated from palette/akari-{{ variant }}.toml
+{
+  theme.colors = {
+    text = {
+      primary = "{{ base.foreground }}";
+      secondary = "{{ ansi_bright.black }}";
+      inverted = "{{ base.background }}";
+      faint = "{{ semantic.comment }}";
+      warning = "{{ colors.lantern.mid }}";
+      success = "{{ colors.life }}";
+      error = "{{ ansi.red }}";
+    };
+    background.selected = "{{ state.selection_bg }}";
+    border = {
+      primary = "{{ layers.border }}";
+      secondary = "{{ layers.surface }}";
+      faint = "{{ layers.surface }}";
+    };
+  };
+}
