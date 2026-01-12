@@ -1,0 +1,42 @@
+# Akari Night — delta options for Nix
+# Generated from palette/akari-night.toml
+{
+  dark = true;
+  syntax-theme = "Akari Night";
+  line-numbers = true;
+
+  # Diff styling
+  minus-style = ''"#E6DED3" "#D2504620"'';
+  minus-emph-style = ''"#E6DED3" "#D2504650"'';
+  plus-style = ''"#E6DED3" "#7FAF6A20"'';
+  plus-emph-style = ''"#E6DED3" "#7FAF6A50"'';
+
+  # Line numbers
+  line-numbers-minus-style = "#D25046";
+  line-numbers-plus-style = "#7FAF6A";
+  line-numbers-zero-style = "#716A5F";
+  line-numbers-left-style = "#353A3D";
+  line-numbers-right-style = "#353A3D";
+
+  # Hunk header
+  hunk-header-style = "file line-number #5A6F82";
+  hunk-header-decoration-style = "#353A3D ul";
+  hunk-header-file-style = "#E26A3B";
+  hunk-header-line-number-style = "#5A6F82";
+
+  # File header
+  file-style = ''"#E26A3B" bold'';
+  file-decoration-style = "#353A3D ul";
+
+  # Commit decoration
+  commit-decoration-style = "#E26A3B box";
+
+  # Blame
+  blame-palette = "#25231F #2D2E2E #412E23 #303233";
+
+  # Merge conflict
+  merge-conflict-begin-symbol = "▼";
+  merge-conflict-end-symbol = "▲";
+  merge-conflict-ours-diff-header-style = ''"#D4A05A" bold'';
+  merge-conflict-theirs-diff-header-style = ''"#5A6F82" bold'';
+}

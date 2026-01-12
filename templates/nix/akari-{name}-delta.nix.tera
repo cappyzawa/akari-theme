@@ -1,0 +1,46 @@
+# Akari {{ variant | title }} — delta options for Nix
+# Generated from palette/akari-{{ variant }}.toml
+{
+  {% if variant == "night" -%}
+  dark = true;
+  {% else -%}
+  light = true;
+  {% endif -%}
+  syntax-theme = "Akari {{ variant | title }}";
+  line-numbers = true;
+
+  # Diff styling
+  minus-style = ''"{{ base.foreground }}" "{{ state.diff_removed }}20"'';
+  minus-emph-style = ''"{{ base.foreground }}" "{{ state.diff_removed }}50"'';
+  plus-style = ''"{{ base.foreground }}" "{{ state.diff_added }}20"'';
+  plus-emph-style = ''"{{ base.foreground }}" "{{ state.diff_added }}50"'';
+
+  # Line numbers
+  line-numbers-minus-style = "{{ state.diff_removed }}";
+  line-numbers-plus-style = "{{ state.diff_added }}";
+  line-numbers-zero-style = "{{ ansi_bright.black }}";
+  line-numbers-left-style = "{{ layers.border }}";
+  line-numbers-right-style = "{{ layers.border }}";
+
+  # Hunk header
+  hunk-header-style = "file line-number {{ colors.night }}";
+  hunk-header-decoration-style = "{{ layers.border }} ul";
+  hunk-header-file-style = "{{ colors.lantern.mid }}";
+  hunk-header-line-number-style = "{{ colors.night }}";
+
+  # File header
+  file-style = ''"{{ colors.lantern.mid }}" bold'';
+  file-decoration-style = "{{ layers.border }} ul";
+
+  # Commit decoration
+  commit-decoration-style = "{{ colors.lantern.mid }} box";
+
+  # Blame
+  blame-palette = "{{ base.background }} {{ layers.surface }} {{ layers.sunken }} {{ layers.raised }}";
+
+  # Merge conflict
+  merge-conflict-begin-symbol = "▼";
+  merge-conflict-end-symbol = "▲";
+  merge-conflict-ours-diff-header-style = ''"{{ colors.lantern.far }}" bold'';
+  merge-conflict-theirs-diff-header-style = ''"{{ colors.night }}" bold'';
+}

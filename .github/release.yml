@@ -42,6 +42,9 @@ changelog:
   - title: bat
     labels:
     - bat
+  - title: delta
+    labels:
+    - delta
   - title: Chrome
     labels:
     - chrome
