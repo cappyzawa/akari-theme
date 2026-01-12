@@ -53,6 +53,57 @@ warm, and readable for long sessions.
 | [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |
 | [Slack](dist/slack/README.md) | App | Import theme string in Preferences |
 
+## Nix (Home Manager)
+
+Akari theme is available as a Home Manager module via Nix flakes.
+
+### Installation
+
+Add akari-theme as a flake input and import the Home Manager module:
+
+```nix
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    home-manager.url = "github:nix-community/home-manager";
+    akari-theme.url = "github:cappyzawa/akari-theme";
+  };
+
+  outputs = { nixpkgs, home-manager, akari-theme, ... }: {
+    homeConfigurations."your-username" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+      modules = [
+        akari-theme.homeModules.akari
+        # your other modules...
+      ];
+    };
+  };
+}
+```
+
+### Configuration
+
+```nix
+{
+  # Global settings (applies to all supported tools)
+  akari = {
+    enable = true;     # default: true
+    variant = "night"; # "night" or "dawn", default: "night"
+  };
+
+  # Per-tool overrides (optional)
+  akari.ghostty.variant = "dawn";  # Use dawn for Ghostty only
+  akari.helix.enable = false;      # Disable Akari for Helix
+}
+```
+
+### Supported Tools
+
+The Home Manager module supports:
+alacritty, bat, delta, fzf, gh-dash, ghostty, helix, lazygit, starship, tmux, zellij, zsh
+
+Each tool inherits the global `akari.enable` and `akari.variant` settings by default, but can be individually overridden.
+
 ## Palette
 
 Color definitions are the single source of truth in TOML format:
