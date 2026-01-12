@@ -48,6 +48,7 @@ warm, and readable for long sessions.
 | [zsh-syntax-highlighting](dist/zsh/README.md) | Shell | Source in `.zshrc` |
 | [fzf](dist/fzf/README.md) | CLI | Source in `.bashrc` or `.zshrc` |
 | [bat](dist/bat/README.md) | CLI | Copy theme to `$(bat --config-dir)/themes/` |
+| [delta](dist/delta/README.md) | CLI | Include gitconfig in `~/.gitconfig` |
 | [Lazygit](dist/lazygit/README.md) | CLI | Copy theme to `~/.config/lazygit/themes/` |
 | [gh-dash](dist/gh-dash/README.md) | CLI | Copy theme to `~/.config/gh-dash/config.yml` |
 | [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |

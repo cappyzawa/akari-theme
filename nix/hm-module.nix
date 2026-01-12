@@ -14,6 +14,7 @@ in
   imports = map (path: (import path) { inherit akariLib sources; }) [
     ./targets/alacritty.nix
     ./targets/bat.nix
+    ./targets/delta.nix
     ./targets/fzf.nix
     ./targets/gh-dash.nix
     ./targets/ghostty.nix
