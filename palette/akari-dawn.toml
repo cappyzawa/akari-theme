@@ -82,8 +82,12 @@ active_bg = "mix(base.background, colors.lantern.far, 0.15)"
 # Diff
 # state.diff_added — life catching morning light
 diff_added = "darken(colors.life, 0.15)"
+# state.diff_added_bg — subtle background for added lines
+diff_added_bg = "mix(base.background, colors.life, 0.15)"
 # state.diff_removed — ANSI red
 diff_removed = "ansi.red"
+# state.diff_removed_bg — subtle background for removed lines
+diff_removed_bg = "mix(base.background, ansi.red, 0.15)"
 # state.diff_changed — amber in morning light
 diff_changed = "darken(colors.lantern.far, 0.10)"
 # state.diff_moved — moved code in diff

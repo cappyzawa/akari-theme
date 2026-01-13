@@ -15,10 +15,10 @@
     line-numbers = true
 
     # Diff styling
-    minus-style = "{{ base.foreground }}" "{{ state.diff_removed }}20"
-    minus-emph-style = "{{ base.foreground }}" "{{ state.diff_removed }}50"
-    plus-style = "{{ base.foreground }}" "{{ state.diff_added }}20"
-    plus-emph-style = "{{ base.foreground }}" "{{ state.diff_added }}50"
+    minus-style = syntax "{{ state.diff_removed_bg }}"
+    minus-emph-style = syntax "{{ state.diff_removed_bg }}" bold
+    plus-style = syntax "{{ state.diff_added_bg }}"
+    plus-emph-style = syntax "{{ state.diff_added_bg }}" bold
 
     # Line numbers
     line-numbers-minus-style = "{{ state.diff_removed }}"

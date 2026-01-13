@@ -11,10 +11,10 @@
     line-numbers = true
 
     # Diff styling
-    minus-style = "#E6DED3" "#D2504620"
-    minus-emph-style = "#E6DED3" "#D2504650"
-    plus-style = "#E6DED3" "#7FAF6A20"
-    plus-emph-style = "#E6DED3" "#7FAF6A50"
+    minus-style = syntax "#3F2A25"
+    minus-emph-style = syntax "#3F2A25" bold
+    plus-style = syntax "#33382A"
+    plus-emph-style = syntax "#33382A" bold
 
     # Line numbers
     line-numbers-minus-style = "#D25046"

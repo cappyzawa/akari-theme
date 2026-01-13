@@ -53,7 +53,9 @@ struct RawState {
     error: ColorExpr,
     active_bg: ColorExpr,
     diff_added: ColorExpr,
+    diff_added_bg: ColorExpr,
     diff_removed: ColorExpr,
+    diff_removed_bg: ColorExpr,
     diff_changed: ColorExpr,
     diff_moved: ColorExpr,
     conflict: ColorExpr,
@@ -73,7 +75,9 @@ impl RawState {
             error: resolve_expr(resolver, &self.error)?,
             active_bg: resolve_expr(resolver, &self.active_bg)?,
             diff_added: resolve_expr(resolver, &self.diff_added)?,
+            diff_added_bg: resolve_expr(resolver, &self.diff_added_bg)?,
             diff_removed: resolve_expr(resolver, &self.diff_removed)?,
+            diff_removed_bg: resolve_expr(resolver, &self.diff_removed_bg)?,
             diff_changed: resolve_expr(resolver, &self.diff_changed)?,
             diff_moved: resolve_expr(resolver, &self.diff_moved)?,
             conflict: resolve_expr(resolver, &self.conflict)?,
@@ -206,7 +210,9 @@ pub struct State {
     pub error: String,
     pub active_bg: String,
     pub diff_added: String,
+    pub diff_added_bg: String,
     pub diff_removed: String,
+    pub diff_removed_bg: String,
     pub diff_changed: String,
     pub diff_moved: String,
     pub conflict: String,
@@ -838,7 +844,9 @@ warning = "#D4A05A"
 error = "#D65A3A"
 active_bg = "#2A3540"
 diff_added = "#7FAF6A"
+diff_added_bg = "#2A3A2A"
 diff_removed = "#D65A3A"
+diff_removed_bg = "#3A2A2A"
 diff_changed = "#D4A05A"
 diff_moved = "#5A6F82"
 conflict = "#D65A3A"

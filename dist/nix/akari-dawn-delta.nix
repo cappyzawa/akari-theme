@@ -6,10 +6,10 @@
   line-numbers = true;
 
   # Diff styling
-  minus-style = ''"#1A1816" "#6A282820"'';
-  minus-emph-style = ''"#1A1816" "#6A282850"'';
-  plus-style = ''"#1A1816" "#314B2920"'';
-  plus-emph-style = ''"#1A1816" "#314B2950"'';
+  minus-style = ''syntax "#D2C3BC"'';
+  minus-emph-style = ''syntax "#D2C3BC" bold'';
+  plus-style = ''syntax "#CBCABD"'';
+  plus-emph-style = ''syntax "#CBCABD" bold'';
 
   # Line numbers
   line-numbers-minus-style = "#6A2828";
