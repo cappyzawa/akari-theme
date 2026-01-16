@@ -216,7 +216,7 @@ foreground = "#E6DED3"
 
 cursor = "#E26A3B"
 cursor-text = "#25231F"
-selection-bg = "#3F3628"
+selection-bg = "#51422E"
 selection-fg = "#E6DED3"
 cursorline = "#412E23"
 
