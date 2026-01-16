@@ -18,7 +18,7 @@ M.night = {
   -- UI
   cursor = "#E26A3B",
   cursor_text = "#25231F",
-  selection_bg = "#3F3628",
+  selection_bg = "#51422E",
   selection_fg = "#E6DED3",
   match_bg = "#4B3125",
 

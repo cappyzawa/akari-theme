@@ -55,7 +55,7 @@ inset = "darken(base.background, 0.35)"
 #
 [state]
 # state.selection_bg — selected text background (amber-tinted warmth)
-selection_bg = "mix(base.background, colors.lantern.far, 0.15)"
+selection_bg = "mix(base.background, colors.lantern.far, 0.25)"
 # state.selection_fg — selected text foreground
 selection_fg = "ansi.white"
 # state.match_bg — search match background (lantern warmth)

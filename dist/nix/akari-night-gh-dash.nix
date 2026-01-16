@@ -11,7 +11,7 @@
       success = "#7FAF6A";
       error = "#D25046";
     };
-    background.selected = "#3F3628";
+    background.selected = "#51422E";
     border = {
       primary = "#353A3D";
       secondary = "#2D2E2E";
