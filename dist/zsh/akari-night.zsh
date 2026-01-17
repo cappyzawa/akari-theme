@@ -9,14 +9,14 @@ _lantern='#E26A3B'
 _ember='#D65A3A'
 _amber='#D4A05A'
 _life='#7FAF6A'
-_night='#5A6F82'
+_night='#7A8FA2'
 _muted='#8E7BA0'
 _cyan='#6F8F8A'
 _constant='#8CA6A1'
 _path='#7FAF6A'
 _text='#E6DED3'
-_comment='#7E93A6'
-_border='#353A3D'
+_comment='#9BABB9'
+_border='#3F4346'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_lantern,bold"

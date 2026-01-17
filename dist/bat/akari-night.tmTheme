@@ -21,7 +21,7 @@
 				<key>foreground</key>
 				<string>#E6DED3</string>
 				<key>invisibles</key>
-				<string>#7E93A6</string>
+				<string>#9BABB9</string>
 				<key>lineHighlight</key>
 				<string>#412E23</string>
 				<key>selection</key>
@@ -31,11 +31,11 @@
 				<key>findHighlight</key>
 				<string>#4B3125</string>
 				<key>guide</key>
-				<string>#353A3D</string>
+				<string>#3F4346</string>
 				<key>activeGuide</key>
 				<string>#E26A3B</string>
 				<key>gutterForeground</key>
-				<string>#7E93A6</string>
+				<string>#9BABB9</string>
 			</dict>
 		</dict>
 
@@ -48,7 +48,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#7E93A6</string>
+				<string>#9BABB9</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -534,7 +534,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#8195A8</string>
+				<string>#A7B5C1</string>
 				<key>fontStyle</key>
 				<string>underline</string>
 			</dict>
@@ -575,7 +575,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>#7E93A6</string>
+				<string>#9BABB9</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>

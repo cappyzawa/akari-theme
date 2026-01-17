@@ -7,11 +7,11 @@
   "fg+" = "#E6DED3";
   "bg+" = "#51422E";
   "hl+" = "#E26A3B";
-  border = "#353A3D";
-  header = "#7E93A6";
+  border = "#3F4346";
+  header = "#9BABB9";
   gutter = "#25231F";
   spinner = "#E26A3B";
-  info = "#5A6F82";
+  info = "#7A8FA2";
   pointer = "#E26A3B";
   marker = "#7FAF6A";
   prompt = "#E26A3B";

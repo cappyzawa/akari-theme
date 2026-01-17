@@ -10,10 +10,10 @@ M.night = {
   foreground = "#E6DED3",
 
   -- Layers (blue-tinted elevation)
-  surface = "#2D2E2E",
+  surface = "#323333",
   sunken = "#412E23",
-  raised = "#303233",
-  border = "#353A3D",
+  raised = "#363939",
+  border = "#3F4346",
 
   -- UI
   cursor = "#E26A3B",
@@ -27,7 +27,7 @@ M.night = {
   red = "#D25046",
   green = "#7FAF6A",
   yellow = "#D4A05A",
-  blue = "#5A6F82",
+  blue = "#7A8FA2",
   magenta = "#8E7BA0",
   cyan = "#6F8F8A",
   white = "#E6DED3",
@@ -37,7 +37,7 @@ M.night = {
   bright_red = "#DE7F77",
   bright_green = "#A1C492",
   bright_yellow = "#E4C397",
-  bright_blue = "#8195A8",
+  bright_blue = "#A7B5C1",
   bright_magenta = "#B4A7C0",
   bright_cyan = "#9AB1AD",
   bright_white = "#EFEAE3",
@@ -47,18 +47,18 @@ M.night = {
   ember = "#D65A3A",
   amber = "#D4A05A",
   constant = "#8CA6A1",
-  comment = "#7E93A6",
+  comment = "#9BABB9",
   path = "#7FAF6A",
   macro = "#B4A7C0",
   escape = "#B4A7C0",
   regexp = "#A1C492",
-  link = "#8195A8",
+  link = "#A7B5C1",
 
   -- Diagnostic
   error = "#D25046",
   warning = "#E26A3B",
-  info = "#5A6F82",
-  hint = "#7E93A6",
+  info = "#7A8FA2",
+  hint = "#9BABB9",
 
   -- Diff
   diff_add = "#7FAF6A",
