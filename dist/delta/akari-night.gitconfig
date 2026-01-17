@@ -20,27 +20,27 @@
     line-numbers-minus-style = "#D25046"
     line-numbers-plus-style = "#7FAF6A"
     line-numbers-zero-style = "#716A5F"
-    line-numbers-left-style = "#353A3D"
-    line-numbers-right-style = "#353A3D"
+    line-numbers-left-style = "#3F4346"
+    line-numbers-right-style = "#3F4346"
 
     # Hunk header
-    hunk-header-style = "file line-number #5A6F82"
-    hunk-header-decoration-style = "#353A3D ul"
+    hunk-header-style = "file line-number #7A8FA2"
+    hunk-header-decoration-style = "#3F4346 ul"
     hunk-header-file-style = "#E26A3B"
-    hunk-header-line-number-style = "#5A6F82"
+    hunk-header-line-number-style = "#7A8FA2"
 
     # File header
     file-style = "#E26A3B" bold
-    file-decoration-style = "#353A3D" ul
+    file-decoration-style = "#3F4346" ul
 
     # Commit decoration
     commit-decoration-style = "#E26A3B" box
 
     # Blame
-    blame-palette = "#25231F" "#2D2E2E" "#412E23" "#303233"
+    blame-palette = "#25231F" "#323333" "#412E23" "#363939"
 
     # Merge conflict
     merge-conflict-begin-symbol = "▼"
     merge-conflict-end-symbol = "▲"
     merge-conflict-ours-diff-header-style = "#D4A05A" bold
-    merge-conflict-theirs-diff-header-style = "#5A6F82" bold
+    merge-conflict-theirs-diff-header-style = "#7A8FA2" bold

@@ -16,7 +16,7 @@ get_tmux_option() {
 NIGHT_BG="#25231F"
 NIGHT_FG="#E6DED3"
 # Layers
-NIGHT_SURFACE="#2D2E2E"
+NIGHT_SURFACE="#323333"
 # Semantic
 NIGHT_KEYWORD="#E26A3B"
 
