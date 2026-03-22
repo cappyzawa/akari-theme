@@ -22,7 +22,7 @@
       "matchManagers": ["cargo"],
       "groupName": "rust dependencies",
       "postUpgradeTasks": {
-        "commands": ["cargo run -- generate --tool all"],
+        "commands": ["cargo run --features generator -- generate --tool all"],
         "fileFilters": ["**/*"],
         "executionMode": "branch"
       }
