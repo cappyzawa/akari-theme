@@ -5,3 +5,7 @@
 
 # Sample files for syntax highlighting testing
 /samples
+
+# Ensure Claude Code config is always tracked
+!CLAUDE.md
+!.claude/
