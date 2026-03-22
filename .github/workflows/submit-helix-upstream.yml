@@ -100,6 +100,7 @@ jobs:
       run: |
         git config user.name "akari-theme[bot]"
         git config user.email "akari-theme[bot]@users.noreply.github.com"
+        git fetch origin "${BRANCH}" || true
         git checkout -b "${BRANCH}"
         git commit -m "Update akari theme to ${VERSION}"
         git push --force-with-lease origin "${BRANCH}"
