@@ -15,7 +15,7 @@ Directory/file names use `{name}` (lowercase: night/dawn) and `{Name}` (capitali
 
 ## Custom Filters
 
-- `hex_to_rgb` — `"#E26A3B" | hex_to_rgb` → `"226, 106, 59"`
+- `hex_to_rgb` — `"#E26A3B" | hex_to_rgb` → `"[226, 106, 59]"`
 - `hex_to_rgb_space` — `"#E26A3B" | hex_to_rgb_space` → `"226 106 59"`
 
 ## Static Files

@@ -24,15 +24,13 @@ Only `colors`, `base`, `ansi` (`Section::ALLOWED`). `layers`, `state`, `semantic
 
 ## Staged Resolution Order
 
-1. `colors` / `base` — literal hex values, no references
-2. `ansi.base` — can reference `colors` and `base`
-3. `ansi.bright` — can also reference `ansi.base` (but not vice versa)
-4. `layers` / `state` / `semantic` — can reference all resolved sections
+`colors` and `base` are plain hex strings (not `ColorExpr`), always available as reference targets.
+
+1. `ansi.base` — can reference `colors` and `base`
+2. `ansi.bright` — can also reference `ansi.base` (but not vice versa)
+3. `layers` / `state` / `semantic` — can reference all resolved sections
 
 ## resolve_fields! Macro
 
 Resolves all `ColorExpr` fields of a Raw struct into resolved hex strings in one call. When adding a new field to a section, add it to both the `Raw*` struct and the corresponding `resolve_fields!` invocation.
 
-## After Changes
-
-Always run the verification workflow in CLAUDE.md to ensure `dist/` stays in sync.
