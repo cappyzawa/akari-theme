@@ -106,7 +106,7 @@ jobs:
     - name: Create pull request
       if: steps.changes.outputs.changed == 'true' && steps.existing-pr.outputs.exists == 'false'
       env:
-        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        GH_TOKEN: ${{ secrets.AKARI_PAT }}
         VERSION: ${{ steps.version.outputs.version }}
         REF_TYPE: ${{ github.ref_type }}
       run: |
