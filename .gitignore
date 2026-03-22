@@ -9,3 +9,4 @@
 # Ensure Claude Code config is always tracked
 !CLAUDE.md
 !.claude/
+.claude/settings.local.json
