@@ -76,7 +76,7 @@ jobs:
       if: steps.changes.outputs.changed == 'true'
       id: existing-pr
       env:
-        GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        GH_TOKEN: ${{ secrets.AKARI_PAT }}
       run: |
         PR_URL=$(gh pr list \
           --repo helix-editor/helix \
