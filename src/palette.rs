@@ -217,7 +217,6 @@ pub struct Ansi {
     pub white: String,
 }
 
-
 impl<'a> IntoIterator for &'a Ansi {
     type Item = (&'static str, &'a str);
     type IntoIter = std::array::IntoIter<Self::Item, 8>;
