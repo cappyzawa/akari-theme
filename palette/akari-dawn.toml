@@ -126,6 +126,8 @@ type = "colors.lantern.far"
 function = "colors.muted"
 # semantic.variable
 variable = "base.foreground"
+# semantic.member — struct fields, object keys (quiet morning air)
+member = "colors.night"
 
 # Life
 # semantic.success

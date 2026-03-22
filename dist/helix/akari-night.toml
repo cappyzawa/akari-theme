@@ -167,8 +167,8 @@
 "variable.builtin" = { fg = "bright-red" }
 "variable.parameter" = "foreground"
 "variable.other" = "foreground"
-"variable.other.member" = "foreground"
-"variable.other.member.private" = "foreground"
+"variable.other.member" = "member"
+"variable.other.member.private" = "member"
 
 "label" = { fg = "amber" }
 
@@ -252,6 +252,7 @@ macro = "#B4A7C0"
 escape = "#B4A7C0"
 regexp = "#A1C492"
 link = "#A7B5C1"
+member = "#7A8FA2"
 directory = "#6F8F8A"
 sunken = "#412E23"
 match-bg = "#4B3125"
