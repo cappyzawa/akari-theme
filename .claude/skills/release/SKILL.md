@@ -17,7 +17,7 @@ Create a new release for akari-theme.
 
 !`git tag --sort=-v:refname | head -3`
 
-!`git log --oneline $(git tag --sort=-v:refname | head -1)..HEAD`
+!`git tag --sort=-v:refname | head -1 | xargs -I{} git log --oneline {}..HEAD`
 
 ## Steps
 
