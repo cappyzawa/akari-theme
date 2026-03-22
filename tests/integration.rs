@@ -38,21 +38,23 @@ mod palette {
             let path = palette_dir().join(variant.palette_filename());
             let palette = Palette::from_path(&path, variant).unwrap();
 
-            // Check base colors are valid hex
-            assert!(palette.base.background.starts_with('#'));
-            assert!(palette.base.foreground.starts_with('#'));
-            assert_eq!(palette.base.background.len(), 7);
-            assert_eq!(palette.base.foreground.len(), 7);
+            // Rgb fields are type-safe; verify Display format is #RRGGBB
+            let bg = palette.base.background.to_string();
+            let fg = palette.base.foreground.to_string();
+            assert!(bg.starts_with('#'));
+            assert!(fg.starts_with('#'));
+            assert_eq!(bg.len(), 7);
+            assert_eq!(fg.len(), 7);
 
-            // Check semantic colors are resolved to hex
-            assert!(palette.semantic.keyword.starts_with('#'));
-            assert!(palette.semantic.string.starts_with('#'));
-            assert!(palette.semantic.function.starts_with('#'));
+            // Check semantic colors format via Display
+            assert!(palette.semantic.keyword.to_string().starts_with('#'));
+            assert!(palette.semantic.string.to_string().starts_with('#'));
+            assert!(palette.semantic.function.to_string().starts_with('#'));
 
-            // Check ANSI colors are resolved to hex
-            assert!(palette.ansi.black.starts_with('#'));
-            assert!(palette.ansi.white.starts_with('#'));
-            assert!(palette.ansi_bright.black.starts_with('#'));
+            // Check ANSI colors format via Display
+            assert!(palette.ansi.black.to_string().starts_with('#'));
+            assert!(palette.ansi.white.to_string().starts_with('#'));
+            assert!(palette.ansi_bright.black.to_string().starts_with('#'));
         }
     }
 

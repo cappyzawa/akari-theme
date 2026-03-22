@@ -1,4 +1,5 @@
 use crate::Error;
+use serde::{Deserialize, Serialize};
 use std::fmt;
 use std::str::FromStr;
 
@@ -31,6 +32,24 @@ impl FromStr for Rgb {
 impl fmt::Display for Rgb {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
+    }
+}
+
+impl Serialize for Rgb {
+    fn serialize<S: serde::Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
+        use std::io::Write;
+        let mut buf = [0u8; 7]; // #RRGGBB is always 7 bytes
+        write!(&mut buf[..], "#{:02X}{:02X}{:02X}", self.r, self.g, self.b)
+            .expect("buffer is always large enough");
+        // SAFETY: hex digits and '#' are always valid ASCII/UTF-8
+        serializer.serialize_str(std::str::from_utf8(&buf).unwrap())
+    }
+}
+
+impl<'de> Deserialize<'de> for Rgb {
+    fn deserialize<D: serde::Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
+        let s = String::deserialize(deserializer)?;
+        s.parse().map_err(serde::de::Error::custom)
     }
 }
 
@@ -620,5 +639,41 @@ mod tests {
         assert!(approx_eq_f32(arr[1], 1.0));
         assert!(approx_eq_f32(arr[2], 1.0));
         assert!(approx_eq_f32(arr[3], 1.0));
+    }
+
+    #[test]
+    fn serialize_rgb_to_hex_string() {
+        let rgb = Rgb {
+            r: 226,
+            g: 106,
+            b: 59,
+        };
+        let json = serde_json::to_string(&rgb).unwrap();
+        assert_eq!(json, r##""#E26A3B""##);
+    }
+
+    #[test]
+    fn deserialize_rgb_from_hex_string() {
+        let rgb: Rgb = serde_json::from_str(r##""#E26A3B""##).unwrap();
+        assert_eq!(
+            rgb,
+            Rgb {
+                r: 226,
+                g: 106,
+                b: 59
+            }
+        );
+    }
+
+    #[test]
+    fn serde_roundtrip() {
+        let original = Rgb {
+            r: 37,
+            g: 35,
+            b: 31,
+        };
+        let json = serde_json::to_string(&original).unwrap();
+        let deserialized: Rgb = serde_json::from_str(&json).unwrap();
+        assert_eq!(original, deserialized);
     }
 }

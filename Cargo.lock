@@ -18,6 +18,7 @@ dependencies = [
  "clap",
  "plist",
  "serde",
+ "serde_json",
  "tempfile",
  "tera",
  "thiserror",

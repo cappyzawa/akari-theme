@@ -10,8 +10,7 @@ fn capitalize(s: &str) -> String {
         .unwrap_or_default()
 }
 
-fn encode_nscolor(hex: &str) -> Result<Vec<u8>, Error> {
-    let rgb: Rgb = hex.parse()?;
+fn encode_nscolor(rgb: Rgb) -> Result<Vec<u8>, Error> {
     let (r, g, b) = rgb.as_floats();
     let nsrgb = format!("{r} {g} {b}");
 
@@ -64,8 +63,8 @@ fn encode_nscolor(hex: &str) -> Result<Vec<u8>, Error> {
     Ok(buf.into_inner())
 }
 
-fn color_data(hex: &str) -> Result<Value, Error> {
-    encode_nscolor(hex).map(Value::Data)
+fn color_data(rgb: Rgb) -> Result<Value, Error> {
+    encode_nscolor(rgb).map(Value::Data)
 }
 
 pub fn generate(palette: &Palette) -> Result<String, Error> {
@@ -74,49 +73,46 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
     let mut dict: BTreeMap<String, Value> = BTreeMap::new();
 
     // ANSI colors
-    for (name, hex) in &palette.ansi {
+    for (name, rgb) in &palette.ansi {
         let key = format!("ANSI{}Color", capitalize(name));
-        dict.insert(key, color_data(hex)?);
+        dict.insert(key, color_data(rgb)?);
     }
 
     // ANSI bright colors
-    for (name, hex) in &palette.ansi_bright {
+    for (name, rgb) in &palette.ansi_bright {
         let key = format!("ANSIBright{}Color", capitalize(name));
-        dict.insert(key, color_data(hex)?);
+        dict.insert(key, color_data(rgb)?);
     }
 
     // Base colors
     dict.insert(
         "BackgroundColor".to_string(),
-        color_data(&palette.base.background)?,
+        color_data(palette.base.background)?,
     );
     dict.insert(
         "TextColor".to_string(),
-        color_data(&palette.base.foreground)?,
+        color_data(palette.base.foreground)?,
     );
     dict.insert(
         "TextBoldColor".to_string(),
-        color_data(&palette.base.foreground)?,
+        color_data(palette.base.foreground)?,
     );
 
     // Cursor
-    dict.insert(
-        "CursorColor".to_string(),
-        color_data(&palette.state.cursor)?,
-    );
+    dict.insert("CursorColor".to_string(), color_data(palette.state.cursor)?);
     dict.insert(
         "CursorTextColor".to_string(),
-        color_data(&palette.state.cursor_text)?,
+        color_data(palette.state.cursor_text)?,
     );
 
     // Selection
     dict.insert(
         "SelectionColor".to_string(),
-        color_data(&palette.state.selection_bg)?,
+        color_data(palette.state.selection_bg)?,
     );
     dict.insert(
         "SelectedTextColor".to_string(),
-        color_data(&palette.state.selection_fg)?,
+        color_data(palette.state.selection_fg)?,
     );
 
     dict.insert("name".to_string(), Value::String(name));
