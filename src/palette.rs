@@ -397,9 +397,7 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<Rgb, Err
         ColorExpr::Ref { section, key } => resolver.resolve_ref(*section, key),
         ColorExpr::Lighten(inner, factor) => Ok(resolve_expr(resolver, inner)?.lighten(*factor)),
         ColorExpr::Darken(inner, factor) => Ok(resolve_expr(resolver, inner)?.darken(*factor)),
-        ColorExpr::Brighten(inner, amount) => {
-            Ok(resolve_expr(resolver, inner)?.brighten(*amount))
-        }
+        ColorExpr::Brighten(inner, amount) => Ok(resolve_expr(resolver, inner)?.brighten(*amount)),
         ColorExpr::Mix(color1, color2, factor) => {
             let rgb1 = resolve_expr(resolver, color1)?;
             let rgb2 = resolve_expr(resolver, color2)?;

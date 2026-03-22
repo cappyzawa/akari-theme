@@ -99,10 +99,7 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
     );
 
     // Cursor
-    dict.insert(
-        "CursorColor".to_string(),
-        color_data(palette.state.cursor)?,
-    );
+    dict.insert("CursorColor".to_string(), color_data(palette.state.cursor)?);
     dict.insert(
         "CursorTextColor".to_string(),
         color_data(palette.state.cursor_text)?,
