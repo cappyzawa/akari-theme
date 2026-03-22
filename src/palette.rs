@@ -4,7 +4,15 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
 
-// Raw types for TOML deserialization (before reference resolution)
+/// Resolve all fields of a raw struct by calling `resolve_expr` on each `ColorExpr` field.
+macro_rules! resolve_fields {
+    ($resolver:expr, $raw:expr => $Target:ident { $($field:ident),+ $(,)? }) => {
+        Ok($Target {
+            $( $field: resolve_expr($resolver, &$raw.$field)? ),+
+        })
+    };
+}
+
 #[derive(Debug, Deserialize)]
 struct RawPalette {
     name: String,
@@ -28,15 +36,8 @@ struct RawLayers {
 }
 
 impl RawLayers {
-    fn resolve(&self, resolver: &Resolver) -> Result<Layers, Error> {
-        Ok(Layers {
-            base: resolve_expr(resolver, &self.base)?,
-            surface: resolve_expr(resolver, &self.surface)?,
-            sunken: resolve_expr(resolver, &self.sunken)?,
-            raised: resolve_expr(resolver, &self.raised)?,
-            border: resolve_expr(resolver, &self.border)?,
-            inset: resolve_expr(resolver, &self.inset)?,
-        })
+    fn resolve(&self, resolver: &impl ResolveRef) -> Result<Layers, Error> {
+        resolve_fields!(resolver, self => Layers { base, surface, sunken, raised, border, inset })
     }
 }
 
@@ -62,25 +63,12 @@ struct RawState {
 }
 
 impl RawState {
-    fn resolve(&self, resolver: &Resolver) -> Result<State, Error> {
-        Ok(State {
-            selection_bg: resolve_expr(resolver, &self.selection_bg)?,
-            selection_fg: resolve_expr(resolver, &self.selection_fg)?,
-            match_bg: resolve_expr(resolver, &self.match_bg)?,
-            cursor: resolve_expr(resolver, &self.cursor)?,
-            cursor_text: resolve_expr(resolver, &self.cursor_text)?,
-            info: resolve_expr(resolver, &self.info)?,
-            hint: resolve_expr(resolver, &self.hint)?,
-            warning: resolve_expr(resolver, &self.warning)?,
-            error: resolve_expr(resolver, &self.error)?,
-            active_bg: resolve_expr(resolver, &self.active_bg)?,
-            diff_added: resolve_expr(resolver, &self.diff_added)?,
-            diff_added_bg: resolve_expr(resolver, &self.diff_added_bg)?,
-            diff_removed: resolve_expr(resolver, &self.diff_removed)?,
-            diff_removed_bg: resolve_expr(resolver, &self.diff_removed_bg)?,
-            diff_changed: resolve_expr(resolver, &self.diff_changed)?,
-            diff_moved: resolve_expr(resolver, &self.diff_moved)?,
-            conflict: resolve_expr(resolver, &self.conflict)?,
+    fn resolve(&self, resolver: &impl ResolveRef) -> Result<State, Error> {
+        resolve_fields!(resolver, self => State {
+            selection_bg, selection_fg, match_bg, cursor, cursor_text,
+            info, hint, warning, error, active_bg,
+            diff_added, diff_added_bg, diff_removed, diff_removed_bg,
+            diff_changed, diff_moved, conflict,
         })
     }
 }
@@ -100,15 +88,8 @@ struct RawAnsiColors {
 
 impl RawAnsiColors {
     fn resolve(&self, resolver: &impl ResolveRef) -> Result<Ansi, Error> {
-        Ok(Ansi {
-            black: resolve_expr(resolver, &self.black)?,
-            red: resolve_expr(resolver, &self.red)?,
-            green: resolve_expr(resolver, &self.green)?,
-            yellow: resolve_expr(resolver, &self.yellow)?,
-            blue: resolve_expr(resolver, &self.blue)?,
-            magenta: resolve_expr(resolver, &self.magenta)?,
-            cyan: resolve_expr(resolver, &self.cyan)?,
-            white: resolve_expr(resolver, &self.white)?,
+        resolve_fields!(resolver, self => Ansi {
+            black, red, green, yellow, blue, magenta, cyan, white,
         })
     }
 }
@@ -141,29 +122,15 @@ struct RawSemantic {
 }
 
 impl RawSemantic {
-    fn resolve(&self, resolver: &Resolver) -> Result<Semantic, Error> {
-        Ok(Semantic {
-            text: resolve_expr(resolver, &self.text)?,
-            comment: resolve_expr(resolver, &self.comment)?,
-            string: resolve_expr(resolver, &self.string)?,
-            keyword: resolve_expr(resolver, &self.keyword)?,
-            number: resolve_expr(resolver, &self.number)?,
-            constant: resolve_expr(resolver, &self.constant)?,
-            r#type: resolve_expr(resolver, &self.r#type)?,
-            function: resolve_expr(resolver, &self.function)?,
-            variable: resolve_expr(resolver, &self.variable)?,
-            success: resolve_expr(resolver, &self.success)?,
-            path: resolve_expr(resolver, &self.path)?,
-            r#macro: resolve_expr(resolver, &self.r#macro)?,
-            escape: resolve_expr(resolver, &self.escape)?,
-            regexp: resolve_expr(resolver, &self.regexp)?,
-            link: resolve_expr(resolver, &self.link)?,
-            directory: resolve_expr(resolver, &self.directory)?,
+    fn resolve(&self, resolver: &impl ResolveRef) -> Result<Semantic, Error> {
+        resolve_fields!(resolver, self => Semantic {
+            text, comment, string, keyword, number, constant,
+            r#type, function, variable, success, path,
+            r#macro, escape, regexp, link, directory,
         })
     }
 }
 
-// Resolved types (used for both deserialization and template rendering)
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Lantern {
     pub ember: String, // inner heat — flame, fuel, origin of light
@@ -248,13 +215,6 @@ pub struct Ansi {
     pub magenta: String,
     pub cyan: String,
     pub white: String,
-}
-
-impl Ansi {
-    /// Convert to a map for use in Resolver
-    fn to_map(&self) -> BTreeMap<&'static str, String> {
-        self.into_iter().map(|(k, v)| (k, v.to_string())).collect()
-    }
 }
 
 impl<'a> IntoIterator for &'a Ansi {
@@ -394,37 +354,33 @@ fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
     })
 }
 
-/// Parse unary function arguments: "colors.lantern, 0.1" -> (ColorExpr, f64)
-fn parse_unary_fn_args(args: &str) -> Result<(ColorExpr, f64), Error> {
-    let (color_str, factor_str) = args
+fn parse_factor(s: &str) -> Result<f64, Error> {
+    let s = s.trim();
+    s.parse::<f64>()
+        .map_err(|_| Error::InvalidColorExpr(format!("invalid factor: {s}")))
+}
+
+/// Split the last comma-separated token as an f64 factor, returning (rest, factor).
+fn split_trailing_factor<'a>(args: &'a str, expected: &str) -> Result<(&'a str, f64), Error> {
+    let (rest, factor_str) = args
         .rsplit_once(',')
-        .ok_or_else(|| Error::InvalidColorExpr(format!("expected 'color, factor': {args}")))?;
+        .ok_or_else(|| Error::InvalidColorExpr(format!("expected '{expected}': {args}")))?;
+    Ok((rest, parse_factor(factor_str)?))
+}
+
+fn parse_unary_fn_args(args: &str) -> Result<(ColorExpr, f64), Error> {
+    let (color_str, factor) = split_trailing_factor(args, "color, factor")?;
     let inner = parse_color_expr(color_str.trim())?;
-    let factor = factor_str
-        .trim()
-        .parse::<f64>()
-        .map_err(|_| Error::InvalidColorExpr(format!("invalid factor: {}", factor_str.trim())))?;
     Ok((inner, factor))
 }
 
-/// Parse mix function arguments: "color1, color2, 0.15" -> (ColorExpr, ColorExpr, f64)
 fn parse_mix_args(args: &str) -> Result<(ColorExpr, ColorExpr, f64), Error> {
-    // Split from right to get factor first
-    let (rest, factor_str) = args.rsplit_once(',').ok_or_else(|| {
-        Error::InvalidColorExpr(format!("expected 'color1, color2, factor': {args}"))
-    })?;
-    let factor = factor_str
-        .trim()
-        .parse::<f64>()
-        .map_err(|_| Error::InvalidColorExpr(format!("invalid factor: {}", factor_str.trim())))?;
-
-    // Split remaining to get two colors
-    let (color1_str, color2_str) = rest.rsplit_once(',').ok_or_else(|| {
+    let (rest, factor) = split_trailing_factor(args, "color1, color2, factor")?;
+    let (color1_str, color2_str): (&str, &str) = rest.rsplit_once(',').ok_or_else(|| {
         Error::InvalidColorExpr(format!("expected 'color1, color2, factor': {args}"))
     })?;
     let color1 = parse_color_expr(color1_str.trim())?;
     let color2 = parse_color_expr(color2_str.trim())?;
-
     Ok((color1, color2, factor))
 }
 
@@ -458,111 +414,15 @@ fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<String, 
     }
 }
 
+/// Resolver for color references. Supports staged resolution:
+/// ansi colors are optional during bootstrapping (ansi -> ansi.bright -> rest).
 struct Resolver<'a> {
-    colors: BTreeMap<&'a str, &'a str>,
-    base: BTreeMap<&'a str, &'a str>,
-    /// Resolved hex values for ansi (includes both ansi.* and ansi.bright.*)
-    ansi_map: BTreeMap<String, String>,
-    /// Resolved ansi colors (to avoid re-resolving)
-    resolved_ansi: Ansi,
-    /// Resolved ansi.bright colors (to avoid re-resolving)
-    resolved_ansi_bright: Ansi,
-}
-
-impl<'a> Resolver<'a> {
-    fn new(raw: &'a RawPalette) -> Result<Self, Error> {
-        // Flatten nested lantern structure into colors map
-        let colors: BTreeMap<&str, &str> = [
-            ("lantern.ember", raw.colors.lantern.ember.as_str()),
-            ("lantern.near", raw.colors.lantern.near.as_str()),
-            ("lantern.mid", raw.colors.lantern.mid.as_str()),
-            ("lantern.far", raw.colors.lantern.far.as_str()),
-            ("life", raw.colors.life.as_str()),
-            ("night", raw.colors.night.as_str()),
-            ("rain", raw.colors.rain.as_str()),
-            ("muted", raw.colors.muted.as_str()),
-        ]
-        .into_iter()
-        .collect();
-        let base: BTreeMap<&str, &str> = [
-            ("background", raw.base.background.as_str()),
-            ("foreground", raw.base.foreground.as_str()),
-        ]
-        .into_iter()
-        .collect();
-
-        // Resolve ansi first (it only depends on colors/base)
-        let partial = PartialResolver {
-            colors: &colors,
-            base: &base,
-            ansi: None,
-        };
-        let resolved_ansi = raw.ansi.base.resolve(&partial)?;
-
-        // Build ansi_map with keys like "red", "green", etc.
-        let mut ansi_map: BTreeMap<String, String> = resolved_ansi
-            .to_map()
-            .into_iter()
-            .map(|(k, v)| (k.to_string(), v))
-            .collect();
-
-        // Resolve ansi.bright (depends on ansi)
-        let partial_with_ansi = PartialResolver {
-            colors: &colors,
-            base: &base,
-            ansi: Some(&ansi_map),
-        };
-        let resolved_ansi_bright = raw.ansi.bright.resolve(&partial_with_ansi)?;
-
-        // Add ansi.bright.* to ansi_map with keys like "bright.red", "bright.green", etc.
-        for (k, v) in resolved_ansi_bright.to_map() {
-            ansi_map.insert(format!("bright.{k}"), v);
-        }
-
-        Ok(Self {
-            colors,
-            base,
-            ansi_map,
-            resolved_ansi,
-            resolved_ansi_bright,
-        })
-    }
-}
-
-impl ResolveRef for Resolver<'_> {
-    fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
-        let ref_str = || format!("{}.{key}", section.as_str());
-        match section {
-            Section::Colors => self
-                .colors
-                .get(key)
-                .copied()
-                .map(str::to_string)
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::Base => self
-                .base
-                .get(key)
-                .copied()
-                .map(str::to_string)
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::Ansi => self
-                .ansi_map
-                .get(key)
-                .cloned()
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-        }
-    }
-}
-
-/// Resolver for bootstrapping ansi/ansi.bright resolution.
-/// Only colors, base, and optionally ansi are available.
-struct PartialResolver<'a> {
     colors: &'a BTreeMap<&'a str, &'a str>,
     base: &'a BTreeMap<&'a str, &'a str>,
     ansi: Option<&'a BTreeMap<String, String>>,
 }
 
-impl ResolveRef for PartialResolver<'_> {
+impl ResolveRef for Resolver<'_> {
     fn resolve_ref(&self, section: Section, key: &str) -> Result<String, Error> {
         let ref_str = || format!("{}.{key}", section.as_str());
         match section {
@@ -588,7 +448,55 @@ impl ResolveRef for PartialResolver<'_> {
 
 impl RawPalette {
     fn resolve(&self, variant: Variant) -> Result<Palette, Error> {
-        let resolver = Resolver::new(self)?;
+        let colors: BTreeMap<&str, &str> = [
+            ("lantern.ember", self.colors.lantern.ember.as_str()),
+            ("lantern.near", self.colors.lantern.near.as_str()),
+            ("lantern.mid", self.colors.lantern.mid.as_str()),
+            ("lantern.far", self.colors.lantern.far.as_str()),
+            ("life", self.colors.life.as_str()),
+            ("night", self.colors.night.as_str()),
+            ("rain", self.colors.rain.as_str()),
+            ("muted", self.colors.muted.as_str()),
+        ]
+        .into_iter()
+        .collect();
+        let base: BTreeMap<&str, &str> = [
+            ("background", self.base.background.as_str()),
+            ("foreground", self.base.foreground.as_str()),
+        ]
+        .into_iter()
+        .collect();
+
+        // Stage 1: resolve ansi base (depends only on colors/base)
+        let resolver = Resolver {
+            colors: &colors,
+            base: &base,
+            ansi: None,
+        };
+        let resolved_ansi = self.ansi.base.resolve(&resolver)?;
+
+        // Stage 2: resolve ansi.bright (depends on ansi base)
+        let mut ansi_map: BTreeMap<String, String> = (&resolved_ansi)
+            .into_iter()
+            .map(|(k, v)| (k.to_string(), v.to_string()))
+            .collect();
+        let resolver = Resolver {
+            colors: &colors,
+            base: &base,
+            ansi: Some(&ansi_map),
+        };
+        let resolved_ansi_bright = self.ansi.bright.resolve(&resolver)?;
+
+        // Stage 3: resolve remaining sections (depends on all ansi)
+        for (k, v) in &resolved_ansi_bright {
+            ansi_map.insert(format!("bright.{k}"), v.to_string());
+        }
+        let resolver = Resolver {
+            colors: &colors,
+            base: &base,
+            ansi: Some(&ansi_map),
+        };
+
         Ok(Palette {
             variant,
             name: self.name.clone(),
@@ -598,8 +506,8 @@ impl RawPalette {
             layers: self.layers.resolve(&resolver)?,
             state: self.state.resolve(&resolver)?,
             semantic: self.semantic.resolve(&resolver)?,
-            ansi: resolver.resolved_ansi,
-            ansi_bright: resolver.resolved_ansi_bright,
+            ansi: resolved_ansi,
+            ansi_bright: resolved_ansi_bright,
         })
     }
 }
