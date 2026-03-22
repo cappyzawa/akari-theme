@@ -52,8 +52,23 @@ jobs:
         repository: cappyzawa/helix
         token: ${{ steps.app-token.outputs.token }}
         ref: master
-        fetch-depth: 1
+        fetch-depth: 0
         path: helix-fork
+
+    - name: Switch to update branch
+      id: branch
+      working-directory: helix-fork
+      run: |
+        git config user.name "akari-theme[bot]"
+        git config user.email "akari-theme[bot]@users.noreply.github.com"
+        if git ls-remote --exit-code --heads origin "${BRANCH}" > /dev/null 2>&1; then
+          echo "exists=true" >> "$GITHUB_OUTPUT"
+          git fetch origin "${BRANCH}"
+          git checkout "${BRANCH}"
+        else
+          echo "exists=false" >> "$GITHUB_OUTPUT"
+          git checkout -b "${BRANCH}"
+        fi
 
     - name: Copy theme files
       run: |
@@ -71,6 +86,15 @@ jobs:
         else
           echo "changed=true" >> "$GITHUB_OUTPUT"
         fi
+
+    - name: Commit and push
+      if: steps.changes.outputs.changed == 'true'
+      working-directory: helix-fork
+      env:
+        VERSION: ${{ steps.version.outputs.version }}
+      run: |
+        git commit -m "Update akari theme to ${VERSION}"
+        git push origin "${BRANCH}"
 
     - name: Check for existing PR
       if: steps.changes.outputs.changed == 'true'
@@ -91,19 +115,6 @@ jobs:
         else
           echo "exists=false" >> "$GITHUB_OUTPUT"
         fi
-
-    - name: Commit and push
-      if: steps.changes.outputs.changed == 'true'
-      working-directory: helix-fork
-      env:
-        VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        git config user.name "akari-theme[bot]"
-        git config user.email "akari-theme[bot]@users.noreply.github.com"
-        git push origin --delete "${BRANCH}" 2>/dev/null || true
-        git checkout -b "${BRANCH}"
-        git commit -m "Update akari theme to ${VERSION}"
-        git push origin "${BRANCH}"
 
     - name: Update existing pull request body
       if: steps.changes.outputs.changed == 'true' && steps.existing-pr.outputs.exists == 'true'
