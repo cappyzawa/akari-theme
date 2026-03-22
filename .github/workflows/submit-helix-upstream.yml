@@ -86,6 +86,7 @@ jobs:
           --jq '.[0].url // empty')
         if [[ -n "${PR_URL}" ]]; then
           echo "exists=true" >> "$GITHUB_OUTPUT"
+          echo "url=${PR_URL}" >> "$GITHUB_OUTPUT"
           echo "Existing PR: ${PR_URL}"
         else
           echo "exists=false" >> "$GITHUB_OUTPUT"
@@ -102,6 +103,26 @@ jobs:
         git checkout -b "${BRANCH}"
         git commit -m "Update akari theme to ${VERSION}"
         git push --force-with-lease origin "${BRANCH}"
+
+    - name: Update existing pull request body
+      if: steps.changes.outputs.changed == 'true' && steps.existing-pr.outputs.exists == 'true'
+      env:
+        GH_TOKEN: ${{ secrets.AKARI_PAT }}
+        VERSION: ${{ steps.version.outputs.version }}
+        PR_URL: ${{ steps.existing-pr.outputs.url }}
+        REF_TYPE: ${{ github.ref_type }}
+      run: |
+        BODY="Update akari-night and akari-dawn themes to ${VERSION}."
+        if [[ "${REF_TYPE}" == "tag" ]]; then
+          BODY="${BODY}
+
+        Upstream: https://github.com/cappyzawa/akari-theme/releases/tag/${VERSION}"
+        fi
+        BODY="${BODY}
+
+        Repository: https://github.com/cappyzawa/akari-theme"
+
+        gh pr edit "${PR_URL}" --body "${BODY}"
 
     - name: Create pull request
       if: steps.changes.outputs.changed == 'true' && steps.existing-pr.outputs.exists == 'false'
