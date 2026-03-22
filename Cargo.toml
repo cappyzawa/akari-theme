@@ -35,4 +35,5 @@ walkdir = { version = "2", optional = true }
 clap = { version = "4.5.53", features = ["derive"], optional = true }
 
 [dev-dependencies]
+serde_json = "1"
 tempfile = "3"
