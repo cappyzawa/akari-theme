@@ -9,7 +9,7 @@ function M.setup(p, config)
     ["@variable.builtin"] = { fg = p.bright_red, italic = true },
     ["@variable.parameter"] = { fg = p.foreground, italic = true },
     ["@variable.parameter.builtin"] = { fg = p.foreground, italic = true },
-    ["@variable.member"] = { fg = p.foreground },
+    ["@variable.member"] = { fg = p.member },
 
     -- Constants
     ["@constant"] = { fg = p.constant },
@@ -54,7 +54,7 @@ function M.setup(p, config)
     ["@attribute.builtin"] = { fg = p.amber },
 
     -- Properties
-    ["@property"] = { fg = p.foreground },
+    ["@property"] = { fg = p.member },
 
     -- Functions
     ["@function"] = vim.tbl_extend("force", { fg = p.magenta }, config.functionStyle),

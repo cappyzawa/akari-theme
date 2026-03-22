@@ -171,7 +171,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ base.foreground }}</string>
+				<string>{{ semantic.member }}</string>
 			</dict>
 		</dict>
 

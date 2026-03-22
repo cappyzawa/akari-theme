@@ -600,7 +600,7 @@
         "meta.object-literal.key"
       ],
       "settings": {
-        "foreground": "{{ base.foreground }}"
+        "foreground": "{{ semantic.member }}"
       }
     },
     {

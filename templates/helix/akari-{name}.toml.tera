@@ -167,8 +167,8 @@
 "variable.builtin" = { fg = "bright-red" }
 "variable.parameter" = "foreground"
 "variable.other" = "foreground"
-"variable.other.member" = "foreground"
-"variable.other.member.private" = "foreground"
+"variable.other.member" = "member"
+"variable.other.member.private" = "member"
 
 "label" = { fg = "amber" }
 
@@ -252,6 +252,7 @@ macro = "{{ semantic.macro }}"
 escape = "{{ semantic.escape }}"
 regexp = "{{ semantic.regexp }}"
 link = "{{ semantic.link }}"
+member = "{{ semantic.member }}"
 directory = "{{ semantic.directory }}"
 sunken = "{{ layers.sunken }}"
 match-bg = "{{ state.match_bg }}"

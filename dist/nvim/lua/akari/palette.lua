@@ -53,6 +53,7 @@ M.night = {
   escape = "#B4A7C0",
   regexp = "#A1C492",
   link = "#A7B5C1",
+  member = "#7A8FA2",
 
   -- Diagnostic
   error = "#D25046",
@@ -119,6 +120,7 @@ M.dawn = {
   escape = "#543F54",
   regexp = "#20301A",
   link = "#131A20",
+  member = "#304050",
 
   -- Diagnostic
   error = "#6A2828",

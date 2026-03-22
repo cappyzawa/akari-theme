@@ -53,6 +53,7 @@ M.night = {
   escape = "{{ night_semantic.escape }}",
   regexp = "{{ night_semantic.regexp }}",
   link = "{{ night_semantic.link }}",
+  member = "{{ night_semantic.member }}",
 
   -- Diagnostic
   error = "{{ night_state.error }}",
@@ -119,6 +120,7 @@ M.dawn = {
   escape = "{{ dawn_semantic.escape }}",
   regexp = "{{ dawn_semantic.regexp }}",
   link = "{{ dawn_semantic.link }}",
+  member = "{{ dawn_semantic.member }}",
 
   -- Diagnostic
   error = "{{ dawn_state.error }}",

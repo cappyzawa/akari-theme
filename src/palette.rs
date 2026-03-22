@@ -112,6 +112,7 @@ struct RawSemantic {
     r#type: ColorExpr,
     function: ColorExpr,
     variable: ColorExpr,
+    member: ColorExpr,
     success: ColorExpr,
     path: ColorExpr,
     r#macro: ColorExpr,
@@ -125,7 +126,7 @@ impl RawSemantic {
     fn resolve(&self, resolver: &impl ResolveRef) -> Result<Semantic, Error> {
         resolve_fields!(resolver, self => Semantic {
             text, comment, string, keyword, number, constant,
-            r#type, function, variable, success, path,
+            r#type, function, variable, member, success, path,
             r#macro, escape, regexp, link, directory,
         })
     }
@@ -196,6 +197,7 @@ pub struct Semantic {
     pub r#type: Rgb,
     pub function: Rgb,
     pub variable: Rgb,
+    pub member: Rgb,
     pub success: Rgb,
     pub path: Rgb,
     pub r#macro: Rgb,
@@ -601,6 +603,8 @@ mod tests {
         assert_eq!(palette.semantic.keyword, hex("#E26A3B"));
         // semantic.string = "colors.life" -> "#7FAF6A"
         assert_eq!(palette.semantic.string, hex("#7FAF6A"));
+        // semantic.member = "colors.night" -> "#7A8FA2"
+        assert_eq!(palette.semantic.member, hex("#7A8FA2"));
     }
 
     #[test]
@@ -763,6 +767,7 @@ constant = "colors.lantern.far"
 type = "colors.lantern.far"
 function = "colors.lantern.mid"
 variable = "base.foreground"
+member = "colors.night"
 success = "colors.life"
 path = "ansi.green"
 macro = "ansi.bright.magenta"
