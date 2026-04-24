@@ -32,8 +32,11 @@ set-option -g status-justify left
 set-option -g status-left-length 100
 
 # Status right
+# Leave status-right unset so the user can compose it (e.g. tmux-continuum's
+# "#{continuum_status}", battery indicators, etc.). Setting it to an empty
+# string here would clobber any #{continuum_status} marker that tmux-continuum
+# appends after the theme is sourced, silently disabling its auto-save trigger.
 set-option -g status-right-length 100
-set-option -g status-right ""
 
 # Window status
 set-option -g window-status-format "#[fg=$AKARI_COMMENT] #I:#W "
