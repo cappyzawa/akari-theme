@@ -53,6 +53,7 @@ warm, and readable for long sessions.
 | [gh-dash](dist/gh-dash/README.md) | CLI | Copy theme to `~/.config/gh-dash/config.yml` |
 | [Chrome](dist/chrome/README.md) | Browser | Load unpacked extension |
 | [Slack](dist/slack/README.md) | App | Import theme string in Preferences |
+| [Codex](dist/codex/README.md) | App | Import theme string in Settings → Appearance |
 
 ## Nix (Home Manager)
 
