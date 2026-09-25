@@ -3,7 +3,6 @@ mod color;
 mod expr;
 #[cfg(feature = "generator")]
 mod generator;
-mod palette;
 #[cfg(feature = "generator")]
 pub mod terminal;
 pub mod theme;
@@ -11,7 +10,6 @@ pub mod theme;
 pub use color::Rgb;
 #[cfg(feature = "generator")]
 pub use generator::Generator;
-pub use palette::Palette;
 
 use std::path::PathBuf;
 use theme::Id;
@@ -20,8 +18,6 @@ use theme::Id;
 pub enum Error {
     #[error("io error: {0}")]
     Io(#[from] std::io::Error),
-    #[error("invalid palette: {0}")]
-    ParsePalette(#[from] toml::de::Error),
     #[error("unresolved reference: {0}")]
     UnresolvedRef(String),
     #[cfg(feature = "generator")]
@@ -36,9 +32,6 @@ pub enum Error {
     #[cfg(feature = "generator")]
     #[error("non-UTF-8 path: {0}")]
     InvalidPath(PathBuf),
-    #[cfg(feature = "generator")]
-    #[error("project root not found (expected palette/ and Cargo.toml)")]
-    ProjectRootNotFound,
     #[cfg(feature = "generator")]
     #[error("plist error: {0}")]
     Plist(#[from] plist::Error),
@@ -78,9 +71,6 @@ pub enum Error {
     #[error("roles.series must have exactly 8 entries, found {0}")]
     SeriesLength(usize),
     #[cfg(feature = "generator")]
-    #[error("tool {0} is generated from a theme directory; use `generate-theme`")]
-    ToolMigrated(String),
-    #[cfg(feature = "generator")]
     #[error("tool {0} has no theme-based generator")]
     ToolNotThemed(String),
     #[cfg(feature = "generator")]
@@ -101,40 +91,6 @@ pub enum Error {
         path: PathBuf,
     },
 }
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
-pub enum Variant {
-    Night,
-    Dawn,
-}
-
-impl Variant {
-    #[must_use]
-    pub const fn name(self) -> &'static str {
-        match self {
-            Self::Night => "night",
-            Self::Dawn => "dawn",
-        }
-    }
-
-    #[must_use]
-    pub const fn title(self) -> &'static str {
-        match self {
-            Self::Night => "Night",
-            Self::Dawn => "Dawn",
-        }
-    }
-
-    #[must_use]
-    pub const fn palette_filename(self) -> &'static str {
-        match self {
-            Self::Night => "akari-night.toml",
-            Self::Dawn => "akari-dawn.toml",
-        }
-    }
-}
-
-pub const VARIANTS: [Variant; 2] = [Variant::Night, Variant::Dawn];
 
 #[cfg(feature = "generator")]
 /// Content of an artifact
@@ -200,21 +156,6 @@ impl Artifact {
             rel_path: rel_path.into(),
             content: ArtifactContent::Copy(src.into()),
             executable: false,
-        }
-    }
-}
-
-#[cfg(feature = "generator")]
-pub fn find_project_root() -> Result<PathBuf, Error> {
-    let mut current = std::env::current_dir()?;
-
-    loop {
-        if current.join("palette").is_dir() && current.join("Cargo.toml").is_file() {
-            return Ok(current);
-        }
-
-        if !current.pop() {
-            return Err(Error::ProjectRootNotFound);
         }
     }
 }

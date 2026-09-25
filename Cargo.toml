@@ -17,6 +17,11 @@ name = "akari-gen"
 path = "src/main.rs"
 required-features = ["generator"]
 
+[[test]]
+name = "theme_generator"
+path = "tests/theme_generator.rs"
+required-features = ["generator"]
+
 [features]
 default = []
 generator = ["dep:tera", "dep:walkdir", "dep:plist", "dep:clap"]

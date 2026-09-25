@@ -300,7 +300,7 @@ mod tests {
 
     #[test]
     fn parse_color_expr_rejects_non_referenceable_sections() {
-        // layers, state, semantic, roles exist in palette/theme but cannot be referenced
+        // layers, state, semantic, roles exist in the theme but cannot be referenced
         let err = parse_color_expr("layers.base").unwrap_err();
         assert!(
             matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))

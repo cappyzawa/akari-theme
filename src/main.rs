@@ -1,5 +1,5 @@
 use akari_theme::theme::Theme;
-use akari_theme::{Artifact, ArtifactContent, Generator, Palette, Variant, find_project_root};
+use akari_theme::{Artifact, ArtifactContent, Generator};
 use clap::{Parser, Subcommand};
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -7,7 +7,7 @@ use std::process::ExitCode;
 
 #[derive(Parser)]
 #[command(name = "akari-gen")]
-#[command(about = "Generate akari theme files from palette definitions")]
+#[command(about = "Generate theme files from a theme directory")]
 struct Cli {
     #[command(subcommand)]
     command: Command,
@@ -15,16 +15,6 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Generate theme files from the legacy palette pair
-    Generate {
-        /// Target tool (or 'all' to generate for all tools)
-        #[arg(long)]
-        tool: String,
-
-        /// Output directory (defaults to dist/)
-        #[arg(long)]
-        out_dir: Option<PathBuf>,
-    },
     /// Generate theme files from a `Theme` directory
     GenerateTheme {
         /// Directory containing theme.toml and its variant files
@@ -89,43 +79,16 @@ fn run() -> Result<(), akari_theme::Error> {
     let cli = Cli::parse();
 
     match cli.command {
-        Command::Generate { tool, out_dir } => {
-            let root = find_project_root()?;
-            let out_root = out_dir.unwrap_or_else(|| root.join("dist"));
-
-            // Load palettes
-            let palette_dir = root.join("palette");
-            let night = Palette::from_path(
-                palette_dir.join(Variant::Night.palette_filename()),
-                Variant::Night,
-            )?;
-            let dawn = Palette::from_path(
-                palette_dir.join(Variant::Dawn.palette_filename()),
-                Variant::Dawn,
-            )?;
-
-            let generator = Generator::new(root.join("templates"))?;
-
-            // Get tools to generate
-            let tools: Vec<String> = if tool == "all" {
-                generator.available_tools()?
-            } else {
-                vec![tool]
-            };
-
-            for tool_name in &tools {
-                let artifacts = generator.generate_tool(tool_name, &night, &dawn)?;
-                write_artifacts(artifacts, &out_root)?;
-            }
-        }
         Command::GenerateTheme {
             theme_dir,
             tool,
             out_dir,
         } => {
-            let root = find_project_root()?;
             let theme = Theme::load(&theme_dir)?;
-            let generator = Generator::new(root.join("templates"))?;
+            // Templates are not bundled into the crate; the binary reads
+            // them from this source tree at CARGO_MANIFEST_DIR.
+            let templates_dir = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/templates"));
+            let generator = Generator::new(templates_dir)?;
 
             let tools: Vec<String> = if tool == "all" {
                 generator.available_theme_tools()
