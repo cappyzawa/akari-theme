@@ -87,18 +87,18 @@ fn run() -> Result<(), katazome::Error> {
         } => {
             let theme = Theme::load(&theme_dir)?;
             let generator = match templates_dir {
-                Some(dir) => Generator::new(dir)?,
+                Some(dir) => Generator::from_dir(dir)?,
                 None => Generator::embedded()?,
             };
 
-            let tools: Vec<String> = if tool == "all" {
-                generator.available_theme_tools()
+            let tools: Vec<&str> = if tool == "all" {
+                Generator::available_tools().to_vec()
             } else {
-                vec![tool]
+                vec![tool.as_str()]
             };
 
-            for tool_name in &tools {
-                let artifacts = generator.generate_theme_tool(tool_name, &theme, &theme_dir)?;
+            for tool_name in tools.iter().copied() {
+                let artifacts = generator.generate(tool_name, &theme, &theme_dir)?;
                 write_artifacts(artifacts, &out_dir)?;
             }
         }

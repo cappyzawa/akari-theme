@@ -20,7 +20,7 @@ A template whose output name has no `{variant}` renders once per theme with:
 Keys an adapter requires in `[adapters.<tool>]` are listed in `ADAPTER_KEYS` (`src/generator.rs`); a missing one fails generation for that tool only.
 Never read `colors`; the context does not carry it.
 
-`Generator::generate_theme_tool` takes the theme directory (the directory `Theme::load` read) alongside the tool and the `Theme`, so it can resolve `THEME_ASSETS` entries below.
+`Generator::generate` takes the theme directory (the directory `Theme::load` read) alongside the tool and the `Theme`, so it can resolve `THEME_ASSETS` entries below.
 
 ## Per-Variant Output
 

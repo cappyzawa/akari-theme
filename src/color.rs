@@ -54,8 +54,9 @@ impl<'de> Deserialize<'de> for Rgb {
 }
 
 impl Rgb {
+    #[cfg(feature = "generator")]
     #[must_use]
-    pub const fn as_floats(self) -> (f64, f64, f64) {
+    pub(crate) const fn as_floats(self) -> (f64, f64, f64) {
         (
             self.r as f64 / 255.0,
             self.g as f64 / 255.0,
@@ -63,41 +64,18 @@ impl Rgb {
         )
     }
 
-    /// Returns [r, g, b] as f32 values in 0.0-1.0 range.
-    ///
-    /// Useful for GPU APIs like wgpu that expect f32 colors.
+    #[cfg(feature = "generator")]
     #[must_use]
-    pub const fn to_array(self) -> [f32; 3] {
-        [
-            self.r as f32 / 255.0,
-            self.g as f32 / 255.0,
-            self.b as f32 / 255.0,
-        ]
-    }
-
-    /// Returns [r, g, b, a] as f32 values with alpha = 1.0.
-    ///
-    /// Useful for GPU APIs like wgpu that expect f32 RGBA colors.
-    #[must_use]
-    pub const fn to_array_with_alpha(self) -> [f32; 4] {
-        [
-            self.r as f32 / 255.0,
-            self.g as f32 / 255.0,
-            self.b as f32 / 255.0,
-            1.0,
-        ]
-    }
-
-    #[must_use]
-    pub fn to_array_string(self) -> String {
+    pub(crate) fn to_array_string(self) -> String {
         format!("[{}, {}, {}]", self.r, self.g, self.b)
     }
 
     /// Returns RGB as space-separated string "r g b".
     ///
     /// Useful for Zellij theme format.
+    #[cfg(feature = "generator")]
     #[must_use]
-    pub fn to_space_separated(self) -> String {
+    pub(crate) fn to_space_separated(self) -> String {
         format!("{} {} {}", self.r, self.g, self.b)
     }
 
@@ -106,7 +84,7 @@ impl Rgb {
     /// `factor` of 0.0 returns the original color, 1.0 returns white.
     /// The lightness is increased proportionally to the remaining headroom.
     #[must_use]
-    pub fn lighten(self, factor: f64) -> Self {
+    pub(crate) fn lighten(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         let (h, s, l) = self.to_hsl();
         let new_l = l + (1.0 - l) * factor;
@@ -118,7 +96,7 @@ impl Rgb {
     /// `factor` of 0.0 returns the original color, 1.0 returns black.
     /// The lightness is decreased proportionally to the current lightness.
     #[must_use]
-    pub fn darken(self, factor: f64) -> Self {
+    pub(crate) fn darken(self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         let (h, s, l) = self.to_hsl();
         let new_l = l * (1.0 - factor);
@@ -130,7 +108,7 @@ impl Rgb {
     /// Positive values brighten, negative values dim.
     /// The amount is added directly to lightness (0.0 to 1.0 scale).
     #[must_use]
-    pub fn brighten(self, amount: f64) -> Self {
+    pub(crate) fn brighten(self, amount: f64) -> Self {
         let (h, s, l) = self.to_hsl();
         let new_l = (l + amount).clamp(0.0, 1.0);
         Self::from_hsl(h, s, new_l)
@@ -140,7 +118,7 @@ impl Rgb {
     ///
     /// `factor` of 0.0 returns self, 1.0 returns other.
     #[must_use]
-    pub fn mix(self, other: Self, factor: f64) -> Self {
+    pub(crate) fn mix(self, other: Self, factor: f64) -> Self {
         let factor = factor.clamp(0.0, 1.0);
         Self {
             r: Self::blend_channel(self.r, other.r, factor),
@@ -156,7 +134,9 @@ impl Rgb {
     /// - saturation: 0.0 to 1.0
     /// - lightness: 0.0 to 1.0
     fn to_hsl(self) -> (f64, f64, f64) {
-        let (r, g, b) = self.as_floats();
+        let r = self.r as f64 / 255.0;
+        let g = self.g as f64 / 255.0;
+        let b = self.b as f64 / 255.0;
 
         let max = r.max(g).max(b);
         let min = r.min(g).min(b);
@@ -239,6 +219,7 @@ impl Rgb {
 mod tests {
     use super::*;
 
+    #[cfg(feature = "generator")]
     fn approx_eq(a: f64, b: f64) -> bool {
         (a - b).abs() < 0.001
     }
@@ -312,6 +293,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "generator")]
     fn as_floats_black() {
         let rgb = Rgb { r: 0, g: 0, b: 0 };
         let (r, g, b) = rgb.as_floats();
@@ -321,6 +303,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "generator")]
     fn as_floats_white() {
         let rgb = Rgb {
             r: 255,
@@ -334,6 +317,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(feature = "generator")]
     fn to_array_string_format() {
         let rgb = Rgb {
             r: 226,
@@ -589,56 +573,6 @@ mod tests {
                 b: 150
             }
         );
-    }
-
-    fn approx_eq_f32(a: f32, b: f32) -> bool {
-        (a - b).abs() < 0.001
-    }
-
-    #[test]
-    fn to_array_black() {
-        let rgb = Rgb { r: 0, g: 0, b: 0 };
-        let arr = rgb.to_array();
-        assert!(approx_eq_f32(arr[0], 0.0));
-        assert!(approx_eq_f32(arr[1], 0.0));
-        assert!(approx_eq_f32(arr[2], 0.0));
-    }
-
-    #[test]
-    fn to_array_white() {
-        let rgb = Rgb {
-            r: 255,
-            g: 255,
-            b: 255,
-        };
-        let arr = rgb.to_array();
-        assert!(approx_eq_f32(arr[0], 1.0));
-        assert!(approx_eq_f32(arr[1], 1.0));
-        assert!(approx_eq_f32(arr[2], 1.0));
-    }
-
-    #[test]
-    fn to_array_with_alpha_black() {
-        let rgb = Rgb { r: 0, g: 0, b: 0 };
-        let arr = rgb.to_array_with_alpha();
-        assert!(approx_eq_f32(arr[0], 0.0));
-        assert!(approx_eq_f32(arr[1], 0.0));
-        assert!(approx_eq_f32(arr[2], 0.0));
-        assert!(approx_eq_f32(arr[3], 1.0));
-    }
-
-    #[test]
-    fn to_array_with_alpha_white() {
-        let rgb = Rgb {
-            r: 255,
-            g: 255,
-            b: 255,
-        };
-        let arr = rgb.to_array_with_alpha();
-        assert!(approx_eq_f32(arr[0], 1.0));
-        assert!(approx_eq_f32(arr[1], 1.0));
-        assert!(approx_eq_f32(arr[2], 1.0));
-        assert!(approx_eq_f32(arr[3], 1.0));
     }
 
     #[test]
