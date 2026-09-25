@@ -3,16 +3,16 @@
 ## Build & Verify
 
 ```sh
-cargo clippy --features generator -- -D warnings
+cargo clippy --features generator --all-targets -- -D warnings
 cargo fmt -- --check
 cargo test --features generator
+cargo test
 ```
 
-## Verification (after palette/color changes)
+## Verification (after theme, color or template changes)
 
 ```sh
-cargo run --features generator -- generate --tool all
-cargo run --features generator -- generate-theme --theme-dir themes/akari --tool all --out-dir dist
+cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
 git diff --exit-code
 ```
 

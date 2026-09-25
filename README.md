@@ -108,27 +108,19 @@ Each tool inherits the global `akari.enable` and `akari.variant` settings by def
 
 ## Palette
 
-Color definitions are the single source of truth in TOML format:
+Color definitions are the single source of truth, as a theme directory:
 
-- [Akari Night (Dark)](palette/akari-night.toml)
-- [Akari Dawn (Light)](palette/akari-dawn.toml)
+- [Akari](themes/akari) — `theme.toml`, [`night.toml`](themes/akari/night.toml), [`dawn.toml`](themes/akari/dawn.toml)
+
+All tools in [Supported Tools](#supported-tools) are generated from this directory with:
+
+```sh
+cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
+```
 
 ## Crate Usage
 
-Use akari-theme as a library to access palette colors in your Rust projects:
-
-```toml
-# Palette only (minimal dependencies: serde, toml, thiserror)
-akari-theme = "1.9"
-
-# With generator functionality
-akari-theme = { version = "1.9", features = ["generator"] }
-```
-
-```rust
-use akari_theme::{Palette, Rgb};
-
-let night = Palette::night();
-let bg: Rgb = night.base.background.parse().unwrap();
-let color = bg.to_array();  // [f32; 3] for wgpu
-```
+The theme engine, `katazome`, is the reusable Rust crate behind the `generate` CLI: theme
+loading, color expression resolution and template rendering. It still lives in this
+repository until it is extracted into its own repository. The old `akari_theme::Palette`
+API is gone; there is no published crate to depend on yet.
