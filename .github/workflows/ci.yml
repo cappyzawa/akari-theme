@@ -24,10 +24,10 @@ jobs:
       run: cargo fmt -- --check
 
     - name: Run tests
-      run: cargo test --features generator
-
-    - name: Run tests without features
       run: cargo test
+
+    - name: Run tests without default features
+      run: cargo test --no-default-features
 
   generate:
     needs: test

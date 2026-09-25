@@ -29,7 +29,7 @@ path = "tests/cli.rs"
 required-features = ["generator"]
 
 [features]
-default = []
+default = ["generator"]
 generator = ["dep:tera", "dep:walkdir", "dep:plist", "dep:clap"]
 
 [dependencies]
