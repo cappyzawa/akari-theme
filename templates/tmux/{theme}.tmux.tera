@@ -1,0 +1,73 @@
+{%- set first = variants.0.variant.id -%}
+#!/usr/bin/env bash
+# {{ theme.name }} tmux theme - TPM plugin entry point
+
+CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+get_tmux_option() {
+  local option=$1
+  local default_value=$2
+  local option_value
+  option_value=$(tmux show-option -gqv "$option")
+  echo "${option_value:-$default_value}"
+}
+
+# Color palette per variant (bash 3.2 compatible, no associative arrays)
+{% for v in variants %}# Base
+{{ v.variant.id | upper }}_BG="{{ v.base.background }}"
+{{ v.variant.id | upper }}_FG="{{ v.base.foreground }}"
+# UI
+{{ v.variant.id | upper }}_SURFACE="{{ v.roles.ui.surface }}"
+{{ v.variant.id | upper }}_ACCENT="{{ v.roles.ui.accent }}"
+
+{% endfor %}# Default icons (nerdfont)
+DEFAULT_ICON_NORMAL="󰛩"
+DEFAULT_ICON_PREFIX="󰛨"
+
+setup_status_left() {
+  local variant=$1
+  local icon_normal icon_prefix bg fg surface accent
+
+  icon_normal=$(get_tmux_option "@{{ theme.id }}_icon_normal" "$DEFAULT_ICON_NORMAL")
+  icon_prefix=$(get_tmux_option "@{{ theme.id }}_icon_prefix" "$DEFAULT_ICON_PREFIX")
+{% if variants | length == 1 %}
+  bg="${{ first | upper }}_BG"
+  fg="${{ first | upper }}_FG"
+  surface="${{ first | upper }}_SURFACE"
+  accent="${{ first | upper }}_ACCENT"
+{% else %}
+  if [[ "$variant" == "{{ variants.1.variant.id }}" ]]; then
+    bg="${{ variants.1.variant.id | upper }}_BG"
+    fg="${{ variants.1.variant.id | upper }}_FG"
+    surface="${{ variants.1.variant.id | upper }}_SURFACE"
+    accent="${{ variants.1.variant.id | upper }}_ACCENT"
+{% for v in variants | slice(start=2) %}  elif [[ "$variant" == "{{ v.variant.id }}" ]]; then
+    bg="${{ v.variant.id | upper }}_BG"
+    fg="${{ v.variant.id | upper }}_FG"
+    surface="${{ v.variant.id | upper }}_SURFACE"
+    accent="${{ v.variant.id | upper }}_ACCENT"
+{% endfor %}  else
+    bg="${{ first | upper }}_BG"
+    fg="${{ first | upper }}_FG"
+    surface="${{ first | upper }}_SURFACE"
+    accent="${{ first | upper }}_ACCENT"
+  fi
+{% endif %}
+  # Icon changes on prefix, icon and session name have surface background
+  tmux set-option -g status-left "#[bg=${surface}#,fg=${accent}] #{?client_prefix,${icon_prefix},${icon_normal}} #[fg=${fg}#,bold]#S #[bg=${bg}#,nobold] "
+}
+
+main() {
+  local variant
+  variant=$(get_tmux_option "@{{ theme.id }}_variant" "{{ first }}")
+  case "$variant" in
+    {{ first }}{% for v in variants | slice(start=1) %} | {{ v.variant.id }}{% endfor %}) ;;
+    *) variant="{{ first }}" ;;
+  esac
+
+  tmux source-file "$CURRENT_DIR/{{ theme.id }}-${variant}.conf"
+
+  setup_status_left "$variant"
+}
+
+main

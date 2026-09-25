@@ -1,20 +1,20 @@
-# Akari Dawn — zsh-syntax-highlighting configuration
-# A terminal color palette inspired by Japanese alleys lit by round lanterns.
+# {{ theme.name }} {{ variant.name }} — zsh-syntax-highlighting configuration
+# {{ theme.description }}
 
 # Declare the associative array
 typeset -A ZSH_HIGHLIGHT_STYLES
 
 # Palette
-_keyword='#8A4530'
-_function='#806080'
-_builtin='#7A3828'
-_string='#3A5830'
-_variable='#1A1816'
-_cyan='#305858'
-_path='#3A5830'
-_text='#1A1816'
-_comment='#222D38'
-_muted='#222D38'
+_keyword='{{ roles.syntax.keyword }}'
+_function='{{ roles.syntax.function }}'
+_builtin='{{ roles.syntax.builtin }}'
+_string='{{ roles.syntax.string }}'
+_variable='{{ roles.syntax.variable }}'
+_cyan='{{ ansi.cyan }}'
+_path='{{ roles.syntax.path }}'
+_text='{{ roles.syntax.text }}'
+_comment='{{ roles.syntax.comment }}'
+_muted='{{ roles.ui.muted }}'
 
 # Commands
 ZSH_HIGHLIGHT_STYLES[command]="fg=$_function,bold"

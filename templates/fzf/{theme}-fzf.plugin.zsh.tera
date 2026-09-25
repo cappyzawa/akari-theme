@@ -1,0 +1,20 @@
+{%- set id = theme.id | upper -%}
+{%- set first = variants.0.variant.id -%}
+# {{ theme.name }} fzf theme - zsh plugin entry point
+# Loads the appropriate theme based on {{ id }}_VARIANT environment variable.
+
+: ${{ "{" }}{{ id }}_VARIANT:={{ first }}{{ "}" }}
+
+{% if variants | length == 1 -%}
+source "${0:A:h}/{{ theme.id }}-{{ first }}.sh"
+{% else -%}
+if [[ "${{ id }}_VARIANT" == "{{ variants.1.variant.id }}" ]]; then
+  source "${0:A:h}/{{ theme.id }}-{{ variants.1.variant.id }}.sh"
+{% for v in variants | slice(start=2) -%}
+elif [[ "${{ id }}_VARIANT" == "{{ v.variant.id }}" ]]; then
+  source "${0:A:h}/{{ theme.id }}-{{ v.variant.id }}.sh"
+{% endfor -%}
+else
+  source "${0:A:h}/{{ theme.id }}-{{ first }}.sh"
+fi
+{% endif -%}

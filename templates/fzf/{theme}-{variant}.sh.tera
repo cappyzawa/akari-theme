@@ -1,0 +1,7 @@
+# {{ theme.name }} {{ variant.name }} — fzf theme
+export FZF_DEFAULT_OPTS="
+	--color=fg:{{ base.foreground }},bg:{{ base.background }},hl:{{ roles.ui.accent }}
+	--color=fg+:{{ roles.ui.selection_fg }},bg+:{{ roles.ui.selection_bg }},hl+:{{ roles.ui.accent }}
+	--color=border:{{ roles.ui.border }},header:{{ roles.ui.muted }},gutter:{{ base.background }}
+	--color=spinner:{{ roles.ui.accent }},info:{{ roles.diagnostic.info }}
+	--color=pointer:{{ roles.ui.accent }},marker:{{ roles.ui.accent_secondary }},prompt:{{ roles.ui.accent }}"

@@ -33,7 +33,7 @@ fn artifact_text<'a>(artifacts: &'a [Artifact], rel: &str) -> &'a str {
 }
 
 /// Tools whose every Akari artifact must equal the committed `dist/` file.
-const DIST_EXACT_TOOLS: [&str; 4] = ["delta", "lazygit", "gh-dash", "nix"];
+const DIST_EXACT_TOOLS: [&str; 7] = ["delta", "lazygit", "gh-dash", "nix", "fzf", "zsh", "tmux"];
 
 #[test]
 fn legacy_available_tools_excludes_theme_tools() {
@@ -394,6 +394,12 @@ fn theme_ninja_artifacts_are_named_by_theme_and_variant_ids() {
         ("nix", "nix/ninja-shadow-delta.nix"),
         ("nix", "nix/ninja-shadow-fzf.nix"),
         ("nix", "nix/ninja-shadow-gh-dash.nix"),
+        ("fzf", "fzf/ninja-shadow.sh"),
+        ("fzf", "fzf/ninja-fzf.plugin.zsh"),
+        ("zsh", "zsh/ninja-shadow.zsh"),
+        ("zsh", "zsh/ninja-zsh.plugin.zsh"),
+        ("tmux", "tmux/ninja-shadow.conf"),
+        ("tmux", "tmux/ninja.tmux"),
     ];
     for (tool, rel) in expected {
         let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
@@ -780,6 +786,194 @@ fn adapter_context_defaults_to_empty_table_when_tool_has_no_adapters_entry() {
     let artifacts = generator.generate_theme_tool("helix", &theme).unwrap();
 
     assert_eq!(artifact_text(&artifacts, "helix/ninja-shadow.txt"), "none");
+}
+
+// -- Plugin entries that pick a variant ------------------------------------
+
+/// Writes `tool`'s generated `entry` into a temp dir and replaces every other
+/// generated file with a stub that prints its own file name, so running the
+/// entry reports which variant file it loaded.
+fn entry_with_stub_variant_files(tool: &str, theme: &Theme, entry: &str) -> tempfile::TempDir {
+    let dir = tempfile::tempdir().unwrap();
+    for artifact in generator().generate_theme_tool(tool, theme).unwrap() {
+        let ArtifactContent::Text(text) = &artifact.content else {
+            continue;
+        };
+        let name = artifact.rel_path.file_name().unwrap().to_str().unwrap();
+        let content = if name == entry {
+            text.clone()
+        } else {
+            format!("echo {name}\n")
+        };
+        fs::write(dir.path().join(name), content).unwrap();
+    }
+    dir
+}
+
+fn variant_env_var(theme: &Theme) -> String {
+    format!("{}_VARIANT", theme.metadata.id.as_str().to_uppercase())
+}
+
+/// Sources a zsh plugin entry under bash, which CI has and zsh is not
+/// guaranteed to be; `${0:A:h}` is the one zsh-only expansion the entries
+/// use, so it is bound to the entry's directory first.
+fn zsh_entry_loads(tool: &str, theme: &Theme, entry: &str, variant: Option<&str>) -> String {
+    let dir = entry_with_stub_variant_files(tool, theme, entry);
+    let entry_path = dir.path().join(entry);
+    let text = fs::read_to_string(&entry_path).unwrap();
+    assert!(
+        text.contains("${0:A:h}"),
+        "{entry} no longer uses ${{0:A:h}}"
+    );
+    fs::write(
+        &entry_path,
+        text.replace("${0:A:h}", dir.path().to_str().unwrap()),
+    )
+    .unwrap();
+
+    let mut command = std::process::Command::new("bash");
+    command
+        .arg("-c")
+        .arg("source \"$1\"")
+        .arg("bash")
+        .arg(&entry_path);
+    command.env_remove(variant_env_var(theme));
+    if let Some(value) = variant {
+        command.env(variant_env_var(theme), value);
+    }
+    let output = command.output().unwrap();
+    assert!(
+        output.status.success(),
+        "{entry}: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout).unwrap().trim().to_string()
+}
+
+/// Environment values to try against a theme's entry, each with the variant
+/// it must load: unset and an unknown value fall back to the first variant.
+fn variant_selections(theme: &Theme) -> Vec<(Option<String>, String)> {
+    let ids: Vec<String> = theme
+        .metadata
+        .variants
+        .iter()
+        .map(|id| id.as_str().to_string())
+        .collect();
+    let default = ids[0].clone();
+    let mut cases = vec![
+        (None, default.clone()),
+        (Some("unknown".to_string()), default),
+    ];
+    cases.extend(ids.into_iter().map(|id| (Some(id.clone()), id)));
+    cases
+}
+
+const ZSH_PLUGIN_ENTRIES: [(&str, &str, &str); 2] = [
+    ("fzf", "{theme}-fzf.plugin.zsh", "sh"),
+    ("zsh", "{theme}-zsh.plugin.zsh", "zsh"),
+];
+
+#[test]
+fn zsh_plugin_entries_load_the_selected_variant_and_default_to_the_first() {
+    for theme in [
+        Theme::load(root_dir().join("themes/akari")).unwrap(),
+        ninja_theme(),
+    ] {
+        let id = theme.metadata.id.as_str();
+        for (tool, entry, ext) in ZSH_PLUGIN_ENTRIES {
+            let entry = entry.replace("{theme}", id);
+            for (value, expected) in variant_selections(&theme) {
+                let loaded = zsh_entry_loads(tool, &theme, &entry, value.as_deref());
+                assert_eq!(
+                    loaded,
+                    format!("{id}-{expected}.{ext}"),
+                    "{entry} with {}={value:?}",
+                    variant_env_var(&theme)
+                );
+            }
+        }
+    }
+}
+
+/// Runs `{theme}.tmux` under bash with `tmux` replaced by a stub on `PATH`
+/// that answers `show-option` for the variant option and logs every call.
+fn tmux_entry_calls(theme: &Theme, variant: Option<&str>) -> String {
+    let id = theme.metadata.id.as_str();
+    let entry = format!("{id}.tmux");
+    let dir = entry_with_stub_variant_files("tmux", theme, &entry);
+    let bin = tempfile::tempdir().unwrap();
+    let stub = bin.path().join("tmux");
+    fs::write(
+        &stub,
+        format!(
+            "#!/bin/sh\n\
+             if [ \"$1\" = show-option ]; then\n\
+             \x20 [ \"$3\" = @{id}_variant ] && printf '%s' \"$STUB_VARIANT\"\n\
+             \x20 exit 0\n\
+             fi\n\
+             echo \"$@\"\n"
+        ),
+    )
+    .unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        fs::set_permissions(&stub, fs::Permissions::from_mode(0o755)).unwrap();
+    }
+
+    let path = format!(
+        "{}:{}",
+        bin.path().display(),
+        std::env::var("PATH").unwrap_or_default()
+    );
+    let output = std::process::Command::new("bash")
+        .arg(dir.path().join(&entry))
+        .env("PATH", path)
+        .env("STUB_VARIANT", variant.unwrap_or(""))
+        .output()
+        .unwrap();
+    assert!(
+        output.status.success(),
+        "{entry}: {}",
+        String::from_utf8_lossy(&output.stderr)
+    );
+    String::from_utf8(output.stdout).unwrap()
+}
+
+#[test]
+fn tmux_entry_sources_and_colors_the_selected_variant_and_defaults_to_the_first() {
+    for theme in [
+        Theme::load(root_dir().join("themes/akari")).unwrap(),
+        ninja_theme(),
+    ] {
+        let id = theme.metadata.id.as_str();
+        for (value, expected) in variant_selections(&theme) {
+            let calls = tmux_entry_calls(&theme, value.as_deref());
+            let conf = format!("/{id}-{expected}.conf");
+            assert!(
+                calls
+                    .lines()
+                    .any(|l| l.starts_with("source-file ") && l.ends_with(&conf)),
+                "{id} with {value:?} did not source {conf}: {calls}"
+            );
+
+            let resolved = theme
+                .variants
+                .iter()
+                .find(|v| v.variant.id.as_str() == expected)
+                .unwrap();
+            let status_left = calls
+                .lines()
+                .find(|l| l.starts_with("set-option -g status-left "))
+                .unwrap_or_else(|| panic!("{id} with {value:?} set no status-left: {calls}"));
+            for color in [resolved.base.background, resolved.roles.ui.surface] {
+                assert!(
+                    status_left.contains(&color.to_string()),
+                    "{id} with {value:?}: status-left lacks {color}: {status_left}"
+                );
+            }
+        }
+    }
 }
 
 // -- Phase 2: zed and chrome migrated to the theme route ---------------

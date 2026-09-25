@@ -1,0 +1,57 @@
+{%- set id = theme.id | upper -%}
+# {{ theme.name }} {{ variant.name }} — tmux theme
+# {{ variant.description }}
+
+# Palette
+# Base
+%hidden {{ id }}_BG="{{ base.background }}"
+%hidden {{ id }}_FG="{{ base.foreground }}"
+
+# UI roles
+%hidden {{ id }}_SURFACE="{{ roles.ui.surface }}"
+%hidden {{ id }}_BORDER="{{ roles.ui.border }}"
+%hidden {{ id }}_SELECTION_BG="{{ roles.ui.selection_bg }}"
+%hidden {{ id }}_SELECTION_FG="{{ roles.ui.selection_fg }}"
+%hidden {{ id }}_ACTIVE_BG="{{ roles.ui.active_bg }}"
+%hidden {{ id }}_ACCENT="{{ roles.ui.accent }}"
+%hidden {{ id }}_MUTED="{{ roles.ui.muted }}"
+
+# Diagnostic roles
+%hidden {{ id }}_WARNING="{{ roles.diagnostic.warning }}"
+
+# Status bar
+set-option -g status-style "bg=${{ id }}_BG,fg=${{ id }}_FG"
+set-option -g status-position top
+set-option -g status-justify left
+
+# Status left (configured by {{ theme.id }}.tmux for icon customization)
+set-option -g status-left-length 100
+
+# Status right
+# Leave status-right unset so the user can compose it (e.g. tmux-continuum's
+# "#{continuum_status}", battery indicators, etc.). Setting it to an empty
+# string here would clobber any #{continuum_status} marker that tmux-continuum
+# appends after the theme is sourced, silently disabling its auto-save trigger.
+set-option -g status-right-length 100
+
+# Window status
+set-option -g window-status-format "#[fg=${{ id }}_MUTED] #I:#W "
+set-option -g window-status-current-format "#[bg=${{ id }}_ACTIVE_BG,fg=${{ id }}_ACCENT,bold] #I:#W #[bg=${{ id }}_BG]"
+set-option -g window-status-separator ""
+
+# Pane borders
+set-option -g pane-border-style "fg=${{ id }}_BORDER"
+set-option -g pane-active-border-style "fg=${{ id }}_ACCENT"
+
+# Pane border status
+set-option -g pane-border-format "#[fg=${{ id }}_MUTED] #{pane_title} "
+
+# Message style
+set-option -g message-style "bg=${{ id }}_SURFACE,fg=${{ id }}_WARNING"
+set-option -g message-command-style "bg=${{ id }}_SURFACE,fg=${{ id }}_FG"
+
+# Mode style (copy mode, etc.)
+set-option -g mode-style "bg=${{ id }}_SELECTION_BG,fg=${{ id }}_SELECTION_FG"
+
+# Clock
+set-option -g clock-mode-colour "${{ id }}_ACCENT"

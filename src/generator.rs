@@ -15,6 +15,7 @@ const THEME_TOOLS: &[&str] = &[
     "chrome",
     "codex",
     "delta",
+    "fzf",
     "gh-dash",
     "ghostty",
     "helix",
@@ -23,8 +24,10 @@ const THEME_TOOLS: &[&str] = &[
     "slack",
     "starship",
     "terminal",
+    "tmux",
     "zed",
     "zellij",
+    "zsh",
 ];
 
 /// Adapter keys a `THEME_TOOLS` entry requires in `theme.adapters.<tool>`.
