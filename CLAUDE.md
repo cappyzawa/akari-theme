@@ -3,22 +3,22 @@
 ## Build & Verify
 
 ```sh
-cargo clippy --features generator --all-targets -- -D warnings
+cargo clippy --all-targets -- -D warnings
 cargo fmt -- --check
-cargo test --features generator
 cargo test
+cargo test --no-default-features
 ```
 
 ## Verification (after theme, color or template changes)
 
 ```sh
-cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
+cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
 git diff --exit-code
 ```
 
 ## Feature Flags
 
-`generator` — template rendering, CLI, integration tests
+`generator` (default) — template rendering, CLI, integration tests. `--no-default-features` builds only the theme model
 
 ## Rules Index
 

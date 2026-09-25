@@ -28,6 +28,10 @@ enum Command {
         /// Output directory
         #[arg(long)]
         out_dir: PathBuf,
+
+        /// Read templates from this directory instead of the ones built into katazome
+        #[arg(long)]
+        templates_dir: Option<PathBuf>,
     },
 }
 
@@ -62,14 +66,10 @@ fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), kata
         }
 
         match &artifact.content {
-            ArtifactContent::Text(content) => {
-                fs::write(&output_path, content)?;
-                set_executable(&output_path, artifact.executable)?;
-            }
-            ArtifactContent::Copy(src) => {
-                fs::copy(src, &output_path)?;
-            }
+            ArtifactContent::Text(content) => fs::write(&output_path, content)?,
+            ArtifactContent::Bytes(bytes) => fs::write(&output_path, bytes)?,
         }
+        set_executable(&output_path, artifact.executable)?;
         println!("  {}", artifact.rel_path.display());
     }
     Ok(())
@@ -83,12 +83,13 @@ fn run() -> Result<(), katazome::Error> {
             theme_dir,
             tool,
             out_dir,
+            templates_dir,
         } => {
             let theme = Theme::load(&theme_dir)?;
-            // Templates are not bundled into the crate; the binary reads
-            // them from this source tree at CARGO_MANIFEST_DIR.
-            let templates_dir = PathBuf::from(concat!(env!("CARGO_MANIFEST_DIR"), "/templates"));
-            let generator = Generator::new(templates_dir)?;
+            let generator = match templates_dir {
+                Some(dir) => Generator::new(dir)?,
+                None => Generator::embedded()?,
+            };
 
             let tools: Vec<String> = if tool == "all" {
                 generator.available_theme_tools()

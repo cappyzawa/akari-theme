@@ -90,6 +90,9 @@ pub enum Error {
         key: String,
         path: PathBuf,
     },
+    #[cfg(feature = "generator")]
+    #[error("template {0} is not valid UTF-8")]
+    TemplateNotUtf8(String),
 }
 
 #[cfg(feature = "generator")]
@@ -98,32 +101,20 @@ pub enum Error {
 pub enum ArtifactContent {
     /// Text content to be written
     Text(String),
-    /// Source path to be copied
-    Copy(PathBuf),
+    /// Raw bytes to be written
+    Bytes(Vec<u8>),
 }
 
 #[cfg(feature = "generator")]
-/// A generated or copied file
+/// A generated file
 #[derive(Debug, Clone)]
 pub struct Artifact {
     /// Relative path from output root (e.g., "helix/akari-night.toml")
     pub rel_path: PathBuf,
-    /// Content or source path
+    /// Content to be written
     pub content: ArtifactContent,
-    /// Whether a `Text` artifact is written with the executable bit; a `Copy`
-    /// artifact keeps its source's mode instead.
+    /// Whether the artifact is written with the executable bit.
     pub executable: bool,
-}
-
-#[cfg(all(feature = "generator", unix))]
-fn is_executable(path: &std::path::Path) -> bool {
-    use std::os::unix::fs::PermissionsExt;
-    std::fs::metadata(path).is_ok_and(|m| m.permissions().mode() & 0o111 != 0)
-}
-
-#[cfg(all(feature = "generator", not(unix)))]
-fn is_executable(_path: &std::path::Path) -> bool {
-    false
 }
 
 #[cfg(feature = "generator")]
@@ -137,25 +128,28 @@ impl Artifact {
         }
     }
 
-    /// A `Text` artifact rendered from `template`, executable when it is.
     #[must_use]
     pub fn rendered(
         rel_path: impl Into<PathBuf>,
         content: impl Into<String>,
-        template: &std::path::Path,
+        executable: bool,
     ) -> Self {
         Self {
-            executable: is_executable(template),
+            executable,
             ..Self::text(rel_path, content)
         }
     }
 
     #[must_use]
-    pub fn copy(rel_path: impl Into<PathBuf>, src: impl Into<PathBuf>) -> Self {
+    pub fn bytes(
+        rel_path: impl Into<PathBuf>,
+        contents: impl Into<Vec<u8>>,
+        executable: bool,
+    ) -> Self {
         Self {
             rel_path: rel_path.into(),
-            content: ArtifactContent::Copy(src.into()),
-            executable: false,
+            content: ArtifactContent::Bytes(contents.into()),
+            executable,
         }
     }
 }

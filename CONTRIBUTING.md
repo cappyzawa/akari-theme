@@ -14,18 +14,20 @@ git clone https://github.com/cappyzawa/akari-theme.git
 cd akari-theme
 
 # Build
-cargo build --features generator
+cargo build
 
 # Run tests
-cargo test --features generator
 cargo test
+cargo test --no-default-features
 
 # Generate the Akari theme
-cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
+cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
 
 # Check for differences
 git diff dist/
 ```
+
+An installed `katazome` bundles its own templates; pass `--templates-dir templates` to try changes from a checkout instead.
 
 ## Project Structure
 
@@ -59,7 +61,7 @@ akari-theme/
 5. Add `README.md.tera` with installation instructions.
 6. Verify generation:
    ```bash
-   cargo run --features generator -- generate --theme-dir themes/akari --tool {tool} --out-dir dist
+   cargo run -- generate --theme-dir themes/akari --tool {tool} --out-dir dist
    git diff dist/{tool}/
    ```
 
@@ -80,8 +82,8 @@ When creating new themes, follow these principles:
 ## Pull Request Guidelines
 
 CI automatically runs:
-- `cargo clippy --features generator --all-targets -- -D warnings` / `cargo fmt --check` / `cargo test --features generator` / `cargo test`
-- `cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist` with diff check
+- `cargo clippy --all-targets -- -D warnings` / `cargo fmt --check` / `cargo test` / `cargo test --no-default-features`
+- `cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist` with diff check
 
 Just ensure your commit message is in English with a title under 50 characters.
 
@@ -91,9 +93,9 @@ To modify colors, edit `themes/akari/night.toml` or `themes/akari/dawn.toml` and
 regenerate all tools:
 
 ```bash
-cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
-cargo test --features generator
+cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
 cargo test
+cargo test --no-default-features
 git diff dist/
 ```
 

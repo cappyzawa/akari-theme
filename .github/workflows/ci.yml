@@ -18,16 +18,16 @@ jobs:
         components: clippy, rustfmt
 
     - name: Run clippy
-      run: cargo clippy --features generator --all-targets -- -D warnings
+      run: cargo clippy --all-targets -- -D warnings
 
     - name: Check formatting
       run: cargo fmt -- --check
 
     - name: Run tests
-      run: cargo test --features generator
-
-    - name: Run tests without features
       run: cargo test
+
+    - name: Run tests without default features
+      run: cargo test --no-default-features
 
   generate:
     needs: test
@@ -39,7 +39,7 @@ jobs:
       uses: dtolnay/rust-toolchain@stable
 
     - name: Generate theme files from theme directories
-      run: cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
+      run: cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
 
     - name: Check for uncommitted changes
       run: git diff --exit-code

@@ -22,7 +22,7 @@
       "matchManagers": ["cargo"],
       "groupName": "rust dependencies",
       "postUpgradeTasks": {
-        "commands": ["cargo run --features generator -- generate --tool all"],
+        "commands": ["cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist"],
         "fileFilters": ["**/*"],
         "executionMode": "branch"
       }
