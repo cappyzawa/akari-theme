@@ -1,5 +1,6 @@
 //! Black-box tests for the `katazome` binary's CLI surface.
 
+use katazome::Generator;
 use std::collections::HashSet;
 use std::fs;
 use std::os::unix::fs::PermissionsExt;
@@ -26,6 +27,41 @@ fn collect_relative_files_into(dir: &Path, base: &Path, out: &mut HashSet<PathBu
             out.insert(path.strip_prefix(base).unwrap().to_path_buf());
         }
     }
+}
+
+/// The top-level entry names directly under `dir` (e.g. one per tool
+/// `generate` wrote to), as a set.
+fn top_level_entries(dir: &Path) -> HashSet<String> {
+    fs::read_dir(dir)
+        .unwrap()
+        .map(|e| e.unwrap().file_name().to_string_lossy().into_owned())
+        .collect()
+}
+
+fn to_owned_set(names: &[&str]) -> HashSet<String> {
+    names.iter().map(|s| s.to_string()).collect()
+}
+
+/// Runs `generate` with exactly `tool_args` (e.g. `["--tool", "helix"]`,
+/// possibly repeated, or `&[]` to omit `--tool` entirely) and returns the
+/// out-dir's top-level entries.
+fn generate_with_tools(theme_dir: &Path, tool_args: &[&str]) -> HashSet<String> {
+    let out = tempfile::tempdir().unwrap();
+    let status = Command::new(env!("CARGO_BIN_EXE_katazome"))
+        .current_dir(root_dir())
+        .args(["generate", "--theme-dir"])
+        .arg(theme_dir)
+        .args(tool_args)
+        .args(["--out-dir"])
+        .arg(out.path())
+        .status()
+        .unwrap();
+    assert!(
+        status.success(),
+        "katazome generate failed for {}",
+        theme_dir.display()
+    );
+    top_level_entries(out.path())
 }
 
 fn generate(theme_dir: &Path, extra_args: &[&str], out_dir: &Path) {
@@ -104,4 +140,36 @@ fn templates_dir_override_generates_the_same_files_as_the_built_in_templates() {
             );
         }
     }
+}
+
+// -- `--tool`: optional, repeatable, and theme.toml's default tools --------
+
+/// `themes/ninja/theme.toml` declares `tools = ["helix", "nvim", "terminal"]`.
+const NINJA_DEFAULT_TOOLS: [&str; 3] = ["helix", "nvim", "terminal"];
+
+#[test]
+fn ninja_without_a_tool_flag_generates_exactly_its_default_tools() {
+    let generated = generate_with_tools(&root_dir().join("themes/ninja"), &[]);
+    assert_eq!(generated, to_owned_set(&NINJA_DEFAULT_TOOLS));
+}
+
+#[test]
+fn repeated_tool_flags_on_duo_override_its_absent_default_tools() {
+    let generated = generate_with_tools(
+        &root_dir().join("tests/fixtures/duo"),
+        &["--tool", "helix", "--tool", "nvim"],
+    );
+    assert_eq!(generated, to_owned_set(&["helix", "nvim"]));
+}
+
+#[test]
+fn a_tool_flag_on_ninja_overrides_its_default_tools() {
+    let generated = generate_with_tools(&root_dir().join("themes/ninja"), &["--tool", "zed"]);
+    assert_eq!(generated, to_owned_set(&["zed"]));
+}
+
+#[test]
+fn tool_all_on_ninja_generates_every_tool_despite_its_default_tools() {
+    let generated = generate_with_tools(&root_dir().join("themes/ninja"), &["--tool", "all"]);
+    assert_eq!(generated, to_owned_set(Generator::available_tools()));
 }

@@ -72,6 +72,11 @@ pub struct ThemeMetadata {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub license: Option<String>,
     pub variants: Vec<Id>,
+    /// Tool names to generate by default, in the order given. `None` means
+    /// every tool the generator knows; names are not validated here since
+    /// the tool set belongs to the generator, not the theme model.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tools: Option<Vec<String>>,
 }
 
 /// `[variant]` in a variant file.

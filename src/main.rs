@@ -21,9 +21,11 @@ enum Command {
         #[arg(long)]
         theme_dir: PathBuf,
 
-        /// Target tool (or 'all' to generate for all theme-based tools)
+        /// Target tool; repeatable. 'all' generates every tool. With none
+        /// given, generates the theme's own `[theme] tools` (or every tool,
+        /// if it does not set one).
         #[arg(long)]
-        tool: String,
+        tool: Vec<String>,
 
         /// Output directory
         #[arg(long)]
@@ -91,10 +93,12 @@ fn run() -> Result<(), katazome::Error> {
                 None => Generator::embedded()?,
             };
 
-            let tools: Vec<&str> = if tool == "all" {
+            let tools: Vec<&str> = if tool.iter().any(|t| t == "all") {
                 Generator::available_tools().to_vec()
+            } else if !tool.is_empty() {
+                tool.iter().map(String::as_str).collect()
             } else {
-                vec![tool.as_str()]
+                Generator::default_tools(&theme, &theme_dir)?
             };
 
             for tool_name in tools.iter().copied() {

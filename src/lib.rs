@@ -13,7 +13,8 @@
 //! - [`theme::Roles`], [`theme::Ui`], [`theme::Diagnostic`], [`theme::Diff`], [`theme::Syntax`], [`theme::Markup`]
 //! - [`Rgb`]
 //! - [`Generator`], [`Generator::embedded`], [`Generator::from_dir`],
-//!   [`Generator::available_tools`], [`Generator::generate`] (require the `generator` feature, default)
+//!   [`Generator::available_tools`], [`Generator::default_tools`], [`Generator::generate`]
+//!   (require the `generator` feature, default)
 //! - [`Artifact`], [`ArtifactContent`] (require the `generator` feature, default)
 //! - [`Error`]
 

@@ -410,6 +410,29 @@ impl Generator {
     pub const fn available_tools() -> &'static [&'static str] {
         THEME_TOOLS
     }
+
+    /// The tools to generate for `theme` when no explicit tool list is
+    /// given: every entry of `theme.metadata.tools`, mapped to its
+    /// `THEME_TOOLS` entry and in that order, or `available_tools()` when
+    /// `theme.metadata.tools` is `None`.
+    pub fn default_tools(theme: &Theme, theme_dir: &Path) -> Result<Vec<&'static str>, Error> {
+        let Some(names) = &theme.metadata.tools else {
+            return Ok(THEME_TOOLS.to_vec());
+        };
+        names
+            .iter()
+            .map(|name| {
+                THEME_TOOLS
+                    .iter()
+                    .copied()
+                    .find(|tool| tool == name)
+                    .ok_or_else(|| Error::Resolve {
+                        path: theme_dir.join("theme.toml"),
+                        source: Box::new(Error::UnknownTool(name.clone())),
+                    })
+            })
+            .collect()
+    }
 }
 
 fn strip_tera_extension(path: &Path) -> PathBuf {

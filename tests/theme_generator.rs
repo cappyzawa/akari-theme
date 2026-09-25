@@ -1439,3 +1439,80 @@ fn generated_files_keep_the_template_executable_bit() {
         "ninja-shadow.conf is executable"
     );
 }
+
+// -- Generator::default_tools: theme.toml's optional [theme] tools key -----
+
+/// Copies `themes/ninja` into a fresh temp dir, then lets `edit` mutate the
+/// copy's `[theme]` table before it is loaded with `Theme::load`.
+fn temp_ninja_dir_with_theme_edit(edit: impl FnOnce(&mut toml::Table)) -> tempfile::TempDir {
+    let dir = tempfile::tempdir().unwrap();
+    let src = theme_dir("ninja");
+    fs::copy(src.join("shadow.toml"), dir.path().join("shadow.toml")).unwrap();
+
+    let mut doc: toml::Table = fs::read_to_string(src.join("theme.toml"))
+        .unwrap()
+        .parse()
+        .unwrap();
+    let theme = doc
+        .get_mut("theme")
+        .and_then(toml::Value::as_table_mut)
+        .expect("themes/ninja declares [theme]");
+    edit(theme);
+    fs::write(
+        dir.path().join("theme.toml"),
+        toml::to_string(&doc).unwrap(),
+    )
+    .unwrap();
+
+    dir
+}
+
+fn set_theme_tools(theme: &mut toml::Table, names: &[&str]) {
+    theme.insert(
+        "tools".to_string(),
+        toml::Value::Array(
+            names
+                .iter()
+                .map(|n| toml::Value::String(n.to_string()))
+                .collect(),
+        ),
+    );
+}
+
+#[test]
+fn default_tools_without_a_tools_key_equals_available_tools() {
+    let theme = duo();
+    let tools = Generator::default_tools(&theme, &fixture_dir("duo")).unwrap();
+    assert_eq!(tools.as_slice(), Generator::available_tools());
+}
+
+#[test]
+fn default_tools_preserves_the_declared_order_of_theme_tools() {
+    let dir = temp_ninja_dir_with_theme_edit(|theme| {
+        set_theme_tools(theme, &["terminal", "helix", "nvim"]);
+    });
+    let theme = Theme::load(dir.path()).unwrap();
+
+    let tools = Generator::default_tools(&theme, dir.path()).unwrap();
+    assert_eq!(tools, vec!["terminal", "helix", "nvim"]);
+}
+
+#[test]
+fn default_tools_reports_an_unknown_tool_name_with_the_theme_toml_path() {
+    let dir = temp_ninja_dir_with_theme_edit(|theme| {
+        set_theme_tools(theme, &["no-such-tool"]);
+    });
+    let theme = Theme::load(dir.path()).unwrap();
+
+    let err = Generator::default_tools(&theme, dir.path()).unwrap_err();
+    match &err {
+        Error::Resolve { path, source } => {
+            assert_eq!(path, &dir.path().join("theme.toml"));
+            match source.as_ref() {
+                Error::UnknownTool(name) => assert_eq!(name, "no-such-tool"),
+                other => panic!("expected UnknownTool, got {other:?}"),
+            }
+        }
+        other => panic!("expected Error::Resolve, got {other:?}"),
+    }
+}

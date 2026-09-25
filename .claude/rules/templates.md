@@ -6,7 +6,7 @@
 
 A template whose output name contains `{variant}` renders once per variant with:
 
-- `theme` — `theme.toml` `[theme]`: `theme.id`, `theme.name`, `theme.description`, `theme.repository`, `theme.license`, `theme.variants`
+- `theme` — `theme.toml` `[theme]`: `theme.id`, `theme.name`, `theme.description`, `theme.repository`, `theme.license`, `theme.variants`, `theme.tools`
 - `variant` — `variant.id`, `variant.name`, `variant.appearance` (`dark`/`light`), `variant.description`
 - `base`, `ansi` (`ansi.red`, `ansi.bright.red`), `roles` (`roles.ui.accent`, `roles.series[0]`, ...)
 - `adapter` — `theme.toml` `[adapters.<tool>]` as written (empty table if absent)
