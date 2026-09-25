@@ -1,4 +1,4 @@
--- Akari v0.0.1
+-- Akari
 -- A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 require("akari").load()

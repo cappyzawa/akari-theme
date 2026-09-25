@@ -7,12 +7,12 @@ function M.setup(p, config)
     -- LSP semantic token types
     ["@lsp.type.class"] = { link = "@type" },
     ["@lsp.type.comment"] = { link = "@comment" },
-    ["@lsp.type.decorator"] = { fg = p.bright_yellow },
+    ["@lsp.type.decorator"] = { fg = p.syntax.decorator },
     ["@lsp.type.enum"] = { link = "@type" },
-    ["@lsp.type.enumMember"] = { fg = p.constant },
-    ["@lsp.type.event"] = { fg = p.bright_yellow },
+    ["@lsp.type.enumMember"] = { fg = p.syntax.constant },
+    ["@lsp.type.event"] = { fg = p.ansi.bright.yellow },
     ["@lsp.type.function"] = { link = "@function" },
-    ["@lsp.type.interface"] = { fg = p.bright_cyan },
+    ["@lsp.type.interface"] = { fg = p.ansi.bright.cyan },
     ["@lsp.type.keyword"] = { link = "@keyword" },
     ["@lsp.type.macro"] = { link = "@function.macro" },
     ["@lsp.type.method"] = { link = "@function.method" },
@@ -26,19 +26,19 @@ function M.setup(p, config)
     ["@lsp.type.string"] = { link = "@string" },
     ["@lsp.type.struct"] = { link = "@type" },
     ["@lsp.type.type"] = { link = "@type" },
-    ["@lsp.type.typeParameter"] = { fg = p.cyan, italic = true },
+    ["@lsp.type.typeParameter"] = { fg = p.ansi.cyan, italic = true },
     ["@lsp.type.variable"] = {}, -- Use treesitter highlight
 
     -- LSP semantic token modifiers
     ["@lsp.mod.abstract"] = { italic = true },
     ["@lsp.mod.async"] = { italic = true },
     ["@lsp.mod.declaration"] = {},
-    ["@lsp.mod.defaultLibrary"] = { fg = p.bright_yellow },
+    ["@lsp.mod.defaultLibrary"] = { fg = p.ansi.bright.yellow },
     ["@lsp.mod.definition"] = {},
     ["@lsp.mod.deprecated"] = { strikethrough = true },
     ["@lsp.mod.documentation"] = {},
     ["@lsp.mod.modification"] = {},
-    ["@lsp.mod.readonly"] = { fg = p.constant },
+    ["@lsp.mod.readonly"] = { fg = p.syntax.constant },
     ["@lsp.mod.static"] = { italic = true },
 
     -- LSP combined type.modifier
@@ -46,8 +46,8 @@ function M.setup(p, config)
     ["@lsp.typemod.enum.declaration"] = { link = "@type" },
     ["@lsp.typemod.function.declaration"] = { link = "@function" },
     ["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" },
-    ["@lsp.typemod.interface.declaration"] = { fg = p.bright_cyan },
-    ["@lsp.typemod.keyword.async"] = vim.tbl_extend("force", { fg = p.lantern }, config.keywordStyle),
+    ["@lsp.typemod.interface.declaration"] = { fg = p.ansi.bright.cyan },
+    ["@lsp.typemod.keyword.async"] = vim.tbl_extend("force", { fg = p.syntax.keyword }, config.keywordStyle),
     ["@lsp.typemod.macro.defaultLibrary"] = { link = "@function.macro" },
     ["@lsp.typemod.method.declaration"] = { link = "@function.method" },
     ["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" },
@@ -55,7 +55,7 @@ function M.setup(p, config)
     ["@lsp.typemod.operator.injected"] = { link = "@operator" },
     ["@lsp.typemod.parameter.declaration"] = { link = "@variable.parameter" },
     ["@lsp.typemod.property.declaration"] = { link = "@property" },
-    ["@lsp.typemod.property.readonly"] = { fg = p.constant },
+    ["@lsp.typemod.property.readonly"] = { fg = p.syntax.constant },
     ["@lsp.typemod.string.injected"] = { link = "@string" },
     ["@lsp.typemod.struct.declaration"] = { link = "@type" },
     ["@lsp.typemod.type.declaration"] = { link = "@type" },
@@ -64,25 +64,25 @@ function M.setup(p, config)
     ["@lsp.typemod.variable.callable"] = { link = "@function" },
     ["@lsp.typemod.variable.declaration"] = { link = "@variable" },
     ["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" },
-    ["@lsp.typemod.variable.global"] = { fg = p.foreground },
+    ["@lsp.typemod.variable.global"] = { fg = p.base.foreground },
     ["@lsp.typemod.variable.injected"] = { link = "@variable" },
-    ["@lsp.typemod.variable.readonly"] = { fg = p.constant },
-    ["@lsp.typemod.variable.static"] = { fg = p.foreground, italic = true },
+    ["@lsp.typemod.variable.readonly"] = { fg = p.syntax.constant },
+    ["@lsp.typemod.variable.static"] = { fg = p.base.foreground, italic = true },
 
     -- LSP reference highlights
-    LspReferenceText = { bg = p.selection_bg },
-    LspReferenceRead = { bg = p.selection_bg },
-    LspReferenceWrite = { bg = p.selection_bg },
+    LspReferenceText = { bg = p.ui.selection_bg },
+    LspReferenceRead = { bg = p.ui.selection_bg },
+    LspReferenceWrite = { bg = p.ui.selection_bg },
 
     -- LSP signature help
-    LspSignatureActiveParameter = { fg = p.lantern, bold = true },
+    LspSignatureActiveParameter = { fg = p.ui.accent, bold = true },
 
     -- LSP codelens
-    LspCodeLens = { fg = p.comment },
-    LspCodeLensSeparator = { fg = p.bright_black },
+    LspCodeLens = { fg = p.ui.muted },
+    LspCodeLensSeparator = { fg = p.ansi.bright.black },
 
     -- LSP inlay hints
-    LspInlayHint = { fg = p.comment },
+    LspInlayHint = { fg = p.ui.muted },
   }
 end
 

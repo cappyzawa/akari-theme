@@ -7,7 +7,7 @@ function M.setup(palette, config)
   local modules = { "editor", "syntax", "treesitter", "lsp" }
 
   for _, mod_name in ipairs(modules) do
-    local ok, mod = pcall(require, "akari.highlights." .. mod_name)
+    local ok, mod = pcall(require, "{{ theme.id }}.highlights." .. mod_name)
     if ok then
       for hl, spec in pairs(mod.setup(palette, config)) do
         highlights[hl] = spec

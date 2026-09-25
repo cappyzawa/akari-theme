@@ -1,0 +1,89 @@
+-- {{ theme.name }} color palette
+-- {{ theme.description }}
+
+local M = {}
+
+M.default = "{{ variants.0.variant.id }}"
+
+M.appearance = {
+{% for v in variants %}  ["{{ v.variant.id }}"] = "{{ v.variant.appearance }}",
+{% endfor -%}
+}
+
+M.variants = {
+{% for v in variants %}  ["{{ v.variant.id }}"] = {
+    base = {
+      background = "{{ v.base.background }}",
+      foreground = "{{ v.base.foreground }}",
+    },
+    ansi = {
+      black = "{{ v.ansi.black }}",
+      red = "{{ v.ansi.red }}",
+      green = "{{ v.ansi.green }}",
+      yellow = "{{ v.ansi.yellow }}",
+      blue = "{{ v.ansi.blue }}",
+      magenta = "{{ v.ansi.magenta }}",
+      cyan = "{{ v.ansi.cyan }}",
+      white = "{{ v.ansi.white }}",
+      bright = {
+{% for key, color in v.ansi.bright %}        ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+      },
+    },
+    ui = {
+{% for key, color in v.roles.ui %}      ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+    },
+    diagnostic = {
+{% for key, color in v.roles.diagnostic %}      ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+    },
+    diff = {
+{% for key, color in v.roles.diff %}      ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+    },
+    syntax = {
+{% for key, color in v.roles.syntax %}      ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+    },
+    markup = {
+{% for key, color in v.roles.markup %}      ["{{ key }}"] = "{{ color }}",
+{% endfor -%}
+    },
+    series = {
+{% for c in v.roles.series %}      "{{ c }}",
+{% endfor -%}
+    },
+  },
+{% endfor -%}
+}
+
+M.palette = M.variants[M.default]
+
+-- Returns the 16 terminal ANSI colors (0-7 base, 8-15 bright) for `variant`,
+-- falling back to the default variant when `variant` is unknown.
+function M.get_terminal(variant)
+  local v = M.variants[variant] or M.palette
+  return {
+    v.ansi.black,
+    v.ansi.red,
+    v.ansi.green,
+    v.ansi.yellow,
+    v.ansi.blue,
+    v.ansi.magenta,
+    v.ansi.cyan,
+    v.ansi.white,
+    v.ansi.bright.black,
+    v.ansi.bright.red,
+    v.ansi.bright.green,
+    v.ansi.bright.yellow,
+    v.ansi.bright.blue,
+    v.ansi.bright.magenta,
+    v.ansi.bright.cyan,
+    v.ansi.bright.white,
+  }
+end
+
+M.terminal = M.get_terminal(M.default)
+
+return M
