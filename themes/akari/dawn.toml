@@ -119,4 +119,6 @@ series = [
   "lighten(colors.rain, 0.15)",
   "colors.life",
   "colors.lantern.far",
+  "ansi.cyan",
+  "colors.lantern.ember",
 ]

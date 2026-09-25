@@ -177,7 +177,7 @@ background stay separate so contrast remains under the author's control.
 
 | Role | Purpose |
 |---|---|
-| `series` | An array of exactly six mutually distinguishable colors, in order. Used for bracket pair levels, chart series, multiplayer cursors and rank badges. |
+| `series` | An array of exactly eight mutually distinguishable colors, in order. Used for bracket pair levels, chart series, collaborator cursors and rank badges. Adapters that need fewer take a prefix. |
 
 ### `ansi`
 
@@ -230,12 +230,12 @@ Akari pigment directly was for. The named colors were doing this work:
 
 | Akari pigment | Purposes found |
 |---|---|
-| `lantern.mid` | keyword, character, tag, heading 1, list marker, accent, cursor, warning, match, modified files, chart orange, series 1 |
+| `lantern.mid` | keyword, character, tag, heading 1, strong emphasis, list marker, accent, cursor, warning, match, modified files, chart orange, series 1 |
 | `lantern.far` | type, namespace, attribute, label, special punctuation, heading 2 and 4, changed lines, ours side, secondary accent, series 6 |
-| `lantern.ember` | builtins (`self`, `this`), heading 3, some CSS values |
+| `lantern.ember` | builtins (`self`, `this`, special variables and symbols), heading 3, some CSS values, series 8 |
 | `life` | string, success, added lines, chart green, series 5 |
 | `night` | member, info, theirs side, moved code, options text, chart blue, series 2 |
-| `muted` | function, unknown rank, chart purple, series 3 |
+| `muted` | function, unknown rank, chart purple, Codex skill labels, series 3 |
 | `rain` | exported only as a Starship named color |
 
 Themes that export named colors to users (Starship palettes, zsh variables,
@@ -244,7 +244,7 @@ adapters cannot name a theme's private pigments.
 
 Roles that only a few adapters consume today: `ui.on_accent` (Helix, Neovim),
 `syntax.character` (Helix, bat, Neovim), `diff.ours` and `diff.theirs`
-(delta, VS Code), `series` (VS Code, Zellij, gh-dash, lazygit). They are
+(delta, VS Code), `series` (VS Code, Zed, Zellij, gh-dash, lazygit). They are
 still required, for the reason given above.
 
 ## Akari settings to settle during migration
@@ -254,10 +254,13 @@ The role assignment in `themes/akari` follows one side; the other side will
 change output when its adapter migrates, and that change must be reviewed
 rather than snapshot-refreshed.
 
-- Modified files: VS Code uses `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`. `diff.changed` follows Helix.
+- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`. `diff.changed` follows Helix.
+- Series order: VS Code bracket levels and Zed collaborator cursors order the same pigments differently. `series` follows VS Code for the first six and appends Zed's remaining two, so Zed's order changes.
+- Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`.
+- Codex's `skill` color has no role of its own; its adapter must pick one and the choice is reviewed there.
 - Merge conflict sides: delta uses `lantern.far` and `night`, VS Code uses `life` and `night`. `diff.ours` follows delta.
 - Hover backgrounds and decorators in VS Code use `ansi.bright.yellow` directly; they map to `ui.accent_secondary` and `syntax.decorator` only if the color change is accepted.
-- delta selects `dark = true` by testing `variant == "night"`; it must test `variant.appearance`.
+- delta and Codex select dark or light output by testing `variant == "night"`; they must test `variant.appearance`.
 
 ## Not decided here
 

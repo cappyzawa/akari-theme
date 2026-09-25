@@ -119,4 +119,6 @@ series = [
   "colors.scroll",
   "colors.shade",
   "colors.mist",
+  "ansi.bright.cyan",
+  "colors.steel",
 ]

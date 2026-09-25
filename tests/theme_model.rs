@@ -201,11 +201,11 @@ fn each_variant_assigns_exactly_the_documented_roles() {
 }
 
 #[test]
-fn series_has_six_entries() {
+fn series_has_eight_entries() {
     for theme in Theme::all() {
         for (path, variant) in theme.variants() {
             let series = variant["roles"]["series"].as_array().expect("roles.series");
-            assert_eq!(series.len(), 6, "{}", path.display());
+            assert_eq!(series.len(), 8, "{}", path.display());
         }
     }
 }
