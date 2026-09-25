@@ -1,8 +1,8 @@
-//! Black-box tests for `akari_theme::theme::Theme::load` against the sample
+//! Black-box tests for `katazome::theme::Theme::load` against the sample
 //! themes under `themes/`.
 
-use akari_theme::Error;
-use akari_theme::theme::*;
+use katazome::Error;
+use katazome::theme::*;
 use std::fs;
 use std::path::PathBuf;
 

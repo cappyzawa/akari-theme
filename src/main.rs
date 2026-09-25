@@ -1,12 +1,12 @@
-use akari_theme::theme::Theme;
-use akari_theme::{Artifact, ArtifactContent, Generator};
 use clap::{Parser, Subcommand};
+use katazome::theme::Theme;
+use katazome::{Artifact, ArtifactContent, Generator};
 use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 #[derive(Parser)]
-#[command(name = "akari-gen")]
+#[command(name = "katazome")]
 #[command(about = "Generate theme files from a theme directory")]
 struct Cli {
     #[command(subcommand)]
@@ -16,7 +16,7 @@ struct Cli {
 #[derive(Subcommand)]
 enum Command {
     /// Generate theme files from a `Theme` directory
-    GenerateTheme {
+    Generate {
         /// Directory containing theme.toml and its variant files
         #[arg(long)]
         theme_dir: PathBuf,
@@ -53,7 +53,7 @@ fn set_executable(_path: &Path, _executable: bool) -> std::io::Result<()> {
     Ok(())
 }
 
-fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), akari_theme::Error> {
+fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), katazome::Error> {
     for artifact in artifacts {
         let output_path = out_root.join(&artifact.rel_path);
 
@@ -75,11 +75,11 @@ fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), akar
     Ok(())
 }
 
-fn run() -> Result<(), akari_theme::Error> {
+fn run() -> Result<(), katazome::Error> {
     let cli = Cli::parse();
 
     match cli.command {
-        Command::GenerateTheme {
+        Command::Generate {
             theme_dir,
             tool,
             out_dir,

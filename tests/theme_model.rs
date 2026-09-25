@@ -2,7 +2,7 @@
 //! vocabulary once, and every variant file under `themes/` must assign
 //! exactly that vocabulary.
 
-use akari_theme::Rgb;
+use katazome::Rgb;
 use std::collections::BTreeSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -211,13 +211,13 @@ fn series_has_eight_entries() {
 }
 
 /// The local `Theme` above is the test-file's own manifest reader; the
-/// loader under test is `akari_theme::theme::Theme`, referenced fully
+/// loader under test is `katazome::theme::Theme`, referenced fully
 /// qualified to avoid colliding with it.
 #[test]
 fn resolved_variants_serialize_exactly_the_documented_roles() {
     let documented = documented_roles();
     for theme in Theme::all() {
-        let loaded = akari_theme::theme::Theme::load(&theme.dir)
+        let loaded = katazome::theme::Theme::load(&theme.dir)
             .unwrap_or_else(|e| panic!("{}: {e}", theme.dir.display()));
         for variant in &loaded.variants {
             let value = Value::try_from(variant).unwrap();

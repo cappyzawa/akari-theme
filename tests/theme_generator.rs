@@ -1,8 +1,8 @@
 //! Black-box tests for the theme-based generation route
 //! (`Generator::generate_theme_tool`), which consumes `Theme`.
 
-use akari_theme::theme::Theme;
-use akari_theme::{Artifact, ArtifactContent, Error, Generator};
+use katazome::theme::Theme;
+use katazome::{Artifact, ArtifactContent, Error, Generator};
 use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -1645,15 +1645,9 @@ fn generated_files_keep_the_template_executable_bit() {
     use std::os::unix::fs::PermissionsExt;
 
     let out = tempfile::tempdir().unwrap();
-    let status = std::process::Command::new(env!("CARGO_BIN_EXE_akari-gen"))
+    let status = std::process::Command::new(env!("CARGO_BIN_EXE_katazome"))
         .current_dir(root_dir())
-        .args([
-            "generate-theme",
-            "--theme-dir",
-            "themes/ninja",
-            "--tool",
-            "tmux",
-        ])
+        .args(["generate", "--theme-dir", "themes/ninja", "--tool", "tmux"])
         .arg("--out-dir")
         .arg(out.path())
         .stdout(std::process::Stdio::null())
