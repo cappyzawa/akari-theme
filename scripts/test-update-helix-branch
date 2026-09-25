@@ -1,0 +1,145 @@
+#!/bin/sh
+# Runs scripts/update-helix-branch against throwaway upstream and fork
+# repositories, with gh stubbed to report whether an upstream PR is open.
+set -eu
+cd "$(dirname "$0")/.."
+akari=$(pwd)
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+export BRANCH=update-akari-theme
+export GIT_AUTHOR_NAME=test GIT_AUTHOR_EMAIL=test@example.com
+export GIT_COMMITTER_NAME=test GIT_COMMITTER_EMAIL=test@example.com
+
+mkdir "$tmp/bin"
+cat > "$tmp/bin/gh" <<'EOF'
+#!/bin/sh
+printf '%s' "${STUB_OPEN_PR:-}"
+EOF
+chmod +x "$tmp/bin/gh"
+PATH="$tmp/bin:$PATH"
+
+fail() {
+  echo "FAIL: $*" >&2
+  exit 1
+}
+
+# upstream.git and fork.git stand in for helix-editor/helix and
+# cappyzawa/helix; author is where test commits are written.
+setup() {
+  dir="$tmp/$1"
+  git init -q --bare -b master "$dir/upstream.git"
+  git clone -q "$dir/upstream.git" "$dir/author" 2> /dev/null
+  mkdir -p "$dir/author/runtime/themes/licenses"
+  echo upstream > "$dir/author/README.md"
+  write_theme "$dir/author" "old theme"
+  commit_all "$dir/author" "initial"
+  git -C "$dir/author" push -q origin master
+  git clone -q --bare "$dir/upstream.git" "$dir/fork.git"
+  git -C "$dir/author" remote add fork "$dir/fork.git"
+}
+
+write_theme() {
+  for f in akari-night.toml akari-dawn.toml licenses/akari.license; do
+    echo "$2" > "$1/runtime/themes/$f"
+  done
+}
+
+commit_all() {
+  git -C "$1" add -A
+  git -C "$1" commit -q -m "$2"
+}
+
+# Stands in for `gh repo sync cappyzawa/helix -b master`.
+sync_fork() {
+  git -C "$dir/upstream.git" push -q "$dir/fork.git" master
+}
+
+run() {
+  sync_fork
+  git clone -q "$dir/fork.git" "$dir/work"
+  : > "$dir/output"
+  GITHUB_OUTPUT="$dir/output" STUB_OPEN_PR="$1" \
+    scripts/update-helix-branch "$dir/work" v9.9.9
+}
+
+tip() {
+  git --git-dir "$dir/$1.git" rev-parse "refs/heads/$2"
+}
+
+assert_output() {
+  grep -qx "$1" "$dir/output" || fail "$1 not in output: $(cat "$dir/output")"
+}
+
+assert_theme_is_generated() {
+  for pair in dist/helix/akari-night.toml:akari-night.toml \
+    dist/helix/akari-dawn.toml:akari-dawn.toml \
+    LICENSE:licenses/akari.license; do
+    git --git-dir "$dir/fork.git" show "$BRANCH:runtime/themes/${pair#*:}" |
+      cmp -s - "$akari/${pair%%:*}" || fail "runtime/themes/${pair#*:} is not ${pair%%:*}"
+  done
+}
+
+assert_forks_from_upstream_tip() {
+  [ "$(git --git-dir "$dir/fork.git" merge-base "$BRANCH" master)" = "$(tip upstream master)" ] ||
+    fail "$BRANCH does not fork from the upstream master tip"
+}
+
+echo "(a) no branch: creates the branch from master"
+setup a
+run ""
+assert_forks_from_upstream_tip
+[ "$(git --git-dir "$dir/fork.git" rev-parse "$BRANCH^")" = "$(tip upstream master)" ] ||
+  fail "branch is not one commit on top of master"
+assert_theme_is_generated
+assert_output "open-pr=false"
+assert_output "pushed=true"
+
+echo "(b) stale branch without an open PR: recreates the branch from master"
+setup b
+git -C "$dir/author" checkout -q -b "$BRANCH"
+write_theme "$dir/author" "stale update"
+commit_all "$dir/author" "stale update"
+git -C "$dir/author" push -q fork "$BRANCH"
+stale=$(tip fork "$BRANCH")
+git -C "$dir/author" checkout -q master
+for i in 1 2 3; do
+  echo "$i" >> "$dir/author/README.md"
+  commit_all "$dir/author" "upstream change $i"
+done
+write_theme "$dir/author" "cherry-picked stale update"
+commit_all "$dir/author" "cherry-pick"
+git -C "$dir/author" push -q origin master
+run ""
+assert_forks_from_upstream_tip
+! git --git-dir "$dir/fork.git" merge-base --is-ancestor "$stale" "$BRANCH" ||
+  fail "stale commit is still on the branch"
+assert_theme_is_generated
+assert_output "open-pr=false"
+assert_output "pushed=true"
+
+echo "(c) open PR and master rewrote the theme: merges master and keeps history"
+setup c
+git -C "$dir/author" checkout -q -b "$BRANCH"
+write_theme "$dir/author" "pr update"
+commit_all "$dir/author" "pr update"
+git -C "$dir/author" push -q fork "$BRANCH"
+pr_tip=$(tip fork "$BRANCH")
+git -C "$dir/author" checkout -q master
+echo more >> "$dir/author/README.md"
+write_theme "$dir/author" "master rewrote the theme"
+commit_all "$dir/author" "upstream change"
+git -C "$dir/author" push -q origin master
+run "https://github.com/helix-editor/helix/pull/1"
+git --git-dir "$dir/fork.git" merge-base --is-ancestor "$pr_tip" "$BRANCH" ||
+  fail "PR history was rewritten"
+assert_forks_from_upstream_tip
+extra=$(git --git-dir "$dir/fork.git" diff --name-only master "$BRANCH" -- . \
+  ':!runtime/themes/akari-*.toml' ':!runtime/themes/licenses/akari.license')
+[ -z "$extra" ] || fail "branch differs from master outside the theme: $extra"
+assert_theme_is_generated
+assert_output "open-pr=true"
+assert_output "pushed=true"
+
+echo "ok"
