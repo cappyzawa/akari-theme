@@ -569,3 +569,99 @@ fn codex_variant_and_contrast_and_role_colors_match_the_loaded_theme() {
         );
     }
 }
+
+// -- Combined (non-`{variant}`) templates and `adapter` context --------
+
+fn write_template(path: &Path, content: &str) {
+    fs::create_dir_all(path.parent().unwrap()).unwrap();
+    fs::write(path, content).unwrap();
+}
+
+/// `helix` stands in for a tool whose templates live in a temp dir, so these
+/// tests drive `generate_theme_tool` without touching `THEME_TOOLS`.
+fn theme_with_helix_adapter(name: &str, adapter: toml::Table) -> Theme {
+    let mut theme = Theme::load(root_dir().join("themes").join(name)).unwrap();
+    theme.adapters.insert("helix".to_string(), adapter);
+    theme
+}
+
+#[test]
+fn combined_template_without_variant_placeholder_renders_once_in_theme_toml_order() {
+    let templates = tempfile::tempdir().unwrap();
+    write_template(
+        &templates.path().join("helix/{theme}.txt.tera"),
+        "{% for v in variants %}{{ v.variant.id }}:{{ v.variant.appearance }}:\
+         {{ v.base.background }}:{{ v.ansi.red }}:{{ v.roles.ui.accent }};{% endfor %}",
+    );
+    let generator = Generator::new(templates.path()).unwrap();
+
+    let cases: [(&str, &[&str]); 2] = [("akari", &["night", "dawn"]), ("ninja", &["shadow"])];
+    for (theme_name, expected_order) in cases {
+        let theme = theme_with_helix_adapter(theme_name, toml::Table::new());
+        let artifacts = generator.generate_theme_tool("helix", &theme).unwrap();
+
+        assert_eq!(
+            artifacts.len(),
+            1,
+            "expected exactly one artifact for {theme_name}"
+        );
+        let text = artifact_text(&artifacts, &format!("helix/{theme_name}.txt"));
+
+        let entries: Vec<&str> = text.trim_end_matches(';').split(';').collect();
+        assert_eq!(entries.len(), expected_order.len());
+        for ((entry, expected_id), variant) in
+            entries.iter().zip(expected_order).zip(&theme.variants)
+        {
+            let id = entry.split(':').next().unwrap();
+            assert_eq!(id, *expected_id);
+            assert!(entry.contains(&variant.base.background.to_string()));
+            assert!(entry.contains(&variant.ansi.normal.red.to_string()));
+            assert!(entry.contains(&variant.roles.ui.accent.to_string()));
+        }
+    }
+}
+
+#[test]
+fn per_variant_and_combined_contexts_expose_adapter_contents() {
+    let templates = tempfile::tempdir().unwrap();
+    write_template(
+        &templates.path().join("helix/{theme}-{variant}.txt.tera"),
+        "{{ variant.id }}:{{ adapter.version }}",
+    );
+    write_template(
+        &templates.path().join("helix/{theme}.txt.tera"),
+        "{{ adapter.version }}",
+    );
+    let generator = Generator::new(templates.path()).unwrap();
+
+    let mut adapter = toml::Table::new();
+    adapter.insert(
+        "version".to_string(),
+        toml::Value::String("9.9.9".to_string()),
+    );
+    let theme = theme_with_helix_adapter("ninja", adapter);
+
+    let artifacts = generator.generate_theme_tool("helix", &theme).unwrap();
+
+    assert_eq!(
+        artifact_text(&artifacts, "helix/ninja-shadow.txt"),
+        "shadow:9.9.9"
+    );
+    assert_eq!(artifact_text(&artifacts, "helix/ninja.txt"), "9.9.9");
+}
+
+#[test]
+fn adapter_context_defaults_to_empty_table_when_tool_has_no_adapters_entry() {
+    let templates = tempfile::tempdir().unwrap();
+    write_template(
+        &templates.path().join("helix/{theme}-{variant}.txt.tera"),
+        "{{ adapter.version | default(value=\"none\") }}",
+    );
+    let generator = Generator::new(templates.path()).unwrap();
+
+    // Real `themes/ninja` has no `[adapters.helix]`.
+    let theme = ninja_theme();
+    let artifacts = generator.generate_theme_tool("helix", &theme).unwrap();
+
+    assert_eq!(artifact_text(&artifacts, "helix/ninja-shadow.txt"), "none");
+}

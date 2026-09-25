@@ -84,8 +84,8 @@ pub enum Error {
     #[error("tool {0} has no theme-based generator")]
     ToolNotThemed(String),
     #[cfg(feature = "generator")]
-    #[error("template {0} has no `{{variant}}` placeholder in its output name")]
-    TemplateNeedsVariant(PathBuf),
+    #[error("adapters.{tool}.{key} is required to generate {tool}")]
+    AdapterKeyMissing { tool: String, key: String },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
