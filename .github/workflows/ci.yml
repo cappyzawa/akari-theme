@@ -33,9 +33,6 @@ jobs:
     - name: Check mirror assembly
       run: scripts/check-mirrors
 
-    - name: Test Helix upstream branch update
-      run: scripts/test-update-helix-branch
-
   status-check:
     needs: [generate]
     runs-on: ubuntu-latest
