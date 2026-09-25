@@ -64,7 +64,7 @@ link = "ansi.bright.blue"
 error = "ansi.red"
 warning = "colors.lantern.mid"
 info = "colors.night"
-hint = "darken(base.foreground, 0.40)"
+hint = "darken(colors.night, 0.30)"
 success = "colors.life"
 
 [roles.diff]

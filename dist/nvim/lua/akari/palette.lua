@@ -161,7 +161,7 @@ M.variants = {
 },
     diagnostic = {
       ["error"] = "#6A2828",
-      ["hint"] = "#100E0D",
+      ["hint"] = "#222D38",
       ["info"] = "#304050",
       ["success"] = "#3A5830",
       ["warning"] = "#8A4530",
