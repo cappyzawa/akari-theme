@@ -1,6 +1,6 @@
 # Akari Slack Theme
 
-Slack themes inspired by Japanese alleys lit by round lanterns.
+Slack themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -28,5 +28,5 @@ Enable **Window gradient** for a smoother appearance that blends the background 
 
 ## Variants
 
-- **akari-night** - Dark theme with lantern-lit atmosphere
-- **akari-dawn** - Light theme with morning warmth
+- **akari-night** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn** - A light palette inspired by Japanese alleys lit by round lanterns.

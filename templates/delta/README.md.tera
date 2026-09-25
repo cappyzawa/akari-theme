@@ -1,0 +1,83 @@
+{%- set first = variants.0 -%}
+# {{ theme.name }} Theme for delta
+
+{{ theme.name }} Theme for [delta](https://github.com/dandavison/delta), a syntax-highlighting pager for git.
+
+## Prerequisites
+
+This theme uses the {{ theme.name }} bat theme for syntax highlighting. Install the bat theme first:
+
+```bash
+# See ../bat/README.md for full instructions
+cp ../bat/{{ theme.id }}-{{ first.variant.id }}.tmTheme "$(bat --config-dir)/themes/"
+bat cache --build
+```
+
+## Installation
+
+1. Copy the theme file to your delta config directory:
+
+   ```bash
+   # Create directory if it doesn't exist
+   mkdir -p ~/.config/delta
+
+   # Copy the theme{% if variants | length > 1 %} (choose {% for v in variants %}{{ v.variant.id }}{% if not loop.last %} or {% endif %}{% endfor %}){% endif %}
+{% for v in variants %}   cp {{ theme.id }}-{{ v.variant.id }}.gitconfig ~/.config/delta/
+{% if not loop.last %}   # or
+{% endif %}{% endfor %}   ```
+
+2. Include the theme in your `~/.gitconfig`:
+
+   ```gitconfig
+   [include]
+       path = ~/.config/delta/{{ theme.id }}-{{ first.variant.id }}.gitconfig
+
+   [core]
+       pager = delta
+
+   [interactive]
+       diffFilter = delta --color-only
+
+   [delta]
+       features = {{ theme.id }}-{{ first.variant.id }}
+   ```
+{% for v in variants | slice(start=1) %}
+   Or for {{ v.variant.id }} theme:
+
+   ```gitconfig
+   [include]
+       path = ~/.config/delta/{{ theme.id }}-{{ v.variant.id }}.gitconfig
+
+   [delta]
+       features = {{ theme.id }}-{{ v.variant.id }}
+   ```
+{% endfor %}
+## Alternative: Direct Configuration
+
+You can also copy the settings directly into your `~/.gitconfig`:
+
+```gitconfig
+[delta]
+    dark = {% if first.variant.appearance == "dark" %}true{% else %}false{% endif %}
+    syntax-theme = "{{ theme.name }} {{ first.variant.name }}"
+    line-numbers = true
+    # ... paste other settings from {{ theme.id }}-{{ first.variant.id }}.gitconfig
+```
+
+## Customization
+
+The theme enables `line-numbers` by default. You can add additional options:
+
+```gitconfig
+[delta]
+    features = {{ theme.id }}-{{ first.variant.id }}
+    side-by-side = true          # Enable side-by-side view
+    navigate = true              # Use n/N to navigate between files
+    hyperlinks = true            # Enable clickable file paths
+```
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

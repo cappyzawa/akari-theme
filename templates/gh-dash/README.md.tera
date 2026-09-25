@@ -1,0 +1,30 @@
+{%- set first = variants.0 -%}
+# {{ theme.name }} Theme for gh-dash
+
+{{ theme.name }} Theme for [gh-dash](https://github.com/dlvhdr/gh-dash), a GitHub CLI dashboard extension.
+
+## Installation
+
+Copy the `theme:` section from your preferred variant into your `~/.config/gh-dash/config.yml`:
+
+{% for v in variants -%}
+### {{ theme.name }} {{ v.variant.name }}
+
+{{ v.variant.description }}
+
+```yaml
+# Copy the contents of {{ theme.id }}-{{ v.variant.id }}.yml into your config.yml
+```
+
+{% endfor -%}
+## Usage
+
+1. Open your gh-dash config file:
+
+   ```bash
+   ${EDITOR:-vim} ~/.config/gh-dash/config.yml
+   ```
+
+2. Copy the entire `theme:` section from {% for v in variants %}`{{ theme.id }}-{{ v.variant.id }}.yml`{% if not loop.last %} or {% endif %}{% endfor %} and paste it into your config.
+
+3. Restart gh-dash to apply the theme.

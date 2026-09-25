@@ -1,0 +1,66 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+# {{ theme.name }} tmux Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+tmux themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+### Using TPM (recommended)
+
+Add to your `.tmux.conf`:
+
+```tmux
+set -g @plugin '{{ owner }}/{{ theme.id }}-tmux'
+set -g @{{ theme.id }}_variant '{{ first.variant.id }}'{% if variants | length > 1 %}  #{% for v in variants | slice(start=1) %} or '{{ v.variant.id }}'{% endfor %}{% endif %}
+```
+
+Then press `prefix + I` to install.
+
+To pin a specific version:
+
+```tmux
+set -g @plugin '{{ owner }}/{{ theme.id }}-tmux#v0.9.0'
+```
+
+### Manual
+
+Download the theme file and source it in your `.tmux.conf`:
+
+```tmux
+source-file /path/to/{{ theme.id }}-{{ first.variant.id }}.conf
+```
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor %}
+## Features
+
+### Prefix Indicator
+
+The status bar icon changes when you press the prefix key:
+
+- 󰛩 - Normal mode (outline)
+- 󰛨 - Prefix mode (filled)
+
+## Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `@{{ theme.id }}_variant` | `{{ first.variant.id }}` | Theme variant (`{{ first.variant.id }}`{% for v in variants | slice(start=1) %} or `{{ v.variant.id }}`{% endfor %}) |
+| `@{{ theme.id }}_icon_normal` | `󰛩` | Icon shown in normal mode |
+| `@{{ theme.id }}_icon_prefix` | `󰛨` | Icon shown when prefix is pressed |
+
+### Example: Custom Icons
+
+```tmux
+set -g @{{ theme.id }}_icon_normal ''
+set -g @{{ theme.id }}_icon_prefix ''
+```

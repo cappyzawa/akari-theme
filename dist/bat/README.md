@@ -1,6 +1,6 @@
 # Akari bat Theme
 
-[bat](https://github.com/sharkdp/bat) themes inspired by Japanese alleys lit by round lanterns.
+[bat](https://github.com/sharkdp/bat) themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -48,5 +48,5 @@ export BAT_THEME_LIGHT="akari-dawn"
 
 ## Variants
 
-- **akari-night** - Dark theme with lantern-lit atmosphere
-- **akari-dawn** - Light theme with morning warmth
+- **akari-night** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn** - A light palette inspired by Japanese alleys lit by round lanterns.

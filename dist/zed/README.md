@@ -1,12 +1,12 @@
 # Akari for Zed
 
 A dark (Night) and light (Dawn) theme family for the [Zed](https://zed.dev)
-editor, inspired by Japanese alleys lit by round lanterns.
+editor. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 Both variants ship in a single theme file (`akari.json`) exposing:
 
-- **Akari Night** — warm dark
-- **Akari Dawn** — warm light
+- **Akari Night** — A dark palette inspired by Japanese alleys lit by round lanterns.
+- **Akari Dawn** — A light palette inspired by Japanese alleys lit by round lanterns.
 
 ## Install
 

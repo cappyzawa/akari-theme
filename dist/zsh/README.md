@@ -4,7 +4,7 @@
 > This repository is a read-only mirror.
 > Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
-zsh-syntax-highlighting themes inspired by Japanese alleys lit by round lanterns.
+zsh-syntax-highlighting themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Requirements
 
@@ -99,5 +99,5 @@ export AKARI_VARIANT=dawn
 
 ## Variants
 
-- **akari-night.zsh** - Dark theme with lantern-lit atmosphere
-- **akari-dawn.zsh** - Light theme with morning warmth
+- **akari-night.zsh** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn.zsh** - A light palette inspired by Japanese alleys lit by round lanterns.

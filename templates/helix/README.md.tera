@@ -1,0 +1,37 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+# {{ theme.name }} Helix Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Helix editor themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+Clone the repository and symlink or copy the theme files:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ theme.id }}-helix.git
+cp {{ theme.id }}-helix/*.toml ~/.config/helix/themes/
+```
+
+Then add to your Helix config (`~/.config/helix/config.toml`):
+
+```toml
+theme = "{{ theme.id }}-{{ first.variant.id }}"
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```toml
+theme = "{{ theme.id }}-{{ v.variant.id }}"
+```
+{% endfor %}
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

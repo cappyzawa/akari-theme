@@ -1,0 +1,28 @@
+# {{ theme.name }} Slack Theme
+
+Slack themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+1. Open Slack and go to **Preferences** (Cmd/Ctrl + ,)
+2. Navigate to **Themes** > **Custom Theme**
+3. Click **Import** and paste the theme string from the file below
+
+{% for v in variants -%}
+### {{ v.variant.name }}
+
+> [!TIP]
+> Set Slack's color theme to **{{ v.variant.appearance | capitalize }}** for the best experience.
+
+Copy the contents of [{{ theme.id }}-{{ v.variant.id }}.txt](./{{ theme.id }}-{{ v.variant.id }}.txt)
+
+{% endfor -%}
+## Recommended Settings
+
+Enable **Window gradient** for a smoother appearance that blends the background with selected items.
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

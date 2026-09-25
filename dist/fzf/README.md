@@ -4,7 +4,7 @@
 > This repository is a read-only mirror.
 > Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
-fzf themes inspired by Japanese alleys lit by round lanterns.
+fzf themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -91,5 +91,5 @@ export AKARI_VARIANT=dawn
 
 ## Variants
 
-- **akari-night.sh** - Dark theme with lantern-lit atmosphere
-- **akari-dawn.sh** - Light theme with morning warmth
+- **akari-night.sh** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn.sh** - A light palette inspired by Japanese alleys lit by round lanterns.

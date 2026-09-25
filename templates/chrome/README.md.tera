@@ -1,0 +1,35 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set mirror = theme.id ~ "-chrome" -%}
+# {{ theme.name }} Chrome Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Chrome browser themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ mirror }}.git
+```
+{% for v in variants %}
+### {{ v.variant.name }} Theme
+
+{{ v.variant.description }}
+
+1. Open `chrome://extensions/` in Chrome
+2. Enable "Developer mode" in the top right
+3. Click "Load unpacked"
+4. Select the `{{ mirror }}/{{ theme.id }}-{{ v.variant.id }}/` directory
+
+**Key colors:** {{ v.variant.appearance | capitalize }} backgrounds ({{ v.base.background }}) with active tabs ({{ v.roles.ui.accent }})
+{% endfor %}
+## Notes
+
+- Due to Chrome manifest v3 limitations, customizable elements are limited
+- For more detailed color control, consider using CSS extension tools like Stylus
+- Only one theme can be active at a time

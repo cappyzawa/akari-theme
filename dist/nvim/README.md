@@ -4,7 +4,7 @@
 > This repository is a read-only mirror.
 > Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
-Neovim colorscheme inspired by Japanese alleys lit by round lanterns.
+Neovim colorscheme for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -69,5 +69,5 @@ require("akari").setup({
 
 ## Variants
 
-- **night** (default) - Dark theme with lantern-lit atmosphere
-- **dawn** - Light theme with morning warmth
+- **night** (default) - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **dawn** - A light palette inspired by Japanese alleys lit by round lanterns.
