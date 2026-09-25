@@ -14,6 +14,14 @@ jobs:
     steps:
     - uses: actions/checkout@v6
 
+    - name: Check tag matches VERSION
+      run: |
+        version="$(cat VERSION)"
+        if [ "${GITHUB_REF_NAME}" != "v${version}" ]; then
+          echo "tag ${GITHUB_REF_NAME} does not match VERSION ${version}" >&2
+          exit 1
+        fi
+
     - name: Create Release
       uses: softprops/action-gh-release@v2
       with:
