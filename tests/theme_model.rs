@@ -209,3 +209,31 @@ fn series_has_eight_entries() {
         }
     }
 }
+
+/// The local `Theme` above is the test-file's own manifest reader; the
+/// loader under test is `akari_theme::theme::Theme`, referenced fully
+/// qualified to avoid colliding with it.
+#[test]
+fn resolved_variants_serialize_exactly_the_documented_roles() {
+    let documented = documented_roles();
+    for theme in Theme::all() {
+        let loaded = akari_theme::theme::Theme::load(&theme.dir)
+            .unwrap_or_else(|e| panic!("{}: {e}", theme.dir.display()));
+        for variant in &loaded.variants {
+            let value = Value::try_from(variant).unwrap();
+            let assigned = assigned_roles(&value);
+            let missing: Vec<_> = documented.difference(&assigned).collect();
+            let extra: Vec<_> = assigned.difference(&documented).collect();
+            assert!(
+                missing.is_empty() && extra.is_empty(),
+                "{}: missing {missing:?}, undocumented {extra:?}",
+                theme.dir.display()
+            );
+            assert!(
+                value.get("colors").is_none(),
+                "{}: serialized variant still has a colors key",
+                theme.dir.display()
+            );
+        }
+    }
+}

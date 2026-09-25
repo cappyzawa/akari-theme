@@ -1,5 +1,6 @@
 use crate::ansi::{AnsiColors, RawAnsi};
 use crate::expr::{ColorExpr, ResolveRef, Resolver, resolve_fields};
+use crate::theme::Base;
 use crate::{Error, Rgb, Variant};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
@@ -112,12 +113,6 @@ pub struct Colors {
     pub night: Rgb,
     pub rain: Rgb,
     pub muted: Rgb,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct Base {
-    pub background: Rgb,
-    pub foreground: Rgb,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
