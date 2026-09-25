@@ -117,6 +117,51 @@ mod generator {
     }
 
     #[test]
+    fn generate_codex() {
+        let generator = Generator::new(templates_dir()).unwrap();
+        assert!(
+            generator
+                .available_tools()
+                .unwrap()
+                .iter()
+                .any(|tool| tool == "codex")
+        );
+        let (night, dawn) = load_palettes();
+        let artifacts = generator.generate_tool("codex", &night, &dawn).unwrap();
+
+        for (palette, variant, contrast) in [(&night, "dark", 60), (&dawn, "light", 45)] {
+            let path = PathBuf::from(format!("codex/{}.txt", palette.name));
+            let artifact = artifacts.iter().find(|a| a.rel_path == path).unwrap();
+            let akari_theme::ArtifactContent::Text(content) = &artifact.content else {
+                panic!("expected generated theme text");
+            };
+            let json = content.trim().strip_prefix("codex-theme-v1:").unwrap();
+            let actual: serde_json::Value = serde_json::from_str(json).unwrap();
+            assert_eq!(
+                actual,
+                serde_json::json!({
+                    "codeThemeId": "codex",
+                    "theme": {
+                        "accent": palette.colors.lantern.mid.to_string(),
+                        "accentSource": "custom",
+                        "contrast": contrast,
+                        "fonts": {"code": null, "ui": null},
+                        "ink": palette.base.foreground.to_string(),
+                        "opaqueWindows": false,
+                        "semanticColors": {
+                            "diffAdded": palette.state.diff_added.to_string(),
+                            "diffRemoved": palette.state.diff_removed.to_string(),
+                            "skill": palette.colors.muted.to_string()
+                        },
+                        "surface": palette.base.background.to_string()
+                    },
+                    "variant": variant
+                })
+            );
+        }
+    }
+
+    #[test]
     fn generate_all_tools() {
         let generator = Generator::new(templates_dir()).unwrap();
         let (night, dawn) = load_palettes();
