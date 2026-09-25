@@ -10,6 +10,7 @@
       "frame_incognito": [37, 35, 31],
       "frame_incognito_inactive": [37, 35, 31],
       "toolbar": [58, 62, 64],
+      "toolbar_button_icon": [226, 106, 59],
       "tab_text": [230, 222, 211],
       "tab_background_text": [155, 171, 185],
       "tab_background_text_inactive": [155, 171, 185],
@@ -26,9 +27,6 @@
     },
     "properties": {
       "ntp_background_alignment": "center"
-    },
-    "tints": {
-      "buttons": [0.047, 0.871, -1]
     }
   }
 }
