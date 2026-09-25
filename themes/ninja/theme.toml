@@ -1,0 +1,16 @@
+[theme]
+id = "ninja"
+name = "Ninja"
+description = "A dark ink palette with a blue vortex and a pink blade, tuned for reading code."
+repository = "https://github.com/cappyzawa/akari-theme"
+license = "MIT"
+variants = ["shadow"]
+
+[adapters.vscode]
+publisher = "cappyzawa"
+version = "0.1.0"
+icon = "icon.png"
+keywords = ["theme", "dark", "ink", "blue", "pink"]
+
+[adapters.chrome]
+version = "0.1.0"

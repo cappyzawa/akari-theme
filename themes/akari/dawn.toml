@@ -1,0 +1,122 @@
+[variant]
+id = "dawn"
+name = "Dawn"
+appearance = "light"
+description = "A light palette inspired by Japanese alleys lit by round lanterns."
+
+[base]
+background = "#E4DED6" # dawn alley surface — warm paper, not white
+foreground = "#1A1816" # ink black — stone pavement
+
+# Same pigments as Night, seen as the lantern dims and dawn arrives.
+[colors.lantern]
+ember = "#7A3828" # cooling embers
+near = "#6A2828"  # hibukuro — paper in morning light
+mid = "#8A4530"   # fading lantern
+far = "#B07840"   # amber in morning light
+
+[colors]
+life = "#3A5830"  # plants catching first light
+night = "#304050" # quiet morning air
+rain = "#305858"  # rain puddles — reflections on wet stones
+muted = "#806080" # distant, unobtrusive
+
+[ansi]
+black = "base.foreground"
+red = "colors.lantern.near"
+green = "colors.life"
+yellow = "colors.lantern.far"
+blue = "colors.night"
+magenta = "colors.muted"
+cyan = "colors.rain"
+white = "base.background"
+
+# Bright slots go darker on a light background so they stay readable.
+[ansi.bright]
+black = "brighten(ansi.black, 0.20)"
+red = "brighten(ansi.red, -0.12)"
+green = "brighten(ansi.green, -0.12)"
+yellow = "brighten(ansi.yellow, -0.15)"
+blue = "brighten(ansi.blue, -0.15)"
+magenta = "brighten(ansi.magenta, -0.15)"
+cyan = "brighten(ansi.cyan, -0.15)"
+white = "brighten(ansi.white, -0.10)"
+
+[roles.ui]
+surface = "darken(base.background, 0.12)"
+sunken = "mix(base.background, colors.lantern.mid, 0.08)"
+raised = "darken(base.background, 0.06)"
+inset = "darken(base.background, 0.06)"
+border = "darken(base.background, 0.15)"
+muted = "darken(colors.night, 0.30)"
+accent = "colors.lantern.mid"
+accent_secondary = "colors.lantern.far"
+on_accent = "base.background"
+selection_bg = "mix(base.background, colors.lantern.far, 0.25)"
+selection_fg = "base.foreground"
+match_bg = "mix(base.background, colors.lantern.mid, 0.20)"
+cursor = "colors.lantern.mid"
+cursor_text = "base.background"
+active_bg = "mix(base.background, colors.lantern.far, 0.15)"
+link = "ansi.bright.blue"
+
+[roles.diagnostic]
+error = "ansi.red"
+warning = "colors.lantern.mid"
+info = "colors.night"
+hint = "darken(base.foreground, 0.40)"
+success = "colors.life"
+
+[roles.diff]
+added = "darken(colors.life, 0.15)"
+added_bg = "mix(base.background, colors.life, 0.15)"
+removed = "ansi.red"
+removed_bg = "mix(base.background, ansi.red, 0.15)"
+changed = "darken(colors.lantern.far, 0.10)"
+moved = "colors.night"
+conflict = "ansi.red"
+ours = "colors.lantern.far"
+theirs = "colors.night"
+
+[roles.syntax]
+text = "base.foreground"
+comment = "darken(colors.night, 0.30)"
+keyword = "colors.lantern.mid"
+string = "colors.life"
+character = "colors.lantern.mid"
+number = "lighten(colors.rain, 0.15)"
+constant = "lighten(colors.rain, 0.15)"
+type = "colors.lantern.far"
+function = "colors.muted"
+variable = "base.foreground"
+member = "colors.night"
+builtin = "colors.lantern.ember"
+namespace = "colors.lantern.far"
+attribute = "colors.lantern.far"
+label = "colors.lantern.far"
+tag = "colors.lantern.mid"
+punctuation_special = "colors.lantern.far"
+decorator = "ansi.bright.yellow"
+macro = "ansi.bright.magenta"
+escape = "ansi.bright.magenta"
+regexp = "ansi.bright.green"
+path = "ansi.green"
+directory = "ansi.cyan"
+
+[roles.markup]
+heading_1 = "colors.lantern.mid"
+heading_2 = "colors.lantern.far"
+heading_3 = "colors.lantern.ember"
+heading_4 = "colors.lantern.far"
+list = "colors.lantern.mid"
+raw = "ansi.bright.green"
+
+[roles]
+series = [
+  "colors.lantern.mid",
+  "colors.night",
+  "colors.muted",
+  "lighten(colors.rain, 0.15)",
+  "colors.life",
+  "colors.lantern.far",
+]
