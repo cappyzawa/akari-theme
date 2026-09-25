@@ -1,5 +1,5 @@
--- Akari colorscheme for Neovim
--- A terminal color palette inspired by Japanese alleys lit by round lanterns.
+-- {{ theme.name }} colorscheme for Neovim
+-- {{ theme.description }}
 
 local M = {}
 
@@ -10,7 +10,7 @@ M.config = {
   keywordStyle = {},
   transparent = false,
   terminalColors = true,
-  variant = "night", -- "night" or "dawn"
+  variant = "{{ variants.0.variant.id }}", -- {% for v in variants %}"{{ v.variant.id }}"{% if not loop.last %} or {% endif %}{% endfor %}
 }
 
 function M.setup(opts)
@@ -18,7 +18,7 @@ function M.setup(opts)
 end
 
 function M.load(variant)
-  local palette_module = require("akari.palette")
+  local palette_module = require("{{ theme.id }}.palette")
 
   -- Allow variant to be passed directly or use config; fall back to the
   -- palette's default variant when the requested id is unknown.
@@ -35,14 +35,14 @@ function M.load(variant)
     vim.cmd("hi clear")
   end
 
-  vim.g.colors_name = "akari"
+  vim.g.colors_name = "{{ theme.id }}"
   vim.o.termguicolors = true
 
   if vim.fn.exists("syntax_on") then
     vim.cmd("syntax reset")
   end
 
-  local highlights = require("akari.highlights")
+  local highlights = require("{{ theme.id }}.highlights")
 
   local palette = palette_module.variants[selected_variant]
   local terminal = palette_module.get_terminal(selected_variant)

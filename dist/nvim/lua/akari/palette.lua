@@ -3,167 +3,252 @@
 
 local M = {}
 
--- Night palette (dark theme)
-M.night = {
-  -- Base
-  background = "#25231F",
-  foreground = "#E6DED3",
+M.default = "night"
 
-  -- Layers (blue-tinted elevation)
-  surface = "#323333",
-  sunken = "#412E23",
-  raised = "#363939",
-  border = "#3F4346",
-
-  -- UI
-  cursor = "#E26A3B",
-  cursor_text = "#25231F",
-  selection_bg = "#51422E",
-  selection_fg = "#E6DED3",
-  match_bg = "#4B3125",
-
-  -- ANSI colors
-  black = "#1E1C19",
-  red = "#D25046",
-  green = "#7FAF6A",
-  yellow = "#D4A05A",
-  blue = "#7A8FA2",
-  magenta = "#8E7BA0",
-  cyan = "#6F8F8A",
-  white = "#E6DED3",
-
-  -- Bright ANSI colors
-  bright_black = "#716A5F",
-  bright_red = "#DE7F77",
-  bright_green = "#A1C492",
-  bright_yellow = "#E4C397",
-  bright_blue = "#A7B5C1",
-  bright_magenta = "#B4A7C0",
-  bright_cyan = "#9AB1AD",
-  bright_white = "#EFEAE3",
-
-  -- Semantic colors
-  lantern = "#E26A3B",
-  ember = "#D65A3A",
-  amber = "#D4A05A",
-  constant = "#8CA6A1",
-  comment = "#9BABB9",
-  path = "#7FAF6A",
-  macro = "#B4A7C0",
-  escape = "#B4A7C0",
-  regexp = "#A1C492",
-  link = "#A7B5C1",
-  member = "#7A8FA2",
-
-  -- Diagnostic
-  error = "#D25046",
-  warning = "#E26A3B",
-  info = "#7A8FA2",
-  hint = "#9BABB9",
-
-  -- Diff
-  diff_add = "#7FAF6A",
-  diff_delete = "#D25046",
-  diff_change = "#D4A05A",
-
-  -- None (for transparent)
-  none = "NONE",
+M.appearance = {
+  ["night"] = "dark",
+  ["dawn"] = "light",
 }
 
--- Dawn palette (light theme)
-M.dawn = {
-  -- Base
-  background = "#E4DED6",
-  foreground = "#1A1816",
-
-  -- Layers
-  surface = "#CFC4B6",
-  sunken = "#DDD2C9",
-  raised = "#D9D1C6",
-  border = "#CABEAE",
-
-  -- UI
-  cursor = "#8A4530",
-  cursor_text = "#E4DED6",
-  selection_bg = "#D7C5B1",
-  selection_fg = "#1A1816",
-  match_bg = "#D2BFB5",
-
-  -- ANSI colors
-  black = "#1A1816",
-  red = "#6A2828",
-  green = "#3A5830",
-  yellow = "#B07840",
-  blue = "#304050",
-  magenta = "#806080",
-  cyan = "#305858",
-  white = "#E4DED6",
-
-  -- Bright ANSI colors
-  bright_black = "#514B45",
-  bright_red = "#3E1717",
-  bright_green = "#20301A",
-  bright_yellow = "#78522C",
-  bright_blue = "#131A20",
-  bright_magenta = "#543F54",
-  bright_cyan = "#152727",
-  bright_white = "#D0C5B7",
-
-  -- Semantic colors
-  lantern = "#8A4530",
-  ember = "#7A3828",
-  amber = "#B07840",
-  constant = "#447C7C",
-  comment = "#222D38",
-  path = "#3A5830",
-  macro = "#543F54",
-  escape = "#543F54",
-  regexp = "#20301A",
-  link = "#131A20",
-  member = "#304050",
-
-  -- Diagnostic
-  error = "#6A2828",
-  warning = "#8A4530",
-  info = "#304050",
-  hint = "#100E0D",
-
-  -- Diff
-  diff_add = "#314B29",
-  diff_delete = "#6A2828",
-  diff_change = "#9E6C3A",
-
-  -- None (for transparent)
-  none = "NONE",
+M.variants = {
+  ["night"] = {
+    base = {
+      background = "#25231F",
+      foreground = "#E6DED3",
+    },
+    ansi = {
+      black = "#1E1C19",
+      red = "#D25046",
+      green = "#7FAF6A",
+      yellow = "#D4A05A",
+      blue = "#7A8FA2",
+      magenta = "#8E7BA0",
+      cyan = "#6F8F8A",
+      white = "#E6DED3",
+      bright = {
+        ["black"] = "#716A5F",
+        ["blue"] = "#A7B5C1",
+        ["cyan"] = "#9AB1AD",
+        ["green"] = "#A1C492",
+        ["magenta"] = "#B4A7C0",
+        ["red"] = "#DE7F77",
+        ["white"] = "#EFEAE3",
+        ["yellow"] = "#E4C397",
+},
+    },
+    ui = {
+      ["accent"] = "#E26A3B",
+      ["accent_secondary"] = "#D4A05A",
+      ["active_bg"] = "#3A3E40",
+      ["border"] = "#3F4346",
+      ["cursor"] = "#E26A3B",
+      ["cursor_text"] = "#25231F",
+      ["inset"] = "#181714",
+      ["link"] = "#A7B5C1",
+      ["match_bg"] = "#4B3125",
+      ["muted"] = "#9BABB9",
+      ["on_accent"] = "#25231F",
+      ["raised"] = "#363939",
+      ["selection_bg"] = "#51422E",
+      ["selection_fg"] = "#E6DED3",
+      ["sunken"] = "#412E23",
+      ["surface"] = "#323333",
+},
+    diagnostic = {
+      ["error"] = "#D25046",
+      ["hint"] = "#9BABB9",
+      ["info"] = "#7A8FA2",
+      ["success"] = "#7FAF6A",
+      ["warning"] = "#E26A3B",
+},
+    diff = {
+      ["added"] = "#7FAF6A",
+      ["added_bg"] = "#33382A",
+      ["changed"] = "#D4A05A",
+      ["conflict"] = "#D25046",
+      ["moved"] = "#7A8FA2",
+      ["ours"] = "#D4A05A",
+      ["removed"] = "#D25046",
+      ["removed_bg"] = "#3F2A25",
+      ["theirs"] = "#7A8FA2",
+},
+    syntax = {
+      ["attribute"] = "#D4A05A",
+      ["builtin"] = "#D65A3A",
+      ["character"] = "#E26A3B",
+      ["comment"] = "#9BABB9",
+      ["constant"] = "#8CA6A1",
+      ["decorator"] = "#E4C397",
+      ["directory"] = "#6F8F8A",
+      ["escape"] = "#B4A7C0",
+      ["function"] = "#8E7BA0",
+      ["keyword"] = "#E26A3B",
+      ["label"] = "#D4A05A",
+      ["macro"] = "#B4A7C0",
+      ["member"] = "#7A8FA2",
+      ["namespace"] = "#D4A05A",
+      ["number"] = "#8CA6A1",
+      ["path"] = "#7FAF6A",
+      ["punctuation_special"] = "#D4A05A",
+      ["regexp"] = "#A1C492",
+      ["string"] = "#7FAF6A",
+      ["tag"] = "#E26A3B",
+      ["text"] = "#E6DED3",
+      ["type"] = "#D4A05A",
+      ["variable"] = "#E6DED3",
+},
+    markup = {
+      ["heading_1"] = "#E26A3B",
+      ["heading_2"] = "#D4A05A",
+      ["heading_3"] = "#D65A3A",
+      ["heading_4"] = "#D4A05A",
+      ["list"] = "#E26A3B",
+      ["raw"] = "#A1C492",
+},
+    series = {
+      "#E26A3B",
+      "#7A8FA2",
+      "#8E7BA0",
+      "#8CA6A1",
+      "#7FAF6A",
+      "#D4A05A",
+      "#6F8F8A",
+      "#D65A3A",
+},
+  },
+  ["dawn"] = {
+    base = {
+      background = "#E4DED6",
+      foreground = "#1A1816",
+    },
+    ansi = {
+      black = "#1A1816",
+      red = "#6A2828",
+      green = "#3A5830",
+      yellow = "#B07840",
+      blue = "#304050",
+      magenta = "#806080",
+      cyan = "#305858",
+      white = "#E4DED6",
+      bright = {
+        ["black"] = "#514B45",
+        ["blue"] = "#131A20",
+        ["cyan"] = "#152727",
+        ["green"] = "#20301A",
+        ["magenta"] = "#543F54",
+        ["red"] = "#3E1717",
+        ["white"] = "#D0C5B7",
+        ["yellow"] = "#78522C",
+},
+    },
+    ui = {
+      ["accent"] = "#8A4530",
+      ["accent_secondary"] = "#B07840",
+      ["active_bg"] = "#DCCFC0",
+      ["border"] = "#CABEAE",
+      ["cursor"] = "#8A4530",
+      ["cursor_text"] = "#E4DED6",
+      ["inset"] = "#D9D1C6",
+      ["link"] = "#131A20",
+      ["match_bg"] = "#D2BFB5",
+      ["muted"] = "#222D38",
+      ["on_accent"] = "#E4DED6",
+      ["raised"] = "#D9D1C6",
+      ["selection_bg"] = "#D7C5B1",
+      ["selection_fg"] = "#1A1816",
+      ["sunken"] = "#DDD2C9",
+      ["surface"] = "#CFC4B6",
+},
+    diagnostic = {
+      ["error"] = "#6A2828",
+      ["hint"] = "#100E0D",
+      ["info"] = "#304050",
+      ["success"] = "#3A5830",
+      ["warning"] = "#8A4530",
+},
+    diff = {
+      ["added"] = "#314B29",
+      ["added_bg"] = "#CBCABD",
+      ["changed"] = "#9E6C3A",
+      ["conflict"] = "#6A2828",
+      ["moved"] = "#304050",
+      ["ours"] = "#B07840",
+      ["removed"] = "#6A2828",
+      ["removed_bg"] = "#D2C3BC",
+      ["theirs"] = "#304050",
+},
+    syntax = {
+      ["attribute"] = "#B07840",
+      ["builtin"] = "#7A3828",
+      ["character"] = "#8A4530",
+      ["comment"] = "#222D38",
+      ["constant"] = "#447C7C",
+      ["decorator"] = "#78522C",
+      ["directory"] = "#305858",
+      ["escape"] = "#543F54",
+      ["function"] = "#806080",
+      ["keyword"] = "#8A4530",
+      ["label"] = "#B07840",
+      ["macro"] = "#543F54",
+      ["member"] = "#304050",
+      ["namespace"] = "#B07840",
+      ["number"] = "#447C7C",
+      ["path"] = "#3A5830",
+      ["punctuation_special"] = "#B07840",
+      ["regexp"] = "#20301A",
+      ["string"] = "#3A5830",
+      ["tag"] = "#8A4530",
+      ["text"] = "#1A1816",
+      ["type"] = "#B07840",
+      ["variable"] = "#1A1816",
+},
+    markup = {
+      ["heading_1"] = "#8A4530",
+      ["heading_2"] = "#B07840",
+      ["heading_3"] = "#7A3828",
+      ["heading_4"] = "#B07840",
+      ["list"] = "#8A4530",
+      ["raw"] = "#20301A",
+},
+    series = {
+      "#8A4530",
+      "#304050",
+      "#806080",
+      "#447C7C",
+      "#3A5830",
+      "#B07840",
+      "#305858",
+      "#7A3828",
+},
+  },
 }
 
--- Default to night palette for backwards compatibility
-M.palette = M.night
+M.palette = M.variants[M.default]
 
--- Get terminal colors for a specific variant
+-- Returns the 16 terminal ANSI colors (0-7 base, 8-15 bright) for `variant`,
+-- falling back to the default variant when `variant` is unknown.
 function M.get_terminal(variant)
-  local p = variant == "dawn" and M.dawn or M.night
+  local v = M.variants[variant] or M.palette
   return {
-    p.black, -- 0
-    p.red, -- 1
-    p.green, -- 2
-    p.yellow, -- 3
-    p.blue, -- 4
-    p.magenta, -- 5
-    p.cyan, -- 6
-    p.white, -- 7
-    p.bright_black, -- 8
-    p.bright_red, -- 9
-    p.bright_green, -- 10
-    p.bright_yellow, -- 11
-    p.bright_blue, -- 12
-    p.bright_magenta, -- 13
-    p.bright_cyan, -- 14
-    p.bright_white, -- 15
+    v.ansi.black,
+    v.ansi.red,
+    v.ansi.green,
+    v.ansi.yellow,
+    v.ansi.blue,
+    v.ansi.magenta,
+    v.ansi.cyan,
+    v.ansi.white,
+    v.ansi.bright.black,
+    v.ansi.bright.red,
+    v.ansi.bright.green,
+    v.ansi.bright.yellow,
+    v.ansi.bright.blue,
+    v.ansi.bright.magenta,
+    v.ansi.bright.cyan,
+    v.ansi.bright.white,
   }
 end
 
--- Terminal colors (16 ANSI colors) - default to night
-M.terminal = M.get_terminal("night")
+M.terminal = M.get_terminal(M.default)
 
 return M

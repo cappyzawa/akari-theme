@@ -1,0 +1,27 @@
+{
+  "name": "{{ theme.id }}-theme",
+  "displayName": {{ theme.name | json_encode }},
+  "description": {{ theme.description | json_encode }},
+  "version": {{ adapter.version | json_encode }},
+  "publisher": {{ adapter.publisher | json_encode }},
+{% if theme.license %}  "license": {{ theme.license | json_encode }},
+{% endif %}{% if adapter.icon %}  "icon": {{ adapter.icon | json_encode }},
+{% endif %}  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Themes"],
+{% if adapter.keywords %}  "keywords": [{% for k in adapter.keywords %}{{ k | json_encode }}{% if not loop.last %}, {% endif %}{% endfor %}],
+{% endif %}{% if theme.repository %}  "repository": {
+    "type": "git",
+    "url": {{ theme.repository | json_encode }}
+  },
+{% endif %}  "contributes": {
+    "themes": [{% for v in variants %}
+      {
+        "label": {{ theme.name ~ " " ~ v.variant.name | json_encode }},
+        "uiTheme": "{% if v.variant.appearance == "dark" %}vs-dark{% else %}vs{% endif %}",
+        "path": "./themes/{{ theme.id }}-{{ v.variant.id }}-color-theme.json"
+      }{% if not loop.last %},{% endif %}{% endfor %}
+    ]
+  }
+}

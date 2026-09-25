@@ -9,7 +9,6 @@ variants = ["shadow"]
 [adapters.vscode]
 publisher = "cappyzawa"
 version = "0.1.0"
-icon = "icon.png"
 keywords = ["theme", "dark", "ink", "blue", "pink"]
 
 [adapters.chrome]

@@ -258,8 +258,8 @@ The role assignment in `themes/akari` follows one side; the other side will
 change output when its adapter migrates, and that change must be reviewed
 rather than snapshot-refreshed.
 
-- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`, but Dawn darkens `state.diff_changed` while Helix reads the pigment directly. `diff.changed` follows `state.diff_changed`, so Helix Dawn and Zed's modified files change.
-- Added lines: Helix reads `ansi.green` directly while `state.diff_added` darkens `life` in Dawn. `diff.added` follows `state.diff_added`, so Helix Dawn changes.
+- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`, but Dawn darkens `state.diff_changed` while Helix reads the pigment directly. `diff.changed` follows `state.diff_changed`, so Helix Dawn and the modified files of Zed and VS Code change.
+- Added lines: Helix reads `ansi.green` directly while `state.diff_added` darkens `life` in Dawn. `diff.added` follows `state.diff_added`, so Helix Dawn changes, and so do VS Code's added and inserted colors, which read `life`.
 - Hints: Helix reads `semantic.comment` while `state.hint` is a darkened `base.foreground` in Dawn. `diagnostic.hint` follows `state.hint`, so Helix Dawn changes.
 - Series order: VS Code bracket levels and Zed collaborator cursors order the same pigments differently. `series` follows VS Code for the first six and appends Zed's remaining two, so Zed's order changes.
 - Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`. Zed follows `diagnostic.hint` and `syntax.string`, so both change.
@@ -270,7 +270,7 @@ rather than snapshot-refreshed.
 - Zed reads ANSI slots directly for renamed files (`ansi.bright.cyan`), builtin functions (`ansi.bright.yellow`), link text and list markers (`ansi.cyan`). They map to `diff.moved`, `syntax.builtin`, `ui.link` and `markup.list` only if the color change is accepted.
 - Codex's `skill` color has no role of its own. The Codex adapter uses `syntax.function`: a skill is a named capability the agent invokes, and the choice keeps Akari's `muted`.
 - Merge conflict sides: delta uses `lantern.far` and `night`, VS Code uses `life` and `night`. `diff.ours` follows delta.
-- Hover backgrounds and decorators in VS Code use `ansi.bright.yellow` directly; they map to `ui.accent_secondary` and `syntax.decorator` only if the color change is accepted.
+- Hover backgrounds in VS Code use `ansi.bright.yellow` directly; they map to `ui.accent_secondary` only if the color change is accepted. Decorators follow `syntax.decorator`, which Akari assigns the same slot.
 - delta and Codex select dark or light output by testing `variant == "night"`; they must test `variant.appearance`.
 - Marked base commit in lazygit: text over the `lantern.far` background uses `night`. The background is `ui.accent_secondary`, whose text role is `ui.on_accent`, so the text becomes `base.background` in both variants.
 - Unstaged changes in lazygit use `ansi.red`. They mark modified files, so they follow `diff.changed` and turn amber.
@@ -285,6 +285,16 @@ rather than snapshot-refreshed.
 - JSON key levels in bat use `lantern.mid`, `lantern.far` and `life`. They take the first three `series` entries as nesting levels, like bracket pair levels, so levels 1 and 2+ change.
 - Zellij multiplayer colors order `lantern.mid`, `life`, `night`, `muted`, `lantern.far`, then ANSI slots. Players 1 to 8 take `series` in order and players 9 and 10 keep `ansi.bright.green` and `ansi.bright.yellow`, so players 2 to 8 change.
 - bat reads ANSI slots directly for builtin functions (`ansi.bright.magenta`), shell builtins and level 2 headings (`ansi.bright.yellow`) and list markers (`ansi.cyan`); Zellij's highlighted frame uses `ansi.bright.yellow`. They map to `syntax.builtin`, `markup.heading_2`, `markup.list` and `ui.accent_secondary` only if the color change is accepted.
+- Search matches in VS Code use `lantern.mid` at 25% and 12% alpha. They follow `ui.match_bg`, opaque for the current match and at 50% alpha for the others, so both variants change.
+- Input validation warnings in VS Code use `lantern.far`. They follow `diagnostic.warning`, so both variants change.
+- JSON key levels in VS Code use `lantern.mid`, `lantern.far` twice and `life`. Like bat, they take the first four `series` entries, so levels 1 to 3+ change.
+- Regular expression internals in VS Code use `muted` for character classes, `lantern.far` for class sets and `lantern.ember` for group punctuation. No role names them, so they follow `syntax.regexp` and all three change.
+- Builtin tags in VS Code use `night`. They are tags, so they follow `syntax.tag` and turn `lantern.mid`.
+- Changed text within a changed line (`DiffText`) in Neovim uses `lantern.mid`. It follows `diff.changed`, so both variants change.
+- Level 3 and 5 headings in Neovim's legacy html and markdown groups use `lantern.mid`. They follow `markup.heading_3` and `markup.heading_4` like the treesitter levels, so both change. Levels 2, 4 and 6 there read `ansi.bright.yellow`; they map to `markup.heading_2` and `markup.heading_4` only if the color change is accepted.
+- Neovim reads `ansi.black` for the backgrounds of floats, popup menus and folds (`ui.raised`), the cursor line and color column (`ui.sunken`), and the status and tab lines (`ui.surface`). In Dawn that slot is dark, so these strips are dark in the light variant. They map to those roles only if the color change is accepted.
+- Neovim reads ANSI slots directly for window separators and float borders (`ansi.bright.black`), list markers and link text (`ansi.cyan`), builtin variables and functions (`ansi.bright.red`, `ansi.bright.magenta`), diff file headers (`ansi.bright.red`, `ansi.bright.green`), directories, HTML attributes and interfaces (`ansi.bright.cyan`), and heading levels 5 and 6 (`syntax.comment`, `ansi.blue`). They map to `ui.border`, `markup.list`, `ui.link`, `syntax.builtin`, `diff.removed` and `diff.added`, `syntax.directory`, `syntax.attribute`, `syntax.type` and `markup.heading_4` only if the color change is accepted.
+- VS Code reads ANSI slots directly for level 2 headings (`ansi.bright.yellow`), renamed files (`ansi.bright.cyan`), link text, list markers and template keywords (`ansi.cyan`). They map to `markup.heading_2`, `diff.moved`, `ui.link`, `markup.list` and `syntax.keyword` only if the color change is accepted.
 
 ## Not decided here
 

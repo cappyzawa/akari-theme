@@ -50,6 +50,19 @@ fn main() -> ExitCode {
 }
 
 /// Writes every artifact under `out_root`, creating parent directories as needed.
+/// Sets the mode explicitly because `fs::write` keeps an existing file's mode.
+#[cfg(unix)]
+fn set_executable(path: &Path, executable: bool) -> std::io::Result<()> {
+    use std::os::unix::fs::PermissionsExt;
+    let mode = if executable { 0o755 } else { 0o644 };
+    fs::set_permissions(path, fs::Permissions::from_mode(mode))
+}
+
+#[cfg(not(unix))]
+fn set_executable(_path: &Path, _executable: bool) -> std::io::Result<()> {
+    Ok(())
+}
+
 fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), akari_theme::Error> {
     for artifact in artifacts {
         let output_path = out_root.join(&artifact.rel_path);
@@ -61,6 +74,7 @@ fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), akar
         match &artifact.content {
             ArtifactContent::Text(content) => {
                 fs::write(&output_path, content)?;
+                set_executable(&output_path, artifact.executable)?;
             }
             ArtifactContent::Copy(src) => {
                 fs::copy(src, &output_path)?;
@@ -120,7 +134,7 @@ fn run() -> Result<(), akari_theme::Error> {
             };
 
             for tool_name in &tools {
-                let artifacts = generator.generate_theme_tool(tool_name, &theme)?;
+                let artifacts = generator.generate_theme_tool(tool_name, &theme, &theme_dir)?;
                 write_artifacts(artifacts, &out_dir)?;
             }
         }

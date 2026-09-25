@@ -21,10 +21,12 @@ const THEME_TOOLS: &[&str] = &[
     "helix",
     "lazygit",
     "nix",
+    "nvim",
     "slack",
     "starship",
     "terminal",
     "tmux",
+    "vscode",
     "zed",
     "zellij",
     "zsh",
@@ -35,7 +37,36 @@ const THEME_TOOLS: &[&str] = &[
 #[rustfmt::skip]
 const ADAPTER_KEYS: &[(&str, &[&str])] = &[
     ("chrome", &["version"]),
+    ("vscode", &["publisher", "version"]),
 ];
+
+/// A file a `THEME_TOOLS` entry ships from the theme directory itself,
+/// rather than from `templates/<tool>/`.
+enum ThemeAsset {
+    /// `adapters.<tool>.<key>` names a file relative to the theme directory; optional key.
+    AdapterPath(&'static str),
+    /// A file at the theme directory root, shipped only when present.
+    IfPresent(&'static str),
+}
+
+/// `THEME_ASSETS` entries per tool. One tool per line.
+#[rustfmt::skip]
+const THEME_ASSETS: &[(&str, &[ThemeAsset])] = &[
+    ("vscode", &[ThemeAsset::AdapterPath("icon"), ThemeAsset::IfPresent("LICENSE")]),
+];
+
+/// Checks that `value` is a TOML string naming a relative path with no
+/// empty, `.` or `..` components, returning it as a `Path` when it is.
+fn relative_path_in(value: &toml::Value) -> Option<&Path> {
+    let s = value.as_str()?;
+    let path = Path::new(s);
+    let is_relative_inside = !s.is_empty()
+        && path.is_relative()
+        && path
+            .components()
+            .all(|c| matches!(c, std::path::Component::Normal(_)));
+    is_relative_inside.then_some(path)
+}
 
 fn check_adapter_keys(
     tool: &str,
@@ -115,7 +146,14 @@ impl Generator {
     }
 
     /// Generate artifacts for one of `THEME_TOOLS` from a resolved `Theme`.
-    pub fn generate_theme_tool(&self, tool: &str, theme: &Theme) -> Result<Vec<Artifact>, Error> {
+    /// `theme_dir` is the directory `theme` was loaded from, and is where
+    /// `THEME_ASSETS` entries (e.g. an adapter-declared icon) are read from.
+    pub fn generate_theme_tool(
+        &self,
+        tool: &str,
+        theme: &Theme,
+        theme_dir: &Path,
+    ) -> Result<Vec<Artifact>, Error> {
         if !THEME_TOOLS.contains(&tool) {
             return Err(Error::ToolNotThemed(tool.to_string()));
         }
@@ -142,13 +180,15 @@ impl Generator {
             if path.extension() == Some(OsStr::new("tera")) {
                 self.process_theme_template(tool, path, rel_path, &mut artifacts, theme, adapter)?;
             } else {
-                self.process_static(tool, path, rel_path, &mut artifacts);
+                self.process_theme_static(tool, path, rel_path, &mut artifacts, &theme.metadata);
             }
         }
 
         if tool == "terminal" {
             self.generate_terminal_from_theme(&mut artifacts, theme)?;
         }
+
+        process_theme_assets(tool, theme, theme_dir, &mut artifacts)?;
 
         Ok(artifacts)
     }
@@ -205,17 +245,19 @@ impl Generator {
                 let content = render(theme_context(&theme.metadata, variant, adapter))?;
                 let final_path =
                     theme_output_name(&out_str, &theme.metadata, Some(&variant.variant));
-                artifacts.push(Artifact::text(
+                artifacts.push(Artifact::rendered(
                     PathBuf::from(tool).join(final_path),
                     content,
+                    path,
                 ));
             }
         } else {
             let content = render(combined_context(theme, adapter))?;
             let final_path = theme_output_name(&out_str, &theme.metadata, None);
-            artifacts.push(Artifact::text(
+            artifacts.push(Artifact::rendered(
                 PathBuf::from(tool).join(final_path),
                 content,
+                path,
             ));
         }
 
@@ -322,6 +364,24 @@ impl Generator {
         ));
     }
 
+    /// Process a static (non-template) file on the theme route, substituting
+    /// `{theme}` in its path the same way a template's output name is.
+    fn process_theme_static(
+        &self,
+        tool: &str,
+        path: &Path,
+        rel_path: &Path,
+        artifacts: &mut Vec<Artifact>,
+        theme: &ThemeMetadata,
+    ) {
+        let rel_str = rel_path.to_string_lossy().replace('\\', "/"); // Windows compatibility
+        let out_str = theme_output_name(&rel_str, theme, None);
+        artifacts.push(Artifact::copy(
+            PathBuf::from(tool).join(out_str),
+            path.to_path_buf(),
+        ));
+    }
+
     /// Lists the tools the legacy route still owns (excludes `THEME_TOOLS`).
     pub fn available_tools(&self) -> std::io::Result<Vec<String>> {
         let mut tools = Vec::new();
@@ -418,6 +478,54 @@ fn theme_output_name(
         Some(variant) => pattern.replace("{variant}", variant.id.as_str()),
         None => pattern,
     }
+}
+
+/// Emits `THEME_ASSETS` entries for `tool`: files that live in `theme_dir`
+/// rather than under `templates/`.
+fn process_theme_assets(
+    tool: &str,
+    theme: &Theme,
+    theme_dir: &Path,
+    artifacts: &mut Vec<Artifact>,
+) -> Result<(), Error> {
+    let Some((_, assets)) = THEME_ASSETS.iter().find(|(t, _)| *t == tool) else {
+        return Ok(());
+    };
+
+    for asset in *assets {
+        match asset {
+            ThemeAsset::AdapterPath(key) => {
+                let Some(value) = theme.adapters.get(tool).and_then(|a| a.get(*key)) else {
+                    continue;
+                };
+                let rel = relative_path_in(value).ok_or_else(|| Error::AdapterAssetPath {
+                    tool: tool.to_string(),
+                    key: (*key).to_string(),
+                    value: value
+                        .as_str()
+                        .map(str::to_string)
+                        .unwrap_or_else(|| value.to_string()),
+                })?;
+                let source = theme_dir.join(rel);
+                if !source.is_file() {
+                    return Err(Error::AdapterAssetMissing {
+                        tool: tool.to_string(),
+                        key: (*key).to_string(),
+                        path: source,
+                    });
+                }
+                artifacts.push(Artifact::copy(PathBuf::from(tool).join(rel), source));
+            }
+            ThemeAsset::IfPresent(name) => {
+                let source = theme_dir.join(name);
+                if source.is_file() {
+                    artifacts.push(Artifact::copy(PathBuf::from(tool).join(name), source));
+                }
+            }
+        }
+    }
+
+    Ok(())
 }
 
 /// Per-variant theme-route context. Built from `ResolvedVariant` so adapters
