@@ -1,0 +1,36 @@
+# {{ theme.name }} {{ variant.name }} — Starship palette
+# Named colors only — apply with: palette = '{{ theme.id }}-{{ variant.id }}'
+
+[palettes.{{ theme.id }}-{{ variant.id }}]
+# Standard ANSI colors
+black = '{{ ansi.black }}'
+red = '{{ ansi.red }}'
+green = '{{ ansi.green }}'
+yellow = '{{ ansi.yellow }}'
+blue = '{{ ansi.blue }}'
+purple = '{{ ansi.magenta }}'
+cyan = '{{ ansi.cyan }}'
+white = '{{ ansi.white }}'
+
+# Bright variants
+bright-black = '{{ ansi.bright.black }}'
+bright-red = '{{ ansi.bright.red }}'
+bright-green = '{{ ansi.bright.green }}'
+bright-yellow = '{{ ansi.bright.yellow }}'
+bright-blue = '{{ ansi.bright.blue }}'
+bright-purple = '{{ ansi.bright.magenta }}'
+bright-cyan = '{{ ansi.bright.cyan }}'
+bright-white = '{{ ansi.bright.white }}'
+
+# Theme roles (use in your modules: fg:accent, bg:surface, etc.)
+accent = '{{ roles.ui.accent }}'
+accent-secondary = '{{ roles.ui.accent_secondary }}'
+on-accent = '{{ roles.ui.on_accent }}'
+surface = '{{ roles.ui.surface }}'
+border = '{{ roles.ui.border }}'
+muted = '{{ roles.ui.muted }}'
+info = '{{ roles.diagnostic.info }}'
+hint = '{{ roles.diagnostic.hint }}'
+success = '{{ roles.diagnostic.success }}'
+warning = '{{ roles.diagnostic.warning }}'
+error = '{{ roles.diagnostic.error }}'

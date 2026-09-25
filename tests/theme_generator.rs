@@ -38,8 +38,9 @@ fn legacy_available_tools_excludes_theme_tools() {
     let tools = generator.available_tools().unwrap();
 
     assert!(!tools.is_empty());
-    assert!(!tools.iter().any(|t| t == "helix"));
-    assert!(!tools.iter().any(|t| t == "terminal"));
+    for tool in generator.available_theme_tools() {
+        assert!(!tools.contains(&tool), "{tool} still legacy");
+    }
 }
 
 #[test]
@@ -48,8 +49,8 @@ fn legacy_generate_tool_rejects_theme_tools() {
     let night = akari_theme::Palette::night();
     let dawn = akari_theme::Palette::dawn();
 
-    for tool in ["helix", "terminal"] {
-        let result = generator.generate_tool(tool, &night, &dawn);
+    for tool in generator.available_theme_tools() {
+        let result = generator.generate_tool(&tool, &night, &dawn);
         match result {
             Err(Error::ToolMigrated(t)) => assert_eq!(t, tool),
             other => panic!("expected ToolMigrated for {tool}, got {other:?}"),
@@ -62,9 +63,9 @@ fn theme_context_rejects_unknown_tool() {
     let theme = Theme::load(root_dir().join("themes/akari")).unwrap();
     let generator = generator();
 
-    let result = generator.generate_theme_tool("codex", &theme);
+    let result = generator.generate_theme_tool("lazygit", &theme);
     match result {
-        Err(Error::ToolNotThemed(t)) => assert_eq!(t, "codex"),
+        Err(Error::ToolNotThemed(t)) => assert_eq!(t, "lazygit"),
         other => panic!("expected ToolNotThemed, got {other:?}"),
     }
 }
@@ -327,4 +328,244 @@ fn theme_terminal_ninja_profile_name_and_file_name() {
 
     let text = artifact_text(&artifacts, "terminal/Ninja-Shadow.terminal");
     assert!(text.contains("<string>Ninja-Shadow</string>"));
+}
+
+/// Theme-route tools checked below, with the extension of their output files.
+const MIGRATED_TOOLS: &[(&str, &str)] = &[
+    ("alacritty", "toml"),
+    ("bat", "tmTheme"),
+    ("codex", "txt"),
+    ("ghostty", ""),
+    ("slack", "txt"),
+    ("starship", "toml"),
+    ("zellij", "kdl"),
+];
+
+fn variant_artifact_path(tool: &str, ext: &str, variant_id: &str) -> String {
+    if ext.is_empty() {
+        format!("{tool}/akari-{variant_id}")
+    } else {
+        format!("{tool}/akari-{variant_id}.{ext}")
+    }
+}
+
+#[test]
+fn theme_route_generates_night_and_dawn_outputs_for_each_migrated_tool() {
+    let theme = Theme::load(root_dir().join("themes/akari")).unwrap();
+    let generator = generator();
+
+    for (tool, ext) in MIGRATED_TOOLS {
+        let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
+        for variant_id in ["night", "dawn"] {
+            let rel = variant_artifact_path(tool, ext, variant_id);
+            artifact_text(&artifacts, &rel);
+        }
+    }
+}
+
+fn ninja_theme() -> Theme {
+    Theme::load(root_dir().join("themes/ninja")).unwrap()
+}
+
+fn is_hex_color(s: &str) -> bool {
+    match s.strip_prefix('#') {
+        Some(hex) => hex.len() == 6 && hex.chars().all(|c| c.is_ascii_hexdigit()),
+        None => false,
+    }
+}
+
+#[test]
+fn ninja_shadow_alacritty_and_starship_outputs_parse_as_toml() {
+    let generator = generator();
+    let theme = ninja_theme();
+
+    for tool in ["alacritty", "starship"] {
+        let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
+        let text = artifact_text(&artifacts, &format!("{tool}/ninja-shadow.toml"));
+        text.parse::<toml::Table>()
+            .unwrap_or_else(|e| panic!("{tool} output is not valid TOML: {e}"));
+    }
+}
+
+#[test]
+fn ninja_shadow_starship_palette_table_values_are_hex_colors() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("starship", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "starship/ninja-shadow.toml");
+    let doc: toml::Table = text.parse().unwrap();
+
+    let palette = doc["palettes"]["ninja-shadow"]
+        .as_table()
+        .expect("palettes.ninja-shadow table");
+    assert!(!palette.is_empty());
+    for (key, value) in palette {
+        let s = value
+            .as_str()
+            .unwrap_or_else(|| panic!("palettes.ninja-shadow.{key} is not a string"));
+        assert!(is_hex_color(s), "palettes.ninja-shadow.{key} = {s:?}");
+    }
+}
+
+#[test]
+fn ninja_shadow_zellij_output_has_balanced_braces_and_the_theme_block() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("zellij", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "zellij/ninja-shadow.kdl");
+
+    let mut depth: i32 = 0;
+    for ch in text.chars() {
+        match ch {
+            '{' => depth += 1,
+            '}' => {
+                depth -= 1;
+                assert!(depth >= 0, "closing brace with no matching opener");
+            }
+            _ => {}
+        }
+    }
+    assert_eq!(depth, 0, "braces are not balanced");
+    assert!(text.contains("ninja-shadow {"));
+}
+
+#[test]
+fn ninja_shadow_codex_output_is_json_after_the_codex_theme_prefix() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("codex", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "codex/ninja-shadow.txt");
+    let json = text
+        .trim()
+        .strip_prefix("codex-theme-v1:")
+        .expect("codex-theme-v1: prefix");
+    let _: serde_json::Value = serde_json::from_str(json).unwrap();
+}
+
+#[test]
+fn ninja_shadow_bat_output_parses_as_xml_plist() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("bat", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "bat/ninja-shadow.tmTheme");
+    plist::Value::from_reader_xml(text.as_bytes())
+        .unwrap_or_else(|e| panic!("bat output is not valid plist XML: {e}"));
+}
+
+#[test]
+fn ninja_shadow_slack_output_is_four_hex_colors() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("slack", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "slack/ninja-shadow.txt");
+    let values: Vec<&str> = text.trim().split(',').collect();
+    assert_eq!(
+        values.len(),
+        4,
+        "expected 4 comma-separated values: {values:?}"
+    );
+    for value in values {
+        assert!(is_hex_color(value), "{value:?} is not #RRGGBB");
+    }
+}
+
+#[test]
+fn ninja_shadow_ghostty_lines_are_key_value_pairs() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("ghostty", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "ghostty/ninja-shadow");
+
+    for line in text.lines() {
+        let line = line.trim();
+        if line.is_empty() || line.starts_with('#') {
+            continue;
+        }
+        assert!(line.contains(" = "), "line is not `key = value`: {line:?}");
+    }
+}
+
+#[test]
+fn ninja_shadow_text_artifacts_never_mention_akari() {
+    let generator = generator();
+    let theme = ninja_theme();
+
+    for (tool, _) in MIGRATED_TOOLS {
+        let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
+        for artifact in &artifacts {
+            let ArtifactContent::Text(text) = &artifact.content else {
+                continue;
+            };
+            assert!(
+                !text.to_lowercase().contains("akari"),
+                "{} ({tool}) mentions akari",
+                artifact.rel_path.display()
+            );
+        }
+    }
+}
+
+#[test]
+fn codex_variant_and_contrast_and_role_colors_match_the_loaded_theme() {
+    let generator = generator();
+    let akari = Theme::load(root_dir().join("themes/akari")).unwrap();
+    let ninja = ninja_theme();
+
+    // (theme, variant id, expected `variant`, expected `contrast`)
+    let cases = [
+        (&akari, "night", "dark", 60),
+        (&akari, "dawn", "light", 45),
+        (&ninja, "shadow", "dark", 60),
+    ];
+
+    for (theme, variant_id, expected_appearance, expected_contrast) in cases {
+        let artifacts = generator.generate_theme_tool("codex", theme).unwrap();
+        let rel = format!("codex/{}-{variant_id}.txt", theme.metadata.id);
+        let text = artifact_text(&artifacts, &rel);
+        let json = text.trim().strip_prefix("codex-theme-v1:").unwrap();
+        let value: serde_json::Value = serde_json::from_str(json).unwrap();
+
+        let resolved = theme
+            .variants
+            .iter()
+            .find(|v| v.variant.id.as_str() == variant_id)
+            .unwrap();
+
+        assert_eq!(value["variant"], expected_appearance);
+        assert_eq!(value["theme"]["contrast"], expected_contrast);
+        assert_eq!(
+            value["theme"]["accent"].as_str().unwrap(),
+            resolved.roles.ui.accent.to_string()
+        );
+        assert_eq!(
+            value["theme"]["semanticColors"]["skill"].as_str().unwrap(),
+            resolved.roles.syntax.function.to_string()
+        );
+        assert_eq!(
+            value["theme"]["semanticColors"]["diffAdded"]
+                .as_str()
+                .unwrap(),
+            resolved.roles.diff.added.to_string()
+        );
+        assert_eq!(
+            value["theme"]["semanticColors"]["diffRemoved"]
+                .as_str()
+                .unwrap(),
+            resolved.roles.diff.removed.to_string()
+        );
+        assert_eq!(
+            value["theme"]["ink"].as_str().unwrap(),
+            resolved.base.foreground.to_string()
+        );
+        assert_eq!(
+            value["theme"]["surface"].as_str().unwrap(),
+            resolved.base.background.to_string()
+        );
+    }
 }

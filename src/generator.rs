@@ -9,9 +9,16 @@ use walkdir::WalkDir;
 /// Tools generated from a `Theme` directory instead of the legacy palette pair.
 /// One tool per line: migrations of separate tools add entries in parallel.
 #[rustfmt::skip]
-const THEME_TOOLS: [&str; 2] = [
+const THEME_TOOLS: &[&str] = &[
+    "alacritty",
+    "bat",
+    "codex",
+    "ghostty",
     "helix",
+    "slack",
+    "starship",
     "terminal",
+    "zellij",
 ];
 
 fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {

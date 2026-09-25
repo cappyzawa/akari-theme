@@ -5,7 +5,7 @@
 	<key>author</key>
 	<string>cappyzawa</string>
 	<key>name</key>
-	<string>Akari {{ variant | capitalize }}</string>
+	<string>{{ theme.name }} {{ variant.name }}</string>
 	<key>colorSpaceName</key>
 	<string>sRGB</string>
 	<key>settings</key>
@@ -17,25 +17,25 @@
 				<key>background</key>
 				<string>{{ base.background }}</string>
 				<key>caret</key>
-				<string>{{ state.cursor }}</string>
+				<string>{{ roles.ui.cursor }}</string>
 				<key>foreground</key>
 				<string>{{ base.foreground }}</string>
 				<key>invisibles</key>
-				<string>{{ semantic.comment }}</string>
+				<string>{{ roles.ui.muted }}</string>
 				<key>lineHighlight</key>
-				<string>{{ layers.sunken }}</string>
+				<string>{{ roles.ui.sunken }}</string>
 				<key>selection</key>
-				<string>{{ state.selection_bg }}</string>
+				<string>{{ roles.ui.selection_bg }}</string>
 				<key>selectionBorder</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.ui.accent }}</string>
 				<key>findHighlight</key>
-				<string>{{ state.match_bg }}</string>
+				<string>{{ roles.ui.match_bg }}</string>
 				<key>guide</key>
-				<string>{{ layers.border }}</string>
+				<string>{{ roles.ui.border }}</string>
 				<key>activeGuide</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.ui.accent }}</string>
 				<key>gutterForeground</key>
-				<string>{{ semantic.comment }}</string>
+				<string>{{ roles.ui.muted }}</string>
 			</dict>
 		</dict>
 
@@ -48,7 +48,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.comment }}</string>
+				<string>{{ roles.syntax.comment }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -63,7 +63,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.life }}</string>
+				<string>{{ roles.syntax.string }}</string>
 			</dict>
 		</dict>
 
@@ -76,7 +76,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.escape }}</string>
+				<string>{{ roles.syntax.escape }}</string>
 			</dict>
 		</dict>
 
@@ -89,7 +89,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.regexp }}</string>
+				<string>{{ roles.syntax.regexp }}</string>
 			</dict>
 		</dict>
 
@@ -102,7 +102,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.constant }}</string>
+				<string>{{ roles.syntax.constant }}</string>
 			</dict>
 		</dict>
 
@@ -115,7 +115,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.character }}</string>
 			</dict>
 		</dict>
 
@@ -128,7 +128,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ base.foreground }}</string>
+				<string>{{ roles.syntax.variable }}</string>
 			</dict>
 		</dict>
 
@@ -141,7 +141,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.ember }}</string>
+				<string>{{ roles.syntax.builtin }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -156,7 +156,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ base.foreground }}</string>
+				<string>{{ roles.syntax.variable }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -171,7 +171,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.member }}</string>
+				<string>{{ roles.syntax.member }}</string>
 			</dict>
 		</dict>
 
@@ -184,7 +184,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.keyword }}</string>
 			</dict>
 		</dict>
 
@@ -197,7 +197,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.keyword }}</string>
 			</dict>
 		</dict>
 
@@ -210,7 +210,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ base.foreground }}</string>
+				<string>{{ roles.syntax.text }}</string>
 			</dict>
 		</dict>
 
@@ -223,7 +223,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.punctuation_special }}</string>
 			</dict>
 		</dict>
 
@@ -236,7 +236,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.muted }}</string>
+				<string>{{ roles.syntax.function }}</string>
 			</dict>
 		</dict>
 
@@ -249,7 +249,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ ansi_bright.magenta }}</string>
+				<string>{{ ansi.bright.magenta }}</string>
 			</dict>
 		</dict>
 
@@ -262,7 +262,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.macro }}</string>
+				<string>{{ roles.syntax.macro }}</string>
 			</dict>
 		</dict>
 
@@ -275,7 +275,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.type }}</string>
 			</dict>
 		</dict>
 
@@ -288,7 +288,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.type }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -303,7 +303,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.namespace }}</string>
 			</dict>
 		</dict>
 
@@ -316,7 +316,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.type }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -331,7 +331,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.tag }}</string>
 			</dict>
 		</dict>
 
@@ -344,7 +344,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.attribute }}</string>
 			</dict>
 		</dict>
 
@@ -357,7 +357,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ ansi_bright.yellow }}</string>
+				<string>{{ roles.syntax.decorator }}</string>
 			</dict>
 		</dict>
 
@@ -370,7 +370,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ state.error }}</string>
+				<string>{{ roles.diagnostic.error }}</string>
 			</dict>
 		</dict>
 
@@ -396,7 +396,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.life }}</string>
+				<string>{{ roles.diff.added }}</string>
 			</dict>
 		</dict>
 
@@ -409,7 +409,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ state.error }}</string>
+				<string>{{ roles.diff.removed }}</string>
 			</dict>
 		</dict>
 
@@ -422,7 +422,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.diff.changed }}</string>
 			</dict>
 		</dict>
 
@@ -435,7 +435,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.markup.heading_1 }}</string>
 				<key>fontStyle</key>
 				<string>bold</string>
 			</dict>
@@ -450,7 +450,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ ansi_bright.yellow }}</string>
+				<string>{{ ansi.bright.yellow }}</string>
 				<key>fontStyle</key>
 				<string>bold</string>
 			</dict>
@@ -465,7 +465,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.ember }}</string>
+				<string>{{ roles.markup.heading_3 }}</string>
 				<key>fontStyle</key>
 				<string>bold</string>
 			</dict>
@@ -480,7 +480,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.markup.heading_4 }}</string>
 				<key>fontStyle</key>
 				<string>bold</string>
 			</dict>
@@ -534,7 +534,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.link }}</string>
+				<string>{{ roles.ui.link }}</string>
 				<key>fontStyle</key>
 				<string>underline</string>
 			</dict>
@@ -575,7 +575,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ semantic.comment }}</string>
+				<string>{{ roles.syntax.comment }}</string>
 				<key>fontStyle</key>
 				<string>italic</string>
 			</dict>
@@ -590,7 +590,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ ansi_bright.green }}</string>
+				<string>{{ roles.markup.raw }}</string>
 			</dict>
 		</dict>
 
@@ -603,7 +603,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.series[0] }}</string>
 			</dict>
 		</dict>
 
@@ -616,7 +616,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.series[1] }}</string>
 			</dict>
 		</dict>
 
@@ -629,7 +629,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.life }}</string>
+				<string>{{ roles.series[2] }}</string>
 			</dict>
 		</dict>
 
@@ -642,7 +642,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.tag }}</string>
 			</dict>
 		</dict>
 
@@ -655,7 +655,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.keyword }}</string>
 			</dict>
 		</dict>
 
@@ -668,7 +668,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.far }}</string>
+				<string>{{ roles.syntax.namespace }}</string>
 			</dict>
 		</dict>
 
@@ -694,7 +694,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.lantern.mid }}</string>
+				<string>{{ roles.syntax.tag }}</string>
 			</dict>
 		</dict>
 
@@ -707,7 +707,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ colors.muted }}</string>
+				<string>{{ roles.syntax.function }}</string>
 			</dict>
 		</dict>
 
@@ -720,7 +720,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ base.foreground }}</string>
+				<string>{{ roles.syntax.variable }}</string>
 			</dict>
 		</dict>
 
@@ -733,7 +733,7 @@
 			<key>settings</key>
 			<dict>
 				<key>foreground</key>
-				<string>{{ ansi_bright.yellow }}</string>
+				<string>{{ ansi.bright.yellow }}</string>
 			</dict>
 		</dict>
 	</array>

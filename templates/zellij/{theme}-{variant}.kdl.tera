@@ -1,0 +1,146 @@
+// {{ theme.name }} {{ variant.name }} theme for Zellij
+// {{ variant.description }}
+// Add this file to your `CONFIG_DIR/themes` directory as described here:
+// https://zellij.dev/documentation/themes#getting-zellij-to-pick-up-the-theme
+
+themes {
+    {{ theme.id }}-{{ variant.id }} {
+        // Ribbon: tabs and mode indicator in status bar
+        ribbon_unselected {
+            base {{ roles.ui.muted | hex_to_rgb_space }}
+            background {{ roles.ui.surface | hex_to_rgb_space }}
+            emphasis_0 {{ ansi.bright.black | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        ribbon_selected {
+            base {{ roles.ui.on_accent | hex_to_rgb_space }}
+            background {{ roles.ui.accent | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+
+        // Text: general text content
+        text_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ roles.series[0] | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        text_selected {
+            base {{ roles.ui.selection_fg | hex_to_rgb_space }}
+            background {{ roles.ui.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ roles.series[0] | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+
+        // Table: session manager, plugin tables
+        table_title {
+            base {{ roles.ui.accent | hex_to_rgb_space }}
+            background {{ roles.ui.surface | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        table_cell_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ roles.ui.muted | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        table_cell_selected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ roles.ui.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ roles.series[0] | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+
+        // List: file picker, command palette
+        list_unselected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ roles.ui.muted | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        list_selected {
+            base {{ base.foreground | hex_to_rgb_space }}
+            background {{ roles.ui.selection_bg | hex_to_rgb_space }}
+            emphasis_0 {{ roles.series[0] | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+
+        // Frame: pane borders
+        frame_unselected {
+            base {{ roles.ui.border | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ roles.ui.muted | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[1] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[1] | hex_to_rgb_space }}
+        }
+        frame_selected {
+            base {{ roles.ui.accent | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+        frame_highlight {
+            base {{ ansi.bright.yellow | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ roles.series[0] | hex_to_rgb_space }}
+            emphasis_1 {{ roles.series[5] | hex_to_rgb_space }}
+            emphasis_2 {{ roles.series[4] | hex_to_rgb_space }}
+            emphasis_3 {{ roles.series[2] | hex_to_rgb_space }}
+        }
+
+        // Exit code indicators
+        exit_code_success {
+            base {{ roles.diagnostic.success | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ ansi.bright.green | hex_to_rgb_space }}
+            emphasis_1 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_2 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_3 {{ base.foreground | hex_to_rgb_space }}
+        }
+        exit_code_error {
+            base {{ roles.diagnostic.error | hex_to_rgb_space }}
+            background {{ base.background | hex_to_rgb_space }}
+            emphasis_0 {{ ansi.bright.red | hex_to_rgb_space }}
+            emphasis_1 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_2 {{ base.foreground | hex_to_rgb_space }}
+            emphasis_3 {{ base.foreground | hex_to_rgb_space }}
+        }
+
+        // Multiplayer user colors (optional, for collaborative sessions)
+        multiplayer_user_colors {
+            player_1 {{ roles.series[0] | hex_to_rgb_space }}
+            player_2 {{ roles.series[1] | hex_to_rgb_space }}
+            player_3 {{ roles.series[2] | hex_to_rgb_space }}
+            player_4 {{ roles.series[3] | hex_to_rgb_space }}
+            player_5 {{ roles.series[4] | hex_to_rgb_space }}
+            player_6 {{ roles.series[5] | hex_to_rgb_space }}
+            player_7 {{ roles.series[6] | hex_to_rgb_space }}
+            player_8 {{ roles.series[7] | hex_to_rgb_space }}
+            player_9 {{ ansi.bright.green | hex_to_rgb_space }}
+            player_10 {{ ansi.bright.yellow | hex_to_rgb_space }}
+        }
+    }
+}
