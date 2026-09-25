@@ -1,18 +1,13 @@
 # Akari Starship Theme
 
-> [!IMPORTANT]
-> This repository is a read-only mirror.
-> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
-
 Starship prompt themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-Clone the repository and add the palette to your Starship config:
+Add the palette to your Starship config:
 
 ```bash
-git clone https://github.com/cappyzawa/akari-starship.git
-cat akari-starship/akari-night.toml >> ~/.config/starship.toml
+cat akari-night.toml >> ~/.config/starship.toml
 ```
 
 Then set the palette in your config:
@@ -24,7 +19,7 @@ palette = 'akari-night'
 Or for dawn:
 
 ```bash
-cat akari-starship/akari-dawn.toml >> ~/.config/starship.toml
+cat akari-dawn.toml >> ~/.config/starship.toml
 ```
 
 ```toml

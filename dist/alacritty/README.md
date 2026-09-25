@@ -1,18 +1,13 @@
 # Akari Alacritty Theme
 
-> [!IMPORTANT]
-> This repository is a read-only mirror.
-> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
-
 Alacritty terminal emulator themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-Clone the repository and copy the theme files:
+Copy the theme files:
 
 ```bash
-git clone https://github.com/cappyzawa/akari-alacritty.git
-cp akari-alacritty/*.toml ~/.config/alacritty/themes/
+cp *.toml ~/.config/alacritty/themes/
 ```
 
 Then import the theme in your `alacritty.toml`:

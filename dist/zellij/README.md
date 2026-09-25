@@ -1,9 +1,5 @@
 # Akari Zellij Theme
 
-> [!IMPORTANT]
-> This repository is a read-only mirror.
-> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
-
 Zellij themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
