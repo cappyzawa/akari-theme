@@ -22,8 +22,12 @@ dist/<tool>/...
 
 ## Theme layout
 
+A theme is a directory. Its final home is a repository of its own that
+depends on the engine crate; until the engine is extracted, `themes/<id>/`
+in this repository plays that role.
+
 ```text
-themes/<theme.id>/
+<theme directory>/
   theme.toml        # identity, variant order, adapter metadata
   <variant.id>.toml # one self-contained file per variant
 ```
@@ -264,7 +268,8 @@ rather than snapshot-refreshed.
 
 ## Not decided here
 
-- Cargo workspace layout, crate names and the public Rust API.
-- How templates are distributed to consumers outside this checkout.
+- Cargo workspace layout, the engine crate's name and its public Rust API.
+- How the engine crate ships its templates to theme repositories, and whether the CLI is part of the same crate.
+- When the engine leaves this repository: the plan is to keep engine, adapters and both themes together until Akari regenerates from the generic path, then extract.
 - Whether variants may share role expressions through a theme-level default.
 - Installation, publishing and release workflows for a second theme.
