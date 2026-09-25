@@ -1,12 +1,12 @@
 [package]
 name = "katazome"
-version = "1.21.0"
+version = "0.1.0"
 edition = "2024"
 license = "MIT"
-repository = "https://github.com/cappyzawa/akari-theme"
-description = "A terminal color theme inspired by Japanese alleys and lanterns"
-keywords = ["terminal", "theme", "color", "palette"]
-categories = ["command-line-interface"]
+repository = "https://github.com/cappyzawa/katazome"
+description = "Generates color theme files for terminals, editors and other tools from a theme directory"
+keywords = ["theme", "color-scheme", "generator", "terminal", "editor"]
+categories = ["command-line-utilities", "template-engine"]
 include = ["/src/", "/build.rs", "/templates/", "/Cargo.toml", "/README.md", "/LICENSE"]
 
 [lib]
