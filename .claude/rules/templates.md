@@ -10,6 +10,7 @@ A template whose output name contains `{variant}` renders once per variant with:
 - `variant` — `variant.id`, `variant.name`, `variant.appearance` (`dark`/`light`), `variant.description`
 - `base`, `ansi` (`ansi.red`, `ansi.bright.red`), `roles` (`roles.ui.accent`, `roles.series[0]`, ...)
 - `adapter` — `theme.toml` `[adapters.<tool>]` as written (empty table if absent)
+- `adapter_text` — one entry per key declared for the tool in `ADAPTER_TEXTS` (`src/generator.rs`); the value is that adapter file's contents, or `""` when the theme does not set the key. Same path rules and errors (`Error::AdapterAssetPath`, `Error::AdapterAssetMissing`) as `ThemeAsset::AdapterPath`; the file is read into the context instead of shipped as an artifact.
 
 A template whose output name has no `{variant}` renders once per theme with:
 

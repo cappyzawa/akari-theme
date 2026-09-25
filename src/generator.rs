@@ -2,6 +2,7 @@ use crate::theme::{ResolvedVariant, Theme, ThemeMetadata, VariantMetadata};
 use crate::{Artifact, Error, Palette, Rgb, VARIANTS};
 use std::collections::HashMap;
 use std::ffi::OsStr;
+use std::fs;
 use std::path::{Path, PathBuf};
 use tera::{Context, Tera, Value};
 use walkdir::WalkDir;
@@ -55,6 +56,14 @@ const THEME_ASSETS: &[(&str, &[ThemeAsset])] = &[
     ("vscode", &[ThemeAsset::AdapterPath("icon"), ThemeAsset::IfPresent("LICENSE")]),
 ];
 
+/// Adapter keys whose value names a text file in the theme directory that is
+/// read into the template context (`adapter_text.<key>`, "" when the key is
+/// absent) instead of being shipped as an artifact. One tool per line.
+#[rustfmt::skip]
+const ADAPTER_TEXTS: &[(&str, &[&str])] = &[
+    ("vscode", &["readme"]),
+];
+
 /// Checks that `value` is a TOML string naming a relative path with no
 /// empty, `.` or `..` components, returning it as a `Path` when it is.
 fn relative_path_in(value: &toml::Value) -> Option<&Path> {
@@ -66,6 +75,61 @@ fn relative_path_in(value: &toml::Value) -> Option<&Path> {
             .components()
             .all(|c| matches!(c, std::path::Component::Normal(_)));
     is_relative_inside.then_some(path)
+}
+
+/// Resolves `adapters.<tool>.<key> = value` to an existing file inside
+/// `theme_dir`, returning the path relative to it and the joined path.
+fn adapter_file<'v>(
+    tool: &str,
+    key: &str,
+    value: &'v toml::Value,
+    theme_dir: &Path,
+) -> Result<(&'v Path, PathBuf), Error> {
+    let rel = relative_path_in(value).ok_or_else(|| Error::AdapterAssetPath {
+        tool: tool.to_string(),
+        key: key.to_string(),
+        value: value
+            .as_str()
+            .map(str::to_string)
+            .unwrap_or_else(|| value.to_string()),
+    })?;
+    let path = theme_dir.join(rel);
+    if !path.is_file() {
+        return Err(Error::AdapterAssetMissing {
+            tool: tool.to_string(),
+            key: key.to_string(),
+            path,
+        });
+    }
+    Ok((rel, path))
+}
+
+/// Builds the `adapter_text` context map for `tool`: one entry per
+/// `ADAPTER_TEXTS` key declared for it, "" when the theme does not set that
+/// key. Empty when `tool` has no `ADAPTER_TEXTS` entry.
+fn adapter_text_map(
+    tool: &str,
+    theme: &Theme,
+    theme_dir: &Path,
+) -> Result<HashMap<String, String>, Error> {
+    let Some((_, keys)) = ADAPTER_TEXTS.iter().find(|(t, _)| *t == tool) else {
+        return Ok(HashMap::new());
+    };
+
+    let adapter = theme.adapters.get(tool);
+    let mut map = HashMap::new();
+    for key in *keys {
+        let value = adapter.and_then(|a| a.get(*key));
+        let text = match value {
+            Some(value) => {
+                let (_, path) = adapter_file(tool, key, value, theme_dir)?;
+                fs::read_to_string(&path).map_err(|source| Error::Read { path, source })?
+            }
+            None => String::new(),
+        };
+        map.insert((*key).to_string(), text);
+    }
+    Ok(map)
 }
 
 fn check_adapter_keys(
@@ -83,6 +147,12 @@ fn check_adapter_keys(
         }
     }
     Ok(())
+}
+
+/// An adapter's `[adapters.<tool>]` table and its `ADAPTER_TEXTS` contents.
+struct AdapterContext<'a> {
+    table: &'a toml::Table,
+    text: &'a HashMap<String, String>,
 }
 
 fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
@@ -165,7 +235,11 @@ impl Generator {
         let mut artifacts = Vec::new();
         let tool_dir = self.templates_dir.join(tool);
         let empty_adapter = toml::Table::new();
-        let adapter = theme.adapters.get(tool).unwrap_or(&empty_adapter);
+        let adapter_text = adapter_text_map(tool, theme, theme_dir)?;
+        let adapter = AdapterContext {
+            table: theme.adapters.get(tool).unwrap_or(&empty_adapter),
+            text: &adapter_text,
+        };
 
         for entry in WalkDir::new(&tool_dir)
             .into_iter()
@@ -178,7 +252,7 @@ impl Generator {
                 .map_err(|_| Error::InvalidPath(path.to_path_buf()))?;
 
             if path.extension() == Some(OsStr::new("tera")) {
-                self.process_theme_template(tool, path, rel_path, &mut artifacts, theme, adapter)?;
+                self.process_theme_template(tool, path, rel_path, &mut artifacts, theme, &adapter)?;
             } else {
                 self.process_theme_static(tool, path, rel_path, &mut artifacts, &theme.metadata);
             }
@@ -220,7 +294,7 @@ impl Generator {
         rel_path: &Path,
         artifacts: &mut Vec<Artifact>,
         theme: &Theme,
-        adapter: &toml::Table,
+        adapter: &AdapterContext<'_>,
     ) -> Result<(), Error> {
         let out_path = strip_tera_extension(rel_path);
         let out_str = out_path.to_string_lossy();
@@ -498,22 +572,7 @@ fn process_theme_assets(
                 let Some(value) = theme.adapters.get(tool).and_then(|a| a.get(*key)) else {
                     continue;
                 };
-                let rel = relative_path_in(value).ok_or_else(|| Error::AdapterAssetPath {
-                    tool: tool.to_string(),
-                    key: (*key).to_string(),
-                    value: value
-                        .as_str()
-                        .map(str::to_string)
-                        .unwrap_or_else(|| value.to_string()),
-                })?;
-                let source = theme_dir.join(rel);
-                if !source.is_file() {
-                    return Err(Error::AdapterAssetMissing {
-                        tool: tool.to_string(),
-                        key: (*key).to_string(),
-                        path: source,
-                    });
-                }
+                let (rel, source) = adapter_file(tool, key, value, theme_dir)?;
                 artifacts.push(Artifact::copy(PathBuf::from(tool).join(rel), source));
             }
             ThemeAsset::IfPresent(name) => {
@@ -533,7 +592,7 @@ fn process_theme_assets(
 fn theme_context(
     theme: &ThemeMetadata,
     variant: &ResolvedVariant,
-    adapter: &toml::Table,
+    adapter: &AdapterContext<'_>,
 ) -> Context {
     let mut context = Context::new();
     context.insert("theme", theme);
@@ -541,17 +600,19 @@ fn theme_context(
     context.insert("base", &variant.base);
     context.insert("ansi", &variant.ansi);
     context.insert("roles", &variant.roles);
-    context.insert("adapter", adapter);
+    context.insert("adapter", adapter.table);
+    context.insert("adapter_text", adapter.text);
     context
 }
 
 /// Context for a template rendered once per theme. Each `variants` element
 /// has the same `variant`, `base`, `ansi`, `roles` as the per-variant context.
-fn combined_context(theme: &Theme, adapter: &toml::Table) -> Context {
+fn combined_context(theme: &Theme, adapter: &AdapterContext<'_>) -> Context {
     let mut context = Context::new();
     context.insert("theme", &theme.metadata);
     context.insert("variants", &theme.variants);
-    context.insert("adapter", adapter);
+    context.insert("adapter", adapter.table);
+    context.insert("adapter_text", adapter.text);
     context
 }
 
