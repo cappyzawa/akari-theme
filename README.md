@@ -115,7 +115,7 @@ Color definitions are the single source of truth, as a theme directory:
 All tools in [Supported Tools](#supported-tools) are generated from this directory with:
 
 ```sh
-cargo run --features generator -- generate --theme-dir themes/akari --tool all --out-dir dist
+cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
 ```
 
 ## Crate Usage
