@@ -1,5 +1,5 @@
 # Akari Night — gh-dash colors for Nix
-# Generated from palette/akari-night.toml
+# Generated from the Akari Night variant
 {
   theme.colors = {
     text = {

@@ -21,8 +21,8 @@ theme:
       faint: "#323333"
     icon:
       newContributor: "#7FAF6A"
-      contributor: "#7A8FA2"
-      collaborator: "#D4A05A"
-      member: "#D4A05A"
+      contributor: "#8CA6A1"
+      collaborator: "#8E7BA0"
+      member: "#7A8FA2"
       owner: "#E26A3B"
-      unknownRole: "#8E7BA0"
+      unknownRole: "#9BABB9"
