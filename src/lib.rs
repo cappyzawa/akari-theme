@@ -154,6 +154,20 @@ pub struct Artifact {
     pub rel_path: PathBuf,
     /// Content or source path
     pub content: ArtifactContent,
+    /// Whether a `Text` artifact is written with the executable bit; a `Copy`
+    /// artifact keeps its source's mode instead.
+    pub executable: bool,
+}
+
+#[cfg(all(feature = "generator", unix))]
+fn is_executable(path: &std::path::Path) -> bool {
+    use std::os::unix::fs::PermissionsExt;
+    std::fs::metadata(path).is_ok_and(|m| m.permissions().mode() & 0o111 != 0)
+}
+
+#[cfg(all(feature = "generator", not(unix)))]
+fn is_executable(_path: &std::path::Path) -> bool {
+    false
 }
 
 #[cfg(feature = "generator")]
@@ -163,6 +177,20 @@ impl Artifact {
         Self {
             rel_path: rel_path.into(),
             content: ArtifactContent::Text(content.into()),
+            executable: false,
+        }
+    }
+
+    /// A `Text` artifact rendered from `template`, executable when it is.
+    #[must_use]
+    pub fn rendered(
+        rel_path: impl Into<PathBuf>,
+        content: impl Into<String>,
+        template: &std::path::Path,
+    ) -> Self {
+        Self {
+            executable: is_executable(template),
+            ..Self::text(rel_path, content)
         }
     }
 
@@ -171,6 +199,7 @@ impl Artifact {
         Self {
             rel_path: rel_path.into(),
             content: ArtifactContent::Copy(src.into()),
+            executable: false,
         }
     }
 }

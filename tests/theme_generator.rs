@@ -1371,3 +1371,46 @@ fn vscode_requires_adapters_vscode_publisher_and_version() {
         }
     }
 }
+
+// -- File modes -------------------------------------------------------------
+
+/// TPM runs `*.tmux` directly, so the entry must keep its template's
+/// executable bit while variant files stay plain.
+#[cfg(unix)]
+#[test]
+fn generated_files_keep_the_template_executable_bit() {
+    use std::os::unix::fs::PermissionsExt;
+
+    let out = tempfile::tempdir().unwrap();
+    let status = std::process::Command::new(env!("CARGO_BIN_EXE_akari-gen"))
+        .current_dir(root_dir())
+        .args([
+            "generate-theme",
+            "--theme-dir",
+            "themes/ninja",
+            "--tool",
+            "tmux",
+        ])
+        .arg("--out-dir")
+        .arg(out.path())
+        .stdout(std::process::Stdio::null())
+        .status()
+        .unwrap();
+    assert!(status.success());
+
+    let executable = |rel: &str| {
+        let mode = fs::metadata(out.path().join(rel))
+            .unwrap()
+            .permissions()
+            .mode();
+        mode & 0o111 != 0
+    };
+    assert!(
+        executable("tmux/ninja.tmux"),
+        "ninja.tmux is not executable"
+    );
+    assert!(
+        !executable("tmux/ninja-shadow.conf"),
+        "ninja-shadow.conf is executable"
+    );
+}

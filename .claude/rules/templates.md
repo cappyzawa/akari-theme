@@ -45,3 +45,4 @@ Some `THEME_TOOLS` entries ship a file that lives in the theme directory itself 
 ## Static Files
 
 Non-`.tera` files in template directories are copied as-is to `dist/`.
+On the theme route a rendered file is executable exactly when its `.tera` template is (e.g. a TPM entry), so set the bit on the template.

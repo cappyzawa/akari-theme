@@ -245,17 +245,19 @@ impl Generator {
                 let content = render(theme_context(&theme.metadata, variant, adapter))?;
                 let final_path =
                     theme_output_name(&out_str, &theme.metadata, Some(&variant.variant));
-                artifacts.push(Artifact::text(
+                artifacts.push(Artifact::rendered(
                     PathBuf::from(tool).join(final_path),
                     content,
+                    path,
                 ));
             }
         } else {
             let content = render(combined_context(theme, adapter))?;
             let final_path = theme_output_name(&out_str, &theme.metadata, None);
-            artifacts.push(Artifact::text(
+            artifacts.push(Artifact::rendered(
                 PathBuf::from(tool).join(final_path),
                 content,
+                path,
             ));
         }
 
