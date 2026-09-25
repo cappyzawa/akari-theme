@@ -1,0 +1,18 @@
+# {{ theme.name }} {{ variant.name }} — fzf colors for Nix
+# Generated from the {{ theme.name }} {{ variant.name }} variant
+{
+  fg = "{{ base.foreground }}";
+  bg = "{{ base.background }}";
+  hl = "{{ roles.ui.accent }}";
+  "fg+" = "{{ roles.ui.selection_fg }}";
+  "bg+" = "{{ roles.ui.selection_bg }}";
+  "hl+" = "{{ roles.ui.accent }}";
+  border = "{{ roles.ui.border }}";
+  header = "{{ roles.ui.muted }}";
+  gutter = "{{ base.background }}";
+  spinner = "{{ roles.ui.accent }}";
+  info = "{{ roles.diagnostic.info }}";
+  pointer = "{{ roles.ui.accent }}";
+  marker = "{{ roles.ui.accent_secondary }}";
+  prompt = "{{ roles.ui.accent }}";
+}

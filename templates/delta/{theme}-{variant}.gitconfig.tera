@@ -1,0 +1,50 @@
+# {{ theme.name }} {{ variant.name }} theme for delta
+# {{ variant.description }}
+#
+# Include in your gitconfig:
+#   [include]
+#       path = ~/.config/delta/{{ theme.id }}-{{ variant.id }}.gitconfig
+
+[delta "{{ theme.id }}-{{ variant.id }}"]
+    {% if variant.appearance == "dark" -%}
+    dark = true
+    {% else -%}
+    light = true
+    {% endif -%}
+    syntax-theme = "{{ theme.name }} {{ variant.name }}"
+    line-numbers = true
+
+    # Diff styling
+    minus-style = syntax "{{ roles.diff.removed_bg }}"
+    minus-emph-style = syntax "{{ roles.diff.removed_bg }}" bold
+    plus-style = syntax "{{ roles.diff.added_bg }}"
+    plus-emph-style = syntax "{{ roles.diff.added_bg }}" bold
+
+    # Line numbers
+    line-numbers-minus-style = "{{ roles.diff.removed }}"
+    line-numbers-plus-style = "{{ roles.diff.added }}"
+    line-numbers-zero-style = "{{ ansi.bright.black }}"
+    line-numbers-left-style = "{{ roles.ui.border }}"
+    line-numbers-right-style = "{{ roles.ui.border }}"
+
+    # Hunk header
+    hunk-header-style = "file line-number {{ roles.diagnostic.info }}"
+    hunk-header-decoration-style = "{{ roles.ui.border }} ul"
+    hunk-header-file-style = "{{ roles.ui.accent }}"
+    hunk-header-line-number-style = "{{ roles.diagnostic.info }}"
+
+    # File header
+    file-style = "{{ roles.ui.accent }}" bold
+    file-decoration-style = "{{ roles.ui.border }}" ul
+
+    # Commit decoration
+    commit-decoration-style = "{{ roles.ui.accent }}" box
+
+    # Blame
+    blame-palette = "{{ base.background }}" "{{ roles.ui.surface }}" "{{ roles.ui.sunken }}" "{{ roles.ui.raised }}"
+
+    # Merge conflict
+    merge-conflict-begin-symbol = "▼"
+    merge-conflict-end-symbol = "▲"
+    merge-conflict-ours-diff-header-style = "{{ roles.diff.ours }}" bold
+    merge-conflict-theirs-diff-header-style = "{{ roles.diff.theirs }}" bold

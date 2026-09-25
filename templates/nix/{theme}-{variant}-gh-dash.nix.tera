@@ -1,0 +1,21 @@
+# {{ theme.name }} {{ variant.name }} — gh-dash colors for Nix
+# Generated from the {{ theme.name }} {{ variant.name }} variant
+{
+  theme.colors = {
+    text = {
+      primary = "{{ base.foreground }}";
+      secondary = "{{ ansi.bright.black }}";
+      inverted = "{{ base.background }}";
+      faint = "{{ roles.ui.muted }}";
+      warning = "{{ roles.diagnostic.warning }}";
+      success = "{{ roles.diagnostic.success }}";
+      error = "{{ roles.diagnostic.error }}";
+    };
+    background.selected = "{{ roles.ui.selection_bg }}";
+    border = {
+      primary = "{{ roles.ui.border }}";
+      secondary = "{{ roles.ui.surface }}";
+      faint = "{{ roles.ui.surface }}";
+    };
+  };
+}
