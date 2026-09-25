@@ -1,246 +1,246 @@
 {
-  "name": "Akari {{ variant | title }}",
-  "type": "{% if variant == "night" %}dark{% else %}light{% endif %}",
+  "name": "{{ theme.name }} {{ variant.name }}",
+  "type": "{{ variant.appearance }}",
   "colors": {
-    "focusBorder": "{{ colors.lantern.mid }}",
+    "focusBorder": "{{ roles.ui.accent }}",
     "foreground": "{{ base.foreground }}",
-    "disabledForeground": "{{ semantic.comment }}",
-    "errorForeground": "{{ state.error }}",
-    "descriptionForeground": "{{ semantic.comment }}",
+    "disabledForeground": "{{ roles.ui.muted }}",
+    "errorForeground": "{{ roles.diagnostic.error }}",
+    "descriptionForeground": "{{ roles.ui.muted }}",
     "icon.foreground": "{{ base.foreground }}",
 
-    "activityBar.background": "{{ layers.inset }}",
+    "activityBar.background": "{{ roles.ui.inset }}",
     "activityBar.foreground": "{{ base.foreground }}",
-    "activityBar.inactiveForeground": "{{ semantic.comment }}",
-    "activityBar.border": "{{ layers.border }}",
-    "activityBar.activeBorder": "{{ colors.lantern.mid }}",
-    "activityBarBadge.background": "{{ colors.lantern.mid }}",
+    "activityBar.inactiveForeground": "{{ roles.ui.muted }}",
+    "activityBar.border": "{{ roles.ui.border }}",
+    "activityBar.activeBorder": "{{ roles.ui.accent }}",
+    "activityBarBadge.background": "{{ roles.ui.accent }}",
     "activityBarBadge.foreground": "{{ base.background }}",
 
-    "sideBar.background": "{{ layers.inset }}",
+    "sideBar.background": "{{ roles.ui.inset }}",
     "sideBar.foreground": "{{ base.foreground }}",
-    "sideBar.border": "{{ layers.border }}",
+    "sideBar.border": "{{ roles.ui.border }}",
     "sideBarTitle.foreground": "{{ base.foreground }}",
-    "sideBarSectionHeader.background": "{{ layers.inset }}",
+    "sideBarSectionHeader.background": "{{ roles.ui.inset }}",
     "sideBarSectionHeader.foreground": "{{ base.foreground }}",
-    "sideBarSectionHeader.border": "{{ layers.border }}",
+    "sideBarSectionHeader.border": "{{ roles.ui.border }}",
 
     "editor.background": "{{ base.background }}",
     "editor.foreground": "{{ base.foreground }}",
-    "editorCursor.foreground": "{{ colors.lantern.mid }}",
-    "editor.selectionBackground": "{{ state.selection_bg }}",
-    "editor.selectionForeground": "{{ state.selection_fg }}",
-    "editor.inactiveSelectionBackground": "{{ layers.border }}80",
-    "editor.selectionHighlightBackground": "{{ layers.border }}80",
-    "editor.wordHighlightBackground": "{{ layers.border }}80",
-    "editor.wordHighlightStrongBackground": "{{ layers.border }}80",
-    "editor.findMatchBackground": "{{ colors.lantern.mid }}40",
-    "editor.findMatchHighlightBackground": "{{ colors.lantern.mid }}20",
-    "editor.lineHighlightBackground": "{{ layers.sunken }}",
-    "editor.lineHighlightBorder": "{{ layers.sunken }}00",
-    "editorLink.activeForeground": "{{ semantic.link }}",
+    "editorCursor.foreground": "{{ roles.ui.cursor }}",
+    "editor.selectionBackground": "{{ roles.ui.selection_bg }}",
+    "editor.selectionForeground": "{{ roles.ui.selection_fg }}",
+    "editor.inactiveSelectionBackground": "{{ roles.ui.border }}80",
+    "editor.selectionHighlightBackground": "{{ roles.ui.border }}80",
+    "editor.wordHighlightBackground": "{{ roles.ui.border }}80",
+    "editor.wordHighlightStrongBackground": "{{ roles.ui.border }}80",
+    "editor.findMatchBackground": "{{ roles.ui.match_bg }}",
+    "editor.findMatchHighlightBackground": "{{ roles.ui.match_bg }}80",
+    "editor.lineHighlightBackground": "{{ roles.ui.sunken }}",
+    "editor.lineHighlightBorder": "{{ roles.ui.sunken }}00",
+    "editorLink.activeForeground": "{{ roles.ui.link }}",
 
     "editorGutter.background": "{{ base.background }}",
-    "editorGutter.modifiedBackground": "{{ colors.lantern.mid }}",
-    "editorGutter.addedBackground": "{{ colors.life }}",
-    "editorGutter.deletedBackground": "{{ state.error }}",
+    "editorGutter.modifiedBackground": "{{ roles.diff.changed }}",
+    "editorGutter.addedBackground": "{{ roles.diff.added }}",
+    "editorGutter.deletedBackground": "{{ roles.diff.removed }}",
 
-    "editorLineNumber.foreground": "{{ layers.border }}",
-    "editorLineNumber.activeForeground": "{{ colors.lantern.mid }}",
+    "editorLineNumber.foreground": "{{ roles.ui.border }}",
+    "editorLineNumber.activeForeground": "{{ roles.ui.accent }}",
 
-    "editorIndentGuide.background1": "{{ layers.border }}",
-    "editorIndentGuide.activeBackground1": "{{ semantic.comment }}",
+    "editorIndentGuide.background1": "{{ roles.ui.border }}",
+    "editorIndentGuide.activeBackground1": "{{ roles.ui.muted }}",
 
-    "editorRuler.foreground": "{{ layers.border }}",
+    "editorRuler.foreground": "{{ roles.ui.border }}",
 
-    "editorWhitespace.foreground": "{{ layers.border }}",
+    "editorWhitespace.foreground": "{{ roles.ui.border }}",
 
-    "editorBracketMatch.background": "{{ layers.border }}",
-    "editorBracketMatch.border": "{{ colors.lantern.mid }}",
+    "editorBracketMatch.background": "{{ roles.ui.border }}",
+    "editorBracketMatch.border": "{{ roles.ui.accent }}",
 
-    "editorBracketHighlight.foreground1": "{{ colors.lantern.mid }}",
-    "editorBracketHighlight.foreground2": "{{ colors.night }}",
-    "editorBracketHighlight.foreground3": "{{ colors.muted }}",
-    "editorBracketHighlight.foreground4": "{{ semantic.constant }}",
-    "editorBracketHighlight.foreground5": "{{ colors.life }}",
-    "editorBracketHighlight.foreground6": "{{ colors.lantern.far }}",
-    "editorBracketHighlight.unexpectedBracket.foreground": "{{ state.error }}",
+    "editorBracketHighlight.foreground1": "{{ roles.series[0] }}",
+    "editorBracketHighlight.foreground2": "{{ roles.series[1] }}",
+    "editorBracketHighlight.foreground3": "{{ roles.series[2] }}",
+    "editorBracketHighlight.foreground4": "{{ roles.series[3] }}",
+    "editorBracketHighlight.foreground5": "{{ roles.series[4] }}",
+    "editorBracketHighlight.foreground6": "{{ roles.series[5] }}",
+    "editorBracketHighlight.unexpectedBracket.foreground": "{{ roles.diagnostic.error }}",
 
-    "editorBracketPairGuide.activeBackground1": "{{ colors.lantern.mid }}",
-    "editorBracketPairGuide.activeBackground2": "{{ colors.night }}",
-    "editorBracketPairGuide.activeBackground3": "{{ colors.muted }}",
-    "editorBracketPairGuide.activeBackground4": "{{ semantic.constant }}",
-    "editorBracketPairGuide.activeBackground5": "{{ colors.life }}",
-    "editorBracketPairGuide.activeBackground6": "{{ colors.lantern.far }}",
+    "editorBracketPairGuide.activeBackground1": "{{ roles.series[0] }}",
+    "editorBracketPairGuide.activeBackground2": "{{ roles.series[1] }}",
+    "editorBracketPairGuide.activeBackground3": "{{ roles.series[2] }}",
+    "editorBracketPairGuide.activeBackground4": "{{ roles.series[3] }}",
+    "editorBracketPairGuide.activeBackground5": "{{ roles.series[4] }}",
+    "editorBracketPairGuide.activeBackground6": "{{ roles.series[5] }}",
 
-    "editorOverviewRuler.border": "{{ layers.border }}",
-    "editorOverviewRuler.errorForeground": "{{ state.error }}",
-    "editorOverviewRuler.warningForeground": "{{ state.warning }}",
-    "editorOverviewRuler.infoForeground": "{{ state.info }}",
+    "editorOverviewRuler.border": "{{ roles.ui.border }}",
+    "editorOverviewRuler.errorForeground": "{{ roles.diagnostic.error }}",
+    "editorOverviewRuler.warningForeground": "{{ roles.diagnostic.warning }}",
+    "editorOverviewRuler.infoForeground": "{{ roles.diagnostic.info }}",
 
-    "editorError.foreground": "{{ state.error }}",
-    "editorWarning.foreground": "{{ state.warning }}",
-    "editorInfo.foreground": "{{ state.info }}",
-    "editorHint.foreground": "{{ semantic.comment }}",
+    "editorError.foreground": "{{ roles.diagnostic.error }}",
+    "editorWarning.foreground": "{{ roles.diagnostic.warning }}",
+    "editorInfo.foreground": "{{ roles.diagnostic.info }}",
+    "editorHint.foreground": "{{ roles.ui.muted }}",
 
-    "editorWidget.background": "{{ layers.inset }}",
+    "editorWidget.background": "{{ roles.ui.inset }}",
     "editorWidget.foreground": "{{ base.foreground }}",
-    "editorWidget.border": "{{ layers.border }}",
-    "editorSuggestWidget.background": "{{ layers.inset }}",
-    "editorSuggestWidget.border": "{{ layers.border }}",
+    "editorWidget.border": "{{ roles.ui.border }}",
+    "editorSuggestWidget.background": "{{ roles.ui.inset }}",
+    "editorSuggestWidget.border": "{{ roles.ui.border }}",
     "editorSuggestWidget.foreground": "{{ base.foreground }}",
-    "editorSuggestWidget.selectedBackground": "{{ layers.border }}",
-    "editorSuggestWidget.highlightForeground": "{{ colors.lantern.mid }}",
+    "editorSuggestWidget.selectedBackground": "{{ roles.ui.border }}",
+    "editorSuggestWidget.highlightForeground": "{{ roles.ui.accent }}",
 
-    "editorHoverWidget.background": "{{ layers.inset }}",
-    "editorHoverWidget.border": "{{ layers.border }}",
+    "editorHoverWidget.background": "{{ roles.ui.inset }}",
+    "editorHoverWidget.border": "{{ roles.ui.border }}",
     "editorHoverWidget.foreground": "{{ base.foreground }}",
 
-    "peekView.border": "{{ colors.lantern.mid }}",
-    "peekViewEditor.background": "{{ layers.inset }}",
-    "peekViewEditor.matchHighlightBackground": "{{ colors.lantern.mid }}40",
-    "peekViewResult.background": "{{ layers.inset }}",
+    "peekView.border": "{{ roles.ui.accent }}",
+    "peekViewEditor.background": "{{ roles.ui.inset }}",
+    "peekViewEditor.matchHighlightBackground": "{{ roles.ui.match_bg }}",
+    "peekViewResult.background": "{{ roles.ui.inset }}",
     "peekViewResult.fileForeground": "{{ base.foreground }}",
-    "peekViewResult.lineForeground": "{{ semantic.comment }}",
-    "peekViewResult.matchHighlightBackground": "{{ colors.lantern.mid }}40",
-    "peekViewResult.selectionBackground": "{{ layers.border }}",
-    "peekViewTitle.background": "{{ layers.inset }}",
-    "peekViewTitleDescription.foreground": "{{ semantic.comment }}",
+    "peekViewResult.lineForeground": "{{ roles.ui.muted }}",
+    "peekViewResult.matchHighlightBackground": "{{ roles.ui.match_bg }}",
+    "peekViewResult.selectionBackground": "{{ roles.ui.border }}",
+    "peekViewTitle.background": "{{ roles.ui.inset }}",
+    "peekViewTitleDescription.foreground": "{{ roles.ui.muted }}",
     "peekViewTitleLabel.foreground": "{{ base.foreground }}",
 
-    "diffEditor.insertedTextBackground": "{{ colors.life }}20",
-    "diffEditor.removedTextBackground": "{{ state.error }}20",
-    "diffEditor.insertedLineBackground": "{{ colors.life }}15",
-    "diffEditor.removedLineBackground": "{{ state.error }}15",
-    "diffEditorGutter.insertedLineBackground": "{{ colors.life }}25",
-    "diffEditorGutter.removedLineBackground": "{{ state.error }}25",
-    "diffEditorOverview.insertedForeground": "{{ colors.life }}40",
-    "diffEditorOverview.removedForeground": "{{ state.error }}40",
-    "diffEditor.diagonalFill": "{{ layers.border }}",
-    "diffEditor.unchangedCodeBackground": "{{ layers.surface }}66",
+    "diffEditor.insertedTextBackground": "{{ roles.diff.added }}20",
+    "diffEditor.removedTextBackground": "{{ roles.diff.removed }}20",
+    "diffEditor.insertedLineBackground": "{{ roles.diff.added }}15",
+    "diffEditor.removedLineBackground": "{{ roles.diff.removed }}15",
+    "diffEditorGutter.insertedLineBackground": "{{ roles.diff.added }}25",
+    "diffEditorGutter.removedLineBackground": "{{ roles.diff.removed }}25",
+    "diffEditorOverview.insertedForeground": "{{ roles.diff.added }}40",
+    "diffEditorOverview.removedForeground": "{{ roles.diff.removed }}40",
+    "diffEditor.diagonalFill": "{{ roles.ui.border }}",
+    "diffEditor.unchangedCodeBackground": "{{ roles.ui.surface }}66",
 
-    "merge.currentHeaderBackground": "{{ colors.life }}40",
-    "merge.incomingHeaderBackground": "{{ colors.night }}40",
+    "merge.currentHeaderBackground": "{{ roles.diff.ours }}40",
+    "merge.incomingHeaderBackground": "{{ roles.diff.theirs }}40",
 
     "tab.activeBackground": "{{ base.background }}",
     "tab.activeForeground": "{{ base.foreground }}",
-    "tab.activeBorder": "{{ colors.lantern.mid }}",
-    "tab.inactiveBackground": "{{ layers.inset }}",
-    "tab.inactiveForeground": "{{ semantic.comment }}",
-    "tab.border": "{{ layers.inset }}",
-    "tab.hoverBackground": "{{ layers.border }}",
-    "editorGroupHeader.tabsBackground": "{{ layers.inset }}",
-    "editorGroupHeader.tabsBorder": "{{ layers.border }}",
+    "tab.activeBorder": "{{ roles.ui.accent }}",
+    "tab.inactiveBackground": "{{ roles.ui.inset }}",
+    "tab.inactiveForeground": "{{ roles.ui.muted }}",
+    "tab.border": "{{ roles.ui.inset }}",
+    "tab.hoverBackground": "{{ roles.ui.border }}",
+    "editorGroupHeader.tabsBackground": "{{ roles.ui.inset }}",
+    "editorGroupHeader.tabsBorder": "{{ roles.ui.border }}",
 
-    "titleBar.activeBackground": "{{ layers.inset }}",
+    "titleBar.activeBackground": "{{ roles.ui.inset }}",
     "titleBar.activeForeground": "{{ base.foreground }}",
-    "titleBar.inactiveBackground": "{{ layers.inset }}",
-    "titleBar.inactiveForeground": "{{ semantic.comment }}",
-    "titleBar.border": "{{ layers.border }}",
+    "titleBar.inactiveBackground": "{{ roles.ui.inset }}",
+    "titleBar.inactiveForeground": "{{ roles.ui.muted }}",
+    "titleBar.border": "{{ roles.ui.border }}",
 
-    "statusBar.background": "{{ layers.inset }}",
+    "statusBar.background": "{{ roles.ui.inset }}",
     "statusBar.foreground": "{{ base.foreground }}",
-    "statusBar.border": "{{ layers.border }}",
-    "statusBar.debuggingBackground": "{{ colors.lantern.mid }}",
+    "statusBar.border": "{{ roles.ui.border }}",
+    "statusBar.debuggingBackground": "{{ roles.ui.accent }}",
     "statusBar.debuggingForeground": "{{ base.background }}",
-    "statusBar.noFolderBackground": "{{ layers.inset }}",
+    "statusBar.noFolderBackground": "{{ roles.ui.inset }}",
     "statusBar.noFolderForeground": "{{ base.foreground }}",
-    "statusBarItem.activeBackground": "{{ layers.border }}",
-    "statusBarItem.hoverBackground": "{{ layers.border }}",
-    "statusBarItem.prominentBackground": "{{ colors.lantern.mid }}",
+    "statusBarItem.activeBackground": "{{ roles.ui.border }}",
+    "statusBarItem.hoverBackground": "{{ roles.ui.border }}",
+    "statusBarItem.prominentBackground": "{{ roles.ui.accent }}",
     "statusBarItem.prominentForeground": "{{ base.background }}",
-    "statusBarItem.prominentHoverBackground": "{{ ansi_bright.yellow }}",
-    "statusBarItem.remoteBackground": "{{ colors.night }}",
+    "statusBarItem.prominentHoverBackground": "{{ ansi.bright.yellow }}",
+    "statusBarItem.remoteBackground": "{{ roles.diagnostic.info }}",
     "statusBarItem.remoteForeground": "{{ base.foreground }}",
-    "statusBarItem.errorBackground": "{{ state.error }}",
+    "statusBarItem.errorBackground": "{{ roles.diagnostic.error }}",
     "statusBarItem.errorForeground": "{{ base.foreground }}",
 
     "panel.background": "{{ base.background }}",
-    "panel.border": "{{ layers.border }}",
-    "panelTitle.activeBorder": "{{ colors.lantern.mid }}",
+    "panel.border": "{{ roles.ui.border }}",
+    "panelTitle.activeBorder": "{{ roles.ui.accent }}",
     "panelTitle.activeForeground": "{{ base.foreground }}",
-    "panelTitle.inactiveForeground": "{{ semantic.comment }}",
+    "panelTitle.inactiveForeground": "{{ roles.ui.muted }}",
 
-    "list.activeSelectionBackground": "{{ layers.border }}",
-    "list.activeSelectionForeground": "{{ state.selection_fg }}",
-    "list.inactiveSelectionBackground": "{{ layers.border }}80",
+    "list.activeSelectionBackground": "{{ roles.ui.border }}",
+    "list.activeSelectionForeground": "{{ roles.ui.selection_fg }}",
+    "list.inactiveSelectionBackground": "{{ roles.ui.border }}80",
     "list.inactiveSelectionForeground": "{{ base.foreground }}",
-    "list.hoverBackground": "{{ layers.border }}50",
+    "list.hoverBackground": "{{ roles.ui.border }}50",
     "list.hoverForeground": "{{ base.foreground }}",
-    "list.focusBackground": "{{ layers.border }}",
-    "list.focusForeground": "{{ state.selection_fg }}",
-    "list.highlightForeground": "{{ colors.lantern.mid }}",
-    "list.errorForeground": "{{ state.error }}",
-    "list.warningForeground": "{{ state.warning }}",
+    "list.focusBackground": "{{ roles.ui.border }}",
+    "list.focusForeground": "{{ roles.ui.selection_fg }}",
+    "list.highlightForeground": "{{ roles.ui.accent }}",
+    "list.errorForeground": "{{ roles.diagnostic.error }}",
+    "list.warningForeground": "{{ roles.diagnostic.warning }}",
 
-    "quickInput.background": "{{ layers.inset }}",
+    "quickInput.background": "{{ roles.ui.inset }}",
     "quickInput.foreground": "{{ base.foreground }}",
-    "quickInputList.focusBackground": "{{ layers.border }}",
-    "quickInputTitle.background": "{{ layers.inset }}",
+    "quickInputList.focusBackground": "{{ roles.ui.border }}",
+    "quickInputTitle.background": "{{ roles.ui.inset }}",
 
-    "dropdown.background": "{{ layers.inset }}",
+    "dropdown.background": "{{ roles.ui.inset }}",
     "dropdown.foreground": "{{ base.foreground }}",
-    "dropdown.border": "{{ layers.border }}",
-    "dropdown.listBackground": "{{ layers.inset }}",
+    "dropdown.border": "{{ roles.ui.border }}",
+    "dropdown.listBackground": "{{ roles.ui.inset }}",
 
-    "input.background": "{{ layers.inset }}",
+    "input.background": "{{ roles.ui.inset }}",
     "input.foreground": "{{ base.foreground }}",
-    "input.border": "{{ layers.border }}",
-    "input.placeholderForeground": "{{ semantic.comment }}",
-    "inputOption.activeBackground": "{{ layers.border }}",
+    "input.border": "{{ roles.ui.border }}",
+    "input.placeholderForeground": "{{ roles.ui.muted }}",
+    "inputOption.activeBackground": "{{ roles.ui.border }}",
     "inputOption.activeForeground": "{{ base.foreground }}",
-    "inputOption.activeBorder": "{{ colors.lantern.mid }}",
+    "inputOption.activeBorder": "{{ roles.ui.accent }}",
 
     "inputValidation.infoForeground": "{{ base.foreground }}",
-    "inputValidation.infoBackground": "{{ state.info }}40",
-    "inputValidation.infoBorder": "{{ state.info }}",
+    "inputValidation.infoBackground": "{{ roles.diagnostic.info }}40",
+    "inputValidation.infoBorder": "{{ roles.diagnostic.info }}",
     "inputValidation.warningForeground": "{{ base.background }}",
-    "inputValidation.warningBackground": "{{ colors.lantern.far }}",
-    "inputValidation.warningBorder": "{{ colors.lantern.far }}",
+    "inputValidation.warningBackground": "{{ roles.diagnostic.warning }}",
+    "inputValidation.warningBorder": "{{ roles.diagnostic.warning }}",
     "inputValidation.errorForeground": "{{ base.foreground }}",
-    "inputValidation.errorBackground": "{{ state.error }}80",
-    "inputValidation.errorBorder": "{{ state.error }}",
+    "inputValidation.errorBackground": "{{ roles.diagnostic.error }}80",
+    "inputValidation.errorBorder": "{{ roles.diagnostic.error }}",
 
     "scrollbar.shadow": "#00000050",
-    "scrollbarSlider.background": "{{ layers.border }}80",
-    "scrollbarSlider.hoverBackground": "{{ layers.border }}",
-    "scrollbarSlider.activeBackground": "{{ semantic.comment }}",
+    "scrollbarSlider.background": "{{ roles.ui.border }}80",
+    "scrollbarSlider.hoverBackground": "{{ roles.ui.border }}",
+    "scrollbarSlider.activeBackground": "{{ roles.ui.muted }}",
 
-    "badge.background": "{{ colors.lantern.mid }}",
+    "badge.background": "{{ roles.ui.accent }}",
     "badge.foreground": "{{ base.background }}",
 
-    "button.background": "{{ colors.lantern.mid }}",
+    "button.background": "{{ roles.ui.accent }}",
     "button.foreground": "{{ base.background }}",
-    "button.hoverBackground": "{{ ansi_bright.yellow }}",
-    "button.secondaryBackground": "{{ layers.border }}",
+    "button.hoverBackground": "{{ ansi.bright.yellow }}",
+    "button.secondaryBackground": "{{ roles.ui.border }}",
     "button.secondaryForeground": "{{ base.foreground }}",
-    "button.secondaryHoverBackground": "{{ semantic.comment }}",
+    "button.secondaryHoverBackground": "{{ roles.ui.muted }}",
 
-    "gitDecoration.addedResourceForeground": "{{ colors.life }}",
-    "gitDecoration.modifiedResourceForeground": "{{ colors.lantern.mid }}",
-    "gitDecoration.deletedResourceForeground": "{{ state.error }}",
-    "gitDecoration.renamedResourceForeground": "{{ ansi_bright.cyan }}",
-    "gitDecoration.untrackedResourceForeground": "{{ ansi_bright.green }}",
-    "gitDecoration.ignoredResourceForeground": "{{ semantic.comment }}",
-    "gitDecoration.conflictingResourceForeground": "{{ state.error }}",
-    "gitDecoration.stageModifiedResourceForeground": "{{ colors.lantern.mid }}",
-    "gitDecoration.stageDeletedResourceForeground": "{{ state.error }}",
+    "gitDecoration.addedResourceForeground": "{{ roles.diff.added }}",
+    "gitDecoration.modifiedResourceForeground": "{{ roles.diff.changed }}",
+    "gitDecoration.deletedResourceForeground": "{{ roles.diff.removed }}",
+    "gitDecoration.renamedResourceForeground": "{{ ansi.bright.cyan }}",
+    "gitDecoration.untrackedResourceForeground": "{{ ansi.bright.green }}",
+    "gitDecoration.ignoredResourceForeground": "{{ roles.ui.muted }}",
+    "gitDecoration.conflictingResourceForeground": "{{ roles.diff.conflict }}",
+    "gitDecoration.stageModifiedResourceForeground": "{{ roles.diff.changed }}",
+    "gitDecoration.stageDeletedResourceForeground": "{{ roles.diff.removed }}",
 
     "breadcrumb.background": "{{ base.background }}",
-    "breadcrumb.foreground": "{{ semantic.comment }}",
+    "breadcrumb.foreground": "{{ roles.ui.muted }}",
     "breadcrumb.focusForeground": "{{ base.foreground }}",
     "breadcrumb.activeSelectionForeground": "{{ base.foreground }}",
-    "breadcrumbPicker.background": "{{ layers.inset }}",
+    "breadcrumbPicker.background": "{{ roles.ui.inset }}",
 
     "minimap.background": "{{ base.background }}",
-    "minimap.selectionHighlight": "{{ layers.border }}",
-    "minimap.errorHighlight": "{{ state.error }}",
-    "minimap.warningHighlight": "{{ state.warning }}",
-    "minimap.findMatchHighlight": "{{ colors.lantern.mid }}",
+    "minimap.selectionHighlight": "{{ roles.ui.border }}",
+    "minimap.errorHighlight": "{{ roles.diagnostic.error }}",
+    "minimap.warningHighlight": "{{ roles.diagnostic.warning }}",
+    "minimap.findMatchHighlight": "{{ roles.ui.match_bg }}",
 
-    "minimapGutter.modifiedBackground": "{{ colors.lantern.mid }}",
-    "minimapGutter.addedBackground": "{{ colors.life }}",
-    "minimapGutter.deletedBackground": "{{ state.error }}",
+    "minimapGutter.modifiedBackground": "{{ roles.diff.changed }}",
+    "minimapGutter.addedBackground": "{{ roles.diff.added }}",
+    "minimapGutter.deletedBackground": "{{ roles.diff.removed }}",
 
     "terminal.background": "{{ base.background }}",
     "terminal.foreground": "{{ base.foreground }}",
@@ -252,79 +252,79 @@
     "terminal.ansiMagenta": "{{ ansi.magenta }}",
     "terminal.ansiCyan": "{{ ansi.cyan }}",
     "terminal.ansiWhite": "{{ ansi.white }}",
-    "terminal.ansiBrightBlack": "{{ ansi_bright.black }}",
-    "terminal.ansiBrightRed": "{{ ansi_bright.red }}",
-    "terminal.ansiBrightGreen": "{{ ansi_bright.green }}",
-    "terminal.ansiBrightYellow": "{{ ansi_bright.yellow }}",
-    "terminal.ansiBrightBlue": "{{ ansi_bright.blue }}",
-    "terminal.ansiBrightMagenta": "{{ ansi_bright.magenta }}",
-    "terminal.ansiBrightCyan": "{{ ansi_bright.cyan }}",
-    "terminal.ansiBrightWhite": "{{ ansi_bright.white }}",
-    "terminalCursor.foreground": "{{ colors.lantern.mid }}",
+    "terminal.ansiBrightBlack": "{{ ansi.bright.black }}",
+    "terminal.ansiBrightRed": "{{ ansi.bright.red }}",
+    "terminal.ansiBrightGreen": "{{ ansi.bright.green }}",
+    "terminal.ansiBrightYellow": "{{ ansi.bright.yellow }}",
+    "terminal.ansiBrightBlue": "{{ ansi.bright.blue }}",
+    "terminal.ansiBrightMagenta": "{{ ansi.bright.magenta }}",
+    "terminal.ansiBrightCyan": "{{ ansi.bright.cyan }}",
+    "terminal.ansiBrightWhite": "{{ ansi.bright.white }}",
+    "terminalCursor.foreground": "{{ roles.ui.cursor }}",
 
-    "notifications.background": "{{ layers.inset }}",
+    "notifications.background": "{{ roles.ui.inset }}",
     "notifications.foreground": "{{ base.foreground }}",
-    "notifications.border": "{{ layers.border }}",
-    "notificationCenterHeader.background": "{{ layers.inset }}",
+    "notifications.border": "{{ roles.ui.border }}",
+    "notificationCenterHeader.background": "{{ roles.ui.inset }}",
     "notificationCenterHeader.foreground": "{{ base.foreground }}",
 
-    "extensionButton.prominentBackground": "{{ colors.lantern.mid }}",
+    "extensionButton.prominentBackground": "{{ roles.ui.accent }}",
     "extensionButton.prominentForeground": "{{ base.background }}",
-    "extensionButton.prominentHoverBackground": "{{ ansi_bright.yellow }}",
+    "extensionButton.prominentHoverBackground": "{{ ansi.bright.yellow }}",
 
-    "progressBar.background": "{{ colors.lantern.mid }}",
+    "progressBar.background": "{{ roles.ui.accent }}",
 
     "editorSemanticHighlighting.enabled": true,
 
     "settings.headerForeground": "{{ base.foreground }}",
-    "settings.modifiedItemIndicator": "{{ colors.lantern.mid }}",
-    "settings.dropdownBackground": "{{ layers.inset }}",
+    "settings.modifiedItemIndicator": "{{ roles.diff.changed }}",
+    "settings.dropdownBackground": "{{ roles.ui.inset }}",
     "settings.dropdownForeground": "{{ base.foreground }}",
-    "settings.dropdownBorder": "{{ layers.border }}",
-    "settings.checkboxBackground": "{{ layers.inset }}",
+    "settings.dropdownBorder": "{{ roles.ui.border }}",
+    "settings.checkboxBackground": "{{ roles.ui.inset }}",
     "settings.checkboxForeground": "{{ base.foreground }}",
-    "settings.checkboxBorder": "{{ layers.border }}",
-    "settings.textInputBackground": "{{ layers.inset }}",
+    "settings.checkboxBorder": "{{ roles.ui.border }}",
+    "settings.textInputBackground": "{{ roles.ui.inset }}",
     "settings.textInputForeground": "{{ base.foreground }}",
-    "settings.textInputBorder": "{{ layers.border }}",
-    "settings.numberInputBackground": "{{ layers.inset }}",
+    "settings.textInputBorder": "{{ roles.ui.border }}",
+    "settings.numberInputBackground": "{{ roles.ui.inset }}",
     "settings.numberInputForeground": "{{ base.foreground }}",
-    "settings.numberInputBorder": "{{ layers.border }}",
+    "settings.numberInputBorder": "{{ roles.ui.border }}",
 
     "welcomePage.background": "{{ base.background }}",
-    "welcomePage.tileBackground": "{{ layers.inset }}",
-    "welcomePage.tileHoverBackground": "{{ layers.border }}",
+    "welcomePage.tileBackground": "{{ roles.ui.inset }}",
+    "welcomePage.tileHoverBackground": "{{ roles.ui.border }}",
 
-    "debugToolBar.background": "{{ layers.inset }}",
-    "debugIcon.breakpointForeground": "{{ state.error }}",
-    "debugIcon.breakpointDisabledForeground": "{{ semantic.comment }}",
-    "debugIcon.startForeground": "{{ colors.life }}",
-    "debugIcon.pauseForeground": "{{ colors.lantern.mid }}",
-    "debugIcon.stopForeground": "{{ state.error }}",
-    "debugIcon.stepOverForeground": "{{ colors.night }}",
-    "debugIcon.stepIntoForeground": "{{ colors.night }}",
-    "debugIcon.stepOutForeground": "{{ colors.night }}",
-    "debugIcon.restartForeground": "{{ colors.life }}",
+    "debugToolBar.background": "{{ roles.ui.inset }}",
+    "debugIcon.breakpointForeground": "{{ roles.diagnostic.error }}",
+    "debugIcon.breakpointDisabledForeground": "{{ roles.ui.muted }}",
+    "debugIcon.startForeground": "{{ roles.diagnostic.success }}",
+    "debugIcon.pauseForeground": "{{ roles.ui.accent }}",
+    "debugIcon.stopForeground": "{{ roles.diagnostic.error }}",
+    "debugIcon.stepOverForeground": "{{ roles.diagnostic.info }}",
+    "debugIcon.stepIntoForeground": "{{ roles.diagnostic.info }}",
+    "debugIcon.stepOutForeground": "{{ roles.diagnostic.info }}",
+    "debugIcon.restartForeground": "{{ roles.diagnostic.success }}",
 
     "notebook.editorBackground": "{{ base.background }}",
-    "notebook.cellEditorBackground": "{{ layers.inset }}",
-    "notebook.cellBorderColor": "{{ layers.border }}",
-    "notebook.focusedCellBorder": "{{ colors.lantern.mid }}",
-    "notebook.cellStatusBarItemHoverBackground": "{{ layers.border }}",
+    "notebook.cellEditorBackground": "{{ roles.ui.inset }}",
+    "notebook.cellBorderColor": "{{ roles.ui.border }}",
+    "notebook.focusedCellBorder": "{{ roles.ui.accent }}",
+    "notebook.cellStatusBarItemHoverBackground": "{{ roles.ui.border }}",
 
-    "charts.red": "{{ state.error }}",
-    "charts.blue": "{{ colors.night }}",
-    "charts.yellow": "{{ colors.lantern.far }}",
-    "charts.orange": "{{ colors.lantern.mid }}",
-    "charts.green": "{{ colors.life }}",
-    "charts.purple": "{{ colors.muted }}",
+    "charts.red": "{{ roles.diagnostic.error }}",
+    "charts.blue": "{{ roles.series[1] }}",
+    "charts.yellow": "{{ roles.series[5] }}",
+    "charts.orange": "{{ roles.series[0] }}",
+    "charts.green": "{{ roles.series[4] }}",
+    "charts.purple": "{{ roles.series[2] }}",
     "charts.foreground": "{{ base.foreground }}",
-    "charts.lines": "{{ layers.border }}",
+    "charts.lines": "{{ roles.ui.border }}",
 
     "inlineChat.foreground": "{{ base.foreground }}",
-    "inlineChatInput.background": "{{ layers.inset }}",
-    "inlineChatDiff.inserted": "{{ colors.life }}40",
-    "inlineChatDiff.removed": "{{ state.error }}40"
+    "inlineChatInput.background": "{{ roles.ui.inset }}",
+    "inlineChatDiff.inserted": "{{ roles.diff.added }}40",
+    "inlineChatDiff.removed": "{{ roles.diff.removed }}40"
   },
   "tokenColors": [
     {
@@ -337,7 +337,7 @@
         "punctuation.definition.comment"
       ],
       "settings": {
-        "foreground": "{{ semantic.comment }}",
+        "foreground": "{{ roles.syntax.comment }}",
         "fontStyle": "italic"
       }
     },
@@ -352,7 +352,7 @@
         "string.template"
       ],
       "settings": {
-        "foreground": "{{ colors.life }}"
+        "foreground": "{{ roles.syntax.string }}"
       }
     },
     {
@@ -362,7 +362,7 @@
         "string.escape"
       ],
       "settings": {
-        "foreground": "{{ semantic.escape }}"
+        "foreground": "{{ roles.syntax.escape }}"
       }
     },
     {
@@ -371,21 +371,21 @@
         "string.regexp"
       ],
       "settings": {
-        "foreground": "{{ semantic.regexp }}"
+        "foreground": "{{ roles.syntax.regexp }}"
       }
     },
     {
       "name": "Regexp - Group Punctuation",
       "scope": "punctuation.definition.group.regexp",
       "settings": {
-        "foreground": "{{ colors.lantern.ember }}"
+        "foreground": "{{ roles.syntax.regexp }}"
       }
     },
     {
       "name": "Regexp - Character Class",
       "scope": "constant.other.character-class.regexp",
       "settings": {
-        "foreground": "{{ colors.muted }}"
+        "foreground": "{{ roles.syntax.regexp }}"
       }
     },
     {
@@ -395,14 +395,14 @@
         "punctuation.definition.character-class.regexp"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.regexp }}"
       }
     },
     {
       "name": "Regexp - Quantifier",
       "scope": "keyword.operator.quantifier.regexp",
       "settings": {
-        "foreground": "{{ semantic.constant }}"
+        "foreground": "{{ roles.syntax.constant }}"
       }
     },
     {
@@ -416,7 +416,7 @@
         "constant.numeric.binary"
       ],
       "settings": {
-        "foreground": "{{ semantic.constant }}"
+        "foreground": "{{ roles.syntax.constant }}"
       }
     },
     {
@@ -429,7 +429,7 @@
         "constant.language.undefined"
       ],
       "settings": {
-        "foreground": "{{ semantic.constant }}"
+        "foreground": "{{ roles.syntax.constant }}"
       }
     },
     {
@@ -438,7 +438,7 @@
         "constant.character"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.character }}"
       }
     },
     {
@@ -461,7 +461,7 @@
         "keyword.other"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.keyword }}"
       }
     },
     {
@@ -474,7 +474,7 @@
         "keyword.operator.comparison"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.keyword }}"
       }
     },
     {
@@ -485,7 +485,7 @@
         "storage.modifier"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.keyword }}"
       }
     },
     {
@@ -497,7 +497,7 @@
         "meta.method-call"
       ],
       "settings": {
-        "foreground": "{{ colors.muted }}"
+        "foreground": "{{ roles.syntax.function }}"
       }
     },
     {
@@ -506,7 +506,7 @@
         "support.function.builtin"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.yellow }}"
+        "foreground": "{{ ansi.bright.yellow }}"
       }
     },
     {
@@ -516,7 +516,7 @@
         "support.function.macro"
       ],
       "settings": {
-        "foreground": "{{ semantic.macro }}"
+        "foreground": "{{ roles.syntax.macro }}"
       }
     },
     {
@@ -533,7 +533,7 @@
         "support.class"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.type }}"
       }
     },
     {
@@ -543,7 +543,7 @@
         "support.type.primitive"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.type }}"
       }
     },
     {
@@ -552,7 +552,7 @@
         "entity.name.type.parameter"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}",
+        "foreground": "{{ roles.syntax.type }}",
         "fontStyle": "italic"
       }
     },
@@ -576,7 +576,7 @@
         "variable.language.super"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.ember }}",
+        "foreground": "{{ roles.syntax.builtin }}",
         "fontStyle": "italic"
       }
     },
@@ -600,7 +600,7 @@
         "meta.object-literal.key"
       ],
       "settings": {
-        "foreground": "{{ semantic.member }}"
+        "foreground": "{{ roles.syntax.member }}"
       }
     },
     {
@@ -611,7 +611,7 @@
         "entity.name.package"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.namespace }}"
       }
     },
     {
@@ -621,7 +621,7 @@
         "meta.function-call.constructor"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.type }}"
       }
     },
     {
@@ -630,7 +630,7 @@
         "entity.name.label"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.label }}"
       }
     },
     {
@@ -640,7 +640,7 @@
         "meta.attribute"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.attribute }}"
       }
     },
     {
@@ -649,7 +649,7 @@
         "meta.decorator"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.yellow }}"
+        "foreground": "{{ roles.syntax.decorator }}"
       }
     },
     {
@@ -686,7 +686,7 @@
         "punctuation.section.embedded"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.punctuation_special }}"
       }
     },
     {
@@ -709,7 +709,7 @@
         "punctuation.definition.tag"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.tag }}"
       }
     },
     {
@@ -718,7 +718,7 @@
         "support.tag"
       ],
       "settings": {
-        "foreground": "{{ colors.night }}"
+        "foreground": "{{ roles.syntax.tag }}"
       }
     },
     {
@@ -728,7 +728,7 @@
         "entity.other.attribute-name.xml"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.attribute }}"
       }
     },
     {
@@ -739,7 +739,7 @@
         "entity.name.section"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}",
+        "foreground": "{{ roles.markup.heading_1 }}",
         "fontStyle": "bold"
       }
     },
@@ -747,7 +747,7 @@
       "name": "Markup Heading Level 1",
       "scope": "markup.heading.1",
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}",
+        "foreground": "{{ roles.markup.heading_1 }}",
         "fontStyle": "bold"
       }
     },
@@ -755,7 +755,7 @@
       "name": "Markup Heading Level 2",
       "scope": "markup.heading.2",
       "settings": {
-        "foreground": "{{ ansi_bright.yellow }}",
+        "foreground": "{{ ansi.bright.yellow }}",
         "fontStyle": "bold"
       }
     },
@@ -763,7 +763,7 @@
       "name": "Markup Heading Level 3",
       "scope": "markup.heading.3",
       "settings": {
-        "foreground": "{{ colors.lantern.ember }}",
+        "foreground": "{{ roles.markup.heading_3 }}",
         "fontStyle": "bold"
       }
     },
@@ -771,7 +771,7 @@
       "name": "Markup Heading Level 4",
       "scope": "markup.heading.4",
       "settings": {
-        "foreground": "{{ colors.lantern.far }}",
+        "foreground": "{{ roles.markup.heading_4 }}",
         "fontStyle": "bold"
       }
     },
@@ -779,7 +779,7 @@
       "name": "Markup Heading Level 5",
       "scope": "markup.heading.5",
       "settings": {
-        "foreground": "{{ semantic.comment }}",
+        "foreground": "{{ roles.syntax.comment }}",
         "fontStyle": "bold"
       }
     },
@@ -787,7 +787,7 @@
       "name": "Markup Heading Level 6",
       "scope": "markup.heading.6",
       "settings": {
-        "foreground": "{{ colors.night }}",
+        "foreground": "{{ roles.diagnostic.info }}",
         "fontStyle": "bold"
       }
     },
@@ -825,7 +825,7 @@
         "string.other.link"
       ],
       "settings": {
-        "foreground": "{{ semantic.link }}",
+        "foreground": "{{ roles.ui.link }}",
         "fontStyle": "underline"
       }
     },
@@ -853,7 +853,7 @@
       "name": "Markup Quote",
       "scope": "markup.quote",
       "settings": {
-        "foreground": "{{ semantic.comment }}",
+        "foreground": "{{ roles.syntax.comment }}",
         "fontStyle": "italic"
       }
     },
@@ -866,7 +866,7 @@
         "fenced_code.block.language"
       ],
       "settings": {
-        "foreground": "{{ ansi_bright.green }}"
+        "foreground": "{{ roles.markup.raw }}"
       }
     },
     {
@@ -876,7 +876,7 @@
         "meta.diff.header.to-file"
       ],
       "settings": {
-        "foreground": "{{ colors.life }}"
+        "foreground": "{{ roles.diff.added }}"
       }
     },
     {
@@ -886,21 +886,21 @@
         "meta.diff.header.from-file"
       ],
       "settings": {
-        "foreground": "{{ state.error }}"
+        "foreground": "{{ roles.diff.removed }}"
       }
     },
     {
       "name": "Diff Changed",
       "scope": "markup.changed",
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.diff.changed }}"
       }
     },
     {
       "name": "Invalid",
       "scope": "invalid",
       "settings": {
-        "foreground": "{{ state.error }}"
+        "foreground": "{{ roles.diagnostic.error }}"
       }
     },
     {
@@ -914,35 +914,35 @@
       "name": "JSON Key - Level 0",
       "scope": "source.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.series[0] }}"
       }
     },
     {
       "name": "JSON Key - Level 1",
       "scope": "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.series[1] }}"
       }
     },
     {
       "name": "JSON Key - Level 2",
       "scope": "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.series[2] }}"
       }
     },
     {
       "name": "JSON Key - Level 3+",
       "scope": "source.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json meta.structure.dictionary.value.json meta.structure.dictionary.json support.type.property-name.json",
       "settings": {
-        "foreground": "{{ colors.life }}"
+        "foreground": "{{ roles.series[3] }}"
       }
     },
     {
       "name": "YAML Key",
       "scope": "entity.name.tag.yaml",
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.keyword }}"
       }
     },
     {
@@ -952,7 +952,7 @@
         "support.type.property-name.toml"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.keyword }}"
       }
     },
     {
@@ -962,7 +962,7 @@
         "entity.other.attribute-name.table.toml"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.namespace }}"
       }
     },
     {
@@ -990,7 +990,7 @@
         "entity.other.attribute-name.id.css"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.mid }}"
+        "foreground": "{{ roles.syntax.tag }}"
       }
     },
     {
@@ -1000,7 +1000,7 @@
         "entity.other.attribute-name.pseudo-element"
       ],
       "settings": {
-        "foreground": "{{ colors.muted }}"
+        "foreground": "{{ roles.syntax.function }}"
       }
     },
     {
@@ -1011,21 +1011,21 @@
         "keyword.control.at-rule.extend"
       ],
       "settings": {
-        "foreground": "{{ semantic.macro }}"
+        "foreground": "{{ roles.syntax.macro }}"
       }
     },
     {
       "name": "CSS Property Value",
       "scope": "support.constant.property-value.css",
       "settings": {
-        "foreground": "{{ colors.lantern.ember }}"
+        "foreground": "{{ roles.syntax.builtin }}"
       }
     },
     {
       "name": "CSS Unit",
       "scope": "keyword.other.unit.css",
       "settings": {
-        "foreground": "{{ colors.lantern.ember }}"
+        "foreground": "{{ roles.syntax.builtin }}"
       }
     },
     {
@@ -1043,7 +1043,7 @@
       "name": "Shell Command",
       "scope": "support.function.builtin.shell",
       "settings": {
-        "foreground": "{{ ansi_bright.yellow }}"
+        "foreground": "{{ ansi.bright.yellow }}"
       }
     },
     {
@@ -1053,7 +1053,7 @@
         "punctuation.section.embedded"
       ],
       "settings": {
-        "foreground": "{{ colors.lantern.far }}"
+        "foreground": "{{ roles.syntax.punctuation_special }}"
       }
     },
     {
@@ -1070,26 +1070,26 @@
   ],
   "semanticHighlighting": true,
   "semanticTokenColors": {
-    "class": "{{ colors.lantern.far }}",
-    "struct": "{{ colors.lantern.far }}",
-    "interface": "{{ colors.lantern.far }}",
-    "enum": "{{ colors.lantern.far }}",
-    "enumMember": "{{ semantic.constant }}",
-    "type": "{{ colors.lantern.far }}",
+    "class": "{{ roles.syntax.type }}",
+    "struct": "{{ roles.syntax.type }}",
+    "interface": "{{ roles.syntax.type }}",
+    "enum": "{{ roles.syntax.type }}",
+    "enumMember": "{{ roles.syntax.constant }}",
+    "type": "{{ roles.syntax.type }}",
     "typeParameter": {
-      "foreground": "{{ colors.lantern.far }}",
+      "foreground": "{{ roles.syntax.type }}",
       "italic": true
     },
-    "typeAlias": "{{ colors.lantern.far }}",
-    "function": "{{ colors.muted }}",
-    "method": "{{ colors.muted }}",
-    "function.defaultLibrary": "{{ ansi_bright.magenta }}",
-    "method.defaultLibrary": "{{ ansi_bright.magenta }}",
-    "macro": "{{ semantic.macro }}",
+    "typeAlias": "{{ roles.syntax.type }}",
+    "function": "{{ roles.syntax.function }}",
+    "method": "{{ roles.syntax.function }}",
+    "function.defaultLibrary": "{{ ansi.bright.magenta }}",
+    "method.defaultLibrary": "{{ ansi.bright.magenta }}",
+    "macro": "{{ roles.syntax.macro }}",
     "variable": "{{ base.foreground }}",
-    "variable.readonly": "{{ semantic.constant }}",
+    "variable.readonly": "{{ roles.syntax.constant }}",
     "variable.defaultLibrary": {
-      "foreground": "{{ colors.lantern.ember }}",
+      "foreground": "{{ roles.syntax.builtin }}",
       "italic": true
     },
     "variable.static": {
@@ -1101,12 +1101,12 @@
       "italic": true
     },
     "property": "{{ base.foreground }}",
-    "property.readonly": "{{ semantic.constant }}",
-    "namespace": "{{ colors.lantern.far }}",
-    "module": "{{ colors.lantern.far }}",
-    "decorator": "{{ ansi_bright.yellow }}",
-    "annotation": "{{ ansi_bright.yellow }}",
-    "event": "{{ ansi_bright.yellow }}",
+    "property.readonly": "{{ roles.syntax.constant }}",
+    "namespace": "{{ roles.syntax.namespace }}",
+    "module": "{{ roles.syntax.namespace }}",
+    "decorator": "{{ roles.syntax.decorator }}",
+    "annotation": "{{ roles.syntax.decorator }}",
+    "event": "{{ roles.syntax.decorator }}",
     "*.deprecated": {
       "strikethrough": true
     },
@@ -1119,12 +1119,12 @@
     "*.modification": {},
     "*.documentation": {},
     "*.declaration": {},
-    "keyword": "{{ colors.lantern.mid }}",
-    "string": "{{ colors.life }}",
-    "number": "{{ semantic.constant }}",
+    "keyword": "{{ roles.syntax.keyword }}",
+    "string": "{{ roles.syntax.string }}",
+    "number": "{{ roles.syntax.constant }}",
     "operator": "{{ base.foreground }}",
     "comment": {
-      "foreground": "{{ semantic.comment }}",
+      "foreground": "{{ roles.syntax.comment }}",
       "italic": true
     }
   }
