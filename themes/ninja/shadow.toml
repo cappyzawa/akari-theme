@@ -5,20 +5,20 @@ appearance = "dark"
 description = "Ink-dark ground with a blue vortex and a pink blade."
 
 [base]
-background = "#141821" # sumi ink
-foreground = "#D9DEE9" # moonlit paper
+background = "#1A1720" # ink with a violet cast
+foreground = "#DDD9E3" # pale paper
 
 # Two accents carry the theme: vortex (blue) for structure, sakura (pink)
 # for control flow. The rest are supporting tones.
 [colors]
-vortex = "#5FB0F5" # swirling blue
-sakura = "#F27AAE" # pink blade
-mist = "#8AD1E0"   # pale cyan
-moss = "#8FC98D"   # forest green
-scroll = "#E3BE78" # aged paper amber
-seal = "#EA6B79"   # red seal ink
-shade = "#A995E8"  # violet shadow
-steel = "#7E8AA3"  # blade gray
+vortex = "#3DAEE9" # bright cyan-blue
+sakura = "#E06A8A" # deep rose
+mist = "#8ECDE6"   # pale sky
+moss = "#4FBF9A"   # teal green
+scroll = "#F2C86A" # sash amber
+seal = "#E2545A"   # seal red
+shade = "#8F86D6"  # indigo violet
+steel = "#8B90A0"  # blade gray
 
 [ansi]
 black = "mix(base.background, colors.steel, 0.20)"
