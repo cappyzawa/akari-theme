@@ -1,7 +1,6 @@
 *.vsix
 
-# Added by cargo
-/target
+/.katazome
 
 # Sample files for syntax highlighting testing
 /samples

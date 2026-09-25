@@ -1,11 +1,6 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cargo test:*)",
-      "Bash(cargo clippy:*)",
-      "Bash(cargo fmt:*)",
-      "Bash(cargo build:*)",
-      "Bash(cargo run:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git diff:*)",

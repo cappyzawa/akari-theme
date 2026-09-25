@@ -7,50 +7,36 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v6
-
-    - name: Install Rust
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        components: clippy, rustfmt
-
-    - name: Run clippy
-      run: cargo clippy --all-targets -- -D warnings
-
-    - name: Check formatting
-      run: cargo fmt -- --check
-
-    - name: Run tests
-      run: cargo test
-
-    - name: Run tests without default features
-      run: cargo test --no-default-features
-
   generate:
-    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
 
+    - name: Cache katazome
+      uses: actions/cache@v6
+      with:
+        path: .katazome
+        key: katazome-${{ runner.os }}-${{ hashFiles('scripts/install-katazome') }}
+
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
 
-    - name: Generate theme files from theme directories
-      run: cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
+    - name: Install katazome
+      run: scripts/install-katazome
+
+    - name: Generate theme files
+      run: .katazome/bin/katazome generate --theme-dir themes/akari --tool all --out-dir dist
 
     - name: Check for uncommitted changes
       run: git diff --exit-code
 
   status-check:
-    needs: [test, generate]
+    needs: [generate]
     runs-on: ubuntu-latest
     if: always()
     steps:
     - name: Check all jobs passed
       run: |
-        if [[ "${{ needs.test.result }}" != "success" ]] || [[ "${{ needs.generate.result }}" != "success" ]]; then
+        if [[ "${{ needs.generate.result }}" != "success" ]]; then
           exit 1
         fi

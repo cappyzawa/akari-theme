@@ -13,19 +13,23 @@
     "minimumReleaseAge": "0 days",
     "labels": ["security"]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^scripts/install-katazome$/"],
+      "matchStrings": ["--version (?<currentValue>\\S+) (?<depName>katazome)"],
+      "datasourceTemplate": "crate",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
       "automerge": false
     },
     {
-      "matchManagers": ["cargo"],
-      "groupName": "rust dependencies",
-      "postUpgradeTasks": {
-        "commands": ["cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist"],
-        "fileFilters": ["**/*"],
-        "executionMode": "branch"
-      }
+      "matchDepNames": ["katazome"],
+      "automerge": false
     },
     {
       "matchManagers": ["github-actions"],

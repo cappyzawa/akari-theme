@@ -25,9 +25,13 @@ jobs:
       if: steps.check.outputs.skip != 'true'
       uses: dtolnay/rust-toolchain@stable
 
+    - name: Install katazome
+      if: steps.check.outputs.skip != 'true'
+      run: scripts/install-katazome
+
     - name: Generate theme files
       if: steps.check.outputs.skip != 'true'
-      run: cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist
+      run: .katazome/bin/katazome generate --theme-dir themes/akari --tool all --out-dir dist
 
     - name: Commit and push if changed
       if: steps.check.outputs.skip != 'true'
