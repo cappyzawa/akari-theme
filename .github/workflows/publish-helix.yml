@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-helix
 
-    - name: Sync helix directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/helix/ akari-helix/
+    - name: Assemble akari-helix
+      run: scripts/assemble-mirror helix akari-helix
 
     - name: Commit and push
       working-directory: akari-helix

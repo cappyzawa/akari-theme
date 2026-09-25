@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-fzf
 
-    - name: Sync fzf directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/fzf/ akari-fzf/
+    - name: Assemble akari-fzf
+      run: scripts/assemble-mirror fzf akari-fzf
 
     - name: Commit and push
       working-directory: akari-fzf

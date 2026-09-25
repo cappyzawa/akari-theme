@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-starship
 
-    - name: Sync starship directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/starship/ akari-starship/
+    - name: Assemble akari-starship
+      run: scripts/assemble-mirror starship akari-starship
 
     - name: Commit and push
       working-directory: akari-starship

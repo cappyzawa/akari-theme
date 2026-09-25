@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-nvim
 
-    - name: Sync nvim directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/nvim/ akari-nvim/
+    - name: Assemble akari-nvim
+      run: scripts/assemble-mirror nvim akari-nvim
 
     - name: Commit and push
       working-directory: akari-nvim

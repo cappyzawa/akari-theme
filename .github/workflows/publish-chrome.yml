@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-chrome
 
-    - name: Sync chrome directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/chrome/ akari-chrome/
+    - name: Assemble akari-chrome
+      run: scripts/assemble-mirror chrome akari-chrome
 
     - name: Commit and push
       working-directory: akari-chrome
