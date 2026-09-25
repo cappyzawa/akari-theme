@@ -7,7 +7,9 @@ It is the contract between theme authors and adapter authors.
 Status: the model is defined and illustrated by `themes/akari` and
 `themes/ninja`. The loader reads theme directories, and every tool is
 generated from them; the legacy palette route is gone. The engine is
-named katazome.
+named katazome, and its public API and crate metadata are in the shape
+they keep after extraction. The engine's tests use `themes/ninja` and the
+fixtures under `tests/fixtures/`, never `themes/akari`.
 
 ## Pipeline
 
@@ -47,6 +49,7 @@ added later without invalidating files written this way.
 | `theme.repository` | no | Source URL for manifests that publish it. |
 | `theme.license` | no | SPDX identifier for manifests that publish it. |
 | `theme.variants` | yes | Ordered list of variant ids. The first entry is the default variant for plugins that pick one. |
+| `theme.tools` | no | Tools generated when no tool is named on the command line, in order. Absent means every tool. An unknown name fails generation. |
 | `adapters.<tool>.*` | per adapter | Metadata one adapter needs to build a loadable artifact, such as a VS Code publisher. Each adapter documents its own required keys. Missing keys fail generation only when that adapter is selected. |
 
 ### Variant file
