@@ -41,4 +41,8 @@ Some `THEME_TOOLS` entries ship a file that lives in the theme directory itself 
 ## Static Files
 
 Non-`.tera` files in template directories are copied as-is to `dist/`.
-On the theme route a rendered file is executable exactly when its `.tera` template is (e.g. a TPM entry), so set the bit on the template.
+On the theme route a rendered file is executable exactly when its `.tera` template is (e.g. a TPM entry), so set the bit on the template, then `touch` it: Cargo reruns `build.rs` on a changed mtime, not a changed mode, so a bare `chmod` leaves the embedded bit stale.
+
+## Embedded Templates
+
+`build.rs` embeds every file under `templates/` (path, contents, executable bit) into the crate, so a new template or static file needs no registration. `katazome generate` uses the embedded copy by default; `--templates-dir <dir>` reads a directory instead.

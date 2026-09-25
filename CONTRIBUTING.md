@@ -27,6 +27,8 @@ cargo run --features generator -- generate --theme-dir themes/akari --tool all -
 git diff dist/
 ```
 
+An installed `katazome` bundles its own templates; pass `--templates-dir templates` to try changes from a checkout instead.
+
 ## Project Structure
 
 ```
