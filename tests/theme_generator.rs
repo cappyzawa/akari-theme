@@ -50,7 +50,9 @@ fn artifact_text<'a>(artifacts: &'a [Artifact], rel: &str) -> &'a str {
 }
 
 /// Tools whose every Akari artifact must equal the committed `dist/` file.
-const DIST_EXACT_TOOLS: [&str; 7] = ["delta", "lazygit", "gh-dash", "nix", "fzf", "zsh", "tmux"];
+const DIST_EXACT_TOOLS: [&str; 9] = [
+    "delta", "lazygit", "gh-dash", "nix", "fzf", "zsh", "tmux", "nvim", "vscode",
+];
 
 #[test]
 fn legacy_available_tools_excludes_theme_tools() {
@@ -638,11 +640,15 @@ fn ninja_shadow_ghostty_lines_are_key_value_pairs() {
     }
 }
 
+/// Ninja's `theme.repository` is this repository, so its URL is stripped
+/// before looking for leftovers of Akari's identity.
 fn assert_no_akari_mentions(artifacts: &[Artifact], tool: &str) {
+    let repository = ninja_theme().metadata.repository.unwrap_or_default();
     for artifact in artifacts {
         let ArtifactContent::Text(text) = &artifact.content else {
             continue;
         };
+        let text = text.replace(&repository, "");
         assert!(
             !text.to_lowercase().contains("akari"),
             "{} ({tool}) mentions akari",
@@ -663,9 +669,9 @@ fn ninja_shadow_text_artifacts_never_mention_akari() {
         assert_no_akari_mentions(&artifacts, tool);
     }
 
-    // zed and chrome don't fit `MIGRATED_TOOLS` (neither produces
+    // These don't fit `MIGRATED_TOOLS` (none produces only
     // `akari-{variant}.{ext}` paths), so they're checked here directly.
-    for tool in ["zed", "chrome"] {
+    for tool in ["zed", "chrome", "nvim", "vscode"] {
         let artifacts = generator
             .generate_theme_tool(tool, &theme, &theme_dir("ninja"))
             .unwrap();
@@ -1178,6 +1184,10 @@ fn vscode_only_templates() -> tempfile::TempDir {
 /// before it is loaded with `Theme::load`. The real `theme.toml` already
 /// declares `publisher`, `version` and `icon` under `[adapters.vscode]`;
 /// `edit` starts from that and adjusts only what a test case needs.
+fn declare_icon(vscode: &mut toml::Table) {
+    vscode.insert("icon".into(), toml::Value::String("icon.png".into()));
+}
+
 fn temp_ninja_theme_dir(edit: impl FnOnce(&mut toml::Table)) -> tempfile::TempDir {
     let dir = tempfile::tempdir().unwrap();
     let src = theme_dir("ninja");
@@ -1228,9 +1238,7 @@ fn vscode_without_icon_key_emits_no_icon_artifact() {
 fn vscode_icon_declared_but_missing_reports_the_expected_path() {
     let templates = vscode_only_templates();
     let generator = Generator::new(templates.path()).unwrap();
-    // `icon = "icon.png"` is inherited from themes/ninja/theme.toml, but the
-    // temp theme dir never gets an icon.png written into it.
-    let theme_root = temp_ninja_theme_dir(|_| {});
+    let theme_root = temp_ninja_theme_dir(declare_icon);
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let err = generator
@@ -1259,7 +1267,7 @@ fn vscode_icon_declared_but_missing_reports_the_expected_path() {
 fn vscode_icon_declared_and_present_is_copied_from_the_theme_dir() {
     let templates = vscode_only_templates();
     let generator = Generator::new(templates.path()).unwrap();
-    let theme_root = temp_ninja_theme_dir(|_| {});
+    let theme_root = temp_ninja_theme_dir(declare_icon);
     fs::write(theme_root.path().join("icon.png"), b"stub png").unwrap();
     let theme = Theme::load(theme_root.path()).unwrap();
 
@@ -1310,7 +1318,6 @@ fn vscode_license_at_theme_dir_root_is_copied_when_present() {
     let templates = vscode_only_templates();
     let generator = Generator::new(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|_| {});
-    fs::write(theme_root.path().join("icon.png"), b"stub png").unwrap();
     fs::write(theme_root.path().join("LICENSE"), "MIT\n").unwrap();
     let theme = Theme::load(theme_root.path()).unwrap();
 
@@ -1333,7 +1340,6 @@ fn vscode_without_license_at_theme_dir_root_emits_no_license_artifact() {
     let templates = vscode_only_templates();
     let generator = Generator::new(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|_| {});
-    fs::write(theme_root.path().join("icon.png"), b"stub png").unwrap();
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
@@ -1369,6 +1375,134 @@ fn vscode_requires_adapters_vscode_publisher_and_version() {
             }
             other => panic!("expected AdapterKeyMissing({key}), got {other:?}"),
         }
+    }
+}
+
+// -- Editor plugins: nvim and vscode ----------------------------------------
+
+fn artifact_paths(artifacts: &[Artifact]) -> HashSet<PathBuf> {
+    artifacts.iter().map(|a| a.rel_path.clone()).collect()
+}
+
+#[test]
+fn nvim_files_are_namespaced_by_theme_id() {
+    let generator = generator();
+    let akari = generator
+        .generate_theme_tool("nvim", &akari_theme(), &theme_dir("akari"))
+        .unwrap();
+    let ninja = generator
+        .generate_theme_tool("nvim", &ninja_theme(), &theme_dir("ninja"))
+        .unwrap();
+
+    let expected: HashSet<PathBuf> = artifact_paths(&akari)
+        .iter()
+        .map(|p| PathBuf::from(p.to_string_lossy().replace("akari", "ninja")))
+        .collect();
+    assert_eq!(artifact_paths(&ninja), expected);
+    assert!(expected.contains(Path::new("nvim/colors/ninja.lua")));
+}
+
+/// Highlight modules read only the palette module's role keys, so every
+/// theme and variant shares the same files.
+#[test]
+fn nvim_highlight_modules_are_shared_by_every_theme() {
+    let generator = generator();
+    let sources = |theme: &Theme, dir: PathBuf| -> Vec<(String, PathBuf)> {
+        let id = theme.metadata.id.as_str().to_string();
+        let mut out: Vec<(String, PathBuf)> = generator
+            .generate_theme_tool("nvim", theme, &dir)
+            .unwrap()
+            .into_iter()
+            .filter_map(|a| {
+                let name = a.rel_path.file_name()?.to_str()?.to_string();
+                let in_highlights = a.rel_path.starts_with(format!("nvim/lua/{id}/highlights"));
+                match a.content {
+                    ArtifactContent::Copy(src) if in_highlights => Some((name, src)),
+                    _ => None,
+                }
+            })
+            .collect();
+        out.sort();
+        out
+    };
+
+    let akari = sources(&akari_theme(), theme_dir("akari"));
+    let ninja = sources(&ninja_theme(), theme_dir("ninja"));
+    assert!(!akari.is_empty(), "no static highlight modules");
+    assert_eq!(akari, ninja);
+}
+
+/// Checks the VS Code manifest against the theme: one entry per variant in
+/// `theme.variants` order, `uiTheme` from the appearance, each `path` an
+/// emitted color theme whose `type` matches, and `icon` present exactly
+/// when `adapters.vscode.icon` is.
+fn assert_vscode_manifest_matches_theme(theme: &Theme, artifacts: &[Artifact]) {
+    let manifest: serde_json::Value =
+        serde_json::from_str(artifact_text(artifacts, "vscode/package.json")).unwrap();
+
+    let entries = manifest["contributes"]["themes"].as_array().unwrap();
+    assert_eq!(entries.len(), theme.variants.len());
+    for (entry, variant) in entries.iter().zip(&theme.variants) {
+        let appearance = serde_json::to_value(variant.variant.appearance).unwrap();
+        let expected_ui = if appearance == "dark" {
+            "vs-dark"
+        } else {
+            "vs"
+        };
+        let label = format!("{} {}", theme.metadata.name, variant.variant.name);
+        assert_eq!(entry["label"], label.as_str());
+        assert_eq!(entry["uiTheme"], expected_ui, "{label}");
+
+        let path = entry["path"].as_str().unwrap();
+        let rel = format!("vscode/{}", path.trim_start_matches("./"));
+        let color_theme: serde_json::Value =
+            serde_json::from_str(artifact_text(artifacts, &rel)).unwrap();
+        assert_eq!(color_theme["type"], appearance, "{rel}");
+        assert_eq!(color_theme["name"], label.as_str(), "{rel}");
+    }
+
+    let declared_icon = theme
+        .adapters
+        .get("vscode")
+        .and_then(|a| a.get("icon"))
+        .and_then(|v| v.as_str());
+    match declared_icon {
+        Some(icon) => {
+            assert_eq!(manifest["icon"], icon);
+            let rel = PathBuf::from("vscode").join(icon);
+            assert!(
+                artifact_paths(artifacts).contains(&rel),
+                "{icon} not emitted"
+            );
+        }
+        None => assert!(manifest.get("icon").is_none(), "icon key without icon"),
+    }
+}
+
+#[test]
+fn vscode_manifest_lists_every_variant_and_icon_only_when_declared() {
+    let generator = generator();
+    for (theme, dir) in [
+        (akari_theme(), theme_dir("akari")),
+        (ninja_theme(), theme_dir("ninja")),
+    ] {
+        let artifacts = generator
+            .generate_theme_tool("vscode", &theme, &dir)
+            .unwrap();
+        assert_vscode_manifest_matches_theme(&theme, &artifacts);
+    }
+}
+
+#[test]
+fn ninja_vscode_ships_neither_icon_nor_license() {
+    let artifacts = generator()
+        .generate_theme_tool("vscode", &ninja_theme(), &theme_dir("ninja"))
+        .unwrap();
+    for rel in ["vscode/icon.png", "vscode/LICENSE"] {
+        assert!(
+            !artifact_paths(&artifacts).contains(Path::new(rel)),
+            "{rel}"
+        );
     }
 }
 
