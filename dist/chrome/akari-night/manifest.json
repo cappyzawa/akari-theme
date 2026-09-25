@@ -28,7 +28,7 @@
       "ntp_background_alignment": "center"
     },
     "tints": {
-      "buttons": [0.05, 0.8, 0.4]
+      "buttons": [0.047, 0.871, -1]
     }
   }
 }
