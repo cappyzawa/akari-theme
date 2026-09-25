@@ -21,7 +21,7 @@ Night alley with warm shadows and lantern light.
 1. Open `chrome://extensions/` in Chrome
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked"
-4. Select the `akari-chrome/night/` directory
+4. Select the `akari-chrome/akari-night/` directory
 
 **Key colors:** Dark backgrounds (#171B22) with lantern orange active tabs (#E26A3B)
 
@@ -32,7 +32,7 @@ The same alley at dawn — lanterns still lit, but yielding to daylight.
 1. Open `chrome://extensions/` in Chrome
 2. Enable "Developer mode" in the top right
 3. Click "Load unpacked"
-4. Select the `akari-chrome/dawn/` directory
+4. Select the `akari-chrome/akari-dawn/` directory
 
 **Key colors:** Light backgrounds (#E4DED6) with fading lantern active tabs (#8A4530)
 
