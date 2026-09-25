@@ -16,7 +16,7 @@ fn templates_dir() -> PathBuf {
 }
 
 fn generator() -> Generator {
-    Generator::new(templates_dir()).unwrap()
+    Generator::embedded().unwrap()
 }
 
 /// Directory `Theme::load` reads `name` from under `themes/`.
@@ -43,7 +43,7 @@ fn artifact_text<'a>(artifacts: &'a [Artifact], rel: &str) -> &'a str {
         .unwrap_or_else(|| panic!("missing artifact {rel}"));
     match &artifact.content {
         ArtifactContent::Text(text) => text,
-        ArtifactContent::Copy(_) => panic!("{rel} is a Copy artifact, expected Text"),
+        ArtifactContent::Bytes(_) => panic!("{rel} is a Bytes artifact, expected Text"),
     }
 }
 
@@ -70,6 +70,15 @@ fn theme_context_rejects_unknown_tool() {
 }
 
 #[test]
+fn generator_from_a_missing_templates_dir_is_an_error() {
+    let missing = tempfile::tempdir()
+        .unwrap()
+        .path()
+        .join("no-such-templates");
+    assert!(Generator::new(&missing).is_err());
+}
+
+#[test]
 fn theme_route_copies_non_tera_files_as_is() {
     let theme = akari();
     let generator = generator();
@@ -81,7 +90,11 @@ fn theme_route_copies_non_tera_files_as_is() {
         .iter()
         .find(|a| a.rel_path == Path::new("nvim/lua/akari/highlights/editor.lua"))
         .expect("static lua artifact missing");
-    assert!(matches!(artifact.content, ArtifactContent::Copy(_)));
+    let source = templates_dir().join("nvim/lua/{theme}/highlights/editor.lua");
+    match &artifact.content {
+        ArtifactContent::Bytes(bytes) => assert_eq!(*bytes, fs::read(&source).unwrap()),
+        ArtifactContent::Text(_) => panic!("expected Bytes artifact"),
+    }
 }
 
 #[test]
@@ -416,7 +429,7 @@ fn theme_akari_artifacts_match_dist_exactly() {
             let dist = fs::read(root_dir().join("dist").join(&artifact.rel_path)).unwrap();
             let generated = match &artifact.content {
                 ArtifactContent::Text(text) => text.as_bytes().to_vec(),
-                ArtifactContent::Copy(src) => fs::read(src).unwrap(),
+                ArtifactContent::Bytes(bytes) => bytes.clone(),
             };
             assert!(
                 generated == dist,
@@ -881,7 +894,10 @@ fn theme_static_file_path_substitutes_theme_id() {
         .iter()
         .find(|a| a.rel_path == Path::new("helix/lua/ninja/x.lua"))
         .expect("helix/lua/ninja/x.lua artifact missing");
-    assert!(matches!(artifact.content, ArtifactContent::Copy(_)));
+    match &artifact.content {
+        ArtifactContent::Bytes(bytes) => assert_eq!(bytes, b"-- stub\n"),
+        ArtifactContent::Text(_) => panic!("expected Bytes artifact"),
+    }
 }
 
 // -- Plugin entries that pick a variant ------------------------------------
@@ -1305,8 +1321,8 @@ fn vscode_icon_declared_and_present_is_copied_from_the_theme_dir() {
         .find(|a| a.rel_path == Path::new("vscode/icon.png"))
         .expect("vscode/icon.png artifact missing");
     match &artifact.content {
-        ArtifactContent::Copy(src) => assert_eq!(src, &theme_root.path().join("icon.png")),
-        ArtifactContent::Text(_) => panic!("expected Copy artifact"),
+        ArtifactContent::Bytes(bytes) => assert_eq!(bytes, b"stub png"),
+        ArtifactContent::Text(_) => panic!("expected Bytes artifact"),
     }
 }
 
@@ -1355,8 +1371,8 @@ fn vscode_license_at_theme_dir_root_is_copied_when_present() {
         .find(|a| a.rel_path == Path::new("vscode/LICENSE"))
         .expect("vscode/LICENSE artifact missing");
     match &artifact.content {
-        ArtifactContent::Copy(src) => assert_eq!(src, &theme_root.path().join("LICENSE")),
-        ArtifactContent::Text(_) => panic!("expected Copy artifact"),
+        ArtifactContent::Bytes(bytes) => assert_eq!(bytes, b"MIT\n"),
+        ArtifactContent::Text(_) => panic!("expected Bytes artifact"),
     }
 }
 
@@ -1536,9 +1552,9 @@ fn nvim_files_are_namespaced_by_theme_id() {
 #[test]
 fn nvim_highlight_modules_are_shared_by_every_theme() {
     let generator = generator();
-    let sources = |theme: &Theme, dir: PathBuf| -> Vec<(String, PathBuf)> {
+    let sources = |theme: &Theme, dir: PathBuf| -> Vec<(String, Vec<u8>)> {
         let id = theme.metadata.id.as_str().to_string();
-        let mut out: Vec<(String, PathBuf)> = generator
+        let mut out: Vec<(String, Vec<u8>)> = generator
             .generate_theme_tool("nvim", theme, &dir)
             .unwrap()
             .into_iter()
@@ -1546,7 +1562,7 @@ fn nvim_highlight_modules_are_shared_by_every_theme() {
                 let name = a.rel_path.file_name()?.to_str()?.to_string();
                 let in_highlights = a.rel_path.starts_with(format!("nvim/lua/{id}/highlights"));
                 match a.content {
-                    ArtifactContent::Copy(src) if in_highlights => Some((name, src)),
+                    ArtifactContent::Bytes(bytes) if in_highlights => Some((name, bytes)),
                     _ => None,
                 }
             })
