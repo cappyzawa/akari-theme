@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "{{ theme.name }} {{ variant.name }}",
+  "version": "{{ adapter.version }}",
+  "description": "{{ variant.description }}",
+  "theme": {
+    "colors": {
+      "frame": {{ base.background | hex_to_rgb }},
+      "frame_inactive": {{ base.background | hex_to_rgb }},
+      "frame_incognito": {{ base.background | hex_to_rgb }},
+      "frame_incognito_inactive": {{ base.background | hex_to_rgb }},
+      "toolbar": {{ roles.ui.active_bg | hex_to_rgb }},
+      "tab_text": {{ base.foreground | hex_to_rgb }},
+      "tab_background_text": {{ roles.ui.muted | hex_to_rgb }},
+      "tab_background_text_inactive": {{ roles.ui.muted | hex_to_rgb }},
+      "tab_background_text_incognito": {{ roles.ui.muted | hex_to_rgb }},
+      "tab_background_text_incognito_inactive": {{ roles.ui.muted | hex_to_rgb }},
+      "bookmark_text": {{ base.foreground | hex_to_rgb }},
+      "ntp_background": {{ base.background | hex_to_rgb }},
+      "ntp_text": {{ base.foreground | hex_to_rgb }},
+      "ntp_link": {{ roles.ui.link | hex_to_rgb }},
+      "ntp_header": {{ roles.ui.surface | hex_to_rgb }},
+      "button_background": {{ roles.ui.accent_secondary | hex_to_rgb }},
+      "omnibox_background": {{ roles.ui.raised | hex_to_rgb }},
+      "omnibox_text": {{ base.foreground | hex_to_rgb }}
+    },
+    "properties": {
+      "ntp_background_alignment": "center"
+    },
+    "tints": {
+      "buttons": [0.05, 0.8, 0.4]
+    }
+  }
+}

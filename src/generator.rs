@@ -12,12 +12,14 @@ use walkdir::WalkDir;
 const THEME_TOOLS: &[&str] = &[
     "alacritty",
     "bat",
+    "chrome",
     "codex",
     "ghostty",
     "helix",
     "slack",
     "starship",
     "terminal",
+    "zed",
     "zellij",
 ];
 
@@ -457,15 +459,5 @@ mod tests {
         let message = err.to_string();
         assert!(message.contains("chrome"), "{message}");
         assert!(message.contains("version"), "{message}");
-    }
-
-    #[test]
-    fn check_adapter_keys_passes_when_all_required_keys_present() {
-        let mut table = toml::Table::new();
-        table.insert(
-            "version".to_string(),
-            toml::Value::String("1.0.0".to_string()),
-        );
-        assert!(check_adapter_keys("chrome", &["version"], Some(&table)).is_ok());
     }
 }

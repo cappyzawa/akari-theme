@@ -491,6 +491,19 @@ fn ninja_shadow_ghostty_lines_are_key_value_pairs() {
     }
 }
 
+fn assert_no_akari_mentions(artifacts: &[Artifact], tool: &str) {
+    for artifact in artifacts {
+        let ArtifactContent::Text(text) = &artifact.content else {
+            continue;
+        };
+        assert!(
+            !text.to_lowercase().contains("akari"),
+            "{} ({tool}) mentions akari",
+            artifact.rel_path.display()
+        );
+    }
+}
+
 #[test]
 fn ninja_shadow_text_artifacts_never_mention_akari() {
     let generator = generator();
@@ -498,16 +511,14 @@ fn ninja_shadow_text_artifacts_never_mention_akari() {
 
     for (tool, _) in MIGRATED_TOOLS {
         let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
-        for artifact in &artifacts {
-            let ArtifactContent::Text(text) = &artifact.content else {
-                continue;
-            };
-            assert!(
-                !text.to_lowercase().contains("akari"),
-                "{} ({tool}) mentions akari",
-                artifact.rel_path.display()
-            );
-        }
+        assert_no_akari_mentions(&artifacts, tool);
+    }
+
+    // zed and chrome don't fit `MIGRATED_TOOLS` (neither produces
+    // `akari-{variant}.{ext}` paths), so they're checked here directly.
+    for tool in ["zed", "chrome"] {
+        let artifacts = generator.generate_theme_tool(tool, &theme).unwrap();
+        assert_no_akari_mentions(&artifacts, tool);
     }
 }
 
@@ -664,4 +675,98 @@ fn adapter_context_defaults_to_empty_table_when_tool_has_no_adapters_entry() {
     let artifacts = generator.generate_theme_tool("helix", &theme).unwrap();
 
     assert_eq!(artifact_text(&artifacts, "helix/ninja-shadow.txt"), "none");
+}
+
+// -- Phase 2: zed and chrome migrated to the theme route ---------------
+
+#[test]
+fn ninja_zed_theme_has_a_single_dark_shadow_entry() {
+    let generator = generator();
+    let artifacts = generator
+        .generate_theme_tool("zed", &ninja_theme())
+        .unwrap();
+    let text = artifact_text(&artifacts, "zed/ninja.json");
+    let doc: serde_json::Value = serde_json::from_str(text).unwrap();
+
+    let themes = doc["themes"].as_array().unwrap();
+    assert_eq!(themes.len(), 1);
+    assert_eq!(themes[0]["appearance"], "dark");
+    assert_eq!(themes[0]["name"], "Ninja Shadow");
+}
+
+#[test]
+fn akari_zed_theme_has_night_then_dawn_entries_in_order() {
+    let generator = generator();
+    let theme = Theme::load(root_dir().join("themes/akari")).unwrap();
+    let artifacts = generator.generate_theme_tool("zed", &theme).unwrap();
+    let text = artifact_text(&artifacts, "zed/akari.json");
+    let doc: serde_json::Value = serde_json::from_str(text).unwrap();
+
+    let themes = doc["themes"].as_array().unwrap();
+    assert_eq!(themes.len(), 2);
+    assert_eq!(themes[0]["name"], "Akari Night");
+    assert_eq!(themes[0]["appearance"], "dark");
+    assert_eq!(themes[1]["name"], "Akari Dawn");
+    assert_eq!(themes[1]["appearance"], "light");
+}
+
+#[test]
+fn ninja_chrome_produces_exactly_one_output_dir_named_after_the_theme_and_variant() {
+    let generator = generator();
+    let theme = ninja_theme();
+    let expected_version = theme.adapters["chrome"]["version"]
+        .as_str()
+        .unwrap()
+        .to_string();
+
+    let artifacts = generator.generate_theme_tool("chrome", &theme).unwrap();
+    let manifest_dirs: HashSet<&Path> = artifacts
+        .iter()
+        .filter_map(|a| a.rel_path.parent())
+        .filter(|p| *p != Path::new("chrome"))
+        .collect();
+    assert_eq!(
+        manifest_dirs,
+        HashSet::from([Path::new("chrome/ninja-shadow")])
+    );
+
+    let text = artifact_text(&artifacts, "chrome/ninja-shadow/manifest.json");
+    let doc: serde_json::Value = serde_json::from_str(text).unwrap();
+    assert_eq!(doc["version"], expected_version);
+}
+
+#[test]
+fn chrome_requires_adapters_chrome_version() {
+    let generator = generator();
+    let mut theme = ninja_theme();
+    theme.adapters.remove("chrome");
+
+    let err = generator.generate_theme_tool("chrome", &theme).unwrap_err();
+    match &err {
+        Error::AdapterKeyMissing { tool, key } => {
+            assert_eq!(tool, "chrome");
+            assert_eq!(key, "version");
+        }
+        other => panic!("expected AdapterKeyMissing, got {other:?}"),
+    }
+    let message = err.to_string();
+    assert!(message.contains("chrome"), "{message}");
+    assert!(message.contains("version"), "{message}");
+}
+
+#[test]
+fn chrome_renders_with_only_the_declared_adapter_keys() {
+    let generator = generator();
+    let mut theme = ninja_theme();
+    let mut adapter = toml::Table::new();
+    adapter.insert(
+        "version".to_string(),
+        toml::Value::String("9.9.9".to_string()),
+    );
+    theme.adapters.insert("chrome".to_string(), adapter);
+
+    let artifacts = generator.generate_theme_tool("chrome", &theme).unwrap();
+    let text = artifact_text(&artifacts, "chrome/ninja-shadow/manifest.json");
+    let doc: serde_json::Value = serde_json::from_str(text).unwrap();
+    assert_eq!(doc["version"], "9.9.9");
 }

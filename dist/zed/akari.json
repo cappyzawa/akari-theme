@@ -44,7 +44,7 @@
         "tab_bar.background": "#181714",
         "tab.inactive_background": "#181714",
         "tab.active_background": "#25231F",
-        "search.match_background": "#E26A3B40",
+        "search.match_background": "#4B3125",
         "panel.background": "#181714",
         "panel.focused_border": "#E26A3B",
         "panel.indent_guide": "#3F4346",
@@ -109,20 +109,20 @@
         "hidden.background": "#181714",
         "hidden.border": "#3F4346",
         "hint": "#9BABB9",
-        "hint.background": "#7A8FA220",
-        "hint.border": "#7A8FA2",
+        "hint.background": "#9BABB920",
+        "hint.border": "#9BABB9",
         "ignored": "#9BABB9",
         "ignored.background": "#181714",
         "ignored.border": "#3F4346",
         "info": "#7A8FA2",
         "info.background": "#7A8FA220",
         "info.border": "#7A8FA2",
-        "modified": "#E26A3B",
-        "modified.background": "#E26A3B20",
-        "modified.border": "#E26A3B",
+        "modified": "#D4A05A",
+        "modified.background": "#D4A05A20",
+        "modified.border": "#D4A05A",
         "predictive": "#9BABB9",
-        "predictive.background": "#7A8FA220",
-        "predictive.border": "#7A8FA2",
+        "predictive.background": "#9BABB920",
+        "predictive.border": "#9BABB9",
         "renamed": "#9AB1AD",
         "renamed.background": "#9AB1AD20",
         "renamed.border": "#9AB1AD",
@@ -147,14 +147,19 @@
             "selection": "#7A8FA240"
           },
           {
-            "cursor": "#7FAF6A",
-            "background": "#7FAF6A",
-            "selection": "#7FAF6A40"
-          },
-          {
             "cursor": "#8E7BA0",
             "background": "#8E7BA0",
             "selection": "#8E7BA040"
+          },
+          {
+            "cursor": "#8CA6A1",
+            "background": "#8CA6A1",
+            "selection": "#8CA6A140"
+          },
+          {
+            "cursor": "#7FAF6A",
+            "background": "#7FAF6A",
+            "selection": "#7FAF6A40"
           },
           {
             "cursor": "#D4A05A",
@@ -170,11 +175,6 @@
             "cursor": "#D65A3A",
             "background": "#D65A3A",
             "selection": "#D65A3A40"
-          },
-          {
-            "cursor": "#B4A7C0",
-            "background": "#B4A7C0",
-            "selection": "#B4A7C040"
           }
         ],
         "syntax": {
@@ -209,7 +209,7 @@
           "string": { "color": "#7FAF6A" },
           "string.escape": { "color": "#B4A7C0" },
           "string.regex": { "color": "#A1C492" },
-          "string.special": { "color": "#D4A05A" },
+          "string.special": { "color": "#7FAF6A" },
           "string.special.symbol": { "color": "#D65A3A" },
           "tag": { "color": "#E26A3B" },
           "text.literal": { "color": "#A1C492" },
@@ -263,7 +263,7 @@
         "tab_bar.background": "#D9D1C6",
         "tab.inactive_background": "#D9D1C6",
         "tab.active_background": "#E4DED6",
-        "search.match_background": "#8A453040",
+        "search.match_background": "#D2BFB5",
         "panel.background": "#D9D1C6",
         "panel.focused_border": "#8A4530",
         "panel.indent_guide": "#CABEAE",
@@ -315,9 +315,9 @@
         "conflict": "#6A2828",
         "conflict.background": "#6A282820",
         "conflict.border": "#6A2828",
-        "created": "#3A5830",
-        "created.background": "#3A583020",
-        "created.border": "#3A5830",
+        "created": "#314B29",
+        "created.background": "#314B2920",
+        "created.border": "#314B29",
         "deleted": "#6A2828",
         "deleted.background": "#6A282820",
         "deleted.border": "#6A2828",
@@ -327,21 +327,21 @@
         "hidden": "#222D38",
         "hidden.background": "#D9D1C6",
         "hidden.border": "#CABEAE",
-        "hint": "#222D38",
-        "hint.background": "#30405020",
-        "hint.border": "#304050",
+        "hint": "#100E0D",
+        "hint.background": "#100E0D20",
+        "hint.border": "#100E0D",
         "ignored": "#222D38",
         "ignored.background": "#D9D1C6",
         "ignored.border": "#CABEAE",
         "info": "#304050",
         "info.background": "#30405020",
         "info.border": "#304050",
-        "modified": "#8A4530",
-        "modified.background": "#8A453020",
-        "modified.border": "#8A4530",
+        "modified": "#9E6C3A",
+        "modified.background": "#9E6C3A20",
+        "modified.border": "#9E6C3A",
         "predictive": "#222D38",
-        "predictive.background": "#30405020",
-        "predictive.border": "#304050",
+        "predictive.background": "#100E0D20",
+        "predictive.border": "#100E0D",
         "renamed": "#152727",
         "renamed.background": "#15272720",
         "renamed.border": "#152727",
@@ -366,14 +366,19 @@
             "selection": "#30405040"
           },
           {
-            "cursor": "#3A5830",
-            "background": "#3A5830",
-            "selection": "#3A583040"
-          },
-          {
             "cursor": "#806080",
             "background": "#806080",
             "selection": "#80608040"
+          },
+          {
+            "cursor": "#447C7C",
+            "background": "#447C7C",
+            "selection": "#447C7C40"
+          },
+          {
+            "cursor": "#3A5830",
+            "background": "#3A5830",
+            "selection": "#3A583040"
           },
           {
             "cursor": "#B07840",
@@ -389,11 +394,6 @@
             "cursor": "#7A3828",
             "background": "#7A3828",
             "selection": "#7A382840"
-          },
-          {
-            "cursor": "#543F54",
-            "background": "#543F54",
-            "selection": "#543F5440"
           }
         ],
         "syntax": {
@@ -428,7 +428,7 @@
           "string": { "color": "#3A5830" },
           "string.escape": { "color": "#543F54" },
           "string.regex": { "color": "#20301A" },
-          "string.special": { "color": "#B07840" },
+          "string.special": { "color": "#3A5830" },
           "string.special.symbol": { "color": "#7A3828" },
           "tag": { "color": "#8A4530" },
           "text.literal": { "color": "#20301A" },

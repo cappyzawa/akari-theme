@@ -258,11 +258,16 @@ The role assignment in `themes/akari` follows one side; the other side will
 change output when its adapter migrates, and that change must be reviewed
 rather than snapshot-refreshed.
 
-- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`, but Dawn darkens `state.diff_changed` while Helix reads the pigment directly. `diff.changed` follows `state.diff_changed`, so Helix Dawn changes.
+- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`, but Dawn darkens `state.diff_changed` while Helix reads the pigment directly. `diff.changed` follows `state.diff_changed`, so Helix Dawn and Zed's modified files change.
 - Added lines: Helix reads `ansi.green` directly while `state.diff_added` darkens `life` in Dawn. `diff.added` follows `state.diff_added`, so Helix Dawn changes.
 - Hints: Helix reads `semantic.comment` while `state.hint` is a darkened `base.foreground` in Dawn. `diagnostic.hint` follows `state.hint`, so Helix Dawn changes.
 - Series order: VS Code bracket levels and Zed collaborator cursors order the same pigments differently. `series` follows VS Code for the first six and appends Zed's remaining two, so Zed's order changes.
-- Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`.
+- Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`. Zed follows `diagnostic.hint` and `syntax.string`, so both change.
+- Created files in Zed use `life` while `diff.added` darkens it in Dawn. They follow `diff.added`, so Zed Dawn changes.
+- The hint status color in Zed reads `semantic.comment`. It follows `diagnostic.hint`, so Zed Dawn changes.
+- The search match background in Zed is `lantern.mid` at 25% alpha while `ui.match_bg` is an opaque 20% mix. It follows `ui.match_bg`, so both Zed variants change.
+- The new tab page link in Chrome uses `lantern.mid`. It follows `ui.link`, so both Chrome variants change.
+- Zed reads ANSI slots directly for renamed files (`ansi.bright.cyan`), builtin functions (`ansi.bright.yellow`), link text and list markers (`ansi.cyan`). They map to `diff.moved`, `syntax.builtin`, `ui.link` and `markup.list` only if the color change is accepted.
 - Codex's `skill` color has no role of its own. The Codex adapter uses `syntax.function`: a skill is a named capability the agent invokes, and the choice keeps Akari's `muted`.
 - Merge conflict sides: delta uses `lantern.far` and `night`, VS Code uses `life` and `night`. `diff.ours` follows delta.
 - Hover backgrounds and decorators in VS Code use `ansi.bright.yellow` directly; they map to `ui.accent_secondary` and `syntax.decorator` only if the color change is accepted.
