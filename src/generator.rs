@@ -7,7 +7,12 @@ use tera::{Context, Tera, Value};
 use walkdir::WalkDir;
 
 /// Tools generated from a `Theme` directory instead of the legacy palette pair.
-const THEME_TOOLS: [&str; 2] = ["helix", "terminal"];
+/// One tool per line: migrations of separate tools add entries in parallel.
+#[rustfmt::skip]
+const THEME_TOOLS: [&str; 2] = [
+    "helix",
+    "terminal",
+];
 
 fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
     let hex = value
