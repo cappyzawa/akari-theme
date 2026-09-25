@@ -19,15 +19,6 @@
       "automerge": false
     },
     {
-      "matchManagers": ["cargo"],
-      "groupName": "rust dependencies",
-      "postUpgradeTasks": {
-        "commands": ["cargo run -- generate --theme-dir themes/akari --tool all --out-dir dist"],
-        "fileFilters": ["**/*"],
-        "executionMode": "branch"
-      }
-    },
-    {
       "matchManagers": ["github-actions"],
       "groupName": "github-actions"
     }

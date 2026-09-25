@@ -1,4 +1,0 @@
--- {{ theme.name }}
--- {{ theme.description }}
-
-require("{{ theme.id }}").load()
