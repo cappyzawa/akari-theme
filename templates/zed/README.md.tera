@@ -57,5 +57,5 @@ Zed themes can also be distributed as an extension via the
 ## Regenerate
 
 ```sh
-cargo run --features generator -- generate-theme --theme-dir themes/{{ theme.id }} --tool zed --out-dir dist
+cargo run -- generate --theme-dir themes/{{ theme.id }} --tool zed --out-dir dist
 ```
