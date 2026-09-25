@@ -1,0 +1,124 @@
+[variant]
+id = "shadow"
+name = "Shadow"
+appearance = "dark"
+description = "Ink-dark ground with a blue vortex and a pink blade."
+
+[base]
+background = "#1A1720" # ink with a violet cast
+foreground = "#DDD9E3" # pale paper
+
+# Two accents carry the theme: vortex (blue) for structure, sakura (pink)
+# for control flow. The rest are supporting tones.
+[colors]
+vortex = "#3DAEE9" # bright cyan-blue
+sakura = "#E06A8A" # deep rose
+mist = "#8ECDE6"   # pale sky
+moss = "#4FBF9A"   # teal green
+scroll = "#F2C86A" # sash amber
+seal = "#E2545A"   # seal red
+shade = "#8F86D6"  # indigo violet
+steel = "#8B90A0"  # blade gray
+
+[ansi]
+black = "mix(base.background, colors.steel, 0.20)"
+red = "colors.seal"
+green = "colors.moss"
+yellow = "colors.scroll"
+blue = "colors.vortex"
+magenta = "colors.shade"
+cyan = "colors.mist"
+white = "base.foreground"
+
+[ansi.bright]
+black = "colors.steel"
+red = "brighten(ansi.red, 0.10)"
+green = "brighten(ansi.green, 0.10)"
+yellow = "brighten(ansi.yellow, 0.10)"
+blue = "brighten(ansi.blue, 0.10)"
+magenta = "brighten(ansi.magenta, 0.10)"
+cyan = "brighten(ansi.cyan, 0.10)"
+white = "brighten(ansi.white, 0.05)"
+
+# Unlike Akari, the accent (vortex) and the cursor (sakura) are different
+# pigments, and the warning color is neither of them.
+[roles.ui]
+surface = "mix(base.background, colors.vortex, 0.10)"
+sunken = "mix(base.background, colors.sakura, 0.10)"
+raised = "mix(base.background, colors.vortex, 0.16)"
+inset = "darken(base.background, 0.30)"
+border = "mix(base.background, colors.vortex, 0.28)"
+muted = "colors.steel"
+accent = "colors.vortex"
+accent_secondary = "colors.sakura"
+on_accent = "base.background"
+selection_bg = "mix(base.background, colors.vortex, 0.30)"
+selection_fg = "base.foreground"
+match_bg = "mix(base.background, colors.sakura, 0.25)"
+cursor = "colors.sakura"
+cursor_text = "base.background"
+active_bg = "mix(base.background, colors.vortex, 0.22)"
+link = "ansi.bright.blue"
+
+[roles.diagnostic]
+error = "colors.seal"
+warning = "colors.scroll"
+info = "colors.vortex"
+hint = "colors.steel"
+success = "colors.moss"
+
+[roles.diff]
+added = "colors.moss"
+added_bg = "mix(base.background, colors.moss, 0.15)"
+removed = "colors.seal"
+removed_bg = "mix(base.background, colors.seal, 0.15)"
+changed = "colors.scroll"
+moved = "colors.shade"
+conflict = "colors.seal"
+ours = "colors.vortex"
+theirs = "colors.sakura"
+
+[roles.syntax]
+text = "base.foreground"
+comment = "colors.steel"
+keyword = "colors.sakura"
+string = "colors.moss"
+character = "colors.mist"
+number = "colors.scroll"
+constant = "colors.scroll"
+type = "colors.vortex"
+function = "colors.shade"
+variable = "base.foreground"
+member = "colors.mist"
+builtin = "lighten(colors.sakura, 0.15)"
+namespace = "colors.vortex"
+attribute = "colors.scroll"
+label = "colors.scroll"
+tag = "colors.sakura"
+punctuation_special = "colors.vortex"
+decorator = "colors.scroll"
+macro = "colors.shade"
+escape = "colors.shade"
+regexp = "colors.mist"
+path = "ansi.green"
+directory = "ansi.blue"
+
+[roles.markup]
+heading_1 = "colors.sakura"
+heading_2 = "colors.vortex"
+heading_3 = "colors.mist"
+heading_4 = "colors.shade"
+list = "colors.vortex"
+raw = "ansi.bright.green"
+
+[roles]
+series = [
+  "colors.vortex",
+  "colors.sakura",
+  "colors.moss",
+  "colors.scroll",
+  "colors.shade",
+  "colors.mist",
+  "ansi.bright.cyan",
+  "colors.steel",
+]

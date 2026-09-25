@@ -1,0 +1,16 @@
+[theme]
+id = "akari"
+name = "Akari"
+description = "A terminal color palette inspired by Japanese alleys lit by round lanterns."
+repository = "https://github.com/cappyzawa/akari-theme"
+license = "MIT"
+variants = ["night", "dawn"]
+
+[adapters.vscode]
+publisher = "cappyzawa"
+version = "0.2.0"
+icon = "icon.png"
+keywords = ["theme", "dark", "light", "japanese", "lantern", "warm"]
+
+[adapters.chrome]
+version = "0.1.0"
