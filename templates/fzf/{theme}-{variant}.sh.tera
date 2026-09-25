@@ -1,7 +1,7 @@
-# Akari {{ variant | title }} — fzf theme
+# {{ theme.name }} {{ variant.name }} — fzf theme
 export FZF_DEFAULT_OPTS="
-	--color=fg:{{ base.foreground }},bg:{{ base.background }},hl:{{ colors.lantern.mid }}
-	--color=fg+:{{ state.selection_fg }},bg+:{{ state.selection_bg }},hl+:{{ colors.lantern.mid }}
-	--color=border:{{ layers.border }},header:{{ semantic.comment }},gutter:{{ base.background }}
-	--color=spinner:{{ colors.lantern.mid }},info:{{ colors.night }}
-	--color=pointer:{{ colors.lantern.mid }},marker:{{ colors.life }},prompt:{{ colors.lantern.mid }}"
+	--color=fg:{{ base.foreground }},bg:{{ base.background }},hl:{{ roles.ui.accent }}
+	--color=fg+:{{ roles.ui.selection_fg }},bg+:{{ roles.ui.selection_bg }},hl+:{{ roles.ui.accent }}
+	--color=border:{{ roles.ui.border }},header:{{ roles.ui.muted }},gutter:{{ base.background }}
+	--color=spinner:{{ roles.ui.accent }},info:{{ roles.diagnostic.info }}
+	--color=pointer:{{ roles.ui.accent }},marker:{{ roles.ui.accent_secondary }},prompt:{{ roles.ui.accent }}"
