@@ -1,0 +1,29 @@
+# {{ theme.name }} {{ variant.name }} — {{ variant.description }}
+
+# ANSI 0-15
+palette = 0={{ ansi.black }}
+palette = 1={{ ansi.red }}
+palette = 2={{ ansi.green }}
+palette = 3={{ ansi.yellow }}
+palette = 4={{ ansi.blue }}
+palette = 5={{ ansi.magenta }}
+palette = 6={{ ansi.cyan }}
+palette = 7={{ ansi.white }}
+palette = 8={{ ansi.bright.black }}
+palette = 9={{ ansi.bright.red }}
+palette = 10={{ ansi.bright.green }}
+palette = 11={{ ansi.bright.yellow }}
+palette = 12={{ ansi.bright.blue }}
+palette = 13={{ ansi.bright.magenta }}
+palette = 14={{ ansi.bright.cyan }}
+palette = 15={{ ansi.bright.white }}
+
+# Base
+background = {{ base.background }}
+foreground = {{ base.foreground }}
+
+# UI
+cursor-color = {{ roles.ui.cursor }}
+cursor-text = {{ roles.ui.cursor_text }}
+selection-background = {{ roles.ui.selection_bg }}
+selection-foreground = {{ roles.ui.selection_fg }}

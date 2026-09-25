@@ -263,7 +263,7 @@ rather than snapshot-refreshed.
 - Hints: Helix reads `semantic.comment` while `state.hint` is a darkened `base.foreground` in Dawn. `diagnostic.hint` follows `state.hint`, so Helix Dawn changes.
 - Series order: VS Code bracket levels and Zed collaborator cursors order the same pigments differently. `series` follows VS Code for the first six and appends Zed's remaining two, so Zed's order changes.
 - Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`.
-- Codex's `skill` color has no role of its own; its adapter must pick one and the choice is reviewed there.
+- Codex's `skill` color has no role of its own. The Codex adapter uses `syntax.function`: a skill is a named capability the agent invokes, and the choice keeps Akari's `muted`.
 - Merge conflict sides: delta uses `lantern.far` and `night`, VS Code uses `life` and `night`. `diff.ours` follows delta.
 - Hover backgrounds and decorators in VS Code use `ansi.bright.yellow` directly; they map to `ui.accent_secondary` and `syntax.decorator` only if the color change is accepted.
 - delta and Codex select dark or light output by testing `variant == "night"`; they must test `variant.appearance`.
@@ -272,6 +272,10 @@ rather than snapshot-refreshed.
 - Author names in lazygit use `muted`. They are a collaborator color, and an adapter needing one series color takes the prefix, so they follow `series[0]` (`lantern.mid`).
 - Rank icons in gh-dash use `life`, `night`, `lantern.far` twice and `lantern.mid` from newContributor to owner. They follow `series` from owner (`series[0]`) down to newContributor (`series[4]`), so owner and newContributor keep their colors and member, collaborator and contributor change. The unknown role is not a rank; it follows `ui.muted` instead of `muted`.
 - The fzf marker uses `life` in the Nix attrset and the fzf template. The marker is a second highlight beside the `ui.accent` pointer, so it follows `ui.accent_secondary` (`lantern.far`); the Nix attrset changes now and the fzf template when it migrates.
+- Diff markup in bat: `Diff Changed` uses `lantern.mid` and `Diff Inserted` uses `life`. They follow `diff.changed` and `diff.added`, so bat's changed lines change in both variants and its inserted lines change in Dawn.
+- JSON key levels in bat use `lantern.mid`, `lantern.far` and `life`. They take the first three `series` entries as nesting levels, like bracket pair levels, so levels 1 and 2+ change.
+- Zellij multiplayer colors order `lantern.mid`, `life`, `night`, `muted`, `lantern.far`, then ANSI slots. Players 1 to 8 take `series` in order and players 9 and 10 keep `ansi.bright.green` and `ansi.bright.yellow`, so players 2 to 8 change.
+- bat reads ANSI slots directly for builtin functions (`ansi.bright.magenta`), shell builtins and level 2 headings (`ansi.bright.yellow`) and list markers (`ansi.cyan`); Zellij's highlighted frame uses `ansi.bright.yellow`. They map to `syntax.builtin`, `markup.heading_2`, `markup.list` and `ui.accent_secondary` only if the color change is accepted.
 
 ## Not decided here
 

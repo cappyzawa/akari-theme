@@ -1,0 +1,33 @@
+# {{ theme.name }} {{ variant.name }} — {{ variant.description }}
+
+[colors.primary]
+background = "{{ base.background }}"
+foreground = "{{ base.foreground }}"
+
+[colors.cursor]
+text = "{{ roles.ui.cursor_text }}"
+cursor = "{{ roles.ui.cursor }}"
+
+[colors.selection]
+text = "{{ roles.ui.selection_fg }}"
+background = "{{ roles.ui.selection_bg }}"
+
+[colors.normal]
+black   = "{{ ansi.black }}"
+red     = "{{ ansi.red }}"
+green   = "{{ ansi.green }}"
+yellow  = "{{ ansi.yellow }}"
+blue    = "{{ ansi.blue }}"
+magenta = "{{ ansi.magenta }}"
+cyan    = "{{ ansi.cyan }}"
+white   = "{{ ansi.white }}"
+
+[colors.bright]
+black   = "{{ ansi.bright.black }}"
+red     = "{{ ansi.bright.red }}"
+green   = "{{ ansi.bright.green }}"
+yellow  = "{{ ansi.bright.yellow }}"
+blue    = "{{ ansi.bright.blue }}"
+magenta = "{{ ansi.bright.magenta }}"
+cyan    = "{{ ansi.bright.cyan }}"
+white   = "{{ ansi.bright.white }}"

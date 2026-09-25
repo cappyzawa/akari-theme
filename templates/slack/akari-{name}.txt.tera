@@ -1,1 +1,0 @@
-{{ layers.inset }},{{ state.selection_bg }},{{ colors.life }},{{ colors.lantern.mid }}

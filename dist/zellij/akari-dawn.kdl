@@ -132,13 +132,13 @@ themes {
         // Multiplayer user colors (optional, for collaborative sessions)
         multiplayer_user_colors {
             player_1 138 69 48
-            player_2 58 88 48
-            player_3 48 64 80
-            player_4 128 96 128
-            player_5 176 120 64
-            player_6 48 88 88
-            player_7 84 63 84
-            player_8 19 26 32
+            player_2 48 64 80
+            player_3 128 96 128
+            player_4 68 124 124
+            player_5 58 88 48
+            player_6 176 120 64
+            player_7 48 88 88
+            player_8 122 56 40
             player_9 32 48 26
             player_10 120 82 44
         }
