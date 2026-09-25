@@ -1,6 +1,8 @@
-use akari_theme::{ArtifactContent, Generator, Palette, Variant, find_project_root};
+use akari_theme::theme::Theme;
+use akari_theme::{Artifact, ArtifactContent, Generator, Palette, Variant, find_project_root};
 use clap::{Parser, Subcommand};
 use std::fs;
+use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 
 #[derive(Parser)]
@@ -13,7 +15,7 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Command {
-    /// Generate theme files
+    /// Generate theme files from the legacy palette pair
     Generate {
         /// Target tool (or 'all' to generate for all tools)
         #[arg(long)]
@@ -21,7 +23,21 @@ enum Command {
 
         /// Output directory (defaults to dist/)
         #[arg(long)]
-        out_dir: Option<std::path::PathBuf>,
+        out_dir: Option<PathBuf>,
+    },
+    /// Generate theme files from a `Theme` directory
+    GenerateTheme {
+        /// Directory containing theme.toml and its variant files
+        #[arg(long)]
+        theme_dir: PathBuf,
+
+        /// Target tool (or 'all' to generate for all theme-based tools)
+        #[arg(long)]
+        tool: String,
+
+        /// Output directory
+        #[arg(long)]
+        out_dir: PathBuf,
     },
 }
 
@@ -31,6 +47,28 @@ fn main() -> ExitCode {
         return ExitCode::FAILURE;
     }
     ExitCode::SUCCESS
+}
+
+/// Writes every artifact under `out_root`, creating parent directories as needed.
+fn write_artifacts(artifacts: Vec<Artifact>, out_root: &Path) -> Result<(), akari_theme::Error> {
+    for artifact in artifacts {
+        let output_path = out_root.join(&artifact.rel_path);
+
+        if let Some(parent) = output_path.parent() {
+            fs::create_dir_all(parent)?;
+        }
+
+        match &artifact.content {
+            ArtifactContent::Text(content) => {
+                fs::write(&output_path, content)?;
+            }
+            ArtifactContent::Copy(src) => {
+                fs::copy(src, &output_path)?;
+            }
+        }
+        println!("  {}", artifact.rel_path.display());
+    }
+    Ok(())
 }
 
 fn run() -> Result<(), akari_theme::Error> {
@@ -61,27 +99,29 @@ fn run() -> Result<(), akari_theme::Error> {
                 vec![tool]
             };
 
-            // Generate and write artifacts
             for tool_name in &tools {
                 let artifacts = generator.generate_tool(tool_name, &night, &dawn)?;
-                for artifact in artifacts {
-                    let output_path = out_root.join(&artifact.rel_path);
+                write_artifacts(artifacts, &out_root)?;
+            }
+        }
+        Command::GenerateTheme {
+            theme_dir,
+            tool,
+            out_dir,
+        } => {
+            let root = find_project_root()?;
+            let theme = Theme::load(&theme_dir)?;
+            let generator = Generator::new(root.join("templates"))?;
 
-                    // Ensure parent directory exists
-                    if let Some(parent) = output_path.parent() {
-                        fs::create_dir_all(parent)?;
-                    }
+            let tools: Vec<String> = if tool == "all" {
+                generator.available_theme_tools()
+            } else {
+                vec![tool]
+            };
 
-                    match &artifact.content {
-                        ArtifactContent::Text(content) => {
-                            fs::write(&output_path, content)?;
-                        }
-                        ArtifactContent::Copy(src) => {
-                            fs::copy(src, &output_path)?;
-                        }
-                    }
-                    println!("  {}", artifact.rel_path.display());
-                }
+            for tool_name in &tools {
+                let artifacts = generator.generate_theme_tool(tool_name, &theme)?;
+                write_artifacts(artifacts, &out_dir)?;
             }
         }
     }

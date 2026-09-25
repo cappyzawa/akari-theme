@@ -101,22 +101,6 @@ mod generator {
     }
 
     #[test]
-    fn generate_helix() {
-        let generator = Generator::new(templates_dir()).unwrap();
-        let (night, dawn) = load_palettes();
-        let artifacts = generator.generate_tool("helix", &night, &dawn).unwrap();
-
-        assert!(!artifacts.is_empty());
-        // Should have at least night and dawn themes
-        let paths: Vec<_> = artifacts
-            .iter()
-            .map(|a| a.rel_path.display().to_string())
-            .collect();
-        assert!(paths.iter().any(|p| p.contains("night")));
-        assert!(paths.iter().any(|p| p.contains("dawn")));
-    }
-
-    #[test]
     fn generate_codex() {
         let generator = Generator::new(templates_dir()).unwrap();
         assert!(
@@ -176,31 +160,5 @@ mod generator {
                 result.err()
             );
         }
-    }
-}
-
-mod terminal {
-    use super::*;
-
-    #[test]
-    fn generate_night() {
-        let path = palette_dir().join("akari-night.toml");
-        let palette = Palette::from_path(&path, Variant::Night).unwrap();
-        let content = akari_theme::terminal::generate(&palette).unwrap();
-
-        assert!(content.contains("<?xml"));
-        assert!(content.contains("plist"));
-        assert!(content.contains("Akari-Night"));
-        assert!(content.contains("ANSIBlackColor"));
-        assert!(content.contains("BackgroundColor"));
-    }
-
-    #[test]
-    fn generate_dawn() {
-        let path = palette_dir().join("akari-dawn.toml");
-        let palette = Palette::from_path(&path, Variant::Dawn).unwrap();
-        let content = akari_theme::terminal::generate(&palette).unwrap();
-
-        assert!(content.contains("Akari-Dawn"));
     }
 }

@@ -1,0 +1,292 @@
+# Author: Shu Kutsuzawa <cappyzawa@gmail.com>
+{% if theme.license -%}
+# License: {{ theme.license }}
+{% endif -%}
+# {{ theme.name }} {{ variant.name }} — {{ variant.description }}
+
+# UI elements
+"ui.background" = { bg = "background" }
+"ui.text" = "foreground"
+"ui.text.focus" = { fg = "selection-fg", bg = "selection-bg" }
+"ui.text.inactive" = { fg = "bright-black" }
+"ui.text.info" = { fg = "info" }
+"ui.text.directory" = { fg = "directory" }
+
+"ui.cursor" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.normal" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.primary" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.primary.normal" = { fg = "cursor-text", bg = "cursor" }
+"ui.cursor.match" = { fg = "accent", bg = "sunken", modifiers = ["bold"] }
+"ui.cursor.insert" = { fg = "cursor-text", bg = "green" }
+"ui.cursor.primary.insert" = { fg = "cursor-text", bg = "green" }
+"ui.cursor.select" = { fg = "cursor-text", bg = "magenta" }
+"ui.cursor.primary.select" = { fg = "cursor-text", bg = "magenta" }
+
+"ui.selection" = { bg = "selection-bg" }
+"ui.selection.primary" = { bg = "selection-bg" }
+
+"ui.cursorline.primary" = { bg = "cursorline" }
+"ui.cursorline.secondary" = { bg = "surface" }
+"ui.cursorcolumn.primary" = { bg = "surface" }
+"ui.cursorcolumn.secondary" = { bg = "surface" }
+
+"ui.gutter" = { bg = "background" }
+"ui.gutter.selected" = { bg = "cursorline" }
+"ui.linenr" = { fg = "bright-black" }
+"ui.linenr.selected" = { fg = "accent" }
+
+"ui.statusline" = { fg = "foreground", bg = "surface" }
+"ui.statusline.inactive" = { fg = "muted", bg = "surface" }
+"ui.statusline.normal" = { fg = "on-accent", bg = "green", modifiers = ["bold"] }
+"ui.statusline.insert" = { fg = "on-accent", bg = "accent", modifiers = ["bold"] }
+"ui.statusline.select" = { fg = "on-accent", bg = "magenta", modifiers = ["bold"] }
+"ui.statusline.separator" = { fg = "bright-black", bg = "surface" }
+
+"ui.popup" = { fg = "foreground", bg = "raised" }
+"ui.popup.info" = { fg = "foreground", bg = "raised" }
+"ui.window" = { fg = "border" }
+"ui.background.separator" = { bg = "surface" }
+"ui.help" = { fg = "foreground", bg = "raised" }
+
+"ui.menu" = { fg = "foreground", bg = "raised" }
+"ui.menu.selected" = { fg = "selection-fg", bg = "selection-bg" }
+"ui.menu.scroll" = { fg = "bright-black", bg = "raised" }
+
+"ui.virtual.ruler" = { bg = "surface" }
+"ui.virtual.whitespace" = { fg = "bright-black" }
+"ui.virtual.indent-guide" = { fg = "bright-black" }
+"ui.virtual.inlay-hint" = { fg = "muted" }
+"ui.virtual.inlay-hint.parameter" = { fg = "muted" }
+"ui.virtual.inlay-hint.type" = { fg = "muted" }
+"ui.virtual.wrap" = { fg = "bright-black" }
+"ui.virtual.jump-label" = { fg = "bright-red", modifiers = ["bold"] }
+
+"ui.debug.breakpoint" = { fg = "error" }
+"ui.debug.active" = { fg = "accent", modifiers = ["bold"] }
+
+"ui.highlight" = { bg = "match-bg" }
+"ui.highlight.frameline" = { bg = "surface" }
+
+"ui.bufferline" = { fg = "bright-black", bg = "surface" }
+"ui.bufferline.active" = { fg = "foreground", bg = "background" }
+"ui.bufferline.background" = { bg = "surface" }
+
+"ui.picker.header" = { fg = "bright-blue", modifiers = ["bold"] }
+"ui.picker.header.column" = { fg = "bright-blue", modifiers = ["bold"] }
+"ui.picker.header.column.active" = { fg = "accent", modifiers = ["bold"] }
+
+# Diagnostics
+"error" = { fg = "error", modifiers = ["bold"] }
+"warning" = { fg = "warning" }
+"info" = { fg = "info" }
+"hint" = { fg = "hint" }
+
+"diagnostic.error" = { underline = { color = "error", style = "curl" } }
+"diagnostic.warning" = { underline = { color = "warning", style = "curl" } }
+"diagnostic.info" = { underline = { color = "info", style = "curl" } }
+"diagnostic.hint" = { underline = { color = "hint", style = "curl" } }
+"diagnostic.unnecessary" = { modifiers = ["dim"] }
+"diagnostic.deprecated" = { modifiers = ["crossed_out"] }
+
+"tabstop" = { underline = { color = "accent", style = "dashed" } }
+
+# Diff
+"diff.plus" = "diff-added"
+"diff.plus.gutter" = "diff-added"
+"diff.minus" = "diff-removed"
+"diff.minus.gutter" = "diff-removed"
+"diff.delta" = "diff-changed"
+"diff.delta.gutter" = "diff-changed"
+"diff.delta.moved" = "diff-moved"
+"diff.delta.conflict" = { fg = "conflict", modifiers = ["bold"] }
+
+# Markup
+"markup.heading" = { fg = "heading-1", modifiers = ["bold"] }
+"markup.heading.marker" = { fg = "comment" }
+"markup.heading.1" = { fg = "heading-1", modifiers = ["bold"] }
+"markup.heading.2" = { fg = "heading-2", modifiers = ["bold"] }
+"markup.heading.3" = { fg = "heading-3", modifiers = ["bold"] }
+"markup.heading.4" = { fg = "heading-4" }
+"markup.heading.5" = { fg = "comment", modifiers = ["bold"] }
+"markup.heading.6" = { fg = "blue" }
+"markup.list" = { fg = "cyan" }
+"markup.list.numbered" = { fg = "list" }
+"markup.list.unnumbered" = { fg = "cyan" }
+"markup.list.checked" = { fg = "success" }
+"markup.list.unchecked" = { fg = "comment" }
+"markup.bold" = { modifiers = ["bold"] }
+"markup.italic" = { modifiers = ["italic"] }
+"markup.strikethrough" = { modifiers = ["crossed_out"] }
+"markup.link.url" = { fg = "link", modifiers = ["underlined"] }
+"markup.link.text" = { fg = "cyan" }
+"markup.link.label" = { fg = "magenta" }
+"markup.quote" = { fg = "comment", modifiers = ["dim"] }
+"markup.raw" = { fg = "bright-green" }
+"markup.raw.inline" = { fg = "bright-green" }
+"markup.raw.block" = { fg = "bright-green" }
+"markup.normal.completion" = "foreground"
+"markup.normal.hover" = "foreground"
+"markup.heading.completion" = { fg = "heading-1", modifiers = ["bold"] }
+"markup.heading.hover" = { fg = "heading-1", modifiers = ["bold"] }
+"markup.raw.inline.completion" = { fg = "bright-green" }
+"markup.raw.inline.hover" = { fg = "bright-green" }
+
+# Syntax highlighting
+"attribute" = { fg = "attribute" }
+"type" = { fg = "type" }
+"type.builtin" = { fg = "type" }
+"type.enum" = { fg = "type" }
+"type.enum.variant" = { fg = "type" }
+"type.parameter" = { fg = "type" }
+
+"constructor" = { fg = "type" }
+
+"constant" = { fg = "constant" }
+"constant.builtin" = { fg = "constant" }
+"constant.builtin.boolean" = { fg = "constant" }
+"constant.character" = { fg = "character" }
+"constant.character.escape" = { fg = "escape" }
+"constant.numeric" = { fg = "number" }
+"constant.numeric.integer" = { fg = "number" }
+"constant.numeric.float" = { fg = "number" }
+
+"string" = { fg = "string" }
+"string.regexp" = { fg = "regexp" }
+"string.regexp.special" = { fg = "bright-magenta" }
+"string.special" = { fg = "string" }
+"string.special.path" = { fg = "path" }
+"string.special.url" = { fg = "link", modifiers = ["underlined"] }
+"string.special.symbol" = { fg = "bright-magenta" }
+
+"comment" = { fg = "comment", modifiers = ["dim"] }
+"comment.line" = { fg = "comment", modifiers = ["dim"] }
+"comment.line.documentation" = { fg = "comment", modifiers = ["dim"] }
+"comment.block" = { fg = "comment", modifiers = ["dim"] }
+"comment.block.documentation" = { fg = "comment", modifiers = ["dim"] }
+"comment.unused" = { fg = "comment", modifiers = ["dim"] }
+
+"variable" = "variable"
+"variable.builtin" = { fg = "bright-red" }
+"variable.parameter" = "variable"
+"variable.other" = "variable"
+"variable.other.member" = "member"
+"variable.other.member.private" = "member"
+
+"label" = { fg = "label" }
+
+"punctuation" = "foreground"
+"punctuation.bracket" = "foreground"
+"punctuation.delimiter" = "foreground"
+"punctuation.special" = { fg = "punctuation-special" }
+
+"keyword" = { fg = "keyword" }
+"keyword.control" = { fg = "keyword" }
+"keyword.control.conditional" = { fg = "keyword" }
+"keyword.control.repeat" = { fg = "keyword" }
+"keyword.control.import" = { fg = "keyword" }
+"keyword.control.return" = { fg = "keyword" }
+"keyword.control.exception" = { fg = "keyword" }
+"keyword.operator" = { fg = "keyword" }
+"keyword.directive" = { fg = "macro" }
+"keyword.function" = { fg = "keyword" }
+"keyword.storage" = { fg = "keyword" }
+"keyword.storage.type" = { fg = "keyword" }
+"keyword.storage.modifier" = { fg = "keyword" }
+
+"operator" = "foreground"
+
+"function" = { fg = "function" }
+"function.builtin" = { fg = "bright-magenta" }
+"function.method" = { fg = "function" }
+"function.method.private" = { fg = "function" }
+"function.macro" = { fg = "macro" }
+"function.special" = { fg = "bright-magenta" }
+
+"tag" = { fg = "tag" }
+"tag.builtin" = { fg = "blue" }
+
+"namespace" = { fg = "namespace" }
+
+"special" = { fg = "decorator" }
+
+"module" = { fg = "namespace" }
+
+# Palette definition (MUST be at the end of the file)
+[palette]
+background = "{{ base.background }}"
+foreground = "{{ base.foreground }}"
+
+cursor = "{{ roles.ui.cursor }}"
+cursor-text = "{{ roles.ui.cursor_text }}"
+selection-bg = "{{ roles.ui.selection_bg }}"
+selection-fg = "{{ roles.ui.selection_fg }}"
+cursorline = "{{ roles.ui.sunken }}"
+
+surface = "{{ roles.ui.surface }}"
+raised = "{{ roles.ui.raised }}"
+border = "{{ roles.ui.border }}"
+
+black = "{{ ansi.black }}"
+red = "{{ ansi.red }}"
+green = "{{ ansi.green }}"
+yellow = "{{ ansi.yellow }}"
+blue = "{{ ansi.blue }}"
+magenta = "{{ ansi.magenta }}"
+cyan = "{{ ansi.cyan }}"
+white = "{{ ansi.white }}"
+
+bright-black = "{{ ansi.bright.black }}"
+bright-red = "{{ ansi.bright.red }}"
+bright-green = "{{ ansi.bright.green }}"
+bright-yellow = "{{ ansi.bright.yellow }}"
+bright-blue = "{{ ansi.bright.blue }}"
+bright-magenta = "{{ ansi.bright.magenta }}"
+bright-cyan = "{{ ansi.bright.cyan }}"
+bright-white = "{{ ansi.bright.white }}"
+
+accent = "{{ roles.ui.accent }}"
+on-accent = "{{ roles.ui.on_accent }}"
+muted = "{{ roles.ui.muted }}"
+constant = "{{ roles.syntax.constant }}"
+comment = "{{ roles.syntax.comment }}"
+path = "{{ roles.syntax.path }}"
+macro = "{{ roles.syntax.macro }}"
+escape = "{{ roles.syntax.escape }}"
+regexp = "{{ roles.syntax.regexp }}"
+link = "{{ roles.ui.link }}"
+member = "{{ roles.syntax.member }}"
+directory = "{{ roles.syntax.directory }}"
+sunken = "{{ roles.ui.sunken }}"
+match-bg = "{{ roles.ui.match_bg }}"
+info = "{{ roles.diagnostic.info }}"
+diff-moved = "{{ roles.diff.moved }}"
+conflict = "{{ roles.diff.conflict }}"
+
+error = "{{ roles.diagnostic.error }}"
+warning = "{{ roles.diagnostic.warning }}"
+hint = "{{ roles.diagnostic.hint }}"
+success = "{{ roles.diagnostic.success }}"
+
+diff-added = "{{ roles.diff.added }}"
+diff-removed = "{{ roles.diff.removed }}"
+diff-changed = "{{ roles.diff.changed }}"
+
+heading-1 = "{{ roles.markup.heading_1 }}"
+heading-2 = "{{ roles.markup.heading_2 }}"
+heading-3 = "{{ roles.markup.heading_3 }}"
+heading-4 = "{{ roles.markup.heading_4 }}"
+list = "{{ roles.markup.list }}"
+
+keyword = "{{ roles.syntax.keyword }}"
+string = "{{ roles.syntax.string }}"
+character = "{{ roles.syntax.character }}"
+number = "{{ roles.syntax.number }}"
+type = "{{ roles.syntax.type }}"
+function = "{{ roles.syntax.function }}"
+variable = "{{ roles.syntax.variable }}"
+namespace = "{{ roles.syntax.namespace }}"
+attribute = "{{ roles.syntax.attribute }}"
+label = "{{ roles.syntax.label }}"
+tag = "{{ roles.syntax.tag }}"
+punctuation-special = "{{ roles.syntax.punctuation_special }}"
+decorator = "{{ roles.syntax.decorator }}"

@@ -77,6 +77,15 @@ pub enum Error {
     ExpectedHexLiteral { key: String, value: toml::Value },
     #[error("roles.series must have exactly 8 entries, found {0}")]
     SeriesLength(usize),
+    #[cfg(feature = "generator")]
+    #[error("tool {0} is generated from a theme directory; use `generate-theme`")]
+    ToolMigrated(String),
+    #[cfg(feature = "generator")]
+    #[error("tool {0} has no theme-based generator")]
+    ToolNotThemed(String),
+    #[cfg(feature = "generator")]
+    #[error("template {0} has no `{{variant}}` placeholder in its output name")]
+    TemplateNeedsVariant(PathBuf),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
