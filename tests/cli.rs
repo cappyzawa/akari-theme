@@ -28,28 +28,35 @@ fn collect_relative_files_into(dir: &Path, base: &Path, out: &mut HashSet<PathBu
     }
 }
 
-fn generate(theme: &str, extra_args: &[&str], out_dir: &Path) {
+fn generate(theme_dir: &Path, extra_args: &[&str], out_dir: &Path) {
     let status = Command::new(env!("CARGO_BIN_EXE_katazome"))
         .current_dir(root_dir())
         .args(["generate", "--theme-dir"])
-        .arg(root_dir().join("themes").join(theme))
+        .arg(theme_dir)
         .args(["--tool", "all", "--out-dir"])
         .arg(out_dir)
         .args(extra_args)
         .status()
         .unwrap();
-    assert!(status.success(), "katazome generate failed for {theme}");
+    assert!(
+        status.success(),
+        "katazome generate failed for {}",
+        theme_dir.display()
+    );
 }
 
 #[test]
 fn templates_dir_override_generates_the_same_files_as_the_built_in_templates() {
-    for theme in ["akari", "ninja"] {
+    for theme_dir in [
+        root_dir().join("themes/ninja"),
+        root_dir().join("tests/fixtures/duo"),
+    ] {
         let embedded_out = tempfile::tempdir().unwrap();
         let overridden_out = tempfile::tempdir().unwrap();
 
-        generate(theme, &[], embedded_out.path());
+        generate(&theme_dir, &[], embedded_out.path());
         generate(
-            theme,
+            &theme_dir,
             &[
                 "--templates-dir",
                 root_dir().join("templates").to_str().unwrap(),
@@ -59,10 +66,16 @@ fn templates_dir_override_generates_the_same_files_as_the_built_in_templates() {
 
         let embedded_files = collect_relative_files(embedded_out.path());
         let overridden_files = collect_relative_files(overridden_out.path());
-        assert!(!embedded_files.is_empty(), "no files generated for {theme}");
+        assert!(
+            !embedded_files.is_empty(),
+            "no files generated for {}",
+            theme_dir.display()
+        );
         assert_eq!(
-            embedded_files, overridden_files,
-            "file sets differ for {theme}"
+            embedded_files,
+            overridden_files,
+            "file sets differ for {}",
+            theme_dir.display()
         );
 
         for rel in &embedded_files {
@@ -74,8 +87,9 @@ fn templates_dir_override_generates_the_same_files_as_the_built_in_templates() {
             assert_eq!(
                 embedded_bytes,
                 overridden_bytes,
-                "{} differs between embedded and --templates-dir for {theme}",
-                rel.display()
+                "{} differs between embedded and --templates-dir for {}",
+                rel.display(),
+                theme_dir.display()
             );
 
             let embedded_mode = fs::metadata(&embedded_path).unwrap().permissions().mode() & 0o111;
@@ -84,8 +98,9 @@ fn templates_dir_override_generates_the_same_files_as_the_built_in_templates() {
             assert_eq!(
                 embedded_mode,
                 overridden_mode,
-                "{} has a different executable bit between embedded and --templates-dir for {theme}",
-                rel.display()
+                "{} has a different executable bit between embedded and --templates-dir for {}",
+                rel.display(),
+                theme_dir.display()
             );
         }
     }

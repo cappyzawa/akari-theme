@@ -1,0 +1,16 @@
+[theme]
+id = "duo"
+name = "Duo"
+description = "A synthetic fixture theme with a dark and a light variant, used only by tests."
+repository = "https://example.com/duo-theme"
+license = "MIT"
+variants = ["dusk", "noon"]
+
+[adapters.vscode]
+publisher = "duo-fixture"
+version = "0.1.0"
+icon = "icon.png"
+keywords = ["theme", "dark", "light", "fixture"]
+
+[adapters.chrome]
+version = "0.1.0"

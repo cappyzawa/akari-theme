@@ -1,0 +1,121 @@
+[variant]
+id = "noon"
+name = "Noon"
+appearance = "light"
+description = "Paper-light ground with the same vortex and blade, seen at midday."
+
+[base]
+background = "#EDE7DE" # paper, not white
+foreground = "#221E29" # ink with a violet cast
+
+[colors]
+vortex = "#1D6FA0" # deep cyan-blue
+sakura = "#A83F5C" # deep rose
+mist = "#3A7FA0"   # muted sky
+moss = "#2F7A5E"   # teal green
+scroll = "#9C7A1E" # sash amber
+seal = "#A8323A"   # seal red
+shade = "#5C50A0"  # indigo violet
+steel = "#5A5F70"  # blade gray
+
+[ansi]
+black = "base.foreground"
+red = "colors.seal"
+green = "colors.moss"
+yellow = "colors.scroll"
+blue = "colors.vortex"
+magenta = "colors.shade"
+cyan = "colors.mist"
+white = "base.background"
+
+# Bright slots go darker on a light background so they stay readable.
+[ansi.bright]
+black = "brighten(ansi.black, 0.20)"
+red = "brighten(ansi.red, -0.12)"
+green = "brighten(ansi.green, -0.12)"
+yellow = "brighten(ansi.yellow, -0.15)"
+blue = "brighten(ansi.blue, -0.15)"
+magenta = "brighten(ansi.magenta, -0.15)"
+cyan = "brighten(ansi.cyan, -0.15)"
+white = "brighten(ansi.white, -0.10)"
+
+[roles.ui]
+surface = "mix(base.background, colors.vortex, 0.10)"
+sunken = "mix(base.background, colors.sakura, 0.10)"
+raised = "darken(base.background, 0.06)"
+inset = "darken(base.background, 0.06)"
+border = "darken(base.background, 0.15)"
+muted = "colors.steel"
+accent = "colors.vortex"
+accent_secondary = "colors.sakura"
+on_accent = "base.background"
+selection_bg = "mix(base.background, colors.vortex, 0.30)"
+selection_fg = "base.foreground"
+match_bg = "mix(base.background, colors.sakura, 0.25)"
+cursor = "colors.sakura"
+cursor_text = "base.background"
+active_bg = "mix(base.background, colors.vortex, 0.22)"
+link = "ansi.bright.blue"
+
+[roles.diagnostic]
+error = "colors.seal"
+warning = "colors.scroll"
+info = "colors.vortex"
+hint = "darken(base.foreground, 0.40)"
+success = "colors.moss"
+
+[roles.diff]
+added = "colors.moss"
+added_bg = "mix(base.background, colors.moss, 0.15)"
+removed = "colors.seal"
+removed_bg = "mix(base.background, colors.seal, 0.15)"
+changed = "colors.scroll"
+moved = "colors.shade"
+conflict = "colors.seal"
+ours = "colors.vortex"
+theirs = "colors.sakura"
+
+[roles.syntax]
+text = "base.foreground"
+comment = "colors.steel"
+keyword = "colors.sakura"
+string = "colors.moss"
+character = "colors.mist"
+number = "colors.scroll"
+constant = "colors.scroll"
+type = "colors.vortex"
+function = "colors.shade"
+variable = "base.foreground"
+member = "colors.mist"
+builtin = "darken(colors.sakura, 0.15)"
+namespace = "colors.vortex"
+attribute = "colors.scroll"
+label = "colors.scroll"
+tag = "colors.sakura"
+punctuation_special = "colors.vortex"
+decorator = "colors.scroll"
+macro = "colors.shade"
+escape = "colors.shade"
+regexp = "colors.mist"
+path = "ansi.green"
+directory = "ansi.blue"
+
+[roles.markup]
+heading_1 = "colors.sakura"
+heading_2 = "colors.vortex"
+heading_3 = "colors.mist"
+heading_4 = "colors.shade"
+list = "colors.vortex"
+raw = "ansi.bright.green"
+
+[roles]
+series = [
+  "colors.vortex",
+  "colors.sakura",
+  "colors.moss",
+  "colors.scroll",
+  "colors.shade",
+  "colors.mist",
+  "ansi.bright.cyan",
+  "colors.steel",
+]

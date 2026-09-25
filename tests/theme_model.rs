@@ -1,6 +1,6 @@
 //! The theme model contract: `docs/theme-model.md` defines the role
-//! vocabulary once, and every variant file under `themes/` must assign
-//! exactly that vocabulary.
+//! vocabulary once, and every variant file of `themes/ninja` and the
+//! fixtures under `tests/fixtures/` must assign exactly that vocabulary.
 
 use katazome::Rgb;
 use std::collections::BTreeSet;
@@ -24,10 +24,16 @@ struct Theme {
 
 impl Theme {
     fn all() -> Vec<Theme> {
-        let mut themes: Vec<Theme> = fs::read_dir(repo_root().join("themes"))
-            .expect("themes/ directory")
-            .map(|e| e.expect("dir entry").path())
-            .filter(|p| p.is_dir())
+        let mut dirs = vec![repo_root().join("themes").join("ninja")];
+        dirs.extend(
+            fs::read_dir(repo_root().join("tests/fixtures"))
+                .expect("tests/fixtures directory")
+                .map(|e| e.expect("dir entry").path())
+                .filter(|p| p.is_dir()),
+        );
+
+        let mut themes: Vec<Theme> = dirs
+            .into_iter()
             .map(|dir| Theme {
                 manifest: read_toml(&dir.join("theme.toml")),
                 dir,
