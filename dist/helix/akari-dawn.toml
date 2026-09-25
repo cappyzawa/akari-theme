@@ -262,7 +262,7 @@ conflict = "#6A2828"
 
 error = "#6A2828"
 warning = "#8A4530"
-hint = "#100E0D"
+hint = "#222D38"
 success = "#3A5830"
 
 diff-added = "#314B29"
