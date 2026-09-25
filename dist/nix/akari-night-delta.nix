@@ -1,5 +1,5 @@
 # Akari Night — delta options for Nix
-# Generated from palette/akari-night.toml
+# Generated from the Akari Night variant
 {
   dark = true;
   syntax-theme = "Akari Night";
