@@ -1,0 +1,9 @@
+#!/bin/sh
+# Usage: scripts/assemble-mirror TOOL DEST
+set -eu
+tool=$1
+dest=$2
+root=$(cd "$(dirname "$0")/.." && pwd)
+test -f "$root/mirrors/$tool/README.md"
+rsync -av --delete --exclude='.git' "$root/dist/$tool/" "$dest/"
+cp "$root/mirrors/$tool/README.md" "$dest/README.md"

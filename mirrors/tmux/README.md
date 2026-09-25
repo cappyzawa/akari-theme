@@ -1,21 +1,33 @@
 # Akari tmux Theme
 
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
+
 tmux themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
-### Plugin entry (recommended)
+### Using TPM (recommended)
 
-Set the variant and run the plugin entry from your `.tmux.conf`:
+Add to your `.tmux.conf`:
 
 ```tmux
+set -g @plugin 'cappyzawa/akari-tmux'
 set -g @akari_variant 'night'  # or 'dawn'
-run-shell /path/to/akari.tmux
+```
+
+Then press `prefix + I` to install.
+
+To pin a specific version:
+
+```tmux
+set -g @plugin 'cappyzawa/akari-tmux#v0.9.0'
 ```
 
 ### Manual
 
-Source a variant's theme file in your `.tmux.conf` instead; the options below then do not apply:
+Download the theme file and source it in your `.tmux.conf`:
 
 ```tmux
 source-file /path/to/akari-night.conf

@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-zsh
 
-    - name: Sync zsh directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/zsh/ akari-zsh/
+    - name: Assemble akari-zsh
+      run: scripts/assemble-mirror zsh akari-zsh
 
     - name: Commit and push
       working-directory: akari-zsh

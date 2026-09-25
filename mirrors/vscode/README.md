@@ -1,5 +1,9 @@
 # Akari Theme for Visual Studio Code
 
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
+
 A color theme inspired by Japanese alleys lit by round lanterns.
 
 Akari (灯) means *light* in Japanese.
@@ -39,6 +43,15 @@ it is about warm light, quiet streets, and the presence of life.
 5. Choose **Akari Night** or **Akari Dawn**
 
 Or install directly from [Open VSX](https://open-vsx.org/extension/cappyzawa/akari-theme).
+
+### From this repository
+
+Clone and symlink to your VS Code extensions directory:
+
+```bash
+git clone https://github.com/cappyzawa/akari-vscode.git
+ln -s $(pwd)/akari-vscode ~/.vscode/extensions/akari-theme
+```
 
 ## Palette
 

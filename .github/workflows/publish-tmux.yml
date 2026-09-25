@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-tmux
 
-    - name: Sync tmux directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/tmux/ akari-tmux/
+    - name: Assemble akari-tmux
+      run: scripts/assemble-mirror tmux akari-tmux
 
     - name: Commit and push
       working-directory: akari-tmux

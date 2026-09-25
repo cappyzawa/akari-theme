@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-vscode
 
-    - name: Sync vscode directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/vscode/ akari-vscode/
+    - name: Assemble akari-vscode
+      run: scripts/assemble-mirror vscode akari-vscode
 
     - name: Commit and push
       working-directory: akari-vscode

@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-alacritty
 
-    - name: Sync alacritty directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/alacritty/ akari-alacritty/
+    - name: Assemble akari-alacritty
+      run: scripts/assemble-mirror alacritty akari-alacritty
 
     - name: Commit and push
       working-directory: akari-alacritty

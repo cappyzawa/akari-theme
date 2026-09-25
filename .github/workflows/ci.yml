@@ -30,6 +30,9 @@ jobs:
     - name: Check for uncommitted changes
       run: git diff --exit-code
 
+    - name: Check mirror assembly
+      run: scripts/check-mirrors
+
   status-check:
     needs: [generate]
     runs-on: ubuntu-latest

@@ -27,9 +27,8 @@ jobs:
         token: ${{ steps.app-token.outputs.token }}
         path: akari-terminal
 
-    - name: Sync terminal directory
-      run: |
-        rsync -av --delete --exclude='.git' dist/terminal/ akari-terminal/
+    - name: Assemble akari-terminal
+      run: scripts/assemble-mirror terminal akari-terminal
 
     - name: Commit and push
       working-directory: akari-terminal

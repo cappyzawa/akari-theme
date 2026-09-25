@@ -1,0 +1,30 @@
+#!/bin/sh
+# Usage: scripts/check-mirrors [BASELINE_REF]
+# With BASELINE_REF, also require each mirror README to match
+# dist/<tool>/README.md at that ref.
+set -eu
+cd "$(dirname "$0")/.."
+
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+workflow_tools=$(sed -n 's/.*scripts\/assemble-mirror \([^ ]*\) .*/\1/p' .github/workflows/*.yml | sort)
+readme_tools=$(ls mirrors | sort)
+if [ "$workflow_tools" != "$readme_tools" ]; then
+  echo "tools assembled by publish workflows and mirrors/ differ:" >&2
+  printf '%s\n' "$workflow_tools" > "$tmp/workflows"
+  printf '%s\n' "$readme_tools" | diff "$tmp/workflows" - >&2 || true
+  exit 1
+fi
+
+for tool in $workflow_tools; do
+  mkdir "$tmp/$tool"
+  touch "$tmp/$tool/stale"
+  scripts/assemble-mirror "$tool" "$tmp/$tool" > /dev/null
+  cmp "mirrors/$tool/README.md" "$tmp/$tool/README.md"
+  diff -r -x README.md "dist/$tool" "$tmp/$tool"
+  if [ $# -gt 0 ]; then
+    git show "$1:dist/$tool/README.md" | cmp - "mirrors/$tool/README.md"
+  fi
+  echo "ok: $tool"
+done
