@@ -1,4 +1,5 @@
-use crate::{Error, Palette, Rgb};
+use crate::theme::{ResolvedVariant, ThemeMetadata};
+use crate::{Error, Rgb};
 use plist::Value;
 use std::collections::BTreeMap;
 use std::io::Cursor;
@@ -67,19 +68,19 @@ fn color_data(rgb: Rgb) -> Result<Value, Error> {
     encode_nscolor(rgb).map(Value::Data)
 }
 
-pub fn generate(palette: &Palette) -> Result<String, Error> {
-    let name = format!("Akari-{}", palette.variant.title());
+pub fn generate(theme: &ThemeMetadata, variant: &ResolvedVariant) -> Result<String, Error> {
+    let name = format!("{}-{}", theme.name, variant.variant.name);
 
     let mut dict: BTreeMap<String, Value> = BTreeMap::new();
 
     // ANSI colors
-    for (name, rgb) in &palette.ansi {
+    for (name, rgb) in &variant.ansi.normal {
         let key = format!("ANSI{}Color", capitalize(name));
         dict.insert(key, color_data(rgb)?);
     }
 
     // ANSI bright colors
-    for (name, rgb) in &palette.ansi_bright {
+    for (name, rgb) in &variant.ansi.bright {
         let key = format!("ANSIBright{}Color", capitalize(name));
         dict.insert(key, color_data(rgb)?);
     }
@@ -87,32 +88,35 @@ pub fn generate(palette: &Palette) -> Result<String, Error> {
     // Base colors
     dict.insert(
         "BackgroundColor".to_string(),
-        color_data(palette.base.background)?,
+        color_data(variant.base.background)?,
     );
     dict.insert(
         "TextColor".to_string(),
-        color_data(palette.base.foreground)?,
+        color_data(variant.base.foreground)?,
     );
     dict.insert(
         "TextBoldColor".to_string(),
-        color_data(palette.base.foreground)?,
+        color_data(variant.base.foreground)?,
     );
 
     // Cursor
-    dict.insert("CursorColor".to_string(), color_data(palette.state.cursor)?);
+    dict.insert(
+        "CursorColor".to_string(),
+        color_data(variant.roles.ui.cursor)?,
+    );
     dict.insert(
         "CursorTextColor".to_string(),
-        color_data(palette.state.cursor_text)?,
+        color_data(variant.roles.ui.cursor_text)?,
     );
 
     // Selection
     dict.insert(
         "SelectionColor".to_string(),
-        color_data(palette.state.selection_bg)?,
+        color_data(variant.roles.ui.selection_bg)?,
     );
     dict.insert(
         "SelectedTextColor".to_string(),
-        color_data(palette.state.selection_fg)?,
+        color_data(variant.roles.ui.selection_fg)?,
     );
 
     dict.insert("name".to_string(), Value::String(name));

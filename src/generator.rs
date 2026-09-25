@@ -1,9 +1,18 @@
+use crate::theme::{ResolvedVariant, Theme, ThemeMetadata, VariantMetadata};
 use crate::{Artifact, Error, Palette, Rgb, VARIANTS};
 use std::collections::HashMap;
 use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 use tera::{Context, Tera, Value};
 use walkdir::WalkDir;
+
+/// Tools generated from a `Theme` directory instead of the legacy palette pair.
+/// One tool per line: migrations of separate tools add entries in parallel.
+#[rustfmt::skip]
+const THEME_TOOLS: [&str; 2] = [
+    "helix",
+    "terminal",
+];
 
 fn hex_to_rgb_filter(value: &Value, _args: &HashMap<String, Value>) -> tera::Result<Value> {
     let hex = value
@@ -49,40 +58,110 @@ impl Generator {
         })
     }
 
-    /// Generate artifacts for a specific tool
+    /// Generate artifacts for a specific tool on the legacy (Palette) route.
     pub fn generate_tool(
         &self,
         tool: &str,
         night: &Palette,
         dawn: &Palette,
     ) -> Result<Vec<Artifact>, Error> {
-        let mut artifacts = Vec::new();
-
-        // Terminal requires special handling (plist with NSColor binary encoding)
-        if tool == "terminal" {
-            self.generate_terminal(&mut artifacts, night, dawn)?;
+        if THEME_TOOLS.contains(&tool) {
+            return Err(Error::ToolMigrated(tool.to_string()));
         }
 
+        let mut artifacts = Vec::new();
         self.process_tool_directory(tool, &mut artifacts, night, dawn)?;
+        Ok(artifacts)
+    }
+
+    /// Generate artifacts for one of `THEME_TOOLS` from a resolved `Theme`.
+    pub fn generate_theme_tool(&self, tool: &str, theme: &Theme) -> Result<Vec<Artifact>, Error> {
+        if !THEME_TOOLS.contains(&tool) {
+            return Err(Error::ToolNotThemed(tool.to_string()));
+        }
+
+        let mut artifacts = Vec::new();
+        let tool_dir = self.templates_dir.join(tool);
+
+        for entry in WalkDir::new(&tool_dir)
+            .into_iter()
+            .filter_map(|e| e.ok())
+            .filter(|e| e.file_type().is_file())
+        {
+            let path = entry.path();
+            let rel_path = path
+                .strip_prefix(&tool_dir)
+                .map_err(|_| Error::InvalidPath(path.to_path_buf()))?;
+
+            if path.extension() == Some(OsStr::new("tera")) {
+                self.process_theme_template(tool, path, rel_path, &mut artifacts, theme)?;
+            } else {
+                self.process_static(tool, path, rel_path, &mut artifacts);
+            }
+        }
+
+        if tool == "terminal" {
+            self.generate_terminal_from_theme(&mut artifacts, theme)?;
+        }
 
         Ok(artifacts)
     }
 
-    /// Generate Terminal.app theme files
-    fn generate_terminal(
+    /// Generate Terminal.app theme files from a resolved `Theme`.
+    fn generate_terminal_from_theme(
         &self,
         artifacts: &mut Vec<Artifact>,
-        night: &Palette,
-        dawn: &Palette,
+        theme: &Theme,
     ) -> Result<(), Error> {
-        for palette in [night, dawn] {
-            let content = crate::terminal::generate(palette)?;
-            let filename = format!("Akari-{}.terminal", palette.variant.title());
+        for variant in &theme.variants {
+            let content = crate::terminal::generate(&theme.metadata, variant)?;
+            let filename = format!("{}-{}.terminal", theme.metadata.name, variant.variant.name);
             artifacts.push(Artifact::text(
                 PathBuf::from("terminal").join(filename),
                 content,
             ));
         }
+        Ok(())
+    }
+
+    /// Render one `.tera` template under `templates/<tool>/` once per variant of `theme`.
+    fn process_theme_template(
+        &self,
+        tool: &str,
+        path: &Path,
+        rel_path: &Path,
+        artifacts: &mut Vec<Artifact>,
+        theme: &Theme,
+    ) -> Result<(), Error> {
+        let out_path = strip_tera_extension(rel_path);
+        let out_str = out_path.to_string_lossy();
+
+        if !out_str.contains("{variant}") {
+            return Err(Error::TemplateNeedsVariant(out_path));
+        }
+
+        let template_name = path
+            .strip_prefix(&self.templates_dir)
+            .map_err(|_| Error::InvalidPath(path.to_path_buf()))?
+            .to_string_lossy()
+            .replace('\\', "/"); // Windows compatibility
+
+        for variant in &theme.variants {
+            let context = theme_context(&theme.metadata, variant);
+            let content =
+                self.tera
+                    .render(&template_name, &context)
+                    .map_err(|e| Error::Template {
+                        context: "render failed",
+                        source: e,
+                    })?;
+            let final_path = theme_output_name(&out_str, &theme.metadata, &variant.variant);
+            artifacts.push(Artifact::text(
+                PathBuf::from(tool).join(final_path),
+                content,
+            ));
+        }
+
         Ok(())
     }
 
@@ -186,18 +265,25 @@ impl Generator {
         ));
     }
 
-    /// List available tools (directories in templates/)
+    /// Lists the tools the legacy route still owns (excludes `THEME_TOOLS`).
     pub fn available_tools(&self) -> std::io::Result<Vec<String>> {
         let mut tools = Vec::new();
         for entry in std::fs::read_dir(&self.templates_dir)? {
             let entry = entry?;
             if entry.file_type()?.is_dir()
                 && let Ok(name) = entry.file_name().into_string()
+                && !THEME_TOOLS.contains(&name.as_str())
             {
                 tools.push(name);
             }
         }
         Ok(tools)
+    }
+
+    /// Lists `THEME_TOOLS`.
+    #[must_use]
+    pub fn available_theme_tools(&self) -> Vec<String> {
+        THEME_TOOLS.iter().map(|s| s.to_string()).collect()
     }
 
     fn render(&self, template: &str, palette: &Palette) -> Result<String, Error> {
@@ -261,4 +347,23 @@ fn strip_tera_extension(path: &Path) -> PathBuf {
         .strip_suffix(".tera")
         .map(PathBuf::from)
         .unwrap_or_else(|| path.to_path_buf())
+}
+
+/// Substitutes `{theme}` and `{variant}` in a theme-route output name pattern.
+fn theme_output_name(pattern: &str, theme: &ThemeMetadata, variant: &VariantMetadata) -> String {
+    pattern
+        .replace("{theme}", theme.id.as_str())
+        .replace("{variant}", variant.id.as_str())
+}
+
+/// Builds the Tera context for the theme route: `theme`, `variant`, `base`,
+/// `ansi`, `roles`. Nothing else — adapters must not read `colors`.
+fn theme_context(theme: &ThemeMetadata, variant: &ResolvedVariant) -> Context {
+    let mut context = Context::new();
+    context.insert("theme", theme);
+    context.insert("variant", &variant.variant);
+    context.insert("base", &variant.base);
+    context.insert("ansi", &variant.ansi);
+    context.insert("roles", &variant.roles);
+    context
 }
