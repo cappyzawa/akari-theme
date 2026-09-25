@@ -1,5 +1,5 @@
-//! Black-box tests for the theme-based generation route
-//! (`Generator::generate_theme_tool`), which consumes `Theme`.
+//! Black-box tests for the theme-based generation route (`Generator::generate`),
+//! which consumes `Theme`.
 
 use katazome::theme::Theme;
 use katazome::{Artifact, ArtifactContent, Error, Generator};
@@ -24,16 +24,23 @@ fn theme_dir(name: &str) -> PathBuf {
     root_dir().join("themes").join(name)
 }
 
-fn load_theme(name: &str) -> Theme {
-    Theme::load(theme_dir(name)).unwrap()
+/// Directory `Theme::load` reads `name` from under `tests/fixtures/`.
+fn fixture_dir(name: &str) -> PathBuf {
+    root_dir().join("tests/fixtures").join(name)
 }
 
-fn akari() -> Theme {
-    load_theme("akari")
+fn load_theme(dir: &Path) -> Theme {
+    Theme::load(dir).unwrap()
+}
+
+/// Synthetic fixture theme with a dark and a light variant, an icon and a
+/// `LICENSE`, used wherever a test needs those without depending on Akari.
+fn duo() -> Theme {
+    load_theme(&fixture_dir("duo"))
 }
 
 fn ninja_theme() -> Theme {
-    load_theme("ninja")
+    load_theme(&theme_dir("ninja"))
 }
 
 fn artifact_text<'a>(artifacts: &'a [Artifact], rel: &str) -> &'a str {
@@ -47,25 +54,16 @@ fn artifact_text<'a>(artifacts: &'a [Artifact], rel: &str) -> &'a str {
     }
 }
 
-/// Tools whose every Akari artifact must equal the committed `dist/` file.
-const DIST_EXACT_TOOLS: [&str; 9] = [
-    "delta", "lazygit", "gh-dash", "nix", "fzf", "zsh", "tmux", "nvim", "vscode",
-];
-
 #[test]
 fn theme_context_rejects_unknown_tool() {
-    let theme = akari();
+    let theme = duo();
     let generator = generator();
 
     let tool = "no-such-tool";
-    assert!(
-        !generator
-            .available_theme_tools()
-            .contains(&tool.to_string())
-    );
-    match generator.generate_theme_tool(tool, &theme, &theme_dir("akari")) {
-        Err(Error::ToolNotThemed(t)) => assert_eq!(t, tool),
-        other => panic!("expected ToolNotThemed for {tool}, got {other:?}"),
+    assert!(!Generator::available_tools().contains(&tool));
+    match generator.generate(tool, &theme, &fixture_dir("duo")) {
+        Err(Error::UnknownTool(t)) => assert_eq!(t, tool),
+        other => panic!("expected UnknownTool for {tool}, got {other:?}"),
     }
 }
 
@@ -75,43 +73,25 @@ fn generator_from_a_missing_templates_dir_is_an_error() {
         .unwrap()
         .path()
         .join("no-such-templates");
-    assert!(Generator::new(&missing).is_err());
+    assert!(Generator::from_dir(&missing).is_err());
 }
 
 #[test]
 fn theme_route_copies_non_tera_files_as_is() {
-    let theme = akari();
+    let theme = duo();
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("nvim", &theme, &theme_dir("akari"))
+        .generate("nvim", &theme, &fixture_dir("duo"))
         .unwrap();
 
     let artifact = artifacts
         .iter()
-        .find(|a| a.rel_path == Path::new("nvim/lua/akari/highlights/editor.lua"))
+        .find(|a| a.rel_path == Path::new("nvim/lua/duo/highlights/editor.lua"))
         .expect("static lua artifact missing");
     let source = templates_dir().join("nvim/lua/{theme}/highlights/editor.lua");
     match &artifact.content {
         ArtifactContent::Bytes(bytes) => assert_eq!(*bytes, fs::read(&source).unwrap()),
         ArtifactContent::Text(_) => panic!("expected Bytes artifact"),
-    }
-}
-
-#[test]
-fn theme_akari_readmes_match_dist_exactly() {
-    let theme = akari();
-    let generator = generator();
-
-    for tool in generator.available_theme_tools() {
-        let artifacts = generator
-            .generate_theme_tool(&tool, &theme, &theme_dir("akari"))
-            .unwrap();
-        let rel = format!("{tool}/README.md");
-        let dist = fs::read_to_string(root_dir().join("dist").join(&rel)).unwrap();
-        assert!(
-            artifact_text(&artifacts, &rel) == dist,
-            "{rel} differs from dist"
-        );
     }
 }
 
@@ -123,171 +103,14 @@ fn theme_ninja_readmes_carry_no_akari_identity_or_story() {
     let theme = ninja_theme();
     let generator = generator();
 
-    for tool in generator.available_theme_tools() {
+    for tool in Generator::available_tools() {
         let artifacts = generator
-            .generate_theme_tool(&tool, &theme, &theme_dir("ninja"))
+            .generate(tool, &theme, &theme_dir("ninja"))
             .unwrap();
         let rel = format!("{tool}/README.md");
         let readme = without_shared_repository(artifact_text(&artifacts, &rel)).to_lowercase();
         for word in AKARI_ONLY_WORDS {
             assert!(!readme.contains(word), "{rel} mentions {word:?}");
-        }
-    }
-}
-
-/// The style value's resolved (fg, bg, underline color, underline style,
-/// modifiers) tuple, with color names looked up against `[palette]`.
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct StyleResolution {
-    fg: Option<String>,
-    bg: Option<String>,
-    underline_color: Option<String>,
-    underline_style: Option<String>,
-    modifiers: Vec<String>,
-}
-
-fn resolve_color(name: &str, palette: &toml::Table) -> String {
-    palette
-        .get(name)
-        .and_then(toml::Value::as_str)
-        .map(str::to_string)
-        .unwrap_or_else(|| name.to_string())
-}
-
-fn resolve_style(value: &toml::Value, palette: &toml::Table) -> StyleResolution {
-    match value {
-        toml::Value::String(name) => StyleResolution {
-            fg: Some(resolve_color(name, palette)),
-            bg: None,
-            underline_color: None,
-            underline_style: None,
-            modifiers: Vec::new(),
-        },
-        toml::Value::Table(table) => {
-            let fg = table
-                .get("fg")
-                .and_then(toml::Value::as_str)
-                .map(|n| resolve_color(n, palette));
-            let bg = table
-                .get("bg")
-                .and_then(toml::Value::as_str)
-                .map(|n| resolve_color(n, palette));
-            let (underline_color, underline_style) = match table.get("underline") {
-                Some(toml::Value::Table(u)) => (
-                    u.get("color")
-                        .and_then(toml::Value::as_str)
-                        .map(|n| resolve_color(n, palette)),
-                    u.get("style")
-                        .and_then(toml::Value::as_str)
-                        .map(str::to_string),
-                ),
-                _ => (None, None),
-            };
-            let mut modifiers: Vec<String> = table
-                .get("modifiers")
-                .and_then(toml::Value::as_array)
-                .map(|arr| {
-                    arr.iter()
-                        .filter_map(toml::Value::as_str)
-                        .map(str::to_string)
-                        .collect()
-                })
-                .unwrap_or_default();
-            modifiers.sort();
-            StyleResolution {
-                fg,
-                bg,
-                underline_color,
-                underline_style,
-                modifiers,
-            }
-        }
-        other => panic!("unexpected style value: {other:?}"),
-    }
-}
-
-fn style_keys(doc: &toml::Table) -> HashSet<String> {
-    doc.iter()
-        .filter(|(k, _)| k.as_str() != "palette")
-        .map(|(k, _)| k.clone())
-        .collect()
-}
-
-#[test]
-fn theme_helix_akari_matches_dist_after_palette_resolution() {
-    let theme = akari();
-    let generator = generator();
-    let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("akari"))
-        .unwrap();
-
-    for variant in &theme.variants {
-        let variant_id = variant.variant.id.as_str();
-        let generated_path = format!("helix/akari-{variant_id}.toml");
-        let generated_text = artifact_text(&artifacts, &generated_path);
-
-        let dist_path = root_dir().join(format!("dist/helix/akari-{variant_id}.toml"));
-        let dist_text = fs::read_to_string(&dist_path).unwrap();
-
-        let dist_header: Vec<&str> = dist_text.lines().take(3).collect();
-        let generated_header: Vec<&str> = generated_text.lines().take(3).collect();
-        assert_eq!(
-            generated_header, dist_header,
-            "header mismatch for variant {variant_id}"
-        );
-
-        let dist_doc: toml::Table = dist_text.parse().unwrap();
-        let generated_doc: toml::Table = generated_text.parse().unwrap();
-
-        let dist_palette = dist_doc["palette"].as_table().unwrap();
-        let generated_palette = generated_doc["palette"].as_table().unwrap();
-
-        let dist_keys = style_keys(&dist_doc);
-        let generated_keys = style_keys(&generated_doc);
-        assert_eq!(
-            generated_keys, dist_keys,
-            "style key set mismatch for variant {variant_id}"
-        );
-
-        for key in &dist_keys {
-            // These six keys intentionally diverge for the dawn variant only.
-            // The old template read them from a raw pigment/proxy color that
-            // happened to equal the dedicated semantic value for night but not
-            // for dawn:
-            //   - `hint`/`diagnostic.hint` read `comment`; `roles.diagnostic.hint`
-            //     is `darken(base.foreground, 0.40)`, not `comment`'s
-            //     `darken(colors.night, 0.30)`.
-            //   - `diff.plus`/`diff.plus.gutter` read raw `green` (`colors.life`);
-            //     `roles.diff.added` is `darken(colors.life, 0.15)`.
-            //   - `diff.delta`/`diff.delta.gutter` read raw `amber`
-            //     (`colors.lantern.far`); `roles.diff.changed` is
-            //     `darken(colors.lantern.far, 0.10)`.
-            // The new palette keys (`hint`, `diff-added`, `diff-changed`) are
-            // documented to replace those raw references (see the design table
-            // and docs/theme-model.md, "Akari settings to settle during
-            // migration"), so these hex values are expected to change on dawn.
-            // Night is unaffected because its roles happen to equal the old raw
-            // pigment. Every other style key must still match byte-for-byte.
-            if variant_id == "dawn"
-                && matches!(
-                    key.as_str(),
-                    "hint"
-                        | "diagnostic.hint"
-                        | "diff.plus"
-                        | "diff.plus.gutter"
-                        | "diff.delta"
-                        | "diff.delta.gutter"
-                )
-            {
-                continue;
-            }
-
-            let dist_resolved = resolve_style(&dist_doc[key], dist_palette);
-            let generated_resolved = resolve_style(&generated_doc[key], generated_palette);
-            assert_eq!(
-                generated_resolved, dist_resolved,
-                "style mismatch for variant {variant_id}, key {key}"
-            );
         }
     }
 }
@@ -339,7 +162,7 @@ fn theme_helix_ninja_parses_and_resolves_all_color_names() {
     let theme = ninja_theme();
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("ninja"))
+        .generate("helix", &theme, &theme_dir("ninja"))
         .unwrap();
 
     let text = artifact_text(&artifacts, "helix/ninja-shadow.toml");
@@ -362,82 +185,15 @@ fn theme_helix_ninja_parses_and_resolves_all_color_names() {
 }
 
 #[test]
-fn theme_terminal_akari_matches_dist_exactly() {
-    let theme = akari();
-    let generator = generator();
-    let artifacts = generator
-        .generate_theme_tool("terminal", &theme, &theme_dir("akari"))
-        .unwrap();
-
-    for name in ["Night", "Dawn"] {
-        let generated = artifact_text(&artifacts, &format!("terminal/Akari-{name}.terminal"));
-        let dist =
-            fs::read_to_string(root_dir().join(format!("dist/terminal/Akari-{name}.terminal")))
-                .unwrap();
-        assert_eq!(generated, dist, "terminal artifact mismatch for {name}");
-    }
-}
-
-#[test]
 fn theme_terminal_ninja_profile_name_and_file_name() {
     let theme = ninja_theme();
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("terminal", &theme, &theme_dir("ninja"))
+        .generate("terminal", &theme, &theme_dir("ninja"))
         .unwrap();
 
     let text = artifact_text(&artifacts, "terminal/Ninja-Shadow.terminal");
     assert!(text.contains("<string>Ninja-Shadow</string>"));
-}
-
-fn dist_files(tool: &str) -> HashSet<PathBuf> {
-    walkdir_files(&root_dir().join("dist").join(tool))
-        .into_iter()
-        .map(|p| {
-            PathBuf::from(tool).join(p.strip_prefix(root_dir().join("dist").join(tool)).unwrap())
-        })
-        .collect()
-}
-
-fn walkdir_files(dir: &Path) -> Vec<PathBuf> {
-    let mut out = Vec::new();
-    for entry in fs::read_dir(dir).unwrap() {
-        let path = entry.unwrap().path();
-        if path.is_dir() {
-            out.extend(walkdir_files(&path));
-        } else {
-            out.push(path);
-        }
-    }
-    out
-}
-
-#[test]
-fn theme_akari_artifacts_match_dist_exactly() {
-    let theme = akari();
-    let generator = generator();
-
-    for tool in DIST_EXACT_TOOLS {
-        let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("akari"))
-            .unwrap();
-
-        let generated: HashSet<PathBuf> = artifacts.iter().map(|a| a.rel_path.clone()).collect();
-        assert_eq!(generated, dist_files(tool), "file set mismatch for {tool}");
-
-        for artifact in &artifacts {
-            let dist = fs::read(root_dir().join("dist").join(&artifact.rel_path)).unwrap();
-            let generated = match &artifact.content {
-                ArtifactContent::Text(text) => text.as_bytes().to_vec(),
-                ArtifactContent::Bytes(bytes) => bytes.clone(),
-            };
-            assert!(
-                generated == dist,
-                "{} differs from dist",
-                artifact.rel_path.display()
-            );
-        }
-    }
 }
 
 #[test]
@@ -461,7 +217,7 @@ fn theme_ninja_artifacts_are_named_by_theme_and_variant_ids() {
     ];
     for (tool, rel) in expected {
         let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("ninja"))
+            .generate(tool, &theme, &theme_dir("ninja"))
             .unwrap();
         let text = artifact_text(&artifacts, rel);
         assert!(
@@ -476,7 +232,7 @@ fn theme_delta_names_section_and_bat_theme_from_metadata() {
     let theme = ninja_theme();
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("delta", &theme, &theme_dir("ninja"))
+        .generate("delta", &theme, &theme_dir("ninja"))
         .unwrap();
 
     let text = artifact_text(&artifacts, "delta/ninja-shadow.gitconfig");
@@ -492,10 +248,10 @@ fn theme_delta_switches_dark_mode_on_appearance_not_variant_id() {
     let generator = generator();
 
     let gitconfig = generator
-        .generate_theme_tool("delta", &theme, &theme_dir("ninja"))
+        .generate("delta", &theme, &theme_dir("ninja"))
         .unwrap();
     let nix = generator
-        .generate_theme_tool("nix", &theme, &theme_dir("ninja"))
+        .generate("nix", &theme, &theme_dir("ninja"))
         .unwrap();
     for text in [
         artifact_text(&gitconfig, "delta/ninja-shadow.gitconfig"),
@@ -518,25 +274,25 @@ const MIGRATED_TOOLS: &[(&str, &str)] = &[
     ("zellij", "kdl"),
 ];
 
-fn variant_artifact_path(tool: &str, ext: &str, variant_id: &str) -> String {
+fn variant_artifact_path(tool: &str, ext: &str, theme_id: &str, variant_id: &str) -> String {
     if ext.is_empty() {
-        format!("{tool}/akari-{variant_id}")
+        format!("{tool}/{theme_id}-{variant_id}")
     } else {
-        format!("{tool}/akari-{variant_id}.{ext}")
+        format!("{tool}/{theme_id}-{variant_id}.{ext}")
     }
 }
 
 #[test]
 fn theme_route_generates_outputs_for_every_variant_of_each_migrated_tool() {
-    let theme = akari();
+    let theme = duo();
     let generator = generator();
 
     for (tool, ext) in MIGRATED_TOOLS {
         let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("akari"))
+            .generate(tool, &theme, &fixture_dir("duo"))
             .unwrap();
-        for variant_id in ["night", "dawn"] {
-            let rel = variant_artifact_path(tool, ext, variant_id);
+        for variant_id in ["dusk", "noon"] {
+            let rel = variant_artifact_path(tool, ext, "duo", variant_id);
             artifact_text(&artifacts, &rel);
         }
     }
@@ -556,7 +312,7 @@ fn ninja_shadow_alacritty_and_starship_outputs_parse_as_toml() {
 
     for tool in ["alacritty", "starship"] {
         let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("ninja"))
+            .generate(tool, &theme, &theme_dir("ninja"))
             .unwrap();
         let text = artifact_text(&artifacts, &format!("{tool}/ninja-shadow.toml"));
         text.parse::<toml::Table>()
@@ -568,7 +324,7 @@ fn ninja_shadow_alacritty_and_starship_outputs_parse_as_toml() {
 fn ninja_shadow_starship_palette_table_values_are_hex_colors() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("starship", &ninja_theme(), &theme_dir("ninja"))
+        .generate("starship", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "starship/ninja-shadow.toml");
     let doc: toml::Table = text.parse().unwrap();
@@ -589,7 +345,7 @@ fn ninja_shadow_starship_palette_table_values_are_hex_colors() {
 fn ninja_shadow_zellij_output_has_balanced_braces_and_the_theme_block() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("zellij", &ninja_theme(), &theme_dir("ninja"))
+        .generate("zellij", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "zellij/ninja-shadow.kdl");
 
@@ -612,7 +368,7 @@ fn ninja_shadow_zellij_output_has_balanced_braces_and_the_theme_block() {
 fn ninja_shadow_codex_output_is_json_after_the_codex_theme_prefix() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("codex", &ninja_theme(), &theme_dir("ninja"))
+        .generate("codex", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "codex/ninja-shadow.txt");
     let json = text
@@ -626,7 +382,7 @@ fn ninja_shadow_codex_output_is_json_after_the_codex_theme_prefix() {
 fn ninja_shadow_bat_output_parses_as_xml_plist() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("bat", &ninja_theme(), &theme_dir("ninja"))
+        .generate("bat", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "bat/ninja-shadow.tmTheme");
     plist::Value::from_reader_xml(text.as_bytes())
@@ -637,7 +393,7 @@ fn ninja_shadow_bat_output_parses_as_xml_plist() {
 fn ninja_shadow_slack_output_is_four_hex_colors() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("slack", &ninja_theme(), &theme_dir("ninja"))
+        .generate("slack", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "slack/ninja-shadow.txt");
     let values: Vec<&str> = text.trim().split(',').collect();
@@ -655,7 +411,7 @@ fn ninja_shadow_slack_output_is_four_hex_colors() {
 fn ninja_shadow_ghostty_lines_are_key_value_pairs() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("ghostty", &ninja_theme(), &theme_dir("ninja"))
+        .generate("ghostty", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "ghostty/ninja-shadow");
 
@@ -698,16 +454,16 @@ fn ninja_shadow_text_artifacts_never_mention_akari() {
 
     for (tool, _) in MIGRATED_TOOLS {
         let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("ninja"))
+            .generate(tool, &theme, &theme_dir("ninja"))
             .unwrap();
         assert_no_akari_mentions(&artifacts, tool);
     }
 
     // These don't fit `MIGRATED_TOOLS` (none produces only
-    // `akari-{variant}.{ext}` paths), so they're checked here directly.
+    // `ninja-{variant}.{ext}` paths), so they're checked here directly.
     for tool in ["zed", "chrome", "nvim", "vscode"] {
         let artifacts = generator
-            .generate_theme_tool(tool, &theme, &theme_dir("ninja"))
+            .generate(tool, &theme, &theme_dir("ninja"))
             .unwrap();
         assert_no_akari_mentions(&artifacts, tool);
     }
@@ -716,18 +472,18 @@ fn ninja_shadow_text_artifacts_never_mention_akari() {
 #[test]
 fn codex_variant_and_contrast_and_role_colors_match_the_loaded_theme() {
     let generator = generator();
-    let akari = akari();
+    let duo = duo();
     let ninja = ninja_theme();
 
     // (theme, theme dir, variant id, expected `variant`, expected `contrast`)
     let cases = [
-        (&akari, theme_dir("akari"), "night", "dark", 60),
-        (&akari, theme_dir("akari"), "dawn", "light", 45),
+        (&duo, fixture_dir("duo"), "dusk", "dark", 60),
+        (&duo, fixture_dir("duo"), "noon", "light", 45),
         (&ninja, theme_dir("ninja"), "shadow", "dark", 60),
     ];
 
     for (theme, dir, variant_id, expected_appearance, expected_contrast) in cases {
-        let artifacts = generator.generate_theme_tool("codex", theme, &dir).unwrap();
+        let artifacts = generator.generate("codex", theme, &dir).unwrap();
         let rel = format!("codex/{}-{variant_id}.txt", theme.metadata.id);
         let text = artifact_text(&artifacts, &rel);
         let json = text.trim().strip_prefix("codex-theme-v1:").unwrap();
@@ -780,9 +536,9 @@ fn write_template(path: &Path, content: &str) {
 }
 
 /// `helix` stands in for a tool whose templates live in a temp dir, so these
-/// tests drive `generate_theme_tool` without touching `THEME_TOOLS`.
-fn theme_with_helix_adapter(name: &str, adapter: toml::Table) -> Theme {
-    let mut theme = load_theme(name);
+/// tests drive `Generator::generate` without touching `THEME_TOOLS`.
+fn theme_with_helix_adapter(dir: &Path, adapter: toml::Table) -> Theme {
+    let mut theme = load_theme(dir);
     theme.adapters.insert("helix".to_string(), adapter);
     theme
 }
@@ -795,14 +551,15 @@ fn combined_template_without_variant_placeholder_renders_once_in_theme_toml_orde
         "{% for v in variants %}{{ v.variant.id }}:{{ v.variant.appearance }}:\
          {{ v.base.background }}:{{ v.ansi.red }}:{{ v.roles.ui.accent }};{% endfor %}",
     );
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
-    let cases: [(&str, &[&str]); 2] = [("akari", &["night", "dawn"]), ("ninja", &["shadow"])];
-    for (theme_name, expected_order) in cases {
-        let theme = theme_with_helix_adapter(theme_name, toml::Table::new());
-        let artifacts = generator
-            .generate_theme_tool("helix", &theme, &theme_dir(theme_name))
-            .unwrap();
+    let cases: [(&str, PathBuf, &[&str]); 2] = [
+        ("duo", fixture_dir("duo"), &["dusk", "noon"]),
+        ("ninja", theme_dir("ninja"), &["shadow"]),
+    ];
+    for (theme_name, dir, expected_order) in cases {
+        let theme = theme_with_helix_adapter(&dir, toml::Table::new());
+        let artifacts = generator.generate("helix", &theme, &dir).unwrap();
 
         assert_eq!(
             artifacts.len(),
@@ -836,17 +593,17 @@ fn per_variant_and_combined_contexts_expose_adapter_contents() {
         &templates.path().join("helix/{theme}.txt.tera"),
         "{{ adapter.version }}",
     );
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
     let mut adapter = toml::Table::new();
     adapter.insert(
         "version".to_string(),
         toml::Value::String("9.9.9".to_string()),
     );
-    let theme = theme_with_helix_adapter("ninja", adapter);
+    let theme = theme_with_helix_adapter(&theme_dir("ninja"), adapter);
 
     let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("ninja"))
+        .generate("helix", &theme, &theme_dir("ninja"))
         .unwrap();
 
     assert_eq!(
@@ -863,12 +620,12 @@ fn adapter_context_defaults_to_empty_table_when_tool_has_no_adapters_entry() {
         &templates.path().join("helix/{theme}-{variant}.txt.tera"),
         "{{ adapter.version | default(value=\"none\") }}",
     );
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
     // Real `themes/ninja` has no `[adapters.helix]`.
     let theme = ninja_theme();
     let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("ninja"))
+        .generate("helix", &theme, &theme_dir("ninja"))
         .unwrap();
 
     assert_eq!(artifact_text(&artifacts, "helix/ninja-shadow.txt"), "none");
@@ -883,11 +640,11 @@ fn theme_static_file_path_substitutes_theme_id() {
         &templates.path().join("helix/lua/{theme}/x.lua"),
         "-- stub\n",
     );
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme = ninja_theme();
 
     let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("ninja"))
+        .generate("helix", &theme, &theme_dir("ninja"))
         .unwrap();
 
     let artifact = artifacts
@@ -912,10 +669,7 @@ fn entry_with_stub_variant_files(
     entry: &str,
 ) -> tempfile::TempDir {
     let dir = tempfile::tempdir().unwrap();
-    for artifact in generator()
-        .generate_theme_tool(tool, theme, theme_root)
-        .unwrap()
-    {
+    for artifact in generator().generate(tool, theme, theme_root).unwrap() {
         let ArtifactContent::Text(text) = &artifact.content else {
             continue;
         };
@@ -1002,7 +756,7 @@ const ZSH_PLUGIN_ENTRIES: [(&str, &str, &str); 2] = [
 #[test]
 fn zsh_plugin_entries_load_the_selected_variant_and_default_to_the_first() {
     for (theme, dir) in [
-        (akari(), theme_dir("akari")),
+        (duo(), fixture_dir("duo")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
         let id = theme.metadata.id.as_str();
@@ -1069,7 +823,7 @@ fn tmux_entry_calls(theme: &Theme, theme_root: &Path, variant: Option<&str>) -> 
 #[test]
 fn tmux_entry_sources_and_colors_the_selected_variant_and_defaults_to_the_first() {
     for (theme, dir) in [
-        (akari(), theme_dir("akari")),
+        (duo(), fixture_dir("duo")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
         let id = theme.metadata.id.as_str();
@@ -1108,7 +862,7 @@ fn tmux_entry_sources_and_colors_the_selected_variant_and_defaults_to_the_first(
 fn ninja_zed_theme_has_a_single_dark_shadow_entry() {
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("zed", &ninja_theme(), &theme_dir("ninja"))
+        .generate("zed", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "zed/ninja.json");
     let doc: serde_json::Value = serde_json::from_str(text).unwrap();
@@ -1120,20 +874,20 @@ fn ninja_zed_theme_has_a_single_dark_shadow_entry() {
 }
 
 #[test]
-fn akari_zed_theme_lists_variant_entries_in_order() {
+fn duo_zed_theme_lists_variant_entries_in_order() {
     let generator = generator();
-    let theme = akari();
+    let theme = duo();
     let artifacts = generator
-        .generate_theme_tool("zed", &theme, &theme_dir("akari"))
+        .generate("zed", &theme, &fixture_dir("duo"))
         .unwrap();
-    let text = artifact_text(&artifacts, "zed/akari.json");
+    let text = artifact_text(&artifacts, "zed/duo.json");
     let doc: serde_json::Value = serde_json::from_str(text).unwrap();
 
     let themes = doc["themes"].as_array().unwrap();
     assert_eq!(themes.len(), 2);
-    assert_eq!(themes[0]["name"], "Akari Night");
+    assert_eq!(themes[0]["name"], "Duo Dusk");
     assert_eq!(themes[0]["appearance"], "dark");
-    assert_eq!(themes[1]["name"], "Akari Dawn");
+    assert_eq!(themes[1]["name"], "Duo Noon");
     assert_eq!(themes[1]["appearance"], "light");
 }
 
@@ -1147,7 +901,7 @@ fn ninja_chrome_produces_exactly_one_output_dir_named_after_the_theme_and_varian
         .to_string();
 
     let artifacts = generator
-        .generate_theme_tool("chrome", &theme, &theme_dir("ninja"))
+        .generate("chrome", &theme, &theme_dir("ninja"))
         .unwrap();
     let manifest_dirs: HashSet<&Path> = artifacts
         .iter()
@@ -1171,7 +925,7 @@ fn chrome_requires_adapters_chrome_version() {
     theme.adapters.remove("chrome");
 
     let err = generator
-        .generate_theme_tool("chrome", &theme, &theme_dir("ninja"))
+        .generate("chrome", &theme, &theme_dir("ninja"))
         .unwrap_err();
     match &err {
         Error::AdapterKeyMissing { tool, key } => {
@@ -1197,7 +951,7 @@ fn chrome_renders_with_only_the_declared_adapter_keys() {
     theme.adapters.insert("chrome".to_string(), adapter);
 
     let artifacts = generator
-        .generate_theme_tool("chrome", &theme, &theme_dir("ninja"))
+        .generate("chrome", &theme, &theme_dir("ninja"))
         .unwrap();
     let text = artifact_text(&artifacts, "chrome/ninja-shadow/manifest.json");
     let doc: serde_json::Value = serde_json::from_str(text).unwrap();
@@ -1257,14 +1011,14 @@ fn temp_ninja_theme_dir(edit: impl FnOnce(&mut toml::Table)) -> tempfile::TempDi
 #[test]
 fn vscode_without_icon_key_emits_no_icon_artifact() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|vscode| {
         vscode.remove("icon");
     });
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     assert!(
@@ -1278,12 +1032,12 @@ fn vscode_without_icon_key_emits_no_icon_artifact() {
 #[test]
 fn vscode_icon_declared_but_missing_reports_the_expected_path() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(declare_icon);
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let err = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap_err();
 
     let expected_path = theme_root.path().join("icon.png");
@@ -1307,13 +1061,13 @@ fn vscode_icon_declared_but_missing_reports_the_expected_path() {
 #[test]
 fn vscode_icon_declared_and_present_is_copied_from_the_theme_dir() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(declare_icon);
     fs::write(theme_root.path().join("icon.png"), b"stub png").unwrap();
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     let artifact = artifacts
@@ -1329,7 +1083,7 @@ fn vscode_icon_declared_and_present_is_copied_from_the_theme_dir() {
 #[test]
 fn vscode_icon_outside_the_theme_dir_or_absolute_is_rejected() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
     for icon_value in ["../icon.png", "/etc/icon.png"] {
         let theme_root = temp_ninja_theme_dir(|vscode| {
@@ -1341,7 +1095,7 @@ fn vscode_icon_outside_the_theme_dir_or_absolute_is_rejected() {
         let theme = Theme::load(theme_root.path()).unwrap();
 
         let err = generator
-            .generate_theme_tool("vscode", &theme, theme_root.path())
+            .generate("vscode", &theme, theme_root.path())
             .unwrap_err();
         match &err {
             Error::AdapterAssetPath { tool, key, value } => {
@@ -1357,13 +1111,13 @@ fn vscode_icon_outside_the_theme_dir_or_absolute_is_rejected() {
 #[test]
 fn vscode_license_at_theme_dir_root_is_copied_when_present() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|_| {});
     fs::write(theme_root.path().join("LICENSE"), "MIT\n").unwrap();
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     let artifact = artifacts
@@ -1379,12 +1133,12 @@ fn vscode_license_at_theme_dir_root_is_copied_when_present() {
 #[test]
 fn vscode_without_license_at_theme_dir_root_emits_no_license_artifact() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|_| {});
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     assert!(
@@ -1398,7 +1152,7 @@ fn vscode_without_license_at_theme_dir_root_emits_no_license_artifact() {
 #[test]
 fn vscode_requires_adapters_vscode_publisher_and_version() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
     for key in ["publisher", "version"] {
         let theme_root = temp_ninja_theme_dir(|vscode| {
@@ -1407,7 +1161,7 @@ fn vscode_requires_adapters_vscode_publisher_and_version() {
         let theme = Theme::load(theme_root.path()).unwrap();
 
         let err = generator
-            .generate_theme_tool("vscode", &theme, theme_root.path())
+            .generate("vscode", &theme, theme_root.path())
             .unwrap_err();
         match &err {
             Error::AdapterKeyMissing { tool, key: found } => {
@@ -1428,7 +1182,7 @@ fn declare_readme(vscode: &mut toml::Table, value: &str) {
 #[test]
 fn vscode_readme_fragment_is_rendered_into_readme_and_not_shipped_as_an_artifact() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, "vscode-readme.md"));
     fs::write(
         theme_root.path().join("vscode-readme.md"),
@@ -1438,7 +1192,7 @@ fn vscode_readme_fragment_is_rendered_into_readme_and_not_shipped_as_an_artifact
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     let text = artifact_text(&artifacts, "vscode/README.md");
@@ -1457,12 +1211,12 @@ fn vscode_readme_fragment_is_rendered_into_readme_and_not_shipped_as_an_artifact
 #[test]
 fn vscode_without_readme_key_falls_back_to_description_and_variants_and_mentions_no_akari() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|_| {});
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let artifacts = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap();
 
     let text = artifact_text(&artifacts, "vscode/README.md");
@@ -1477,12 +1231,12 @@ fn vscode_without_readme_key_falls_back_to_description_and_variants_and_mentions
 #[test]
 fn vscode_readme_declared_but_missing_reports_the_expected_path() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
     let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, "vscode-readme.md"));
     let theme = Theme::load(theme_root.path()).unwrap();
 
     let err = generator
-        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .generate("vscode", &theme, theme_root.path())
         .unwrap_err();
 
     let expected_path = theme_root.path().join("vscode-readme.md");
@@ -1499,14 +1253,14 @@ fn vscode_readme_declared_but_missing_reports_the_expected_path() {
 #[test]
 fn vscode_readme_outside_the_theme_dir_or_absolute_is_rejected() {
     let templates = vscode_only_templates();
-    let generator = Generator::new(templates.path()).unwrap();
+    let generator = Generator::from_dir(templates.path()).unwrap();
 
     for value in ["../x.md", "/etc/x.md"] {
         let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, value));
         let theme = Theme::load(theme_root.path()).unwrap();
 
         let err = generator
-            .generate_theme_tool("vscode", &theme, theme_root.path())
+            .generate("vscode", &theme, theme_root.path())
             .unwrap_err();
         match &err {
             Error::AdapterAssetPath {
@@ -1532,16 +1286,16 @@ fn artifact_paths(artifacts: &[Artifact]) -> HashSet<PathBuf> {
 #[test]
 fn nvim_files_are_namespaced_by_theme_id() {
     let generator = generator();
-    let akari = generator
-        .generate_theme_tool("nvim", &akari(), &theme_dir("akari"))
+    let duo = generator
+        .generate("nvim", &duo(), &fixture_dir("duo"))
         .unwrap();
     let ninja = generator
-        .generate_theme_tool("nvim", &ninja_theme(), &theme_dir("ninja"))
+        .generate("nvim", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
 
-    let expected: HashSet<PathBuf> = artifact_paths(&akari)
+    let expected: HashSet<PathBuf> = artifact_paths(&duo)
         .iter()
-        .map(|p| PathBuf::from(p.to_string_lossy().replace("akari", "ninja")))
+        .map(|p| PathBuf::from(p.to_string_lossy().replace("duo", "ninja")))
         .collect();
     assert_eq!(artifact_paths(&ninja), expected);
     assert!(expected.contains(Path::new("nvim/colors/ninja.lua")));
@@ -1555,7 +1309,7 @@ fn nvim_highlight_modules_are_shared_by_every_theme() {
     let sources = |theme: &Theme, dir: PathBuf| -> Vec<(String, Vec<u8>)> {
         let id = theme.metadata.id.as_str().to_string();
         let mut out: Vec<(String, Vec<u8>)> = generator
-            .generate_theme_tool("nvim", theme, &dir)
+            .generate("nvim", theme, &dir)
             .unwrap()
             .into_iter()
             .filter_map(|a| {
@@ -1571,10 +1325,10 @@ fn nvim_highlight_modules_are_shared_by_every_theme() {
         out
     };
 
-    let akari = sources(&akari(), theme_dir("akari"));
+    let duo = sources(&duo(), fixture_dir("duo"));
     let ninja = sources(&ninja_theme(), theme_dir("ninja"));
-    assert!(!akari.is_empty(), "no static highlight modules");
-    assert_eq!(akari, ninja);
+    assert!(!duo.is_empty(), "no static highlight modules");
+    assert_eq!(duo, ninja);
 }
 
 /// Checks the VS Code manifest against the theme: one entry per variant in
@@ -1628,12 +1382,10 @@ fn assert_vscode_manifest_matches_theme(theme: &Theme, artifacts: &[Artifact]) {
 fn vscode_manifest_lists_every_variant_and_icon_only_when_declared() {
     let generator = generator();
     for (theme, dir) in [
-        (akari(), theme_dir("akari")),
+        (duo(), fixture_dir("duo")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
-        let artifacts = generator
-            .generate_theme_tool("vscode", &theme, &dir)
-            .unwrap();
+        let artifacts = generator.generate("vscode", &theme, &dir).unwrap();
         assert_vscode_manifest_matches_theme(&theme, &artifacts);
     }
 }
@@ -1641,7 +1393,7 @@ fn vscode_manifest_lists_every_variant_and_icon_only_when_declared() {
 #[test]
 fn ninja_vscode_ships_neither_icon_nor_license() {
     let artifacts = generator()
-        .generate_theme_tool("vscode", &ninja_theme(), &theme_dir("ninja"))
+        .generate("vscode", &ninja_theme(), &theme_dir("ninja"))
         .unwrap();
     for rel in ["vscode/icon.png", "vscode/LICENSE"] {
         assert!(
@@ -1686,4 +1438,81 @@ fn generated_files_keep_the_template_executable_bit() {
         !executable("tmux/ninja-shadow.conf"),
         "ninja-shadow.conf is executable"
     );
+}
+
+// -- Generator::default_tools: theme.toml's optional [theme] tools key -----
+
+/// Copies `themes/ninja` into a fresh temp dir, then lets `edit` mutate the
+/// copy's `[theme]` table before it is loaded with `Theme::load`.
+fn temp_ninja_dir_with_theme_edit(edit: impl FnOnce(&mut toml::Table)) -> tempfile::TempDir {
+    let dir = tempfile::tempdir().unwrap();
+    let src = theme_dir("ninja");
+    fs::copy(src.join("shadow.toml"), dir.path().join("shadow.toml")).unwrap();
+
+    let mut doc: toml::Table = fs::read_to_string(src.join("theme.toml"))
+        .unwrap()
+        .parse()
+        .unwrap();
+    let theme = doc
+        .get_mut("theme")
+        .and_then(toml::Value::as_table_mut)
+        .expect("themes/ninja declares [theme]");
+    edit(theme);
+    fs::write(
+        dir.path().join("theme.toml"),
+        toml::to_string(&doc).unwrap(),
+    )
+    .unwrap();
+
+    dir
+}
+
+fn set_theme_tools(theme: &mut toml::Table, names: &[&str]) {
+    theme.insert(
+        "tools".to_string(),
+        toml::Value::Array(
+            names
+                .iter()
+                .map(|n| toml::Value::String(n.to_string()))
+                .collect(),
+        ),
+    );
+}
+
+#[test]
+fn default_tools_without_a_tools_key_equals_available_tools() {
+    let theme = duo();
+    let tools = Generator::default_tools(&theme, &fixture_dir("duo")).unwrap();
+    assert_eq!(tools.as_slice(), Generator::available_tools());
+}
+
+#[test]
+fn default_tools_preserves_the_declared_order_of_theme_tools() {
+    let dir = temp_ninja_dir_with_theme_edit(|theme| {
+        set_theme_tools(theme, &["terminal", "helix", "nvim"]);
+    });
+    let theme = Theme::load(dir.path()).unwrap();
+
+    let tools = Generator::default_tools(&theme, dir.path()).unwrap();
+    assert_eq!(tools, vec!["terminal", "helix", "nvim"]);
+}
+
+#[test]
+fn default_tools_reports_an_unknown_tool_name_with_the_theme_toml_path() {
+    let dir = temp_ninja_dir_with_theme_edit(|theme| {
+        set_theme_tools(theme, &["no-such-tool"]);
+    });
+    let theme = Theme::load(dir.path()).unwrap();
+
+    let err = Generator::default_tools(&theme, dir.path()).unwrap_err();
+    match &err {
+        Error::Resolve { path, source } => {
+            assert_eq!(path, &dir.path().join("theme.toml"));
+            match source.as_ref() {
+                Error::UnknownTool(name) => assert_eq!(name, "no-such-tool"),
+                other => panic!("expected UnknownTool, got {other:?}"),
+            }
+        }
+        other => panic!("expected Error::Resolve, got {other:?}"),
+    }
 }

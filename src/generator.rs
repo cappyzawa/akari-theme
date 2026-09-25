@@ -215,7 +215,7 @@ impl Generator {
 
     /// Builds a `Generator` by reading `templates_dir` from the filesystem,
     /// e.g. a `--templates-dir` override pointing at a source checkout.
-    pub fn new(templates_dir: impl AsRef<Path>) -> Result<Self, Error> {
+    pub fn from_dir(templates_dir: impl AsRef<Path>) -> Result<Self, Error> {
         let templates_dir = templates_dir.as_ref();
         let mut templates = Vec::new();
         for entry in WalkDir::new(templates_dir) {
@@ -275,14 +275,14 @@ impl Generator {
     /// Generate artifacts for one of `THEME_TOOLS` from a resolved `Theme`.
     /// `theme_dir` is the directory `theme` was loaded from, and is where
     /// `THEME_ASSETS` entries (e.g. an adapter-declared icon) are read from.
-    pub fn generate_theme_tool(
+    pub fn generate(
         &self,
         tool: &str,
         theme: &Theme,
         theme_dir: &Path,
     ) -> Result<Vec<Artifact>, Error> {
         if !THEME_TOOLS.contains(&tool) {
-            return Err(Error::ToolNotThemed(tool.to_string()));
+            return Err(Error::UnknownTool(tool.to_string()));
         }
 
         if let Some((_, required)) = ADAPTER_KEYS.iter().find(|(t, _)| *t == tool) {
@@ -306,9 +306,9 @@ impl Generator {
             let rel_path = Path::new(&file.path[prefix.len()..]);
 
             if rel_path.extension() == Some(OsStr::new("tera")) {
-                self.process_theme_template(tool, file, rel_path, &mut artifacts, theme, &adapter)?;
+                self.process_template(tool, file, rel_path, &mut artifacts, theme, &adapter)?;
             } else {
-                self.process_theme_static(tool, file, rel_path, &mut artifacts, &theme.metadata);
+                self.process_static(tool, file, rel_path, &mut artifacts, &theme.metadata);
             }
         }
 
@@ -341,7 +341,7 @@ impl Generator {
     /// Renders one `.tera` template under `templates/<tool>/`: once per
     /// variant of `theme` when its output name has a `{variant}`
     /// placeholder, otherwise once for the whole theme.
-    fn process_theme_template(
+    fn process_template(
         &self,
         tool: &str,
         file: &TemplateFile,
@@ -388,7 +388,7 @@ impl Generator {
 
     /// Process a static (non-template) file on the theme route, substituting
     /// `{theme}` in its path the same way a template's output name is.
-    fn process_theme_static(
+    fn process_static(
         &self,
         tool: &str,
         file: &TemplateFile,
@@ -407,8 +407,31 @@ impl Generator {
 
     /// Lists `THEME_TOOLS`.
     #[must_use]
-    pub fn available_theme_tools(&self) -> Vec<String> {
-        THEME_TOOLS.iter().map(|s| s.to_string()).collect()
+    pub const fn available_tools() -> &'static [&'static str] {
+        THEME_TOOLS
+    }
+
+    /// The tools to generate for `theme` when no explicit tool list is
+    /// given: every entry of `theme.metadata.tools`, mapped to its
+    /// `THEME_TOOLS` entry and in that order, or `available_tools()` when
+    /// `theme.metadata.tools` is `None`.
+    pub fn default_tools(theme: &Theme, theme_dir: &Path) -> Result<Vec<&'static str>, Error> {
+        let Some(names) = &theme.metadata.tools else {
+            return Ok(THEME_TOOLS.to_vec());
+        };
+        names
+            .iter()
+            .map(|name| {
+                THEME_TOOLS
+                    .iter()
+                    .copied()
+                    .find(|tool| tool == name)
+                    .ok_or_else(|| Error::Resolve {
+                        path: theme_dir.join("theme.toml"),
+                        source: Box::new(Error::UnknownTool(name.clone())),
+                    })
+            })
+            .collect()
     }
 }
 

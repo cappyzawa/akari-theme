@@ -1,5 +1,5 @@
-//! Black-box tests for `katazome::theme::Theme::load` against the sample
-//! themes under `themes/`.
+//! Black-box tests for `katazome::theme::Theme::load` against `themes/ninja`
+//! and the synthetic fixture under `tests/fixtures/duo`.
 
 use katazome::Error;
 use katazome::theme::*;
@@ -10,18 +10,22 @@ fn themes_dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("themes")
 }
 
-#[test]
-fn akari_loads_variants_in_theme_toml_order() {
-    let theme = Theme::load(themes_dir().join("akari")).unwrap();
+fn fixtures_dir() -> PathBuf {
+    PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("tests/fixtures")
+}
 
-    assert_eq!(theme.metadata.id.as_str(), "akari");
+#[test]
+fn duo_loads_variants_in_theme_toml_order() {
+    let theme = Theme::load(fixtures_dir().join("duo")).unwrap();
+
+    assert_eq!(theme.metadata.id.as_str(), "duo");
 
     let variant_ids: Vec<&str> = theme
         .variants
         .iter()
         .map(|v| v.variant.id.as_str())
         .collect();
-    assert_eq!(variant_ids, vec!["night", "dawn"]);
+    assert_eq!(variant_ids, vec!["dusk", "noon"]);
 
     let metadata_ids: Vec<&str> = theme.metadata.variants.iter().map(Id::as_str).collect();
     assert_eq!(metadata_ids, variant_ids);
@@ -37,13 +41,13 @@ fn ninja_loads_single_dark_variant() {
 }
 
 #[test]
-fn akari_keeps_adapter_tables_as_written() {
-    let theme = Theme::load(themes_dir().join("akari")).unwrap();
+fn duo_keeps_adapter_tables_as_written() {
+    let theme = Theme::load(fixtures_dir().join("duo")).unwrap();
 
     let vscode = &theme.adapters["vscode"];
     assert_eq!(
         vscode.get("publisher").and_then(toml::Value::as_str),
-        Some("cappyzawa")
+        Some("duo-fixture")
     );
     assert!(theme.adapters.contains_key("chrome"));
 }

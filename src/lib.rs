@@ -1,10 +1,30 @@
+//! Generates color theme files for terminals, editors and other tools from a theme directory.
+//!
+//! There are two supported uses: the `katazome generate --theme-dir <dir>
+//! --tool <tool|all> --out-dir <dir>` CLI, and loading a theme with
+//! [`theme::Theme::load`] and reading its resolved roles to write your own
+//! adapter. [`Generator`] renders the built-in tools for the first use.
+//!
+//! # Public API
+//!
+//! - [`theme::Theme`], [`theme::Theme::load`]
+//! - [`theme::ThemeMetadata`], [`theme::VariantMetadata`], [`theme::Id`], [`theme::Appearance`]
+//! - [`theme::ResolvedVariant`], [`theme::Base`], [`theme::Ansi`], [`theme::AnsiColors`]
+//! - [`theme::Roles`], [`theme::Ui`], [`theme::Diagnostic`], [`theme::Diff`], [`theme::Syntax`], [`theme::Markup`]
+//! - [`Rgb`]
+//! - [`Generator`], [`Generator::embedded`], [`Generator::from_dir`],
+//!   [`Generator::available_tools`], [`Generator::default_tools`], [`Generator::generate`]
+//!   (require the `generator` feature, default)
+//! - [`Artifact`], [`ArtifactContent`] (require the `generator` feature, default)
+//! - [`Error`]
+
 mod ansi;
 mod color;
 mod expr;
 #[cfg(feature = "generator")]
 mod generator;
 #[cfg(feature = "generator")]
-pub mod terminal;
+mod terminal;
 pub mod theme;
 
 pub use color::Rgb;
@@ -15,6 +35,7 @@ use std::path::PathBuf;
 use theme::Id;
 
 #[derive(Debug, thiserror::Error)]
+#[non_exhaustive]
 pub enum Error {
     #[error("io error: {0}")]
     Io(#[from] std::io::Error),
@@ -71,8 +92,8 @@ pub enum Error {
     #[error("roles.series must have exactly 8 entries, found {0}")]
     SeriesLength(usize),
     #[cfg(feature = "generator")]
-    #[error("tool {0} has no theme-based generator")]
-    ToolNotThemed(String),
+    #[error("unknown tool {0}")]
+    UnknownTool(String),
     #[cfg(feature = "generator")]
     #[error("adapters.{tool}.{key} is required to generate {tool}")]
     AdapterKeyMissing { tool: String, key: String },
@@ -120,7 +141,7 @@ pub struct Artifact {
 #[cfg(feature = "generator")]
 impl Artifact {
     #[must_use]
-    pub fn text(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
+    pub(crate) fn text(rel_path: impl Into<PathBuf>, content: impl Into<String>) -> Self {
         Self {
             rel_path: rel_path.into(),
             content: ArtifactContent::Text(content.into()),
@@ -129,7 +150,7 @@ impl Artifact {
     }
 
     #[must_use]
-    pub fn rendered(
+    pub(crate) fn rendered(
         rel_path: impl Into<PathBuf>,
         content: impl Into<String>,
         executable: bool,
@@ -141,7 +162,7 @@ impl Artifact {
     }
 
     #[must_use]
-    pub fn bytes(
+    pub(crate) fn bytes(
         rel_path: impl Into<PathBuf>,
         contents: impl Into<Vec<u8>>,
         executable: bool,

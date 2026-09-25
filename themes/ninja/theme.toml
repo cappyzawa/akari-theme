@@ -5,6 +5,7 @@ description = "A dark ink palette with a blue vortex and a pink blade, tuned for
 repository = "https://github.com/cappyzawa/akari-theme"
 license = "MIT"
 variants = ["shadow"]
+tools = ["helix", "nvim", "terminal"]
 
 [adapters.vscode]
 publisher = "cappyzawa"

@@ -59,7 +59,9 @@ akari-theme/
    reads into the template context to `ADAPTER_TEXTS`.
 4. Add `[adapters.{tool}]` to `themes/akari/theme.toml` when the tool requires it.
 5. Add `README.md.tera` with installation instructions.
-6. Verify generation:
+6. Cover the new tool in `tests/theme_generator.rs`, using `themes/ninja` or
+   `tests/fixtures/duo`.
+7. Verify generation:
    ```bash
    cargo run -- generate --theme-dir themes/akari --tool {tool} --out-dir dist
    git diff dist/{tool}/
