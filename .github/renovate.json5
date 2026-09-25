@@ -13,9 +13,22 @@
     "minimumReleaseAge": "0 days",
     "labels": ["security"]
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^scripts/install-katazome$/"],
+      "matchStrings": ["--version (?<currentValue>\\S+) (?<depName>katazome)"],
+      "datasourceTemplate": "crate",
+      "versioningTemplate": "semver"
+    }
+  ],
   "packageRules": [
     {
       "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "matchDepNames": ["katazome"],
       "automerge": false
     },
     {
