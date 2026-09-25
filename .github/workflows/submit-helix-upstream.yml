@@ -55,68 +55,18 @@ jobs:
         fetch-depth: 0
         path: helix-fork
 
-    - name: Switch to update branch
-      id: branch
-      working-directory: helix-fork
-      run: |
-        git config user.name "akari-theme[bot]"
-        git config user.email "akari-theme[bot]@users.noreply.github.com"
-        if git ls-remote --exit-code --heads origin "${BRANCH}" > /dev/null 2>&1; then
-          echo "exists=true" >> "$GITHUB_OUTPUT"
-          git fetch origin "${BRANCH}"
-          git checkout "${BRANCH}"
-        else
-          echo "exists=false" >> "$GITHUB_OUTPUT"
-          git checkout -b "${BRANCH}"
-        fi
-
-    - name: Copy theme files
-      run: |
-        cp dist/helix/akari-*.toml helix-fork/runtime/themes/
-        cp LICENSE helix-fork/runtime/themes/licenses/akari.license
-
-    - name: Check for changes
-      id: changes
-      working-directory: helix-fork
-      run: |
-        git add runtime/themes/akari-*.toml runtime/themes/licenses/akari.license
-        if git diff --staged --quiet; then
-          echo "changed=false" >> "$GITHUB_OUTPUT"
-          echo "No changes detected"
-        else
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-        fi
-
-    - name: Commit and push
-      if: steps.changes.outputs.changed == 'true'
-      working-directory: helix-fork
-      env:
-        VERSION: ${{ steps.version.outputs.version }}
-      run: |
-        git commit -m "Update akari theme to ${VERSION}"
-        git push origin "${BRANCH}"
-
-    - name: Check for existing PR
-      if: steps.changes.outputs.changed == 'true'
-      id: existing-pr
+    - name: Update branch
+      id: update
       env:
         GH_TOKEN: ${{ secrets.AKARI_PAT }}
+        VERSION: ${{ steps.version.outputs.version }}
       run: |
-        PR_URL=$(gh pr list \
-          --repo helix-editor/helix \
-          --head "cappyzawa:${BRANCH}" \
-          --state open \
-          --json url \
-          --jq '.[0].url // empty')
-        if [[ -n "${PR_URL}" ]]; then
-          echo "exists=true" >> "$GITHUB_OUTPUT"
-          echo "Existing PR: ${PR_URL}"
-        else
-          echo "exists=false" >> "$GITHUB_OUTPUT"
-        fi
+        git -C helix-fork config user.name "akari-theme[bot]"
+        git -C helix-fork config user.email "akari-theme[bot]@users.noreply.github.com"
+        scripts/update-helix-branch helix-fork "${VERSION}"
 
     - name: Create pull request
-      if: steps.changes.outputs.changed == 'true' && steps.existing-pr.outputs.exists == 'false'
+      if: steps.update.outputs.pushed == 'true' && steps.update.outputs.open-pr == 'false'
       env:
         GH_TOKEN: ${{ secrets.AKARI_PAT }}
       run: |

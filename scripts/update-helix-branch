@@ -1,0 +1,62 @@
+#!/bin/sh
+# Usage: BRANCH=<name> scripts/update-helix-branch HELIX_FORK_DIR VERSION
+# HELIX_FORK_DIR is a clone of the fork whose master is already synced with
+# upstream. Writes open-pr and pushed to $GITHUB_OUTPUT when it is set.
+set -eu
+akari=$(cd "$(dirname "$0")/.." && pwd)
+fork=$1
+version=$2
+branch=${BRANCH:?}
+cd "$fork"
+
+copy_theme() {
+  cp "$akari"/dist/helix/akari-*.toml runtime/themes/
+  cp "$akari/LICENSE" runtime/themes/licenses/akari.license
+  git add runtime/themes/akari-*.toml runtime/themes/licenses/akari.license
+}
+
+open_pr=$(gh pr list --repo helix-editor/helix --head "cappyzawa:$branch" \
+  --state open --json url --jq '.[0].url // empty')
+remote_tip=$(git ls-remote --heads origin "refs/heads/$branch" | cut -f1)
+git fetch -q origin +refs/heads/master:refs/remotes/origin/master
+
+if [ -n "$open_pr" ]; then
+  echo "Open PR: $open_pr"
+  git fetch -q origin "refs/heads/$branch"
+  git checkout -q -B "$branch" FETCH_HEAD
+  if ! git merge -q --no-edit origin/master; then
+    copy_theme
+    unmerged=$(git diff --name-only --diff-filter=U)
+    if [ -n "$unmerged" ]; then
+      echo "Conflicts outside the akari theme:" >&2
+      echo "$unmerged" >&2
+      exit 1
+    fi
+    git commit -q --no-edit
+  fi
+else
+  echo "No open PR; recreating $branch from master"
+  git checkout -q -B "$branch" origin/master
+fi
+
+copy_theme
+if ! git diff --staged --quiet; then
+  git commit -q -m "Update akari theme to $version"
+fi
+
+pushed=false
+if [ -n "$open_pr" ]; then
+  if [ "$(git rev-parse HEAD)" != "$remote_tip" ]; then
+    git push -q origin "HEAD:refs/heads/$branch"
+    pushed=true
+  fi
+elif [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/master)" ]; then
+  # Without an open PR the branch is ours alone, so an outdated fork point
+  # is discarded rather than merged.
+  git push -q --force-with-lease="refs/heads/$branch:$remote_tip" \
+    origin "HEAD:refs/heads/$branch"
+  pushed=true
+fi
+
+printf 'open-pr=%s\npushed=%s\n' "$([ -n "$open_pr" ] && echo true || echo false)" \
+  "$pushed" >> "${GITHUB_OUTPUT:-/dev/null}"
