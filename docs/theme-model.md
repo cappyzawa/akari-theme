@@ -258,7 +258,9 @@ The role assignment in `themes/akari` follows one side; the other side will
 change output when its adapter migrates, and that change must be reviewed
 rather than snapshot-refreshed.
 
-- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`. `diff.changed` follows Helix.
+- Modified files: VS Code and Zed use `lantern.mid`, Helix and `state.diff_changed` use `lantern.far`, but Dawn darkens `state.diff_changed` while Helix reads the pigment directly. `diff.changed` follows `state.diff_changed`, so Helix Dawn changes.
+- Added lines: Helix reads `ansi.green` directly while `state.diff_added` darkens `life` in Dawn. `diff.added` follows `state.diff_added`, so Helix Dawn changes.
+- Hints: Helix reads `semantic.comment` while `state.hint` is a darkened `base.foreground` in Dawn. `diagnostic.hint` follows `state.hint`, so Helix Dawn changes.
 - Series order: VS Code bracket levels and Zed collaborator cursors order the same pigments differently. `series` follows VS Code for the first six and appends Zed's remaining two, so Zed's order changes.
 - Hint and predictive borders in Zed use `night` directly while `diagnostic.hint` is a lightened `night`; special strings in Zed use `lantern.far` while Helix and Neovim use `ansi.green`.
 - Codex's `skill` color has no role of its own; its adapter must pick one and the choice is reviewed there.
