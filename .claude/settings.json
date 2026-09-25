@@ -14,18 +14,5 @@
       "Bash(git status:*)",
       "Bash(git tag:*)"
     ]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash -c 'FILE_PATH=$(cat | jq -r \".tool_input.file_path // empty\"); case \"$FILE_PATH\" in *palette.rs|*color.rs|*/palette/*.toml) echo \"{\\\"systemMessage\\\": \\\"[hook] palette/color file changed. Run: cargo run --features generator -- generate --tool all && git diff --exit-code\\\"}\" ;; esac'"
-          }
-        ]
-      }
-    ]
   }
 }

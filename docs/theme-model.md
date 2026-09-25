@@ -5,8 +5,9 @@ color roles every theme must assign, and what tool adapters may consume.
 It is the contract between theme authors and adapter authors.
 
 Status: the model is defined and illustrated by `themes/akari` and
-`themes/ninja`, but the loader and generator still read `palette/*.toml`.
-Migration of the engine and adapters follows in later stages.
+`themes/ninja`. The loader reads theme directories, and every tool is
+generated from them; the legacy palette route is gone. The engine is
+named katazome.
 
 ## Pipeline
 
@@ -298,8 +299,7 @@ rather than snapshot-refreshed.
 
 ## Not decided here
 
-- Cargo workspace layout, the engine crate's name and its public Rust API.
+- Cargo workspace layout and the engine crate's public Rust API.
 - How the engine crate ships its templates to theme repositories, and whether the CLI is part of the same crate.
-- When the engine leaves this repository: the plan is to keep engine, adapters and both themes together until Akari regenerates from the generic path, then extract.
 - Whether variants may share role expressions through a theme-level default.
 - Installation, publishing and release workflows for a second theme.

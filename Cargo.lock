@@ -12,21 +12,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "akari-theme"
-version = "1.21.0"
-dependencies = [
- "clap",
- "plist",
- "serde",
- "serde_json",
- "tempfile",
- "tera",
- "thiserror",
- "toml",
- "walkdir",
-]
-
-[[package]]
 name = "android_system_properties"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -474,6 +459,21 @@ checksum = "464a3709c7f55f1f721e5389aa6ea4e3bc6aba669353300af094b29ffbdde1d8"
 dependencies = [
  "once_cell",
  "wasm-bindgen",
+]
+
+[[package]]
+name = "katazome"
+version = "1.21.0"
+dependencies = [
+ "clap",
+ "plist",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "tera",
+ "thiserror",
+ "toml",
+ "walkdir",
 ]
 
 [[package]]

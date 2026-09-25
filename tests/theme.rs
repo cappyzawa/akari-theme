@@ -1,17 +1,13 @@
-//! Black-box tests for `akari_theme::theme::Theme::load` against the sample
+//! Black-box tests for `katazome::theme::Theme::load` against the sample
 //! themes under `themes/`.
 
-use akari_theme::theme::*;
-use akari_theme::{Error, Palette, Rgb};
+use katazome::Error;
+use katazome::theme::*;
 use std::fs;
 use std::path::PathBuf;
 
 fn themes_dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("themes")
-}
-
-fn ansi_slots(colors: &AnsiColors) -> Vec<(&'static str, Rgb)> {
-    colors.into_iter().collect()
 }
 
 #[test]
@@ -29,38 +25,6 @@ fn akari_loads_variants_in_theme_toml_order() {
 
     let metadata_ids: Vec<&str> = theme.metadata.variants.iter().map(Id::as_str).collect();
     assert_eq!(metadata_ids, variant_ids);
-}
-
-#[test]
-fn akari_ui_accent_matches_palette_cursor() {
-    let theme = Theme::load(themes_dir().join("akari")).unwrap();
-
-    assert_eq!(
-        theme.variants[0].roles.ui.accent,
-        Palette::night().state.cursor
-    );
-    assert_eq!(
-        theme.variants[1].roles.ui.accent,
-        Palette::dawn().state.cursor
-    );
-}
-
-#[test]
-fn akari_base_and_ansi_match_palette() {
-    let theme = Theme::load(themes_dir().join("akari")).unwrap();
-
-    for (variant, palette) in [
-        (&theme.variants[0], Palette::night()),
-        (&theme.variants[1], Palette::dawn()),
-    ] {
-        assert_eq!(variant.base.background, palette.base.background);
-        assert_eq!(variant.base.foreground, palette.base.foreground);
-        assert_eq!(ansi_slots(&variant.ansi.normal), ansi_slots(&palette.ansi));
-        assert_eq!(
-            ansi_slots(&variant.ansi.bright),
-            ansi_slots(&palette.ansi_bright)
-        );
-    }
 }
 
 #[test]

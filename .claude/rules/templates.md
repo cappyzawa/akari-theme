@@ -2,7 +2,7 @@
 
 ## Context Variables
 
-### Theme route (`generate-theme`, tools in `THEME_TOOLS`)
+### `generate` subcommand (tools in `THEME_TOOLS`)
 
 A template whose output name contains `{variant}` renders once per variant with:
 
@@ -22,14 +22,9 @@ Never read `colors`; the context does not carry it.
 
 `Generator::generate_theme_tool` takes the theme directory (the directory `Theme::load` read) alongside the tool and the `Theme`, so it can resolve `THEME_ASSETS` entries below.
 
-### Legacy route only (`generate`)
-
-Templates receive a flattened `Palette` struct: `{{ base.background }}`, `{{ ansi.red }}`, `{{ ansi_bright.cyan }}`, `{{ semantic.keyword }}`, `{{ colors.lantern.mid }}`, `layers`, `state`, `name`, `description`, `variant`. Combined templates get the same sections prefixed `night_` and `dawn_`.
-
 ## Per-Variant Output
 
-- Theme route: `{theme}` (`theme.id`) and `{variant}` (`variant.id`). `{theme}` is also substituted in a static (non-`.tera`) file's path, e.g. `templates/nvim/lua/{theme}/highlights/editor.lua` → `nvim/lua/akari/highlights/editor.lua`.
-- Legacy route only: `{name}` (night/dawn) and `{Name}` (Night/Dawn).
+`{theme}` (`theme.id`) and `{variant}` (`variant.id`). `{theme}` is also substituted in a static (non-`.tera`) file's path, e.g. `templates/nvim/lua/{theme}/highlights/editor.lua` → `nvim/lua/akari/highlights/editor.lua`.
 
 ## Theme-Directory Assets (`THEME_ASSETS`)
 

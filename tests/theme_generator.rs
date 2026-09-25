@@ -1,10 +1,8 @@
 //! Black-box tests for the theme-based generation route
-//! (`Generator::generate_theme_tool`), which consumes `Theme` instead of
-//! the legacy `Palette` pair. Covers the migrated tools and the
-//! legacy/theme route boundary.
+//! (`Generator::generate_theme_tool`), which consumes `Theme`.
 
-use akari_theme::theme::Theme;
-use akari_theme::{Artifact, ArtifactContent, Error, Generator};
+use katazome::theme::Theme;
+use katazome::{Artifact, ArtifactContent, Error, Generator};
 use std::collections::HashSet;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -30,7 +28,7 @@ fn load_theme(name: &str) -> Theme {
     Theme::load(theme_dir(name)).unwrap()
 }
 
-fn akari_theme() -> Theme {
+fn akari() -> Theme {
     load_theme("akari")
 }
 
@@ -55,46 +53,25 @@ const DIST_EXACT_TOOLS: [&str; 9] = [
 ];
 
 #[test]
-fn legacy_available_tools_excludes_theme_tools() {
-    let generator = generator();
-    let tools = generator.available_tools().unwrap();
-
-    for tool in generator.available_theme_tools() {
-        assert!(!tools.contains(&tool), "{tool} still legacy");
-    }
-}
-
-#[test]
-fn legacy_generate_tool_rejects_theme_tools() {
-    let generator = generator();
-    let night = akari_theme::Palette::night();
-    let dawn = akari_theme::Palette::dawn();
-
-    for tool in generator.available_theme_tools() {
-        let result = generator.generate_tool(&tool, &night, &dawn);
-        match result {
-            Err(Error::ToolMigrated(t)) => assert_eq!(t, tool),
-            other => panic!("expected ToolMigrated for {tool}, got {other:?}"),
-        }
-    }
-}
-
-#[test]
 fn theme_context_rejects_unknown_tool() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
 
-    for tool in generator.available_tools().unwrap() {
-        match generator.generate_theme_tool(&tool, &theme, &theme_dir("akari")) {
-            Err(Error::ToolNotThemed(t)) => assert_eq!(t, tool),
-            other => panic!("expected ToolNotThemed for {tool}, got {other:?}"),
-        }
+    let tool = "no-such-tool";
+    assert!(
+        !generator
+            .available_theme_tools()
+            .contains(&tool.to_string())
+    );
+    match generator.generate_theme_tool(tool, &theme, &theme_dir("akari")) {
+        Err(Error::ToolNotThemed(t)) => assert_eq!(t, tool),
+        other => panic!("expected ToolNotThemed for {tool}, got {other:?}"),
     }
 }
 
 #[test]
 fn theme_route_copies_non_tera_files_as_is() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
     let artifacts = generator
         .generate_theme_tool("nvim", &theme, &theme_dir("akari"))
@@ -109,7 +86,7 @@ fn theme_route_copies_non_tera_files_as_is() {
 
 #[test]
 fn theme_akari_readmes_match_dist_exactly() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
 
     for tool in generator.available_theme_tools() {
@@ -225,7 +202,7 @@ fn style_keys(doc: &toml::Table) -> HashSet<String> {
 
 #[test]
 fn theme_helix_akari_matches_dist_after_palette_resolution() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
     let artifacts = generator
         .generate_theme_tool("helix", &theme, &theme_dir("akari"))
@@ -373,7 +350,7 @@ fn theme_helix_ninja_parses_and_resolves_all_color_names() {
 
 #[test]
 fn theme_terminal_akari_matches_dist_exactly() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
     let artifacts = generator
         .generate_theme_tool("terminal", &theme, &theme_dir("akari"))
@@ -424,7 +401,7 @@ fn walkdir_files(dir: &Path) -> Vec<PathBuf> {
 
 #[test]
 fn theme_akari_artifacts_match_dist_exactly() {
-    let theme = akari_theme();
+    let theme = akari();
     let generator = generator();
 
     for tool in DIST_EXACT_TOOLS {
@@ -537,8 +514,8 @@ fn variant_artifact_path(tool: &str, ext: &str, variant_id: &str) -> String {
 }
 
 #[test]
-fn theme_route_generates_night_and_dawn_outputs_for_each_migrated_tool() {
-    let theme = akari_theme();
+fn theme_route_generates_outputs_for_every_variant_of_each_migrated_tool() {
+    let theme = akari();
     let generator = generator();
 
     for (tool, ext) in MIGRATED_TOOLS {
@@ -726,7 +703,7 @@ fn ninja_shadow_text_artifacts_never_mention_akari() {
 #[test]
 fn codex_variant_and_contrast_and_role_colors_match_the_loaded_theme() {
     let generator = generator();
-    let akari = akari_theme();
+    let akari = akari();
     let ninja = ninja_theme();
 
     // (theme, theme dir, variant id, expected `variant`, expected `contrast`)
@@ -1009,7 +986,7 @@ const ZSH_PLUGIN_ENTRIES: [(&str, &str, &str); 2] = [
 #[test]
 fn zsh_plugin_entries_load_the_selected_variant_and_default_to_the_first() {
     for (theme, dir) in [
-        (akari_theme(), theme_dir("akari")),
+        (akari(), theme_dir("akari")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
         let id = theme.metadata.id.as_str();
@@ -1076,7 +1053,7 @@ fn tmux_entry_calls(theme: &Theme, theme_root: &Path, variant: Option<&str>) -> 
 #[test]
 fn tmux_entry_sources_and_colors_the_selected_variant_and_defaults_to_the_first() {
     for (theme, dir) in [
-        (akari_theme(), theme_dir("akari")),
+        (akari(), theme_dir("akari")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
         let id = theme.metadata.id.as_str();
@@ -1127,9 +1104,9 @@ fn ninja_zed_theme_has_a_single_dark_shadow_entry() {
 }
 
 #[test]
-fn akari_zed_theme_has_night_then_dawn_entries_in_order() {
+fn akari_zed_theme_lists_variant_entries_in_order() {
     let generator = generator();
-    let theme = akari_theme();
+    let theme = akari();
     let artifacts = generator
         .generate_theme_tool("zed", &theme, &theme_dir("akari"))
         .unwrap();
@@ -1540,7 +1517,7 @@ fn artifact_paths(artifacts: &[Artifact]) -> HashSet<PathBuf> {
 fn nvim_files_are_namespaced_by_theme_id() {
     let generator = generator();
     let akari = generator
-        .generate_theme_tool("nvim", &akari_theme(), &theme_dir("akari"))
+        .generate_theme_tool("nvim", &akari(), &theme_dir("akari"))
         .unwrap();
     let ninja = generator
         .generate_theme_tool("nvim", &ninja_theme(), &theme_dir("ninja"))
@@ -1578,7 +1555,7 @@ fn nvim_highlight_modules_are_shared_by_every_theme() {
         out
     };
 
-    let akari = sources(&akari_theme(), theme_dir("akari"));
+    let akari = sources(&akari(), theme_dir("akari"));
     let ninja = sources(&ninja_theme(), theme_dir("ninja"));
     assert!(!akari.is_empty(), "no static highlight modules");
     assert_eq!(akari, ninja);
@@ -1635,7 +1612,7 @@ fn assert_vscode_manifest_matches_theme(theme: &Theme, artifacts: &[Artifact]) {
 fn vscode_manifest_lists_every_variant_and_icon_only_when_declared() {
     let generator = generator();
     for (theme, dir) in [
-        (akari_theme(), theme_dir("akari")),
+        (akari(), theme_dir("akari")),
         (ninja_theme(), theme_dir("ninja")),
     ] {
         let artifacts = generator
@@ -1668,15 +1645,9 @@ fn generated_files_keep_the_template_executable_bit() {
     use std::os::unix::fs::PermissionsExt;
 
     let out = tempfile::tempdir().unwrap();
-    let status = std::process::Command::new(env!("CARGO_BIN_EXE_akari-gen"))
+    let status = std::process::Command::new(env!("CARGO_BIN_EXE_katazome"))
         .current_dir(root_dir())
-        .args([
-            "generate-theme",
-            "--theme-dir",
-            "themes/ninja",
-            "--tool",
-            "tmux",
-        ])
+        .args(["generate", "--theme-dir", "themes/ninja", "--tool", "tmux"])
         .arg("--out-dir")
         .arg(out.path())
         .stdout(std::process::Stdio::null())

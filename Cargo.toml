@@ -1,5 +1,5 @@
 [package]
-name = "akari-theme"
+name = "katazome"
 version = "1.21.0"
 edition = "2024"
 license = "MIT"
@@ -9,12 +9,17 @@ keywords = ["terminal", "theme", "color", "palette"]
 categories = ["command-line-interface"]
 
 [lib]
-name = "akari_theme"
+name = "katazome"
 path = "src/lib.rs"
 
 [[bin]]
-name = "akari-gen"
+name = "katazome"
 path = "src/main.rs"
+required-features = ["generator"]
+
+[[test]]
+name = "theme_generator"
+path = "tests/theme_generator.rs"
 required-features = ["generator"]
 
 [features]
