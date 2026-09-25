@@ -86,6 +86,20 @@ pub enum Error {
     #[cfg(feature = "generator")]
     #[error("adapters.{tool}.{key} is required to generate {tool}")]
     AdapterKeyMissing { tool: String, key: String },
+    #[cfg(feature = "generator")]
+    #[error("adapters.{tool}.{key} = {value:?} must be a relative path inside the theme directory")]
+    AdapterAssetPath {
+        tool: String,
+        key: String,
+        value: String,
+    },
+    #[cfg(feature = "generator")]
+    #[error("adapters.{tool}.{key}: {path} not found")]
+    AdapterAssetMissing {
+        tool: String,
+        key: String,
+        path: PathBuf,
+    },
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]

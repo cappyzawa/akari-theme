@@ -94,10 +94,10 @@ mod generator {
     }
 
     #[test]
-    fn available_tools_not_empty() {
+    fn available_tools_are_all_migrated_to_the_theme_route() {
         let generator = Generator::new(templates_dir()).unwrap();
         let tools = generator.available_tools().unwrap();
-        assert!(!tools.is_empty());
+        assert!(tools.is_empty(), "unexpected legacy tools: {tools:?}");
     }
 
     #[test]

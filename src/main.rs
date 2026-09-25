@@ -120,7 +120,7 @@ fn run() -> Result<(), akari_theme::Error> {
             };
 
             for tool_name in &tools {
-                let artifacts = generator.generate_theme_tool(tool_name, &theme)?;
+                let artifacts = generator.generate_theme_tool(tool_name, &theme, &theme_dir)?;
                 write_artifacts(artifacts, &out_dir)?;
             }
         }
