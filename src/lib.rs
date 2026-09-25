@@ -1,4 +1,6 @@
+mod ansi;
 mod color;
+mod expr;
 #[cfg(feature = "generator")]
 mod generator;
 mod palette;
