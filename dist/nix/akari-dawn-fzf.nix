@@ -1,5 +1,5 @@
 # Akari Dawn — fzf colors for Nix
-# Generated from palette/akari-dawn.toml
+# Generated from the Akari Dawn variant
 {
   fg = "#1A1816";
   bg = "#E4DED6";
@@ -13,6 +13,6 @@
   spinner = "#8A4530";
   info = "#304050";
   pointer = "#8A4530";
-  marker = "#3A5830";
+  marker = "#B07840";
   prompt = "#8A4530";
 }

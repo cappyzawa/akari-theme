@@ -1,5 +1,5 @@
 # Akari Night — fzf colors for Nix
-# Generated from palette/akari-night.toml
+# Generated from the Akari Night variant
 {
   fg = "#E6DED3";
   bg = "#25231F";
@@ -13,6 +13,6 @@
   spinner = "#E26A3B";
   info = "#7A8FA2";
   pointer = "#E26A3B";
-  marker = "#7FAF6A";
+  marker = "#D4A05A";
   prompt = "#E26A3B";
 }

@@ -1,0 +1,28 @@
+# {{ theme.name }} {{ variant.name }} theme for gh-dash
+# {{ variant.description }}
+#
+# Copy the 'theme:' section below into your ~/.config/gh-dash/config.yml
+
+theme:
+  colors:
+    text:
+      primary: "{{ base.foreground }}"
+      secondary: "{{ ansi.bright.black }}"
+      inverted: "{{ base.background }}"
+      faint: "{{ roles.ui.muted }}"
+      warning: "{{ roles.diagnostic.warning }}"
+      success: "{{ roles.diagnostic.success }}"
+      error: "{{ roles.diagnostic.error }}"
+    background:
+      selected: "{{ roles.ui.selection_bg }}"
+    border:
+      primary: "{{ roles.ui.border }}"
+      secondary: "{{ roles.ui.surface }}"
+      faint: "{{ roles.ui.surface }}"
+    icon:
+      newContributor: "{{ roles.series.4 }}"
+      contributor: "{{ roles.series.3 }}"
+      collaborator: "{{ roles.series.2 }}"
+      member: "{{ roles.series.1 }}"
+      owner: "{{ roles.series.0 }}"
+      unknownRole: "{{ roles.ui.muted }}"

@@ -1,5 +1,5 @@
 # Akari Dawn — delta options for Nix
-# Generated from palette/akari-dawn.toml
+# Generated from the Akari Dawn variant
 {
   light = true;
   syntax-theme = "Akari Dawn";
