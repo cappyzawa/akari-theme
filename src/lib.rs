@@ -1,17 +1,20 @@
+mod ansi;
 mod color;
+mod expr;
 #[cfg(feature = "generator")]
 mod generator;
 mod palette;
 #[cfg(feature = "generator")]
 pub mod terminal;
+pub mod theme;
 
 pub use color::Rgb;
 #[cfg(feature = "generator")]
 pub use generator::Generator;
 pub use palette::Palette;
 
-#[cfg(feature = "generator")]
 use std::path::PathBuf;
+use theme::Id;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -44,6 +47,36 @@ pub enum Error {
     PlistUtf8,
     #[error("invalid color expression: {0}")]
     InvalidColorExpr(String),
+    #[error("{path}: {source}")]
+    Read {
+        path: PathBuf,
+        #[source]
+        source: std::io::Error,
+    },
+    #[error("{path}: {source}")]
+    Parse {
+        path: PathBuf,
+        #[source]
+        source: toml::de::Error,
+    },
+    #[error("{path}: {source}")]
+    Resolve {
+        path: PathBuf,
+        #[source]
+        source: Box<Error>,
+    },
+    #[error("invalid id {0:?}, expected [a-z][a-z0-9]*")]
+    InvalidId(String),
+    #[error("{path}: variant.id is {found}, theme.variants lists {expected}")]
+    VariantIdMismatch {
+        path: PathBuf,
+        expected: Id,
+        found: Id,
+    },
+    #[error("{key}: expected a hex literal, found {value}")]
+    ExpectedHexLiteral { key: String, value: toml::Value },
+    #[error("roles.series must have exactly 8 entries, found {0}")]
+    SeriesLength(usize),
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]

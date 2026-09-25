@@ -1,17 +1,11 @@
+use crate::ansi::{AnsiColors, RawAnsi};
+use crate::expr::{ColorExpr, ResolveRef, Resolver, resolve_fields};
+use crate::theme::Base;
 use crate::{Error, Rgb, Variant};
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 use std::fs;
 use std::path::Path;
-
-/// Resolve all fields of a raw struct by calling `resolve_expr` on each `ColorExpr` field.
-macro_rules! resolve_fields {
-    ($resolver:expr, $raw:expr => $Target:ident { $($field:ident),+ $(,)? }) => {
-        Ok($Target {
-            $( $field: resolve_expr($resolver, &$raw.$field)? ),+
-        })
-    };
-}
 
 #[derive(Debug, Deserialize)]
 struct RawPalette {
@@ -73,34 +67,6 @@ impl RawState {
     }
 }
 
-/// Common structure for ANSI color definitions (used by both ansi and ansi.bright)
-#[derive(Debug, Deserialize)]
-struct RawAnsiColors {
-    black: ColorExpr,
-    red: ColorExpr,
-    green: ColorExpr,
-    yellow: ColorExpr,
-    blue: ColorExpr,
-    magenta: ColorExpr,
-    cyan: ColorExpr,
-    white: ColorExpr,
-}
-
-impl RawAnsiColors {
-    fn resolve(&self, resolver: &impl ResolveRef) -> Result<Ansi, Error> {
-        resolve_fields!(resolver, self => Ansi {
-            black, red, green, yellow, blue, magenta, cyan, white,
-        })
-    }
-}
-
-#[derive(Debug, Deserialize)]
-struct RawAnsi {
-    #[serde(flatten)]
-    base: RawAnsiColors,
-    bright: RawAnsiColors,
-}
-
 #[derive(Debug, Deserialize)]
 struct RawSemantic {
     text: ColorExpr,
@@ -147,12 +113,6 @@ pub struct Colors {
     pub night: Rgb,
     pub rain: Rgb,
     pub muted: Rgb,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct Base {
-    pub background: Rgb,
-    pub foreground: Rgb,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -207,282 +167,31 @@ pub struct Semantic {
     pub directory: Rgb,
 }
 
-#[derive(Debug, Clone, Serialize)]
-pub struct Ansi {
-    pub black: Rgb,
-    pub red: Rgb,
-    pub green: Rgb,
-    pub yellow: Rgb,
-    pub blue: Rgb,
-    pub magenta: Rgb,
-    pub cyan: Rgb,
-    pub white: Rgb,
-}
-
-impl IntoIterator for &Ansi {
-    type Item = (&'static str, Rgb);
-    type IntoIter = std::array::IntoIter<Self::Item, 8>;
-
-    fn into_iter(self) -> Self::IntoIter {
-        [
-            ("black", self.black),
-            ("red", self.red),
-            ("green", self.green),
-            ("yellow", self.yellow),
-            ("blue", self.blue),
-            ("magenta", self.magenta),
-            ("cyan", self.cyan),
-            ("white", self.white),
-        ]
-        .into_iter()
-    }
-}
-
-/// Sections that can be referenced in color expressions.
-///
-/// Only `colors`, `base`, and `ansi` are valid reference targets.
-/// `ansi.bright.*` is accessed via `Section::Ansi` with key `"bright.*"`.
-/// Other sections like `layers`, `state`, and `semantic` are consumers of colors,
-/// not sources, and cannot be referenced.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Section {
-    Colors,
-    Base,
-    Ansi,
-}
-
-impl Section {
-    /// Referenceable sections in color expressions.
-    const ALLOWED: &[&str] = &["colors", "base", "ansi"];
-
-    fn parse(s: &str) -> Result<Self, Error> {
-        match s {
-            "colors" => Ok(Self::Colors),
-            "base" => Ok(Self::Base),
-            "ansi" => Ok(Self::Ansi),
-            _ => Err(Error::InvalidColorExpr(format!(
-                "'{s}' cannot be referenced (allowed: {})",
-                Self::ALLOWED.join(", ")
-            ))),
-        }
-    }
-
-    const fn as_str(&self) -> &'static str {
-        match self {
-            Self::Colors => "colors",
-            Self::Base => "base",
-            Self::Ansi => "ansi",
-        }
-    }
-}
-
-/// A color expression that can be deserialized from TOML.
-///
-/// Supports:
-/// - Literal hex colors: `"#E26A3B"`
-/// - References: `"colors.lantern"`
-/// - Functions:
-///   - `"lighten(colors.lantern, 0.1)"` — increase lightness proportionally
-///   - `"darken(base.background, 0.2)"` — decrease lightness proportionally
-///   - `"brighten(ansi.red, 0.1)"` — adjust lightness by absolute amount
-///   - `"mix(base.background, colors.night, 0.15)"` — blend two colors
-#[derive(Debug, Clone, Deserialize)]
-#[serde(try_from = "String")]
-enum ColorExpr {
-    /// A literal hex color (e.g., "#E26A3B")
-    Literal(Rgb),
-    /// A reference to another field (e.g., "colors.lantern")
-    Ref { section: Section, key: String },
-    /// Lighten a color by a factor (0.0 = unchanged, 1.0 = white)
-    Lighten(Box<ColorExpr>, f64),
-    /// Darken a color by a factor (0.0 = unchanged, 1.0 = black)
-    Darken(Box<ColorExpr>, f64),
-    /// Brighten a color by absolute amount (positive = brighter, negative = dimmer)
-    Brighten(Box<ColorExpr>, f64),
-    /// Mix two colors (0.0 = first color, 1.0 = second color)
-    Mix(Box<ColorExpr>, Box<ColorExpr>, f64),
-}
-
-impl TryFrom<String> for ColorExpr {
-    type Error = Error;
-
-    fn try_from(s: String) -> Result<Self, Self::Error> {
-        parse_color_expr(&s)
-    }
-}
-
-/// Strip function call syntax: "fn_name(args)" -> Some("args")
-fn strip_fn_call<'a>(s: &'a str, name: &str) -> Option<&'a str> {
-    s.strip_prefix(name)
-        .and_then(|r| r.strip_prefix('('))
-        .and_then(|r| r.strip_suffix(')'))
-}
-
-/// Parse a color expression string into a ColorExpr.
-fn parse_color_expr(s: &str) -> Result<ColorExpr, Error> {
-    let s = s.trim();
-
-    // Literal hex color
-    if s.starts_with('#') {
-        let rgb: Rgb = s.parse().map_err(|_| Error::InvalidHex(s.to_string()))?;
-        return Ok(ColorExpr::Literal(rgb));
-    }
-
-    // Function call: lighten(...), darken(...), brighten(...), mix(...)
-    if let Some(args) = strip_fn_call(s, "lighten") {
-        let (inner, factor) = parse_unary_fn_args(args)?;
-        return Ok(ColorExpr::Lighten(Box::new(inner), factor));
-    }
-    if let Some(args) = strip_fn_call(s, "darken") {
-        let (inner, factor) = parse_unary_fn_args(args)?;
-        return Ok(ColorExpr::Darken(Box::new(inner), factor));
-    }
-    if let Some(args) = strip_fn_call(s, "brighten") {
-        let (inner, amount) = parse_unary_fn_args(args)?;
-        return Ok(ColorExpr::Brighten(Box::new(inner), amount));
-    }
-    if let Some(args) = strip_fn_call(s, "mix") {
-        let (color1, color2, factor) = parse_mix_args(args)?;
-        return Ok(ColorExpr::Mix(Box::new(color1), Box::new(color2), factor));
-    }
-
-    // Reference: section.key (e.g., "colors.lantern.mid", "ansi.bright.red")
-    let (section_str, key) = s
-        .split_once('.')
-        .ok_or_else(|| Error::InvalidColorExpr(s.to_string()))?;
-    let section = Section::parse(section_str)?;
-    Ok(ColorExpr::Ref {
-        section,
-        key: key.to_string(),
-    })
-}
-
-fn parse_factor(s: &str) -> Result<f64, Error> {
-    let s = s.trim();
-    s.parse::<f64>()
-        .map_err(|_| Error::InvalidColorExpr(format!("invalid factor: {s}")))
-}
-
-/// Split the last comma-separated token as an f64 factor, returning (rest, factor).
-fn split_trailing_factor<'a>(args: &'a str, expected: &str) -> Result<(&'a str, f64), Error> {
-    let (rest, factor_str) = args
-        .rsplit_once(',')
-        .ok_or_else(|| Error::InvalidColorExpr(format!("expected '{expected}': {args}")))?;
-    Ok((rest, parse_factor(factor_str)?))
-}
-
-fn parse_unary_fn_args(args: &str) -> Result<(ColorExpr, f64), Error> {
-    let (color_str, factor) = split_trailing_factor(args, "color, factor")?;
-    let inner = parse_color_expr(color_str.trim())?;
-    Ok((inner, factor))
-}
-
-fn parse_mix_args(args: &str) -> Result<(ColorExpr, ColorExpr, f64), Error> {
-    let (rest, factor) = split_trailing_factor(args, "color1, color2, factor")?;
-    let (color1_str, color2_str): (&str, &str) = rest.rsplit_once(',').ok_or_else(|| {
-        Error::InvalidColorExpr(format!("expected 'color1, color2, factor': {args}"))
-    })?;
-    let color1 = parse_color_expr(color1_str.trim())?;
-    let color2 = parse_color_expr(color2_str.trim())?;
-    Ok((color1, color2, factor))
-}
-
-/// Trait for resolving color references.
-trait ResolveRef {
-    fn resolve_ref(&self, section: Section, key: &str) -> Result<Rgb, Error>;
-}
-
-/// Resolve a color expression using a resolver.
-fn resolve_expr(resolver: &impl ResolveRef, expr: &ColorExpr) -> Result<Rgb, Error> {
-    match expr {
-        ColorExpr::Literal(rgb) => Ok(*rgb),
-        ColorExpr::Ref { section, key } => resolver.resolve_ref(*section, key),
-        ColorExpr::Lighten(inner, factor) => Ok(resolve_expr(resolver, inner)?.lighten(*factor)),
-        ColorExpr::Darken(inner, factor) => Ok(resolve_expr(resolver, inner)?.darken(*factor)),
-        ColorExpr::Brighten(inner, amount) => Ok(resolve_expr(resolver, inner)?.brighten(*amount)),
-        ColorExpr::Mix(color1, color2, factor) => {
-            let rgb1 = resolve_expr(resolver, color1)?;
-            let rgb2 = resolve_expr(resolver, color2)?;
-            Ok(rgb1.mix(rgb2, *factor))
-        }
-    }
-}
-
-/// Resolver for color references. Supports staged resolution:
-/// ansi colors are optional during bootstrapping (ansi -> ansi.bright -> rest).
-struct Resolver<'a> {
-    colors: &'a BTreeMap<&'a str, Rgb>,
-    base: &'a BTreeMap<&'a str, Rgb>,
-    ansi: Option<&'a BTreeMap<String, Rgb>>,
-}
-
-impl ResolveRef for Resolver<'_> {
-    fn resolve_ref(&self, section: Section, key: &str) -> Result<Rgb, Error> {
-        let ref_str = || format!("{}.{key}", section.as_str());
-        match section {
-            Section::Colors => self
-                .colors
-                .get(key)
-                .copied()
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::Base => self
-                .base
-                .get(key)
-                .copied()
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-            Section::Ansi => self
-                .ansi
-                .and_then(|m| m.get(key).copied())
-                .ok_or_else(|| Error::UnresolvedRef(ref_str())),
-        }
-    }
-}
-
 impl RawPalette {
     fn resolve(&self, variant: Variant) -> Result<Palette, Error> {
-        let colors: BTreeMap<&str, Rgb> = [
-            ("lantern.ember", self.colors.lantern.ember),
-            ("lantern.near", self.colors.lantern.near),
-            ("lantern.mid", self.colors.lantern.mid),
-            ("lantern.far", self.colors.lantern.far),
-            ("life", self.colors.life),
-            ("night", self.colors.night),
-            ("rain", self.colors.rain),
-            ("muted", self.colors.muted),
+        let colors: BTreeMap<String, Rgb> = [
+            ("lantern.ember".to_string(), self.colors.lantern.ember),
+            ("lantern.near".to_string(), self.colors.lantern.near),
+            ("lantern.mid".to_string(), self.colors.lantern.mid),
+            ("lantern.far".to_string(), self.colors.lantern.far),
+            ("life".to_string(), self.colors.life),
+            ("night".to_string(), self.colors.night),
+            ("rain".to_string(), self.colors.rain),
+            ("muted".to_string(), self.colors.muted),
         ]
         .into_iter()
         .collect();
-        let base: BTreeMap<&str, Rgb> = [
-            ("background", self.base.background),
-            ("foreground", self.base.foreground),
+        let base: BTreeMap<String, Rgb> = [
+            ("background".to_string(), self.base.background),
+            ("foreground".to_string(), self.base.foreground),
         ]
         .into_iter()
         .collect();
 
-        // Stage 1: resolve ansi base (depends only on colors/base)
-        let resolver = Resolver {
-            colors: &colors,
-            base: &base,
-            ansi: None,
-        };
-        let resolved_ansi = self.ansi.base.resolve(&resolver)?;
+        // Stages 1 and 2: resolve ansi and ansi.bright.
+        let (ansi, ansi_map) = self.ansi.resolve(&colors, &base)?;
 
-        // Stage 2: resolve ansi.bright (depends on ansi base)
-        let mut ansi_map: BTreeMap<String, Rgb> = (&resolved_ansi)
-            .into_iter()
-            .map(|(k, v)| (k.to_string(), v))
-            .collect();
-        let resolver = Resolver {
-            colors: &colors,
-            base: &base,
-            ansi: Some(&ansi_map),
-        };
-        let resolved_ansi_bright = self.ansi.bright.resolve(&resolver)?;
-
-        // Stage 3: resolve remaining sections (depends on all ansi)
-        for (k, v) in &resolved_ansi_bright {
-            ansi_map.insert(format!("bright.{k}"), v);
-        }
+        // Stage 3: resolve remaining sections (depends on all ansi).
         let resolver = Resolver {
             colors: &colors,
             base: &base,
@@ -498,8 +207,8 @@ impl RawPalette {
             layers: self.layers.resolve(&resolver)?,
             state: self.state.resolve(&resolver)?,
             semantic: self.semantic.resolve(&resolver)?,
-            ansi: resolved_ansi,
-            ansi_bright: resolved_ansi_bright,
+            ansi: ansi.normal,
+            ansi_bright: ansi.bright,
         })
     }
 }
@@ -514,8 +223,8 @@ pub struct Palette {
     pub layers: Layers,
     pub state: State,
     pub semantic: Semantic,
-    pub ansi: Ansi,
-    pub ansi_bright: Ansi,
+    pub ansi: AnsiColors,
+    pub ansi_bright: AnsiColors,
 }
 
 impl Palette {
@@ -804,112 +513,5 @@ white = "base.foreground"
         assert!(result.is_err());
         let err = result.unwrap_err();
         assert!(matches!(err, Error::UnresolvedRef(_)));
-    }
-
-    #[test]
-    fn parse_color_expr_literal() {
-        let expr = parse_color_expr("#E26A3B").unwrap();
-        assert!(matches!(expr, ColorExpr::Literal(c) if c == hex("#E26A3B")));
-    }
-
-    #[test]
-    fn parse_color_expr_reference() {
-        let expr = parse_color_expr("colors.lantern.mid").unwrap();
-        assert!(
-            matches!(expr, ColorExpr::Ref { section, key } if section == Section::Colors && key == "lantern.mid")
-        );
-    }
-
-    #[test]
-    fn parse_color_expr_lighten() {
-        let expr = parse_color_expr("lighten(colors.lantern.mid, 0.1)").unwrap();
-        match expr {
-            ColorExpr::Lighten(inner, factor) => {
-                assert!(
-                    matches!(*inner, ColorExpr::Ref { section, key } if section == Section::Colors && key == "lantern.mid")
-                );
-                assert!((factor - 0.1).abs() < 0.001);
-            }
-            _ => panic!("expected Lighten"),
-        }
-    }
-
-    #[test]
-    fn parse_color_expr_darken() {
-        let expr = parse_color_expr("darken(base.background, 0.2)").unwrap();
-        match expr {
-            ColorExpr::Darken(inner, factor) => {
-                assert!(
-                    matches!(*inner, ColorExpr::Ref { section, key } if section == Section::Base && key == "background")
-                );
-                assert!((factor - 0.2).abs() < 0.001);
-            }
-            _ => panic!("expected Darken"),
-        }
-    }
-
-    #[test]
-    fn parse_color_expr_nested() {
-        let expr = parse_color_expr("lighten(darken(colors.lantern.mid, 0.1), 0.2)").unwrap();
-        match expr {
-            ColorExpr::Lighten(inner, outer_factor) => {
-                assert!((outer_factor - 0.2).abs() < 0.001);
-                match *inner {
-                    ColorExpr::Darken(innermost, inner_factor) => {
-                        assert!(
-                            matches!(*innermost, ColorExpr::Ref { section, key } if section == Section::Colors && key == "lantern.mid")
-                        );
-                        assert!((inner_factor - 0.1).abs() < 0.001);
-                    }
-                    _ => panic!("expected Darken"),
-                }
-            }
-            _ => panic!("expected Lighten"),
-        }
-    }
-
-    #[test]
-    fn parse_color_expr_mix() {
-        let expr = parse_color_expr("mix(base.background, colors.night, 0.15)").unwrap();
-        match expr {
-            ColorExpr::Mix(color1, color2, factor) => {
-                assert!(
-                    matches!(*color1, ColorExpr::Ref { section, key } if section == Section::Base && key == "background")
-                );
-                assert!(
-                    matches!(*color2, ColorExpr::Ref { section, key } if section == Section::Colors && key == "night")
-                );
-                assert!((factor - 0.15).abs() < 0.001);
-            }
-            _ => panic!("expected Mix"),
-        }
-    }
-
-    #[test]
-    fn parse_color_expr_rejects_non_referenceable_sections() {
-        // layers, state, semantic exist in palette but cannot be referenced
-        let err = parse_color_expr("layers.base").unwrap_err();
-        assert!(
-            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
-        );
-
-        let err = parse_color_expr("state.cursor").unwrap_err();
-        assert!(
-            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
-        );
-
-        let err = parse_color_expr("semantic.keyword").unwrap_err();
-        assert!(
-            matches!(err, Error::InvalidColorExpr(msg) if msg.contains("cannot be referenced"))
-        );
-    }
-
-    #[test]
-    fn parse_color_expr_ansi_bright() {
-        // ansi.bright.* is parsed as Section::Ansi with key "bright.*"
-        let expr = parse_color_expr("ansi.bright.red").unwrap();
-        assert!(
-            matches!(expr, ColorExpr::Ref { section, key } if section == Section::Ansi && key == "bright.red")
-        );
     }
 }
