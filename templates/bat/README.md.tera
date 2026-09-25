@@ -1,0 +1,55 @@
+{%- set first = variants.0 -%}
+{%- set darks = variants | filter(attribute="variant.appearance", value="dark") -%}
+{%- set lights = variants | filter(attribute="variant.appearance", value="light") -%}
+# {{ theme.name }} bat Theme
+
+[bat](https://github.com/sharkdp/bat) themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+1. Create the themes directory:
+
+   ```bash
+   mkdir -p "$(bat --config-dir)/themes"
+   ```
+
+2. Copy the theme file(s) to the themes directory:
+
+   ```bash
+{% for v in variants %}   cp {{ theme.id }}-{{ v.variant.id }}.tmTheme "$(bat --config-dir)/themes/"
+{% endfor %}   ```
+
+3. Rebuild the cache:
+
+   ```bash
+   bat cache --build
+   ```
+
+4. Verify the theme is available:
+
+   ```bash
+   bat --list-themes | grep -i {{ theme.id }}
+   ```
+
+## Usage
+
+```bash
+# Use once
+bat --theme="{{ theme.id }}-{{ first.variant.id }}" <file>
+
+# Set as default (add to shell config)
+export BAT_THEME="{{ theme.id }}-{{ first.variant.id }}"
+```
+{% if darks | length > 0 and lights | length > 0 %}
+You can also use `--theme-dark` and `--theme-light` for automatic switching:
+
+```bash
+export BAT_THEME_DARK="{{ theme.id }}-{{ darks.0.variant.id }}"
+export BAT_THEME_LIGHT="{{ theme.id }}-{{ lights.0.variant.id }}"
+```
+{% endif %}
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

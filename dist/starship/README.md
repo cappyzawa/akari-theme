@@ -4,7 +4,7 @@
 > This repository is a read-only mirror.
 > Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
-Starship prompt themes inspired by Japanese alleys lit by round lanterns.
+Starship prompt themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -37,5 +37,5 @@ This overrides Starship's standard named colors, so your existing module configu
 
 ## Variants
 
-- **akari-night.toml** - Dark theme with lantern-lit atmosphere
-- **akari-dawn.toml** - Light theme with morning warmth
+- **akari-night.toml** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn.toml** - A light palette inspired by Japanese alleys lit by round lanterns.

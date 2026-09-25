@@ -1,0 +1,77 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+# {{ theme.name }} Neovim Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Neovim colorscheme for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+### lazy.nvim
+
+```lua
+{
+    "{{ owner }}/{{ theme.id }}-nvim",
+    config = function()
+        require("{{ theme.id }}").setup({ variant = "{{ first.variant.id }}" })
+        vim.cmd.colorscheme("{{ theme.id }}")
+    end,
+}
+```
+
+To pin a specific version:
+
+```lua
+{
+    "{{ owner }}/{{ theme.id }}-nvim",
+    tag = "v0.9.0",
+    config = function()
+        require("{{ theme.id }}").setup({ variant = "{{ first.variant.id }}" })
+        vim.cmd.colorscheme("{{ theme.id }}")
+    end,
+}
+```
+
+### vim-plug
+
+```vim
+Plug '{{ owner }}/{{ theme.id }}-nvim'
+```
+
+Then in your config:
+
+```lua
+lua require("{{ theme.id }}").setup({ variant = "{{ first.variant.id }}" })
+colorscheme {{ theme.id }}
+```
+
+### dein.vim
+
+```vim
+call dein#add('{{ owner }}/{{ theme.id }}-nvim')
+```
+
+Then in your config:
+
+```lua
+lua require("{{ theme.id }}").setup({ variant = "{{ first.variant.id }}" })
+colorscheme {{ theme.id }}
+```
+
+## Options
+
+```lua
+require("{{ theme.id }}").setup({
+    variant = "{{ first.variant.id }}",{% if variants | length > 1 %} --{% for v in variants %} "{{ v.variant.id }}"{% if not loop.last %} or{% endif %}{% endfor %}{% endif %}
+})
+```
+
+## Variants
+
+{% for v in variants -%}
+- **{{ v.variant.id }}**{% if loop.first %} (default){% endif %} - {{ v.variant.description }}
+{% endfor -%}

@@ -1,0 +1,56 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+# {{ theme.name }} Theme for Visual Studio Code
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+{% if adapter_text.readme %}{{ adapter_text.readme }}{% else %}{{ theme.description }}
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.name }} {{ v.variant.name }}** — {{ v.variant.description }}
+{% endfor -%}
+{% endif %}
+## Installation
+
+### From VS Code Marketplace (recommended)
+
+1. Open **Extensions** sidebar in VS Code (`Cmd+Shift+X` / `Ctrl+Shift+X`)
+2. Search for `{{ theme.name }}`
+3. Click **Install**
+4. Open Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+5. Select **Preferences: Color Theme**
+6. Choose {% for v in variants %}**{{ theme.name }} {{ v.variant.name }}**{% if not loop.last %} or {% endif %}{% endfor %}
+
+### From Open VSX (for Cursor, VSCodium, etc.)
+
+1. Open **Extensions** sidebar
+2. Search for `{{ theme.name }}`
+3. Click **Install**
+4. Select **Preferences: Color Theme**
+5. Choose {% for v in variants %}**{{ theme.name }} {{ v.variant.name }}**{% if not loop.last %} or {% endif %}{% endfor %}
+
+Or install directly from [Open VSX](https://open-vsx.org/extension/{{ adapter.publisher }}/{{ theme.id }}-theme).
+
+### From this repository
+
+Clone and symlink to your VS Code extensions directory:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ theme.id }}-vscode.git
+ln -s $(pwd)/{{ theme.id }}-vscode ~/.vscode/extensions/{{ theme.id }}-theme
+```
+
+## Palette
+
+Color definitions are the single source of truth in TOML format:
+
+{% for v in variants -%}
+- [{{ theme.name }} {{ v.variant.name }} ({{ v.variant.appearance | capitalize }})]({{ theme.repository }}/blob/main/palette/{{ theme.id }}-{{ v.variant.id }}.toml)
+{% endfor %}
+## License
+
+{{ theme.license }}

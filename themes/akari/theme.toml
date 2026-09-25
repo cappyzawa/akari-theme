@@ -10,6 +10,7 @@ variants = ["night", "dawn"]
 publisher = "cappyzawa"
 version = "0.2.0"
 icon = "icon.png"
+readme = "vscode-readme.md"
 keywords = ["theme", "dark", "light", "japanese", "lantern", "warm"]
 
 [adapters.chrome]

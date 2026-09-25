@@ -78,5 +78,5 @@ The theme enables `line-numbers` by default. You can add additional options:
 
 ## Variants
 
-- **akari-night** - Dark theme with lantern-lit atmosphere
-- **akari-dawn** - Light theme with morning warmth
+- **akari-night** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **akari-dawn** - A light palette inspired by Japanese alleys lit by round lanterns.

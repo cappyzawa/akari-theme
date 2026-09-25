@@ -1,0 +1,16 @@
+{%- set appearances = variants | map(attribute="variant.appearance") | unique -%}
+# {{ theme.name }} Codex App Theme
+
+## Installation
+
+Open **Settings → Appearance** in the Codex app, then paste the entire theme string, including the `codex-theme-v1:` prefix, into **Import** for the corresponding theme:
+
+{% for v in variants -%}
+- **{{ v.variant.appearance | capitalize }} theme:** [{{ theme.id }}-{{ v.variant.id }}.txt]({{ theme.id }}-{{ v.variant.id }}.txt)
+{% endfor %}
+{% if appearances | length > 1 -%}
+Select {% for a in appearances %}**{{ a | capitalize }}**{% if not loop.last %} or {% endif %}{% endfor %} to preview the imported theme if **System** is using the other appearance.
+
+{% endif -%}
+Importing resets the UI and code fonts to the system defaults; choose your preferred fonts after importing.
+The themes retain the built-in Codex syntax highlighting and customize the app colors, including diff and skill colors.

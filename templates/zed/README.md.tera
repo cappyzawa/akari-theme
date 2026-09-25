@@ -1,0 +1,61 @@
+{%- set first = variants.0 -%}
+{%- set darks = variants | filter(attribute="variant.appearance", value="dark") -%}
+{%- set lights = variants | filter(attribute="variant.appearance", value="light") -%}
+# {{ theme.name }} for Zed
+
+A {% for v in variants %}{{ v.variant.appearance }} ({{ v.variant.name }}){% if not loop.last %} and {% endif %}{% endfor %} theme family for the [Zed](https://zed.dev)
+editor. {{ theme.description }}
+
+{% if variants | length == 1 -%}
+The variant ships in a single theme file
+{%- elif variants | length == 2 -%}
+Both variants ship in a single theme file
+{%- else -%}
+All {{ variants | length }} variants ship in a single theme file
+{%- endif %} (`{{ theme.id }}.json`) exposing:
+
+{% for v in variants -%}
+- **{{ theme.name }} {{ v.variant.name }}** — {{ v.variant.description }}
+{% endfor %}
+## Install
+
+### User theme (quickest, for local use)
+
+Copy the generated theme into Zed's themes directory:
+
+```sh
+mkdir -p ~/.config/zed/themes
+cp {{ theme.id }}.json ~/.config/zed/themes/{{ theme.id }}.json
+```
+
+Zed picks it up immediately. Open the theme selector with
+`cmd-k cmd-t` (macOS) / `ctrl-k ctrl-t` (Linux), or set it in `settings.json`:
+
+{% if darks | length > 0 and lights | length > 0 -%}
+```json
+{
+  "theme": {
+    "mode": "system",
+    "light": "{{ theme.name }} {{ lights.0.variant.name }}",
+    "dark": "{{ theme.name }} {{ darks.0.variant.name }}"
+  }
+}
+```
+{% else -%}
+```json
+{ "theme": "{{ theme.name }} {{ first.variant.name }}" }
+```
+{% endif %}
+### As an extension
+
+Zed themes can also be distributed as an extension via the
+[extensions repository](https://github.com/zed-industries/extensions). Place
+`{{ theme.id }}.json` under a `themes/` directory in an extension named `{{ theme.id }}` with an
+`extension.toml`, then publish or install as a dev extension
+(`zed: install dev extension`).
+
+## Regenerate
+
+```sh
+cargo run --features generator -- generate-theme --theme-dir themes/{{ theme.id }} --tool zed --out-dir dist
+```

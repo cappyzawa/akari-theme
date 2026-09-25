@@ -1,0 +1,39 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+# {{ theme.name }} Alacritty Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Alacritty terminal emulator themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+Clone the repository and copy the theme files:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ theme.id }}-alacritty.git
+cp {{ theme.id }}-alacritty/*.toml ~/.config/alacritty/themes/
+```
+
+Then import the theme in your `alacritty.toml`:
+
+```toml
+[general]
+import = ["~/.config/alacritty/themes/{{ theme.id }}-{{ first.variant.id }}.toml"]
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```toml
+[general]
+import = ["~/.config/alacritty/themes/{{ theme.id }}-{{ v.variant.id }}.toml"]
+```
+{% endfor %}
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

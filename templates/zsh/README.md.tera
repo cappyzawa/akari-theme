@@ -1,0 +1,108 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+{%- set mirror = theme.id ~ "-zsh" -%}
+# {{ theme.name }} zsh-syntax-highlighting Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+zsh-syntax-highlighting themes for {{ theme.name }}. {{ theme.description }}
+
+## Requirements
+
+- [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting)
+
+> [!WARNING]
+> This theme must be loaded **after** zsh-syntax-highlighting.
+> The theme works by overriding `ZSH_HIGHLIGHT_STYLES` variables set by zsh-syntax-highlighting.
+
+## Installation
+
+### Manual
+
+Clone the repository and source the theme file in your `.zshrc`:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ mirror }}.git
+source /path/to/{{ mirror }}/{{ theme.id }}-{{ first.variant.id }}.zsh
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```bash
+source /path/to/{{ mirror }}/{{ theme.id }}-{{ v.variant.id }}.zsh
+```
+{% endfor %}
+### zinit
+
+```zsh
+zinit light-mode for \
+  pick"{{ theme.id }}-{{ first.variant.id }}.zsh" \
+  {{ owner }}/{{ mirror }}
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```zsh
+zinit light-mode for \
+  pick"{{ theme.id }}-{{ v.variant.id }}.zsh" \
+  {{ owner }}/{{ mirror }}
+```
+{% endfor %}
+### sheldon
+
+Add to your `~/.config/sheldon/plugins.toml`:
+
+```toml
+[plugins.{{ mirror }}]
+github = "{{ owner }}/{{ mirror }}"
+use = ["{{ theme.id }}-{{ first.variant.id }}.zsh"]
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```toml
+[plugins.{{ mirror }}]
+github = "{{ owner }}/{{ mirror }}"
+use = ["{{ theme.id }}-{{ v.variant.id }}.zsh"]
+```
+{% endfor %}
+### oh-my-zsh
+
+Clone as a custom plugin:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ mirror }} ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/{{ mirror }}
+```
+
+Then add to your `.zshrc`:
+
+```zsh
+plugins=(... {{ mirror }})
+```
+{% for v in variants | slice(start=1) %}
+To use {{ v.variant.id }} variant, set before loading oh-my-zsh:
+
+```zsh
+export {{ theme.id | upper }}_VARIANT={{ v.variant.id }}
+```
+{% endfor %}
+### antigen
+
+```zsh
+antigen bundle {{ owner }}/{{ mirror }}
+```
+{% for v in variants | slice(start=1) %}
+To use {{ v.variant.id }} variant, set before loading:
+
+```zsh
+export {{ theme.id | upper }}_VARIANT={{ v.variant.id }}
+```
+{% endfor %}
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}.zsh** - {{ v.variant.description }}
+{% endfor -%}

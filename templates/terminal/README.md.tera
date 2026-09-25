@@ -1,0 +1,26 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+# {{ theme.name }} macOS Terminal Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+macOS Terminal.app themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/{{ owner }}/{{ theme.id }}-terminal.git
+   ```
+2. Double-click `{{ theme.name }}-{{ first.variant.name }}.terminal`{% if variants | length > 1 %} (or {% for v in variants | slice(start=1) %}`{{ theme.name }}-{{ v.variant.name }}.terminal`{% if not loop.last %}, {% endif %}{% endfor %}){% endif %} to import the profile
+3. Open Terminal > Settings > Profiles
+4. Select the {{ theme.name }} theme and click "Default"
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.name }}-{{ v.variant.name }}.terminal** - {{ v.variant.description }}
+{% endfor -%}

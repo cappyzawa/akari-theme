@@ -4,7 +4,7 @@
 > This repository is a read-only mirror.
 > Issues, pull requests, and stars should go to [cappyzawa/akari-theme](https://github.com/cappyzawa/akari-theme).
 
-macOS Terminal.app themes inspired by Japanese alleys lit by round lanterns.
+macOS Terminal.app themes for Akari. A terminal color palette inspired by Japanese alleys lit by round lanterns.
 
 ## Installation
 
@@ -18,5 +18,5 @@ macOS Terminal.app themes inspired by Japanese alleys lit by round lanterns.
 
 ## Variants
 
-- **Akari-Night.terminal** - Dark theme with lantern-lit atmosphere
-- **Akari-Dawn.terminal** - Light theme with morning warmth
+- **Akari-Night.terminal** - A dark palette inspired by Japanese alleys lit by round lanterns.
+- **Akari-Dawn.terminal** - A light palette inspired by Japanese alleys lit by round lanterns.

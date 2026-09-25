@@ -8,7 +8,7 @@ Copy the `theme:` section from your preferred variant into your `~/.config/gh-da
 
 ### Akari Night
 
-A dark theme inspired by Japanese alleys lit by round lanterns.
+A dark palette inspired by Japanese alleys lit by round lanterns.
 
 ```yaml
 # Copy the contents of akari-night.yml into your config.yml
@@ -16,7 +16,7 @@ A dark theme inspired by Japanese alleys lit by round lanterns.
 
 ### Akari Dawn
 
-A light theme with warm tones for daytime use.
+A light palette inspired by Japanese alleys lit by round lanterns.
 
 ```yaml
 # Copy the contents of akari-dawn.yml into your config.yml

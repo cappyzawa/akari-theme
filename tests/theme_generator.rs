@@ -93,18 +93,56 @@ fn theme_context_rejects_unknown_tool() {
 }
 
 #[test]
-fn theme_helix_copies_static_readme() {
+fn theme_route_copies_non_tera_files_as_is() {
     let theme = akari_theme();
     let generator = generator();
     let artifacts = generator
-        .generate_theme_tool("helix", &theme, &theme_dir("akari"))
+        .generate_theme_tool("nvim", &theme, &theme_dir("akari"))
         .unwrap();
 
     let artifact = artifacts
         .iter()
-        .find(|a| a.rel_path == Path::new("helix/README.md"))
-        .expect("README.md artifact missing");
+        .find(|a| a.rel_path == Path::new("nvim/lua/akari/highlights/editor.lua"))
+        .expect("static lua artifact missing");
     assert!(matches!(artifact.content, ArtifactContent::Copy(_)));
+}
+
+#[test]
+fn theme_akari_readmes_match_dist_exactly() {
+    let theme = akari_theme();
+    let generator = generator();
+
+    for tool in generator.available_theme_tools() {
+        let artifacts = generator
+            .generate_theme_tool(&tool, &theme, &theme_dir("akari"))
+            .unwrap();
+        let rel = format!("{tool}/README.md");
+        let dist = fs::read_to_string(root_dir().join("dist").join(&rel)).unwrap();
+        assert!(
+            artifact_text(&artifacts, &rel) == dist,
+            "{rel} differs from dist"
+        );
+    }
+}
+
+/// Words that only belong to Akari's identity, variants or story.
+const AKARI_ONLY_WORDS: [&str; 5] = ["akari", "night", "dawn", "lantern", "japanese alleys"];
+
+#[test]
+fn theme_ninja_readmes_carry_no_akari_identity_or_story() {
+    let theme = ninja_theme();
+    let generator = generator();
+
+    for tool in generator.available_theme_tools() {
+        let artifacts = generator
+            .generate_theme_tool(&tool, &theme, &theme_dir("ninja"))
+            .unwrap();
+        let rel = format!("{tool}/README.md");
+        let readme = without_shared_repository(artifact_text(&artifacts, &rel)).to_lowercase();
+        for word in AKARI_ONLY_WORDS {
+            assert!(!readme.contains(word), "{rel} mentions {word:?}");
+        }
+    }
 }
 
 /// The style value's resolved (fg, bg, underline color, underline style,
@@ -640,17 +678,23 @@ fn ninja_shadow_ghostty_lines_are_key_value_pairs() {
     }
 }
 
-/// Ninja's `theme.repository` is this repository, so its URL is stripped
-/// before looking for leftovers of Akari's identity.
-fn assert_no_akari_mentions(artifacts: &[Artifact], tool: &str) {
+/// Ninja's `theme.repository` is this repository, so its URL and its
+/// `owner/name` slug are removed before looking for Akari's identity.
+fn without_shared_repository(text: &str) -> String {
     let repository = ninja_theme().metadata.repository.unwrap_or_default();
+    let slug = repository.replace("https://github.com/", "");
+    text.replace(&repository, "").replace(&slug, "")
+}
+
+fn assert_no_akari_mentions(artifacts: &[Artifact], tool: &str) {
     for artifact in artifacts {
         let ArtifactContent::Text(text) = &artifact.content else {
             continue;
         };
-        let text = text.replace(&repository, "");
         assert!(
-            !text.to_lowercase().contains("akari"),
+            !without_shared_repository(text)
+                .to_lowercase()
+                .contains("akari"),
             "{} ({tool}) mentions akari",
             artifact.rel_path.display()
         );
@@ -1169,13 +1213,17 @@ fn chrome_renders_with_only_the_declared_adapter_keys() {
 
 // -- THEME_ASSETS: files that live in the theme directory, not templates/ --
 
-/// A temp templates dir containing only `vscode/package.json.tera`, so these
-/// tests exercise `THEME_ASSETS` for vscode without touching the real
-/// `templates/vscode` (still a legacy template tree; migrating its templates
-/// is separate work).
+/// A temp templates dir containing only `vscode/package.json.tera` and a
+/// minimal `vscode/README.md.tera` that exercises `adapter_text.readme`, so
+/// these tests isolate `THEME_ASSETS` and `ADAPTER_TEXTS` from the real
+/// `templates/vscode`.
 fn vscode_only_templates() -> tempfile::TempDir {
     let templates = tempfile::tempdir().unwrap();
     write_template(&templates.path().join("vscode/package.json.tera"), "{}\n");
+    write_template(
+        &templates.path().join("vscode/README.md.tera"),
+        "{% if adapter_text.readme %}{{ adapter_text.readme }}{% else %}{{ theme.description }}\n\n## Variants\n\n{% for v in variants %}- {{ v.variant.name }}\n{% endfor %}{% endif %}",
+    );
     templates
 }
 
@@ -1374,6 +1422,110 @@ fn vscode_requires_adapters_vscode_publisher_and_version() {
                 assert_eq!(found, key);
             }
             other => panic!("expected AdapterKeyMissing({key}), got {other:?}"),
+        }
+    }
+}
+
+// -- ADAPTER_TEXTS: a theme-directory file read into the template context --
+
+fn declare_readme(vscode: &mut toml::Table, value: &str) {
+    vscode.insert("readme".into(), toml::Value::String(value.to_string()));
+}
+
+#[test]
+fn vscode_readme_fragment_is_rendered_into_readme_and_not_shipped_as_an_artifact() {
+    let templates = vscode_only_templates();
+    let generator = Generator::new(templates.path()).unwrap();
+    let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, "vscode-readme.md"));
+    fs::write(
+        theme_root.path().join("vscode-readme.md"),
+        "Fragment prose from the theme directory.\n",
+    )
+    .unwrap();
+    let theme = Theme::load(theme_root.path()).unwrap();
+
+    let artifacts = generator
+        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .unwrap();
+
+    let text = artifact_text(&artifacts, "vscode/README.md");
+    assert!(
+        text.contains("Fragment prose from the theme directory."),
+        "{text}"
+    );
+    assert!(
+        !artifacts
+            .iter()
+            .any(|a| a.rel_path.file_name() == Some(std::ffi::OsStr::new("vscode-readme.md"))),
+        "fragment file should not be shipped as an artifact: {artifacts:?}"
+    );
+}
+
+#[test]
+fn vscode_without_readme_key_falls_back_to_description_and_variants_and_mentions_no_akari() {
+    let templates = vscode_only_templates();
+    let generator = Generator::new(templates.path()).unwrap();
+    let theme_root = temp_ninja_theme_dir(|_| {});
+    let theme = Theme::load(theme_root.path()).unwrap();
+
+    let artifacts = generator
+        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .unwrap();
+
+    let text = artifact_text(&artifacts, "vscode/README.md");
+    assert!(text.contains(&theme.metadata.description), "{text}");
+    assert!(text.contains("## Variants"), "{text}");
+    for variant in &theme.variants {
+        assert!(text.contains(&variant.variant.name), "{text}");
+    }
+    assert!(!text.to_lowercase().contains("akari"), "{text}");
+}
+
+#[test]
+fn vscode_readme_declared_but_missing_reports_the_expected_path() {
+    let templates = vscode_only_templates();
+    let generator = Generator::new(templates.path()).unwrap();
+    let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, "vscode-readme.md"));
+    let theme = Theme::load(theme_root.path()).unwrap();
+
+    let err = generator
+        .generate_theme_tool("vscode", &theme, theme_root.path())
+        .unwrap_err();
+
+    let expected_path = theme_root.path().join("vscode-readme.md");
+    match &err {
+        Error::AdapterAssetMissing { tool, key, path } => {
+            assert_eq!(tool, "vscode");
+            assert_eq!(key, "readme");
+            assert_eq!(path, &expected_path);
+        }
+        other => panic!("expected AdapterAssetMissing, got {other:?}"),
+    }
+}
+
+#[test]
+fn vscode_readme_outside_the_theme_dir_or_absolute_is_rejected() {
+    let templates = vscode_only_templates();
+    let generator = Generator::new(templates.path()).unwrap();
+
+    for value in ["../x.md", "/etc/x.md"] {
+        let theme_root = temp_ninja_theme_dir(|vscode| declare_readme(vscode, value));
+        let theme = Theme::load(theme_root.path()).unwrap();
+
+        let err = generator
+            .generate_theme_tool("vscode", &theme, theme_root.path())
+            .unwrap_err();
+        match &err {
+            Error::AdapterAssetPath {
+                tool,
+                key,
+                value: found,
+            } => {
+                assert_eq!(tool, "vscode");
+                assert_eq!(key, "readme");
+                assert_eq!(found, value);
+            }
+            other => panic!("expected AdapterAssetPath for {value:?}, got {other:?}"),
         }
     }
 }

@@ -1,0 +1,46 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+{%- set owner = slug | split(pat="/") | first -%}
+{%- set first = variants.0 -%}
+{%- set mirror = theme.id ~ "-starship" -%}
+# {{ theme.name }} Starship Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Starship prompt themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+Clone the repository and add the palette to your Starship config:
+
+```bash
+git clone https://github.com/{{ owner }}/{{ mirror }}.git
+cat {{ mirror }}/{{ theme.id }}-{{ first.variant.id }}.toml >> ~/.config/starship.toml
+```
+
+Then set the palette in your config:
+
+```toml
+palette = '{{ theme.id }}-{{ first.variant.id }}'
+```
+{% for v in variants | slice(start=1) %}
+Or for {{ v.variant.id }}:
+
+```bash
+cat {{ mirror }}/{{ theme.id }}-{{ v.variant.id }}.toml >> ~/.config/starship.toml
+```
+
+```toml
+palette = '{{ theme.id }}-{{ v.variant.id }}'
+```
+{% endfor %}
+## How It Works
+
+This overrides Starship's standard named colors, so your existing module configurations will automatically use {{ theme.name }} colors without any changes.
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}.toml** - {{ v.variant.description }}
+{% endfor -%}

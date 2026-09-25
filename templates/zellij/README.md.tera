@@ -1,0 +1,32 @@
+{%- set slug = theme.repository | replace(from="https://github.com/", to="") -%}
+# {{ theme.name }} Zellij Theme
+
+> [!IMPORTANT]
+> This repository is a read-only mirror.
+> Issues, pull requests, and stars should go to [{{ slug }}]({{ theme.repository }}).
+
+Zellij themes for {{ theme.name }}. {{ theme.description }}
+
+## Installation
+
+1. Copy the theme file to your Zellij themes directory:
+   ```bash
+   # Find your config directory
+   zellij setup --check
+
+   # Copy the theme (example for Linux/macOS)
+{% for v in variants %}   cp {{ theme.id }}-{{ v.variant.id }}.kdl ~/.config/zellij/themes/
+{% if not loop.last %}   # or
+{% endif %}{% endfor %}   ```
+
+2. Add to your Zellij config (`~/.config/zellij/config.kdl`):
+   ```kdl
+{% for v in variants %}   theme "{{ theme.id }}-{{ v.variant.id }}"
+{% if not loop.last %}   // or
+{% endif %}{% endfor %}   ```
+
+## Variants
+
+{% for v in variants -%}
+- **{{ theme.id }}-{{ v.variant.id }}** - {{ v.variant.description }}
+{% endfor -%}

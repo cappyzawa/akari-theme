@@ -1,0 +1,13 @@
+# {{ theme.name }} Nix Templates
+
+These templates generate Nix attrsets for Home Manager module integration.
+
+## Generated Files
+
+- {% for v in variants %}`{{ theme.id }}-{{ v.variant.id }}-fzf.nix`{% if not loop.last %} / {% endif %}{% endfor %} - fzf colors for `programs.fzf.colors`
+- {% for v in variants %}`{{ theme.id }}-{{ v.variant.id }}-gh-dash.nix`{% if not loop.last %} / {% endif %}{% endfor %} - gh-dash theme for `programs.gh-dash.settings`
+
+## Usage
+
+These files are imported by the Home Manager module in `nix/targets/`.
+See the main README for Home Manager integration instructions.
