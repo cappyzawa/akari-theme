@@ -12,6 +12,7 @@ cargo test --features generator
 
 ```sh
 cargo run --features generator -- generate --tool all
+cargo run --features generator -- generate-theme --theme-dir themes/akari --tool all --out-dir dist
 git diff --exit-code
 ```
 
