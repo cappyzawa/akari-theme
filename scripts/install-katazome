@@ -1,5 +1,4 @@
 #!/bin/sh
 set -eu
 cd "$(dirname "$0")/.."
-exec cargo install --locked --root .katazome \
-  --git https://github.com/cappyzawa/katazome --rev ad8f60b katazome
+exec cargo install --locked --root .katazome --version 0.1.0 katazome

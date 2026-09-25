@@ -43,5 +43,5 @@ Zed themes can also be distributed as an extension via the
 ## Regenerate
 
 ```sh
-cargo run -- generate --theme-dir themes/akari --tool zed --out-dir dist
+katazome generate --theme-dir themes/akari --tool zed --out-dir dist
 ```
